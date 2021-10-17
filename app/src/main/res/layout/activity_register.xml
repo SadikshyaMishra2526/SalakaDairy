@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        tools:context=".views.login.LoginActivity">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="@dimen/_120sdp"
+            android:src="@drawable/logo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/app_name" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="150dp"
+            android:text="@string/register"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_18sdp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.157"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RelativeLayout
+            android:id="@+id/first_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="269dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView">
+
+            <EditText
+                style="@style/modifiedEditText"
+                android:layout_alignStart="@+id/first_name_img"
+                android:layout_alignParentEnd="true"
+                android:gravity="center"
+                android:hint="@string/first_name"
+                android:inputType="textEmailAddress"
+                android:maxLines="1" />
+
+            <ImageView
+                android:id="@+id/first_name_img"
+                style="@style/editLeftIcon"
+                android:src="@drawable/email"
+                android:contentDescription="@string/email"/>
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/last_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="269dp"
+            app:layout_constraintTop_toBottomOf="@+id/first_name">
+
+            <EditText
+                style="@style/modifiedEditText"
+                android:layout_alignStart="@+id/last_name_img"
+                android:layout_alignParentEnd="true"
+                android:gravity="center"
+                android:hint="@string/second_name"
+                android:inputType="textEmailAddress"
+                android:maxLines="1" />
+
+            <ImageView
+                android:id="@+id/last_name_img"
+                style="@style/editLeftIcon"
+                android:contentDescription="@string/second_name"
+                android:src="@drawable/email" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="269dp"
+            app:layout_constraintTop_toBottomOf="@+id/last_name">
+
+            <EditText
+                style="@style/modifiedEditText"
+                android:layout_alignStart="@+id/email_img"
+                android:layout_alignParentEnd="true"
+                android:gravity="center"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:maxLines="1" />
+
+            <ImageView
+                android:id="@+id/email_img"
+                style="@style/editLeftIcon"
+                android:contentDescription="@string/email"
+                android:src="@drawable/email" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/email">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputConfirmPassword"
+                style="@style/parent"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginStart="@dimen/_15sdp"
+                app:hintEnabled="false"
+                app:passwordToggleEnabled="true">
+                <EditText
+                    style="@style/modifiedEditText"
+                    android:layout_alignStart="@+id/address_second_img"
+                    android:hint="@string/password"
+                    android:gravity="center"
+                    android:inputType="textPassword"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/password_img"
+                style="@style/editLeftIcon"
+                android:layout_marginTop="-1dp"
+                android:src="@drawable/email"
+                android:contentDescription="@string/email" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/address_first"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="269dp"
+            app:layout_constraintTop_toBottomOf="@+id/password">
+
+            <EditText
+                style="@style/modifiedEditText"
+                android:layout_alignStart="@+id/address_first_img"
+                android:layout_alignParentEnd="true"
+                android:gravity="center"
+                android:hint="@string/address_1"
+                android:inputType="textEmailAddress"
+                android:maxLines="1" />
+
+            <ImageView
+                android:id="@+id/address_first_img"
+                style="@style/editLeftIcon"
+                android:contentDescription="@string/address_1"
+                android:src="@drawable/email" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/address_second"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/address_first">
+
+            <EditText
+                style="@style/modifiedEditText"
+                android:layout_alignStart="@+id/address_second_img"
+                android:layout_alignParentEnd="true"
+                android:gravity="center"
+                android:hint="@string/address_2"
+                android:inputType="textEmailAddress"
+                android:maxLines="1" />
+
+            <ImageView
+                android:id="@+id/address_second_img"
+                style="@style/editLeftIcon"
+                android:src="@drawable/email"
+                android:contentDescription="@string/address_2"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/contact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="269dp"
+            app:layout_constraintTop_toBottomOf="@+id/address_second">
+
+            <EditText
+                style="@style/modifiedEditText"
+                android:layout_alignStart="@+id/addressEt"
+                android:layout_alignParentEnd="true"
+                android:hint="@string/contact"
+                android:gravity="center"
+                android:inputType="textEmailAddress"
+                android:maxLines="1" />
+
+            <ImageView
+                android:id="@+id/addressEt"
+                style="@style/editLeftIcon"
+                android:contentDescription="@string/address"
+                android:src="@drawable/email" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/terms_conditions"
+            android:layout_margin="@dimen/_5sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/contact">
+            <CheckBox
+                android:id="@+id/termandcondition"
+                android:focusable="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/termandconditionTv"
+                android:textSize="13sp"
+                android:textColor="@color/main_color"
+                android:text="@string/privacy_policy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <Button
+            android:id="@+id/sign_up"
+            style="@style/loginButton"
+            android:layout_margin="@dimen/_10sdp"
+            android:text="@string/sign_in"
+            android:gravity="center"
+            android:textSize="@dimen/_13sdp"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/terms_conditions"/>
+
+        <LinearLayout
+            android:id="@+id/other_methods"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:weightSum="12"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sign_up">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="3"
+                android:background="@color/main_color" />
+
+            <TextView
+                style="@style/viewParent.headerText.NoMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:text="@string/use_other_methods"
+                android:textAlignment="center"
+                android:textColor="@color/main_color"
+                android:textSize="12sp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="3"
+                android:background="@color/main_color" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="30dp"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/other_methods">
+
+            <ImageView
+                android:id="@+id/fb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_facebook"
+                android:contentDescription="@string/imagecontent"/>
+
+            <ImageView
+                android:id="@+id/google"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                app:srcCompat="@drawable/ic_google_plus"
+                android:contentDescription="@string/imagecontent"/>
+        </LinearLayout>
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
