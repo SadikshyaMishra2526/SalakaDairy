@@ -1,6 +1,7 @@
 package com.eightpeak.salakafarm.serverconfig.network;
 
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.eightpeak.salakafarm.serverconfig.ApiInterface;
@@ -30,29 +31,29 @@ public class CustomAuthenticator implements Authenticator {
     }
 
 
-    @Nullable
-    @Override
-    public Request authenticate(Route route, Response response) throws IOException {
+//    @Nullable
+//    @Override
+//    public Request authenticate(Route route, Response response) throws IOException {
+//
+//        if (responseCount(response) >= 3) {
+//            return null;
+//        }
+//
+//        AccessToken token = tokenManager.getToken();
 
-        if (responseCount(response) >= 3) {
-            return null;
-        }
-
-        AccessToken token = tokenManager.getToken();
-
-        ApiInterface apiInterface = ApiClient.createService(ApiInterface.class);
-        Call<AccessToken> call = apiInterface.refresh(token.getRefreshToken());
-        retrofit2.Response<AccessToken> res = call.execute();
-
-        if (res.isSuccessful()) {
-            AccessToken newToken = res.body();
-            tokenManager.saveToken(newToken);
-
-            return response.request().newBuilder().header("Authorization", "Bearer " + res.body().getAccessToken()).build();
-        } else {
-            return null;
-        }
-    }
+//        ApiInterface apiInterface = ApiClient.createService(ApiInterface.class);
+//        Call<AccessToken> call = apiInterface.refresh(token.getRefreshToken());
+//        retrofit2.Response<AccessToken> res = call.execute();
+//
+//        if (res.isSuccessful()) {
+//            AccessToken newToken = res.body();
+//            tokenManager.saveToken(newToken);
+//
+//            return response.request().newBuilder().header("Authorization", "Bearer " + res.body().getAccessToken()).build();
+//        } else {
+//            return null;
+//        }
+//    }
 
     private int responseCount(Response response) {
         int result = 1;
@@ -60,5 +61,11 @@ public class CustomAuthenticator implements Authenticator {
             result++;
         }
         return result;
+    }
+
+    @Nullable
+    @Override
+    public Request authenticate(@Nullable Route route, @NonNull Response response) throws IOException {
+        return null;
     }
 }

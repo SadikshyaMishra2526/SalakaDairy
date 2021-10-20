@@ -23,12 +23,12 @@ class ViewModelProviderFactory(
             return SliderViewModel(app, appRepository) as T
         }
 
-        if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
-            return LoginViewModel(app, appRepository) as T
+        if (modelClass.isAssignableFrom(CategoriesViewModel::class.java)) {
+            return CategoriesViewModel(app, appRepository) as T
         }
 
-        if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
-            return LoginViewModel(app, appRepository) as T
+        if (modelClass.isAssignableFrom(ProductListViewModel::class.java)) {
+            return ProductListViewModel(app, appRepository) as T
         }
 
 

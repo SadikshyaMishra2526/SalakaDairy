@@ -1,4 +1,4 @@
-package com.eightpeak.salakafarm.views.home.categories
+package com.eightpeak.salakafarm.views.home.products
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,12 +9,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import com.eightpeak.salakafarm.R
-import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
-import kotlinx.android.synthetic.main.categories_item.view.*
+import com.eightpeak.salakafarm.utils.EndPoints
+import com.eightpeak.salakafarm.views.home.products.Data
+import kotlinx.android.synthetic.main.product_item.view.*
 
-class CategoriesAdapter : RecyclerView.Adapter<CategoriesAdapter.CategoriesViewHolder>() {
+class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductListViewHolder>() {
 
-    inner class CategoriesViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
+    inner class ProductListViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
 
     private val differCallback = object : DiffUtil.ItemCallback<Data>() {
 
@@ -30,9 +31,9 @@ class CategoriesAdapter : RecyclerView.Adapter<CategoriesAdapter.CategoriesViewH
 
     val differ = AsyncListDiffer(this, differCallback)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = CategoriesViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ProductListViewHolder(
         LayoutInflater.from(parent.context).inflate(
-            R.layout.categories_item,
+            R.layout.product_item,
             parent,
             false
         )
@@ -40,14 +41,13 @@ class CategoriesAdapter : RecyclerView.Adapter<CategoriesAdapter.CategoriesViewH
     override fun getItemCount() =  differ.currentList.size
 
 
-    override fun onBindViewHolder(holder: CategoriesViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ProductListViewHolder, position: Int) {
         val categoriesItem = differ.currentList[position]
         Log.i("TAG", "onBindViewHolder:Categories "+categoriesItem.image)
         holder.itemView.apply {
-            categories_thumbnail.load(BASE_URL+categoriesItem.image)
-            categories_name.text = categoriesItem.descriptions[0].title
-//            tvImageSize.text = "${picItem.width} x ${picItem.height}"
-//            tvImageAuthor.text = picItem.author
+            product_thumbnail.load(EndPoints.BASE_URL +categoriesItem.image)
+            product_name.text = categoriesItem.descriptions[0].name
+            product_price.text = categoriesItem.price.toString()
         }
     }
 }

@@ -1,11 +1,12 @@
 package com.eightpeak.salakafarm.serverconfig
 
 import com.eightpeak.salakafarm.utils.EndPoints
-import com.eightpeak.salakafarm.views.home.slider.SliderModel
 import com.eightpeak.salakafarm.serverconfig.network.AccessToken
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.REFRESH_TOKEN
+import com.eightpeak.salakafarm.views.home.categories.CategoriesModel
+import com.eightpeak.salakafarm.views.home.products.ProductModel
+import com.eightpeak.salakafarm.views.home.slider.SliderModel
 import okhttp3.ResponseBody
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -18,7 +19,7 @@ interface ApiInterface {
 
 
     @GET(EndPoints.CATEGORIES_LIST)
-    suspend fun getCategoriesList(): Response<SliderModel>
+    suspend fun getCategoriesList(): Response<CategoriesModel>
 
     @GET(EndPoints.CATEGORIES_VIA_ID)
     suspend fun getCategoriesById(@Path("id") id: String): SliderModel
@@ -26,10 +27,10 @@ interface ApiInterface {
 
 
     @GET(EndPoints.PRODUCT_LIST)
-    suspend fun getProductList(): Response<SliderModel>
+    suspend fun getProductList(): Response<ProductModel>
 
     @GET(EndPoints.PRODUCT_VIA_ID)
-    suspend fun getProductById(@Path("id") id: String): SliderModel
+    suspend fun getProductById(@Path("id") id: String): Response<SliderModel>
 
 
 

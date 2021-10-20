@@ -2,7 +2,6 @@ package com.eightpeak.salakafarm.repository
 
 import com.eightpeak.salakafarm.serverconfig.RequestBodies
 import com.eightpeak.salakafarm.serverconfig.RetrofitInstance
-import com.eightpeak.salakafarm.views.home.slider.SliderModel
 
 class AppRepository {
 
@@ -13,8 +12,11 @@ class AppRepository {
 
     suspend fun fetchSlider() = RetrofitInstance.useApiWithoutToken.getSlider()
 
+    suspend fun getCategoriesList() = RetrofitInstance.useApiWithoutToken.getCategoriesList()
 
-    suspend fun getCategoriesById(id:String) = RetrofitInstance.useApiWithoutToken.getSlider()
+    suspend fun getCategoriesById(id:String) = RetrofitInstance.useApiWithoutToken.getCategoriesList()
 
+
+    suspend fun getProductList() = RetrofitInstance.useApiWithoutToken.getProductList()
 
 }

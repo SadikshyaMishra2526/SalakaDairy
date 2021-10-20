@@ -31,6 +31,11 @@
             android:src="@drawable/ic_baseline_person_24" />
     </LinearLayout>
 
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/product_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
     <FrameLayout
         android:id="@+id/containerSlider"
         android:layout_width="match_parent"
@@ -39,6 +44,34 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.016" />
+        app:layout_constraintTop_toBottomOf="@+id/product_search"
+        app:layout_constraintVertical_bias="0.015" />
+     <FrameLayout
+        android:id="@+id/containerCategories"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/containerSlider"
+        app:layout_constraintVertical_bias="0.015" />
+<View
+    android:id="@+id/divider_01"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_2sdp"
+    android:background="@color/tab_indicator_gray"
+    app:layout_constraintTop_toBottomOf="@+id/containerCategories"/>
+
+    <FrameLayout
+        android:id="@+id/containerProducts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider_01"
+        app:layout_constraintVertical_bias="0.015" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

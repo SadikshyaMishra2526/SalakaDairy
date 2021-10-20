@@ -1,7 +1,10 @@
 package com.eightpeak.salakafarm.views.home.slider;
 
+import static com.eightpeak.salakafarm.utils.EndPoints.BASE_URL;
+
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,19 +15,22 @@ import com.bumptech.glide.Glide;
 import com.eightpeak.salakafarm.R;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapterVH> {
 
     private Context context;
-    private List<SliderModel> mSliderItems = new ArrayList<>();
+    private List<Data> mSliderItems = new ArrayList<>();
 
-    public SliderAdapter(Context context) {
+    public SliderAdapter(Context context,List<Data>mSliderItems) {
         this.context = context;
+        this.mSliderItems=mSliderItems;
     }
 
-    public void renewItems(List<SliderModel> sliderItems) {
+    public void renewItems(List<Data> sliderItems) {
         this.mSliderItems = sliderItems;
         notifyDataSetChanged();
     }
@@ -34,8 +40,9 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
         notifyDataSetChanged();
     }
 
-    public void addItem(SliderModel sliderItem) {
-        this.mSliderItems.add(sliderItem);
+    public void addItem(List<Data> sliderItem) {
+//        Log.i("TAG", "addItem:........... "+sliderItem.get(0).getImage());
+        this.mSliderItems=sliderItem;
         notifyDataSetChanged();
     }
 
@@ -48,13 +55,12 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
     @Override
     public void onBindViewHolder(SliderAdapterVH viewHolder, final int position) {
 
-        SliderModel sliderItem = mSliderItems.get(position);
-
-        viewHolder.textViewDescription.setText(sliderItem.getData().get(position).getTitle());
+        Data sliderItem = mSliderItems.get(position);
+        viewHolder.textViewDescription.setText(mSliderItems.get(position).getTitle());
         viewHolder.textViewDescription.setTextSize(16);
         viewHolder.textViewDescription.setTextColor(Color.WHITE);
         Glide.with(viewHolder.itemView)
-                .load(sliderItem.getData().get(position).getImage())
+                .load(BASE_URL+mSliderItems.get(position).getImage())
                 .fitCenter()
                 .placeholder(R.drawable.logo)
                 .into(viewHolder.imageViewBackground);
@@ -66,6 +72,7 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
         //slider view count could be dynamic size
         return mSliderItems.size();
     }
+
 
     class SliderAdapterVH extends SliderViewAdapter.ViewHolder {
 

@@ -13,8 +13,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
-
-import com.eightpeak.salakafarm.MainActivity;
 import com.eightpeak.salakafarm.R;
 import com.eightpeak.salakafarm.views.home.HomeActivity;
 import com.google.android.material.tabs.TabLayout;
@@ -26,7 +24,7 @@ import java.util.List;
 public class IntroActivity extends AppCompatActivity {
 
     private ViewPager screenPager;
-    IntroViewPagerAdapter introViewPagerAdapter ;
+    IntroViewPagerAdapter introViewPagerAdapter;
     TabLayout tabIndicator;
     TextView btnNext;
     int position = 0 ;
@@ -84,30 +82,27 @@ public class IntroActivity extends AppCompatActivity {
 
             // next button click Listner
 
-            btnNext.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            btnNext.setOnClickListener(v -> {
 
-                    position = screenPager.getCurrentItem();
-                    if (position < mList.size()) {
+                position = screenPager.getCurrentItem();
+                if (position < mList.size()) {
 
-                        position++;
-                        screenPager.setCurrentItem(position);
-
-
-                    }
-
-                    if (position == mList.size() - 1) { // when we rech to the last screen
-
-                        // TODO : show the GETSTARTED Button and hide the indicator and the next button
-
-                        loaddLastScreen();
-
-
-                    }
+                    position++;
+                    screenPager.setCurrentItem(position);
 
 
                 }
+
+                if (position == mList.size() - 1) { // when we rech to the last screen
+
+                    // TODO : show the GETSTARTED Button and hide the indicator and the next button
+
+                    loaddLastScreen();
+
+
+                }
+
+
             });
 
             // tablayout add change listener
@@ -140,52 +135,35 @@ public class IntroActivity extends AppCompatActivity {
 
             // Get Started button click listener
 
-            btnGetStarted.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            btnGetStarted.setOnClickListener(v -> {
+                //open main activity
+                Intent mainActivity = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(mainActivity);
+                // also we need to save a boolean value to storage so next time when the user run the app
+                // we could know that he is already checked the intro screen activity
+                // i'm going to use shared preferences to that process
+                savePrefsData();
+                finish();
 
 
-                    //open main activity
-
-                    Intent mainActivity = new Intent(getApplicationContext(), HomeActivity.class);
-                    startActivity(mainActivity);
-                    // also we need to save a boolean value to storage so next time when the user run the app
-                    // we could know that he is already checked the intro screen activity
-                    // i'm going to use shared preferences to that process
-                    savePrefsData();
-                    finish();
-
-
-                }
             });
 
             // skip button click listener
 
-            tvSkip.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    screenPager.setCurrentItem(mList.size());
-                }
-            });
+            tvSkip.setOnClickListener(v -> screenPager.setCurrentItem(mList.size()));
         }
     }
 
     private boolean restorePrefData() {
-
-
         SharedPreferences pref = getApplicationContext().getSharedPreferences("myPrefs",MODE_PRIVATE);
-        Boolean isIntroActivityOpnendBefore = pref.getBoolean("isIntroOpnend",false);
-        return  isIntroActivityOpnendBefore;
-
-
-
+        return pref.getBoolean("isIntroOpnend",false);
     }
 
     private void savePrefsData() {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("myPrefs",MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putBoolean("isIntroOpnend",true);
-        editor.commit();
+        editor.apply();
     }
 
     // show the GETSTARTED Button and hide the indicator and the next button

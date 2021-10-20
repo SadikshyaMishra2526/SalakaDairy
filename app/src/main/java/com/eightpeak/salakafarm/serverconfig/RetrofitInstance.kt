@@ -76,6 +76,7 @@ class RetrofitInstance {
         }
 
         val useApiWithAccessToken by lazy {
+//            val  tokenManager=new
 //            createServiceWithAuth(ApiInterface::class.java)
         }
     }

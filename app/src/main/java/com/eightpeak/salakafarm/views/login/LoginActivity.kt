@@ -11,12 +11,12 @@ import com.eightpeak.salakafarm.databinding.ActivityHomeBinding
 import com.eightpeak.salakafarm.databinding.ActivityLoginBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.RequestBodies
+import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.LoginViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.home.HomeActivity
 import com.eightpeak.salakafarm.views.register.RegisterActivity
 import com.google.android.material.snackbar.Snackbar
-import com.hadi.retrofitmvvm.util.Resource
 import com.hadi.retrofitmvvm.util.errorSnack
 import kotlinx.android.synthetic.main.activity_login.*
 class LoginActivity : AppCompatActivity() {

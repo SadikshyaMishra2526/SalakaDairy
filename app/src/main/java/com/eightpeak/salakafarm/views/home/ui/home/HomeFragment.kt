@@ -9,16 +9,18 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.databinding.FragmentHomeBinding
+import com.eightpeak.salakafarm.views.home.categories.CategoriesFragment
+import com.eightpeak.salakafarm.views.home.products.ProductFragment
 import com.eightpeak.salakafarm.views.home.slider.SliderFragment
 import com.eightpeak.salakafarm.views.login.LoginActivity
 
 class HomeFragment : Fragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
+
+//    private lateinit var homeViewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -26,8 +28,8 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+//        homeViewModel =
+//            ViewModelProvider(this).get(HomeViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -38,15 +40,34 @@ class HomeFragment : Fragment() {
         }
 
         setUpSliderFragment()
+        setUpCategoriesFragment()
+        setUpProductFragment()
         return root
     }
 
     private fun setUpSliderFragment() {
-        val manager2 = childFragmentManager
-        val fragment2: Fragment = SliderFragment()
-        val transaction2 = manager2.beginTransaction()
-        transaction2.replace(R.id.containerSlider, fragment2).addToBackStack(null)
-        transaction2.commit()
+        val managerSlider = childFragmentManager
+        val fragmentSlider: Fragment = SliderFragment()
+        val transactionSlider = managerSlider.beginTransaction()
+        transactionSlider.replace(R.id.containerSlider, fragmentSlider).addToBackStack(null)
+        transactionSlider.commit()
+
+    }
+
+    private fun setUpCategoriesFragment() {
+        val managerCategories = childFragmentManager
+        val fragmentCategories: Fragment = CategoriesFragment()
+        val transactionCategories = managerCategories.beginTransaction()
+        transactionCategories.replace(R.id.containerCategories, fragmentCategories).addToBackStack(null)
+        transactionCategories.commit()
+
+    }
+    private fun setUpProductFragment() {
+        val managerProductList = childFragmentManager
+        val fragmentProductList: Fragment = ProductFragment()
+        val transactionProductList = managerProductList.beginTransaction()
+        transactionProductList.replace(R.id.containerProducts, fragmentProductList).addToBackStack(null)
+        transactionProductList.commit()
 
     }
 

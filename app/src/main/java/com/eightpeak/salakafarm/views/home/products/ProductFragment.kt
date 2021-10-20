@@ -1,8 +1,8 @@
-package com.eightpeak.salakafarm.views.home.categories
+package com.eightpeak.salakafarm.views.home.products
 
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,43 +10,32 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.eightpeak.salakafarm.R
-import com.eightpeak.salakafarm.databinding.FragmentCategoriesBinding
+import androidx.recyclerview.widget.SnapHelper
+import com.eightpeak.salakafarm.databinding.FragmentProductListBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.CategoriesViewModel
+import com.eightpeak.salakafarm.viewmodel.ProductListViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
-import com.github.rubensousa.gravitysnaphelper.GravitySnapRecyclerView
+import com.eightpeak.salakafarm.views.home.categories.CategoriesAdapter
+import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.google.android.material.snackbar.Snackbar
 import com.hadi.retrofitmvvm.util.errorSnack
-
 import kotlinx.android.synthetic.main.fragment_categories.*
-import android.view.Gravity
 
-import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
-
-import androidx.recyclerview.widget.SnapHelper
-import com.eightpeak.salakafarm.databinding.FragmentHomeSliderBinding
-import com.eightpeak.salakafarm.views.home.slider.SliderAdapter
-import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
-import com.smarteist.autoimageslider.SliderAnimations
-import com.smarteist.autoimageslider.SliderView
-import java.util.ArrayList
+class ProductFragment : Fragment() {
+    private lateinit var viewModel: ProductListViewModel
+    lateinit var productAdapter: ProductAdapter
 
 
-class CategoriesFragment : Fragment() {
-    private lateinit var viewModel: CategoriesViewModel
-    lateinit var categoriesAdapter: CategoriesAdapter
-
-
-    private var _binding: FragmentCategoriesBinding? = null
+    private var _binding: FragmentProductListBinding? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
     var layoutManager: LinearLayoutManager? = null
 
-    private lateinit var binding: FragmentCategoriesBinding
+    private lateinit var binding: FragmentProductListBinding
 
 
     override fun onCreateView(
@@ -54,7 +43,7 @@ class CategoriesFragment : Fragment() {
         parent: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentCategoriesBinding.inflate(layoutInflater, parent, false)
+        binding = FragmentProductListBinding.inflate(layoutInflater, parent, false)
 
 
         init()
@@ -64,14 +53,14 @@ class CategoriesFragment : Fragment() {
 
     private fun init() {
 //        categoriesRecyclerView = requireView().findViewById(R.id.recyclerView)
-        categoriesAdapter = CategoriesAdapter()
+        productAdapter = ProductAdapter()
         val snapHelper: SnapHelper = GravitySnapHelper(Gravity.START)
         snapHelper.attachToRecyclerView(binding.categoriesRecyclerView)
         layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.categoriesRecyclerView.layoutManager = layoutManager
         binding.categoriesRecyclerView.setHasFixedSize(true)
         binding.categoriesRecyclerView.isFocusable = false
-        binding.categoriesRecyclerView.adapter = categoriesAdapter
+        binding.categoriesRecyclerView.adapter = productAdapter
 
         setupViewModel()
     }
@@ -79,7 +68,7 @@ class CategoriesFragment : Fragment() {
     private fun setupViewModel() {
         val repository = AppRepository()
         val factory = ViewModelProviderFactory(requireActivity().application, repository)
-        viewModel = ViewModelProvider(this, factory).get(CategoriesViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory).get(ProductListViewModel::class.java)
         getPictures()
     }
 
@@ -92,8 +81,8 @@ class CategoriesFragment : Fragment() {
                         Log.i("TAG", "getPictures: " + picsResponse.data.size)
 //                        catAdp = CatAdp(requireContext(), picsResponse.data)
 //                       binding.categoriesRecyclerView.adapter = catAdp;
-                        categoriesAdapter.differ.submitList(picsResponse.data)
-                        binding.categoriesRecyclerView.adapter = categoriesAdapter
+                        productAdapter.differ.submitList(picsResponse.data)
+                        binding.categoriesRecyclerView.adapter = productAdapter
                     }
                 }
 
@@ -130,3 +119,4 @@ class CategoriesFragment : Fragment() {
         _binding = null
     }
 }
+

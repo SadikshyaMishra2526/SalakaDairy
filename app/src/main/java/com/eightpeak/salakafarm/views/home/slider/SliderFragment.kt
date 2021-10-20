@@ -9,28 +9,34 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.eightpeak.salakafarm.R
+import com.eightpeak.salakafarm.databinding.FragmentHomeSliderBinding
 import com.eightpeak.salakafarm.repository.AppRepository
+import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.SliderViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.google.android.material.snackbar.Snackbar
-import com.hadi.retrofitmvvm.util.Resource
 import com.hadi.retrofitmvvm.util.errorSnack
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
-import com.smarteist.autoimageslider.IndicatorView.draw.controller.DrawController.ClickListener
 import com.smarteist.autoimageslider.SliderAnimations
 import com.smarteist.autoimageslider.SliderView
 import kotlinx.android.synthetic.main.fragment_home_slider.*
 import java.util.ArrayList
 
+
+
+
+
+
 class SliderFragment : Fragment() {
     private lateinit var viewModel: SliderViewModel
     lateinit var sliderAdapter: SliderAdapter
+    private var sliderList: ArrayList<Data>? = null
 
+
+    private lateinit var binding: FragmentHomeSliderBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        sliderAdapter = SliderAdapter(context)
+        sliderAdapter = SliderAdapter(context,sliderList)
     }
 
     override fun onCreateView(
@@ -38,35 +44,35 @@ class SliderFragment : Fragment() {
         parent: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view: View = inflater.inflate(R.layout.fragment_home_slider, parent, false)
+        binding = FragmentHomeSliderBinding.inflate(layoutInflater,parent,false)
+
+
         var sliderView: SliderView? = null
 
-        sliderView = view.findViewById(R.id.home_slider)
-        sliderList = ArrayList<SliderModel>()
-        sliderAdapter!!.renewItems(sliderList!!)
-        sliderView.setSliderAdapter(sliderAdapter!!)
-        sliderView.setIndicatorAnimation(IndicatorAnimationType.SWAP) //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
-        sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
-        sliderView.autoCycleDirection = SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH
-        sliderView.indicatorSelectedColor = Color.WHITE
-        sliderView.indicatorUnselectedColor = Color.GRAY
-        sliderView.scrollTimeInSec = 3
-        sliderView.isAutoCycle = true
-        sliderView.startAutoCycle()
-        sliderView.setOnIndicatorClickListener(ClickListener {
+        sliderList = ArrayList()
+        sliderAdapter.renewItems(sliderList)
+        binding.homeSlider!!.setSliderAdapter(sliderAdapter)
+        binding.homeSlider!!.setIndicatorAnimation(IndicatorAnimationType.SWAP) //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
+        binding.homeSlider!!.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
+        binding.homeSlider!!.autoCycleDirection = SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH
+        binding.homeSlider!!.indicatorSelectedColor = Color.WHITE
+        binding.homeSlider!!.indicatorUnselectedColor = Color.GRAY
+        binding.homeSlider!!.scrollTimeInSec = 3
+        binding.homeSlider!!.isAutoCycle = true
+        binding.homeSlider!!.startAutoCycle()
+        binding.homeSlider!!.setOnIndicatorClickListener {
             Log.i(
                 "GGG",
-                "onIndicatorClicked: " + sliderView.getCurrentPagePosition()
+                "onIndicatorClicked: " + sliderView!!.currentPagePosition
             )
-        })
-        init(view)
-        return view
+        }
+
+        init()
+        return binding.rootLayout
     }
 
     private fun init() {
-        rvPics.setHasFixedSize(true)
-        rvPics.layoutManager = LinearLayoutManager(this)
-        sliderAdapter = SliderAdapter()
+//         sliderAdapter = SliderAdapter(context,sliderList)
         setupViewModel()
     }
 
@@ -78,13 +84,17 @@ class SliderFragment : Fragment() {
     }
 
     private fun getPictures() {
-        viewModel.picsData.observe(this, Observer { response ->
+        viewModel.picsData.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
+
                     response.data?.let { picsResponse ->
-                        sliderAdapter.addItem(picsResponse)
-                        sl.sliderAdapter = sliderAdapter
+                        sliderList?.clear()
+                        sliderList?.addAll(picsResponse.data)
+                        sliderAdapter.notifyDataSetChanged()
+                        sliderAdapter.addItem(sliderList)
+                        sliderAdapter = SliderAdapter(context,sliderList)
                     }
                 }
 

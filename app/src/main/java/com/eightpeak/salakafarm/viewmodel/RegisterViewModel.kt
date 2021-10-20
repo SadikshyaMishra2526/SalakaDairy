@@ -8,10 +8,10 @@ import androidx.lifecycle.viewModelScope
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.RequestBodies
+import com.eightpeak.salakafarm.utils.subutils.Event
 import com.eightpeak.salakafarm.utils.subutils.MyApplication
-import com.hadi.retrofitmvvm.util.Event
-import com.hadi.retrofitmvvm.util.Resource
-import com.hadi.retrofitmvvm.util.Utils
+import com.eightpeak.salakafarm.utils.subutils.Resource
+import com.eightpeak.salakafarm.utils.subutils.Utils
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import retrofit2.Response

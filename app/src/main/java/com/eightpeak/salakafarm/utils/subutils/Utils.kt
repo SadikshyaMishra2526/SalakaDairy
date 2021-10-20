@@ -1,13 +1,13 @@
-package com.hadi.retrofitmvvm.util
+package com.eightpeak.salakafarm.utils.subutils
 
+import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
-import com.hadi.retrofitmvvm.app.MyApplication
 
 object Utils {
-    fun hasInternetConnection(application: MyApplication): Boolean {
+    fun hasInternetConnection(application: Application): Boolean {
         val connectivityManager = application.getSystemService(
             Context.CONNECTIVITY_SERVICE
         ) as ConnectivityManager

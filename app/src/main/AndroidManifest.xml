@@ -24,7 +24,7 @@
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
   <activity android:name=".views.home.HomeActivity"
-      android:theme="@style/Theme.AppCompat.NoActionBar"/>
+   />
 
   <activity android:name=".views.login.LoginActivity"
       android:theme="@style/Theme.AppCompat.NoActionBar"/>

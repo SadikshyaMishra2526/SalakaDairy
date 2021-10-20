@@ -1,4 +1,4 @@
-package com.hadi.retrofitmvvm.util
+package com.eightpeak.salakafarm.utils.subutils
 
 open class Event<out T>(private val content: T) {
 

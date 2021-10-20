@@ -1,4 +1,4 @@
-package com.hadi.retrofitmvvm.util
+package com.eightpeak.salakafarm.utils.subutils
 
 sealed class Resource<T>(
     val data: T? = null,
