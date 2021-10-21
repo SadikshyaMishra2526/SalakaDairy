@@ -8,7 +8,7 @@
     tools:context=".views.home.products.ProductFragment">
 
     <LinearLayout
-        android:id="@+id/categories_title"
+        android:id="@+id/products_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_10sdp"
@@ -18,7 +18,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/categories"
+            android:text="Popular Products"
             android:textColor="@color/main_color"
             android:textStyle="bold" />
 
@@ -37,14 +37,16 @@
             app:drawableEndCompat="@drawable/ic_arrow_forward_black_24dp" />
     </LinearLayout>
 
-    <com.github.rubensousa.gravitysnaphelper.GravitySnapRecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/categoriesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/categories_title"
+        app:layout_constraintTop_toBottomOf="@+id/products_title"
+        app:layout_constraintVertical_bias="0.0"
         app:snapGravity="start" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

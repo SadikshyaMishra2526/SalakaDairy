@@ -15,7 +15,7 @@ class EndPoints {
         const val REFRESH_TOKEN = "/oauth/token"
 
         //categories
-        const val CATEGORIES_LIST = "/api/categories"
+        const val CATEGORIES_LIST = "api/categories"
         const val CATEGORIES_VIA_ID = "api/categories/{id}"
 
         //        products

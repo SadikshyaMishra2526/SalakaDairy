@@ -3,6 +3,7 @@ package com.eightpeak.salakafarm.views.login
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -34,6 +35,7 @@ class LoginActivity : AppCompatActivity() {
         }
         init()
     }
+
     private fun init() {
         val repository = AppRepository()
         val factory = ViewModelProviderFactory(application, repository)
@@ -41,13 +43,14 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun onLoginClick(view: View) {
-        var email = binding.etEmail.text.toString()
-        val password = binding.etEmail.text.toString()
+        var email = et_email.text.toString()
+        val password = et_password.text.toString()
 
         if (email.isNotEmpty() && password.isNotEmpty()) {
             val body = RequestBodies.LoginBody(
                 email,
-                password,"1"
+                password,
+                "1"
             )
 
             loginViewModel.loginUser(body)
@@ -57,6 +60,8 @@ class LoginActivity : AppCompatActivity() {
                         is Resource.Success -> {
                             hideProgressBar()
                             response.data?.let { loginResponse ->
+                                Log.i("TAG", "loginResponse: $loginResponse")
+
                                 Intent(this@LoginActivity, HomeActivity::class.java).also {
                                     startActivity(it)
                                 }
@@ -86,5 +91,4 @@ class LoginActivity : AppCompatActivity() {
     private fun showProgressBar() {
         progress.visibility = View.VISIBLE
     }
-
 }

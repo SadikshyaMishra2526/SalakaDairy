@@ -49,11 +49,13 @@
             app:layout_constraintTop_toBottomOf="@+id/textView">
 
             <EditText
+                android:id="@+id/et_first_name"
                 style="@style/modifiedEditText"
                 android:layout_alignStart="@+id/first_name_img"
                 android:layout_alignParentEnd="true"
                 android:gravity="center"
                 android:hint="@string/first_name"
+                android:text="Sadikshya"
                 android:inputType="textEmailAddress"
                 android:maxLines="1" />
 
@@ -75,11 +77,13 @@
             app:layout_constraintTop_toBottomOf="@+id/first_name">
 
             <EditText
+                android:id="@+id/et_last_name"
                 style="@style/modifiedEditText"
                 android:layout_alignStart="@+id/last_name_img"
                 android:layout_alignParentEnd="true"
                 android:gravity="center"
                 android:hint="@string/second_name"
+                android:text="Mishra"
                 android:inputType="textEmailAddress"
                 android:maxLines="1" />
 
@@ -101,11 +105,13 @@
             app:layout_constraintTop_toBottomOf="@+id/last_name">
 
             <EditText
+                android:id="@+id/et_email_address"
                 style="@style/modifiedEditText"
                 android:layout_alignStart="@+id/email_img"
                 android:layout_alignParentEnd="true"
                 android:gravity="center"
                 android:hint="@string/email"
+                android:text="sadikshyamishra@gmail.com"
                 android:inputType="textEmailAddress"
                 android:maxLines="1" />
 
@@ -133,10 +139,12 @@
                 app:hintEnabled="false"
                 app:passwordToggleEnabled="true">
                 <EditText
+                    android:id="@+id/et_password"
                     style="@style/modifiedEditText"
                     android:layout_alignStart="@+id/address_second_img"
                     android:hint="@string/password"
                     android:gravity="center"
+                    android:text="123123"
                     android:inputType="textPassword"
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -162,11 +170,13 @@
             app:layout_constraintTop_toBottomOf="@+id/password">
 
             <EditText
+                android:id="@+id/et_address_1"
                 style="@style/modifiedEditText"
                 android:layout_alignStart="@+id/address_first_img"
                 android:layout_alignParentEnd="true"
                 android:gravity="center"
                 android:hint="@string/address_1"
+                android:text="Gothatar"
                 android:inputType="textEmailAddress"
                 android:maxLines="1" />
 
@@ -188,11 +198,13 @@
             app:layout_constraintTop_toBottomOf="@+id/address_first">
 
             <EditText
+                android:id="@+id/et_address_2"
                 style="@style/modifiedEditText"
                 android:layout_alignStart="@+id/address_second_img"
                 android:layout_alignParentEnd="true"
                 android:gravity="center"
                 android:hint="@string/address_2"
+                android:text="Biratnagar"
                 android:inputType="textEmailAddress"
                 android:maxLines="1" />
 
@@ -214,12 +226,14 @@
             app:layout_constraintTop_toBottomOf="@+id/address_second">
 
             <EditText
+                android:id="@+id/contact_details"
                 style="@style/modifiedEditText"
                 android:layout_alignStart="@+id/addressEt"
                 android:layout_alignParentEnd="true"
-                android:hint="@string/contact"
                 android:gravity="center"
+                android:hint="@string/contact"
                 android:inputType="textEmailAddress"
+                android:text="9842554500"
                 android:maxLines="1" />
 
             <ImageView
@@ -239,7 +253,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/contact">
             <CheckBox
-                android:id="@+id/termandcondition"
+                android:id="@+id/checkbox_termandcondition"
                 android:focusable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -259,6 +273,7 @@
             android:gravity="center"
             android:textSize="@dimen/_13sdp"
             android:textColor="@color/white"
+            android:onClick="onRegisterClick"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/terms_conditions"/>

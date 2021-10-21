@@ -9,6 +9,7 @@ import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.Utils
+import com.eightpeak.salakafarm.views.home.products.ProductModel
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -19,7 +20,7 @@ class ProductListViewModel(
     private val appRepository: AppRepository
 ) : AndroidViewModel(app) {
 
-    val picsData: MutableLiveData<Resource<ResponseBody>> = MutableLiveData()
+    val picsData: MutableLiveData<Resource<ProductModel>> = MutableLiveData()
 
     init {
         getSliderPictures()
@@ -35,7 +36,7 @@ class ProductListViewModel(
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
                 val response = appRepository.getProductList()
-                Log.i("TAG", "fetchPics: "+response)
+                Log.i("TAG", "fetchPics: $response")
                 picsData.postValue(handlePicsResponse(response))
             } else {
                 picsData.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
@@ -61,7 +62,7 @@ class ProductListViewModel(
         }
     }
 
-    private fun handlePicsResponse(response: Response<ResponseBody>): Resource<ResponseBody> {
+    private fun handlePicsResponse(response: Response<ProductModel>): Resource<ProductModel> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)

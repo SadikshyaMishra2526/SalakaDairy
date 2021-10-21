@@ -11,6 +11,7 @@ class ViewModelProviderFactory(
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+
         if (modelClass.isAssignableFrom(RegisterViewModel::class.java)) {
             return RegisterViewModel(app, appRepository) as T
         }
@@ -25,6 +26,10 @@ class ViewModelProviderFactory(
 
         if (modelClass.isAssignableFrom(CategoriesViewModel::class.java)) {
             return CategoriesViewModel(app, appRepository) as T
+        }
+
+        if (modelClass.isAssignableFrom(CategoriesByIdViewModel::class.java)) {
+            return CategoriesByIdViewModel(app, appRepository) as T
         }
 
         if (modelClass.isAssignableFrom(ProductListViewModel::class.java)) {

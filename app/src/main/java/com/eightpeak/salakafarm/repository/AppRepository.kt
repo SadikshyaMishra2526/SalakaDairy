@@ -17,4 +17,7 @@ class AppRepository {
 
     suspend fun getProductList() =  RetrofitInstance.useApiWithoutToken.getProductList()
 
+
+    suspend fun getProductListById(id:String) =  RetrofitInstance.useApiWithoutToken.getProductById(id)
+
 }

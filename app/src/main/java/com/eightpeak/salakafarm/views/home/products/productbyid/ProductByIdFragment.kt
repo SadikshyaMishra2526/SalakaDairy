@@ -1,32 +1,26 @@
-package com.eightpeak.salakafarm.views.home.products
+package com.eightpeak.salakafarm.views.home.products.productbyid
 
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.SnapHelper
+import androidx.recyclerview.widget.GridLayoutManager
 import com.eightpeak.salakafarm.databinding.FragmentProductListBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.ProductListViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
-import com.eightpeak.salakafarm.views.home.categories.CategoriesAdapter
-import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
+import com.eightpeak.salakafarm.views.home.products.ProductAdapter
+import com.eightpeak.salakafarm.views.home.products.ProductModel
 import com.google.android.material.snackbar.Snackbar
 import com.hadi.retrofitmvvm.util.errorSnack
 import kotlinx.android.synthetic.main.fragment_categories.*
-import androidx.recyclerview.widget.GridLayoutManager
 
-
-
-
-class ProductFragment : Fragment() {
+class ProductByIdFragment  : Fragment() {
     private lateinit var viewModel: ProductListViewModel
     lateinit var productAdapter: ProductAdapter
 
@@ -83,7 +77,7 @@ class ProductFragment : Fragment() {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
                         Log.i("TAG", "onCreateView: i reached here 3$picsResponse")
-                        val productModel:ProductModel = picsResponse
+                        val productModel: ProductModel = picsResponse
                         Log.i("TAG", "getPictures: ,,,,,,,,," +productModel.data[0].image)
                         productAdapter.differ.submitList(productModel.data)
                         binding.categoriesRecyclerView.adapter = productAdapter

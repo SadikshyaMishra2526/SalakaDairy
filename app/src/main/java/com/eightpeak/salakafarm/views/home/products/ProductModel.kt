@@ -3,21 +3,19 @@ package com.eightpeak.salakafarm.views.home.products
 import com.google.gson.annotations.SerializedName
 
 data class ProductModel (
-
-//	@SerializedName("current_page") val current_page : Int,
+	@SerializedName("current_page") val current_page : Int,
 	@SerializedName("data") val data : List<Data>,
-//	@SerializedName("first_page_url") val first_page_url : String,
-//	@SerializedName("from") val from : Int,
-//	@SerializedName("last_page") val last_page : Int,
-//	@SerializedName("last_page_url") val last_page_url : String,
-//	@SerializedName("links") val links : List<Links>,
-//	@SerializedName("next_page_url") val next_page_url : String,
-//	@SerializedName("path") val path : String,
-//	@SerializedName("per_page") val per_page : Int,
-//	@SerializedName("prev_page_url") val prev_page_url : String,
-//	@SerializedName("to") val to : Int,
-//	@SerializedName("total") val total : Int
-)
+	@SerializedName("first_page_url") val first_page_url : String,
+	@SerializedName("from") val from : Int,
+	@SerializedName("last_page") val last_page : Int,
+	@SerializedName("last_page_url") val last_page_url : String,
+	@SerializedName("links") val links : List<Links>,
+	@SerializedName("next_page_url") val next_page_url : String,
+	@SerializedName("path") val path : String,
+	@SerializedName("per_page") val per_page : Int,
+	@SerializedName("prev_page_url") val prev_page_url : String,
+	@SerializedName("to") val to : Int,
+	@SerializedName("total") val total : Int)
 
 
 data class Data (
@@ -57,7 +55,7 @@ data class Data (
 	@SerializedName("images") val images : List<Images>,
 	@SerializedName("descriptions") val descriptions : List<Descriptions>,
 	@SerializedName("promotion_price") val promotion_price : Promotion_price,
-	@SerializedName("attributes") val attributes : List<String>
+//	@SerializedName("attributes") val attributes : List<String>
 )
 data class Images (
 
