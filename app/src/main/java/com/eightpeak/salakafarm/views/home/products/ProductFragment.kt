@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.SnapHelper
 import com.eightpeak.salakafarm.databinding.FragmentProductListBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.utils.subutils.Resource
-import com.eightpeak.salakafarm.viewmodel.CategoriesViewModel
 import com.eightpeak.salakafarm.viewmodel.ProductListViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.home.categories.CategoriesAdapter
@@ -25,7 +24,7 @@ import kotlinx.android.synthetic.main.fragment_categories.*
 
 class ProductFragment : Fragment() {
     private lateinit var viewModel: ProductListViewModel
-    lateinit var productAdapter: ProductAdapter
+    lateinit var productAdapter: CategoriesAdapter
 
 
     private var _binding: FragmentProductListBinding? = null
@@ -45,7 +44,7 @@ class ProductFragment : Fragment() {
     ): View? {
         binding = FragmentProductListBinding.inflate(layoutInflater, parent, false)
 
-
+        Log.i("TAG", "onCreateView: i reached here 1")
         init()
         return binding.categoriesLayout
     }
@@ -53,7 +52,7 @@ class ProductFragment : Fragment() {
 
     private fun init() {
 //        categoriesRecyclerView = requireView().findViewById(R.id.recyclerView)
-        productAdapter = ProductAdapter()
+        productAdapter = CategoriesAdapter()
         val snapHelper: SnapHelper = GravitySnapHelper(Gravity.START)
         snapHelper.attachToRecyclerView(binding.categoriesRecyclerView)
         layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -66,6 +65,8 @@ class ProductFragment : Fragment() {
     }
 
     private fun setupViewModel() {
+        Log.i("TAG", "onCreateView: i reached here 2")
+
         val repository = AppRepository()
         val factory = ViewModelProviderFactory(requireActivity().application, repository)
         viewModel = ViewModelProvider(this, factory).get(ProductListViewModel::class.java)
@@ -73,16 +74,17 @@ class ProductFragment : Fragment() {
     }
 
     private fun getPictures() {
+
         viewModel.picsData.observe(requireActivity(), Observer { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
-                        Log.i("TAG", "getPictures: " + picsResponse.data.size)
-//                        catAdp = CatAdp(requireContext(), picsResponse.data)
-//                       binding.categoriesRecyclerView.adapter = catAdp;
-                        productAdapter.differ.submitList(picsResponse.data)
-                        binding.categoriesRecyclerView.adapter = productAdapter
+                        Log.i("TAG", "onCreateView: i reached here 3$picsResponse")
+
+//                        Log.i("TAG", "getPictures: ,,,,,,,,," + picsResponse.data[0].image)
+//                        productAdapter.differ.submitList(picsResponse.data)
+//                        binding.categoriesRecyclerView.adapter = productAdapter
                     }
                 }
 

@@ -90,8 +90,6 @@ class CategoriesFragment : Fragment() {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
                         Log.i("TAG", "getPictures: " + picsResponse.data.size)
-//                        catAdp = CatAdp(requireContext(), picsResponse.data)
-//                       binding.categoriesRecyclerView.adapter = catAdp;
                         categoriesAdapter.differ.submitList(picsResponse.data)
                         binding.categoriesRecyclerView.adapter = categoriesAdapter
                     }

@@ -31,7 +31,6 @@ class ViewModelProviderFactory(
             return ProductListViewModel(app, appRepository) as T
         }
 
-
         throw IllegalArgumentException("Unknown class name")
     }
 
