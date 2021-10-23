@@ -22,8 +22,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.hadi.retrofitmvvm.util.errorSnack
 import kotlinx.android.synthetic.main.fragment_categories.*
 import androidx.recyclerview.widget.GridLayoutManager
-
-
+import kotlinx.android.synthetic.main.fragment_product_list.*
 
 
 class ProductFragment : Fragment() {
@@ -58,10 +57,10 @@ class ProductFragment : Fragment() {
 //        categoriesRecyclerView = requireView().findViewById(R.id.recyclerView)
         productAdapter = ProductAdapter()
         layoutManager = GridLayoutManager(context, 2)
-        binding.categoriesRecyclerView.layoutManager = layoutManager
-        binding.categoriesRecyclerView.setHasFixedSize(true)
-        binding.categoriesRecyclerView.isFocusable = false
-        binding.categoriesRecyclerView.adapter = productAdapter
+        binding.productRecyclerView.layoutManager = layoutManager
+        binding.productRecyclerView.setHasFixedSize(true)
+        binding.productRecyclerView.isFocusable = false
+        binding.productRecyclerView.adapter = productAdapter
 
         setupViewModel()
     }
@@ -86,14 +85,14 @@ class ProductFragment : Fragment() {
                         val productModel:ProductModel = picsResponse
                         Log.i("TAG", "getPictures: ,,,,,,,,," +productModel.data[0].image)
                         productAdapter.differ.submitList(productModel.data)
-                        binding.categoriesRecyclerView.adapter = productAdapter
+                        binding.productRecyclerView.adapter = productAdapter
                     }
                 }
 
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        categoriesRecyclerView.errorSnack(message, Snackbar.LENGTH_LONG)
+                        productRecyclerView.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 
                 }

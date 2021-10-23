@@ -36,6 +36,10 @@ class ViewModelProviderFactory(
             return ProductListViewModel(app, appRepository) as T
         }
 
+        if (modelClass.isAssignableFrom(ProductByIdViewModel::class.java)) {
+            return ProductByIdViewModel(app, appRepository) as T
+        }
+
         throw IllegalArgumentException("Unknown class name")
     }
 

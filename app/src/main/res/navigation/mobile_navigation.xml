@@ -9,17 +9,49 @@
         android:id="@+id/navigation_home"
         android:name="com.eightpeak.salakafarm.views.home.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_cart"
+            app:destination="@id/navigation_cart" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_message"
+            app:destination="@id/navigation_message" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_productlist_by_id"
+            app:destination="@id/navigation_order" />
+    </fragment>
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.eightpeak.salakafarm.views.home.ui.dashboard.DashboardFragment"
-        android:label="jnvjdnvjn"
-        tools:layout="@layout/fragment_dashboard" />
-
-    <fragment
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_message"
         android:name="com.eightpeak.salakafarm.views.home.ui.notifications.NotificationsFragment"
+        android:label="@string/categories"
+        tools:layout="@layout/fragment_notifications" >
+        <action
+            android:id="@+id/action_navigation_message_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_cart"
+        android:name="com.eightpeak.salakafarm.views.home.ui.addtocart.AddToCartFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/layout_add_to_cart" >
+
+        <action
+            android:id="@+id/action_navigation_cart_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_order"
+        android:name="com.eightpeak.salakafarm.views.home.ui.orderview.TrackCustomerOrderFragment"
+        android:label="Product List by Id"
+        tools:layout="@layout/layout_customer_order_view" >
+        <action
+            android:id="@+id/action_navigation_productlist_by_id_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
+
+
 </navigation>

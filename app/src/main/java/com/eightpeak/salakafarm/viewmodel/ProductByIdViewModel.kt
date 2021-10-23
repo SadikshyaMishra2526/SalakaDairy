@@ -20,38 +20,36 @@ class ProductByIdViewModel (
     private val appRepository: AppRepository
 ) : AndroidViewModel(app) {
 
-    val picsData: MutableLiveData<Resource<ProductByIdModel>> = MutableLiveData()
+    val productDetailsById: MutableLiveData<Resource<ProductByIdModel>> = MutableLiveData()
 
-    init {
-        getSliderPictures()
+
+
+    fun getProductById(id:String) = viewModelScope.launch {
+        getProductDetailsById(id)
     }
 
-    private fun getSliderPictures() = viewModelScope.launch {
-        fetchPics()
-    }
 
-
-    private suspend fun fetchPics() {
-        picsData.postValue(Resource.Loading())
+    private suspend fun getProductDetailsById(id:String) {
+        productDetailsById.postValue(Resource.Loading())
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
-                val response = appRepository.getProductListById("1")
+                val response = appRepository.getProductListById(id)
                 Log.i("TAG", "fetchPics: $response")
-                picsData.postValue(handlePicsResponse(response))
+                productDetailsById.postValue(handlePicsResponse(response))
             } else {
-                picsData.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+                productDetailsById.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
             }
         } catch (t: Throwable) {
             Log.i("TAG", "fetchPics: "+t.localizedMessage)
             when (t) {
-                is IOException -> picsData.postValue(
+                is IOException -> productDetailsById.postValue(
                     Resource.Error(
                         getApplication<Application>().getString(
                             R.string.network_failure
                         )
                     )
                 )
-                else -> picsData.postValue(
+                else -> productDetailsById.postValue(
                     Resource.Error(
                         getApplication<Application>().getString(
                             R.string.conversion_error

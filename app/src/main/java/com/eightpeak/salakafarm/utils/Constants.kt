@@ -6,5 +6,7 @@ class Constants {
         const val merchantCode = "AIMSSHOP"
         const val merchantName = "Aims Shop"
 
+
+        const val PRODUCT_ID = "product_id"
     }
 }

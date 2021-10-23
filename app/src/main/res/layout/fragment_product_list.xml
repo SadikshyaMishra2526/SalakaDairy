@@ -19,26 +19,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Popular Products"
+            android:textSize="@dimen/_15sdp"
             android:textColor="@color/main_color"
-            android:textStyle="bold" />
+            android:textStyle="bold"  />
 
-        <View
-            android:layout_width="0sp"
-            android:layout_height="0sp"
-            android:layout_weight="1" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/see_all"
-            android:textColor="@color/main_color"
-            android:textSize="@dimen/_12sdp"
-            android:textStyle="bold"
-            app:drawableEndCompat="@drawable/ic_arrow_forward_black_24dp" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/categoriesRecyclerView"
+        android:id="@+id/productRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

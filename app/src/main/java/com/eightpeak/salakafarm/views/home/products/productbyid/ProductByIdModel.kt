@@ -40,9 +40,18 @@ class ProductByIdModel
     @SerializedName("images") val images: List<Images>,
     @SerializedName("descriptions") val descriptions: List<Descriptions>,
     @SerializedName("promotion_price") val promotion_price: Promotion_price,
-    @SerializedName("attributes") val attributes: List<String>
+    @SerializedName("attributes") val attributes: List<Attributes>
 )
+data class Attributes (
 
+    @SerializedName("id") val id : Int,
+    @SerializedName("name") val name : String,
+    @SerializedName("attribute_group_id") val attribute_group_id : Int,
+    @SerializedName("product_id") val product_id : Int,
+    @SerializedName("add_price") val add_price : Int,
+    @SerializedName("sort") val sort : Int,
+    @SerializedName("status") val status : Int
+)
 data class Images(
     @SerializedName("id") val id: Int,
     @SerializedName("image") val image: String,

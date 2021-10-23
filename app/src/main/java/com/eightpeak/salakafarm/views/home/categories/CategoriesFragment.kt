@@ -40,9 +40,7 @@ class CategoriesFragment : Fragment() {
 
 
     private var _binding: FragmentCategoriesBinding? = null
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+
 
     var layoutManager: LinearLayoutManager? = null
 
@@ -60,6 +58,7 @@ class CategoriesFragment : Fragment() {
         init()
         return binding.categoriesLayout
     }
+
 
 
     private fun init() {

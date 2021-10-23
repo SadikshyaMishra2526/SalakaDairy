@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/categories_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context=".views.home.categories.CategoriesFragment">
+    android:layout_height="match_parent"
+    tools:context=".views.home.products.ProductFragment">
 
     <LinearLayout
-        android:id="@+id/categories_title"
+        android:id="@+id/categories_by_id_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_10sdp"
@@ -18,34 +18,32 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/categories"
-            android:textSize="@dimen/_15sdp"
+            android:text="Categories ->Sub Categories"
             android:textColor="@color/main_color"
             android:textStyle="bold" />
 
-        <View
-            android:layout_width="0sp"
-            android:layout_height="0sp"
-            android:layout_weight="1" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/see_all"
-            android:textColor="@color/sub_color"
-            android:textSize="@dimen/_10sdp"
-            android:textStyle="bold"
-            app:drawableEndCompat="@drawable/ic_arrow_forward_black_24dp" />
     </LinearLayout>
 
-   <com.github.rubensousa.gravitysnaphelper.GravitySnapRecyclerView
-        android:id="@+id/categoriesRecyclerView"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/categoriesByIdRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/categories_title"
+        app:layout_constraintTop_toBottomOf="@+id/categories_by_id_title"
+        app:layout_constraintVertical_bias="0.0"
         app:snapGravity="start" />
 
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -27,13 +27,18 @@
    />
 
   <activity android:name=".views.login.LoginActivity"
-      android:theme="@style/Theme.AppCompat.NoActionBar"/>
+      android:theme="@style/Theme.AppCompat.NoActionBar"
+      android:windowSoftInputMode="stateHidden"/>
 
   <activity android:name=".views.register.RegisterActivity"
       android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
   <activity android:name=".views.otpverification.OTPActivity"
       android:theme="@style/Theme.AppCompat.NoActionBar"/>
+
+
+ <activity android:name=".views.home.products.productbyid.ProductByIdActivity"
+      android:theme="@style/Theme.SalakaFarm"/>
 
 
 

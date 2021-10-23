@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.eightpeak.salakafarm.R
@@ -40,6 +42,7 @@ class LoginActivity : AppCompatActivity() {
         val repository = AppRepository()
         val factory = ViewModelProviderFactory(application, repository)
         loginViewModel = ViewModelProvider(this, factory).get(LoginViewModel::class.java)
+        changeStatusBarColor()
     }
 
     fun onLoginClick(view: View) {
@@ -84,6 +87,12 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+
+    private fun changeStatusBarColor() {
+        val window: Window = window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = resources.getColor(R.color.main_color)
+    }
     private fun hideProgressBar() {
         progress.visibility = View.GONE
     }

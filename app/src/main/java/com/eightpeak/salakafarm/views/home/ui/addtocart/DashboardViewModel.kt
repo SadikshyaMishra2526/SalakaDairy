@@ -1,4 +1,4 @@
-package com.eightpeak.salakafarm.views.home.ui.dashboard
+package com.eightpeak.salakafarm.views.home.ui.addtocart
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
