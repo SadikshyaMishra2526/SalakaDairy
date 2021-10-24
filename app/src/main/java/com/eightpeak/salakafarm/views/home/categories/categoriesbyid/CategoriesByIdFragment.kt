@@ -20,6 +20,14 @@ import com.google.android.material.snackbar.Snackbar
 import com.hadi.retrofitmvvm.util.errorSnack
 import kotlinx.android.synthetic.main.fragment_categories_by_id.*
 import kotlinx.android.synthetic.main.fragment_product_list.*
+import android.widget.Toast
+
+import android.content.ActivityNotFoundException
+
+import android.content.Intent
+import android.net.Uri
+import java.io.File
+
 
 class CategoriesByIdFragment  : Fragment() {
     private lateinit var viewModel: CategoriesByIdViewModel
@@ -68,16 +76,14 @@ class CategoriesByIdFragment  : Fragment() {
     }
 
     private fun getPictures() {
-
+        viewModel.getCategoriesByIdDetails("id")
         viewModel.categoriesbyIdData.observe(requireActivity(), Observer { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
-//                        Log.i("TAG", "onCreateView: i reached here 3$picsResponse")
-//                        val productModel: ProductModel = picsResponse
-//                        Log.i("TAG", "getPictures: ,,,,,,,,," +productModel.data[0].image)
-//                        categoriesByIdAdapter.differ.submitList(productModel.data)
+                        val categoriesByIdModel: CategoriesByIdModel = picsResponse
+//                        categoriesByIdAdapter.differ.submitList(categoriesByIdModel.descriptions)
 //                        binding.categoriesByIdRecyclerView.adapter = categoriesByIdAdapter
                     }
                 }
@@ -114,4 +120,7 @@ class CategoriesByIdFragment  : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+
+
 }

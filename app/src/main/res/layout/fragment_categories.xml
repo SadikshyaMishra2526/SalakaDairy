@@ -37,7 +37,34 @@
             android:textStyle="bold"
             app:drawableEndCompat="@drawable/ic_arrow_forward_black_24dp" />
     </LinearLayout>
-
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/shimmer_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/categories_title">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <include layout="@layout/shimmer_item_categories"/>
+                <include layout="@layout/shimmer_item_categories"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <include layout="@layout/shimmer_item_categories"/>
+                <include layout="@layout/shimmer_item_categories"/>
+            </LinearLayout>
+        </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
    <com.github.rubensousa.gravitysnaphelper.GravitySnapRecyclerView
         android:id="@+id/categoriesRecyclerView"
         android:layout_width="match_parent"

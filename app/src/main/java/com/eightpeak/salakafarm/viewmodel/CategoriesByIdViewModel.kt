@@ -10,6 +10,7 @@ import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.Utils
 import com.eightpeak.salakafarm.views.home.categories.CategoriesModel
+import com.eightpeak.salakafarm.views.home.categories.categoriesbyid.CategoriesByIdModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
@@ -19,23 +20,21 @@ class CategoriesByIdViewModel(
     private val appRepository: AppRepository
 ) : AndroidViewModel(app) {
 
-    val categoriesbyIdData: MutableLiveData<Resource<CategoriesModel>> = MutableLiveData()
+    val categoriesbyIdData: MutableLiveData<Resource<CategoriesByIdModel>> = MutableLiveData()
 
-    init {
-        getPictures()
+
+
+    fun getCategoriesByIdDetails(id:String) = viewModelScope.launch {
+        getCategoriesById(id)
     }
 
-    fun getPictures() = viewModelScope.launch {
-        fetchPics()
-    }
 
-
-    private suspend fun fetchPics() {
+    private suspend fun getCategoriesById(id:String) {
         categoriesbyIdData.postValue(Resource.Loading())
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
-                val response = appRepository.getCategoriesList()
-                Log.i("TAG", "fetchPics: " + appRepository.getCategoriesList())
+                val response = appRepository.getCategoriesListById(id)
+                Log.i("TAG", "fetchPics: " + appRepository.getCategoriesListById(id))
                 categoriesbyIdData.postValue(handlePicsResponse(response))
             } else {
                 categoriesbyIdData.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
@@ -60,7 +59,7 @@ class CategoriesByIdViewModel(
         }
     }
 
-    private fun handlePicsResponse(response: Response<CategoriesModel>): Resource<CategoriesModel> {
+    private fun handlePicsResponse(response: Response<CategoriesByIdModel>): Resource<CategoriesByIdModel> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)

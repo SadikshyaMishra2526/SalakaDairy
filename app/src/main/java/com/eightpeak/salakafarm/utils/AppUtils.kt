@@ -434,12 +434,43 @@ class AppUtils {
 //            .show()
 //    }
 //
-//    fun setLocal(activity: Activity, langCode: String?) {
-//        val locale = Locale(langCode)
-//        Locale.setDefault(locale)
-//        val resources = activity.resources
-//        val config = resources.configuration
-//        config.setLocale(locale)
-//        resources.updateConfiguration(config, resources.displayMetrics)
-//    }
+   fun setLocal(activity: Activity, langCode: String?) {
+        val locale = Locale(langCode)
+        Locale.setDefault(locale)
+        val resources = activity.resources
+        val config = resources.configuration
+        config.setLocale(locale)
+        resources.updateConfiguration(config, resources.displayMetrics)
+    }
+
+public    fun getUnicodeNumber(number: String): String? {
+        var unicodeChar = ""
+        for (i in 0 until number.length) {
+            val character = number[i]
+            var valueOfchar = character.toString()
+            if (valueOfchar == "1") {
+                valueOfchar = "१"
+            } else if (valueOfchar == "2") {
+                valueOfchar = "२"
+            } else if (valueOfchar == "3") {
+                valueOfchar = "३"
+            } else if (valueOfchar == "4") {
+                valueOfchar = "४"
+            } else if (valueOfchar == "5") {
+                valueOfchar = "५"
+            } else if (valueOfchar == "6") {
+                valueOfchar = "६"
+            } else if (valueOfchar == "7") {
+                valueOfchar = "७"
+            } else if (valueOfchar == "8") {
+                valueOfchar = "८"
+            } else if (valueOfchar == "9") {
+                valueOfchar = "९"
+            } else if (valueOfchar == "0") {
+                valueOfchar = "०"
+            }
+            unicodeChar = unicodeChar + valueOfchar
+        }
+        return unicodeChar
+    }
 }

@@ -8,18 +8,18 @@
 
     <item
         android:id="@+id/navigation_messages"
-        android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="Messages" />
+        android:icon="@drawable/ic_baseline_message_24"
+        android:title="@string/messages" />
 
     <item
         android:id="@+id/navigation_cart"
         android:icon="@drawable/ic_baseline_shopping_cart_24"
-        android:title="Cart" />
-
+        android:title="@string/cart" />
 
     <item
-        android:id="@+id/navigation_order"
-        android:icon="@drawable/ic_baseline_shopping_cart_24"
-        android:title="Order" />
+
+        android:id="@+id/navigation_setting"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:title="@string/settings" />
 
 </menu>

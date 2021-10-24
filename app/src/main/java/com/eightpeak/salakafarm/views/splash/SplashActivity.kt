@@ -1,5 +1,6 @@
 package com.eightpeak.salakafarm.views.splash
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender.SendIntentException
@@ -12,6 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.pm.PackageInfoCompat
 import com.eightpeak.salakafarm.R
+import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.views.welcomeActivity.IntroActivity
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
@@ -19,6 +21,7 @@ import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.tasks.Task
+import java.util.*
 
 class SplashActivity :AppCompatActivity() {
     private var appUpdateManager: AppUpdateManager? = null
@@ -26,19 +29,32 @@ class SplashActivity :AppCompatActivity() {
     private val IMMEDIATE_APP_UPDATE_REQ_CODE = 124
     private val SPLASH_TIME_OUT = 1700
 
+    lateinit var userPrefManager: UserPrefManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
+         userPrefManager= UserPrefManager(this)
+        setLocal(this)
+
         checkUpdate()
         goToHome()
     }
+    fun setLocal(activity: Activity) {
 
+        val locale = Locale( userPrefManager.language)
+        Locale.setDefault(locale)
+        val resources = activity.resources
+        val config = resources.configuration
+        config.setLocale(locale)
+        resources.updateConfiguration(config, resources.displayMetrics)
+    }
 
 
     private fun checkUpdate() {
         appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
         val appUpdateInfoTask: Task<AppUpdateInfo>
-        appUpdateInfoTask = appUpdateManager!!.getAppUpdateInfo()
+        appUpdateInfoTask = appUpdateManager!!.appUpdateInfo
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
             if (appUpdateInfo.updateAvailability() === UpdateAvailability.UPDATE_AVAILABLE
                 && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)

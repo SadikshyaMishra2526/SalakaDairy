@@ -1,2 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="app_name">Salaka Farm</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="sign_in">Sign In</string>
+    <string name="email"><font color='#FFFFFF' size="13">Email</font></string>
+    <string name="password"><font color='#FFFFFF' size="13">\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020 \u0020\u0020 Password</font></string>
+    <string name="address">Address</string>
+    <string name="register">Registration</string>
+    <string name="terms_conditions">I have read and agree to the <font color='#23a1d1' size="13">Terms &amp; Conditions</font></string>
+    <string name="privacy_policy">I have read and agree to the<font color='#23a1d1' size="13">\u0020 Privacy Policy</font></string>
+
+    <string name="use_other_methods">Use Other Methods</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="remember_me">Remember Me</string>
+    <string name="new_user_register_now">New User? Register Now</string>
+    <string name="enter_your_mobile_number">Enter your mobile number</string>
+    <string name="send_otp">Send OTP</string>
+    <string name="verify_otp">Verify OTP</string>
+    <string name="otp_is_resent_in_10_sec">OTP is resent in 10 sec</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_home">घर</string>
+
+
+    <string name="first_name"><font color='#FFFFFF' size="13">First Name</font></string>
+    <string name="second_name"><font color='#FFFFFF' size="13">Second Name</font></string>
+    <string name="address_1"><font color='#FFFFFF' size="13">Address 1</font></string>
+    <string name="address_2"><font color='#FFFFFF' size="13">Address 2</font></string>
+    <string name="contact"><font color='#FFFFFF' size="13">Contact</font></string>
+    <string name="imagecontent">ImageContent</string>
+    <string name="next">Next</string>
+    <string name="get_started">Get Started</string>
+    <string name="skip">Skip</string>
+
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="network_failure">Network Failure</string>
+    <string name="conversion_error">Conversion Error</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="categories">कोटीहरू</string>
+    <string name="see_all">सबै हेर्नुहोस्</string>
+
+    <string name="telephone_n9808608666"><font color='black' size="16">Telephone</font>\n9801234567</string>
+    <string name="opening_times_n7_am_8_pm"><font color='black' size="16"> Opening Times</font>\n7 Am - 8 Pm</string>
+    <string name="company_name">Salaka Organic and Traning Center</string>
+
+    <string name="language_change"><font color='#5FA95F'>भाषा परिवर्तन</font></string>
+    <string name="search_here">यहाँ खोज्नुहोस्</string>
+    <string name="popular_products">लोकप्रिय उत्पादनहरू</string>
+    <string name="messages">सन्देशहरू</string>
+    <string name="about_us">हाम्रोबारे</string>
+    <string name="contact_us">हामीलाई सम्पर्क गर्नुहोस</string>
+
+
+    <string name="policy">गोपनीयता नीति</string>
+    <string name="terms_and_conditions">नियम र सर्तहरू</string>
+
+    <string name="cart">कार्ट</string>
+    <string name="settings">सेटिंग्स</string>
+    <string name="branches">शाखाहरू</string>
+    <string name="my_comparison_list">मेरो तुलना सूची</string>
+
+    <string name="kathmandu_nepal">काठमाडौं, नेपाल</string>
+    <string name="rs">रु।</string>
+    <string name="add_to_cart">कार्टमा थप्नुहोस्</string>
+    <string name="todo">Todo</string>
+
+</resources>

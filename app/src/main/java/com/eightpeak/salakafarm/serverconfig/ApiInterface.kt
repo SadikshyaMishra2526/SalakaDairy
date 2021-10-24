@@ -4,6 +4,7 @@ import com.eightpeak.salakafarm.utils.EndPoints
 import com.eightpeak.salakafarm.serverconfig.network.AccessToken
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.REFRESH_TOKEN
 import com.eightpeak.salakafarm.views.home.categories.CategoriesModel
+import com.eightpeak.salakafarm.views.home.categories.categoriesbyid.CategoriesByIdModel
 import com.eightpeak.salakafarm.views.home.products.ProductModel
 import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdModel
 import com.eightpeak.salakafarm.views.home.slider.SliderModel
@@ -24,7 +25,7 @@ interface ApiInterface {
     suspend fun getCategoriesList(): Response<CategoriesModel>
 
     @GET(EndPoints.CATEGORIES_VIA_ID)
-    suspend fun getCategoriesById(@Path("id") id: String): SliderModel
+    suspend fun getCategoriesById(@Path("id") id: String): Response<CategoriesByIdModel>
 
 
     @GET(EndPoints.PRODUCT_LIST)

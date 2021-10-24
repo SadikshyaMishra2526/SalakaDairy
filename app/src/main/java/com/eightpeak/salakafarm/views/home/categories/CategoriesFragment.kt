@@ -28,6 +28,7 @@ import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import androidx.recyclerview.widget.SnapHelper
 import com.eightpeak.salakafarm.databinding.FragmentHomeSliderBinding
 import com.eightpeak.salakafarm.views.home.slider.SliderAdapter
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
 import com.smarteist.autoimageslider.SliderAnimations
 import com.smarteist.autoimageslider.SliderView
@@ -38,6 +39,7 @@ class CategoriesFragment : Fragment() {
     private lateinit var viewModel: CategoriesViewModel
     lateinit var categoriesAdapter: CategoriesAdapter
 
+    private lateinit var shimmer_layout: ShimmerFrameLayout
 
     private var _binding: FragmentCategoriesBinding? = null
 
@@ -89,6 +91,9 @@ class CategoriesFragment : Fragment() {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
                         Log.i("TAG", "getPictures: " + picsResponse.data.size)
+
+                        binding.shimmerLayout.stopShimmer()
+                        binding.shimmerLayout.visibility = View.GONE
                         categoriesAdapter.differ.submitList(picsResponse.data)
                         binding.categoriesRecyclerView.adapter = categoriesAdapter
                     }

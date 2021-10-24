@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:background="@color/main_color"
+    android:layout_gravity="center"
+    android:layout_height="wrap_content">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:background="@color/main_color"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_margin="@dimen/_5sdp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <ImageView
+        android:src="@drawable/logo"
+        android:layout_width="150dp"
+        android:layout_margin="@dimen/_10sdp"
+        android:layout_gravity="center"
+        android:layout_height="80dp" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="110dp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_height="wrap_content"
+                android:text="@string/company_name"/>
+        <TextView
+            android:id="@+id/mob"
+            android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:text="@string/telephone_n9808608666"/>
+        <TextView
+            android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:text="@string/opening_times_n7_am_8_pm"/>
+        </LinearLayout>
+<View
+    android:layout_marginTop="@dimen/_10sdp"
+    android:layout_width="match_parent"
+    android:layout_height="2dp"
+    android:background="@color/tab_indicator_gray"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_15sdp"
+        android:orientation="vertical">
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputFirstName"
+            style="@style/parent"
+            android:layout_marginTop="@dimen/_10sdp">
+
+            <EditText
+                android:id="@+id/editTextName"
+                style="@style/modifiedEditText"
+                android:textSize="@dimen/_10sdp"
+                android:hint="Customer Name"
+                android:inputType="textCapWords|textPersonName"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLastName"
+            style="@style/parent"
+            android:layout_marginTop="@dimen/_10sdp">
+
+            <EditText
+                android:id="@+id/editEmail"
+                style="@style/modifiedEditText"
+                android:textSize="@dimen/_10sdp"
+                android:hint="Email Address"
+                android:inputType="textEmailAddress"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputEmail"
+            style="@style/parent"
+            android:layout_marginTop="@dimen/_10sdp">
+
+            <EditText
+
+                android:id="@+id/editEnquiry"
+                style="@style/modifiedEditText"
+                android:textSize="@dimen/_10sdp"
+                android:hint="Enquiry"
+                android:inputType="textMultiLine" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+       <Button
+            android:id="@+id/btSummit"
+            style="@style/loginButton"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="Submit" />
+
+
+    </LinearLayout>
+
+</LinearLayout>
+</LinearLayout>
+</ScrollView>

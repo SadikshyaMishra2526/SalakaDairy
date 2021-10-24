@@ -55,7 +55,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
 
-
+//    to open pdf
+    implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
     // Architectural Components
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
 
@@ -109,4 +110,10 @@ dependencies {
 
 
     implementation 'com.github.rubensousa:gravitysnaphelper:2.2.1'
+
+
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
+    implementation 'com.google.android.gms:play-services-maps:17.0.1'
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
 }

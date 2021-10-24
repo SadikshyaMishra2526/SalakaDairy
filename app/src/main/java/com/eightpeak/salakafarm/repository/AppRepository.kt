@@ -15,6 +15,9 @@ class AppRepository {
 
     suspend fun getCategoriesList() = RetrofitInstance.useApiWithoutToken.getCategoriesList()
 
+
+    suspend fun getCategoriesListById(id: String) = RetrofitInstance.useApiWithoutToken.getCategoriesById(id)
+
     suspend fun getProductList() =  RetrofitInstance.useApiWithoutToken.getProductList()
 
 

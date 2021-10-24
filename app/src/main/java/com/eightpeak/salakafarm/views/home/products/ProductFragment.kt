@@ -22,6 +22,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.hadi.retrofitmvvm.util.errorSnack
 import kotlinx.android.synthetic.main.fragment_categories.*
 import androidx.recyclerview.widget.GridLayoutManager
+import com.facebook.shimmer.ShimmerFrameLayout
 import kotlinx.android.synthetic.main.fragment_product_list.*
 
 
@@ -35,6 +36,7 @@ class ProductFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
+    private lateinit var shimmer_layout: ShimmerFrameLayout
     private var layoutManager: GridLayoutManager? = null
 
     private lateinit var binding: FragmentProductListBinding
@@ -81,6 +83,9 @@ class ProductFragment : Fragment() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
+                        binding.shimmerLayout.stopShimmer()
+                        binding.shimmerLayout.visibility = View.GONE
+
                         Log.i("TAG", "onCreateView: i reached here 3$picsResponse")
                         val productModel:ProductModel = picsResponse
                         Log.i("TAG", "getPictures: ,,,,,,,,," +productModel.data[0].image)

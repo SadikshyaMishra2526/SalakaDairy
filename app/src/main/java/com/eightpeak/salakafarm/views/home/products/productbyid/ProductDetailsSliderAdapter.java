@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.eightpeak.salakafarm.R;
+import com.eightpeak.salakafarm.utils.AppUtils;
 import com.eightpeak.salakafarm.views.home.slider.Data;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 

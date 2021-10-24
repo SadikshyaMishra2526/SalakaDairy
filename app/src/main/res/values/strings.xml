@@ -19,8 +19,6 @@
     <string name="otp_is_resent_in_10_sec">OTP is resent in 10 sec</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
     <string name="first_name"><font color='#FFFFFF' size="13">First Name</font></string>
     <string name="second_name"><font color='#FFFFFF' size="13">Second Name</font></string>
     <string name="address_1"><font color='#FFFFFF' size="13">Address 1</font></string>
@@ -38,4 +36,25 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="categories">Categories</string>
     <string name="see_all">See All</string>
+
+    <string name="telephone_n9808608666"><font color='black' size="16">Telephone</font>\n9801234567</string>
+    <string name="opening_times_n7_am_8_pm"><font color='black' size="16"> Opening Times</font>\n7 Am - 8 Pm</string>
+    <string name="company_name">Salaka Organic and Traning Center</string>
+
+    <string name="language_change"><font color='#5FA95F'>Language Change</font></string>
+    <string name="search_here">Search Here</string>
+    <string name="popular_products">Popular Products</string>
+    <string name="messages">Messages</string>
+    <string name="cart">Cart</string>
+    <string name="settings">Settings</string>
+    <string name="about_us">About Us</string>
+    <string name="branches">Branches</string>
+    <string name="my_comparison_list">My Comparison List</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="policy">Privacy Policy</string>
+    <string name="terms_and_conditions">Terms and Conditions</string>
+    <string name="kathmandu_nepal">Kathmandu, Nepal</string>
+    <string name="rs">Rs.</string>
+    <string name="add_to_cart">Add to Cart</string>
+    <string name="todo">Todo</string>
 </resources>

@@ -9,9 +9,13 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
+import com.eightpeak.salakafarm.App
 import com.eightpeak.salakafarm.R
+import com.eightpeak.salakafarm.database.UserPrefManager
+import com.eightpeak.salakafarm.utils.AppUtils
 import com.eightpeak.salakafarm.utils.Constants.Companion.PRODUCT_ID
 import com.eightpeak.salakafarm.utils.EndPoints
+import com.eightpeak.salakafarm.utils.GeneralUtils
 import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdActivity
 import kotlinx.android.synthetic.main.product_item.view.*
 
@@ -48,8 +52,21 @@ class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductListViewHolder
         Log.i("TAG", "onBindViewHolder:Categories "+categoriesItem.image)
         holder.itemView.apply {
             product_thumbnail.load(EndPoints.BASE_URL +categoriesItem.image)
-            product_name.text = categoriesItem.descriptions[0].name
-            product_price.text = "Rs."+categoriesItem.price.toString()
+
+          var  userPrefManager= UserPrefManager(App.getContext())
+
+            if(categoriesItem.descriptions.isNotEmpty()){
+                if(userPrefManager.language.equals("ne")){
+                    product_name.text = categoriesItem.descriptions[1].name
+                    product_price.text = context.getString(R.string.rs)+" "+GeneralUtils.getUnicodeNumber(categoriesItem.price.toString())
+
+                }else{
+                    product_name.text = categoriesItem.descriptions[0].name
+                    product_price.text = context.getString(R.string.rs)+categoriesItem.price.toString()
+
+                }
+            }
+
 
             productViewItem.setOnClickListener {
                 val intent = Intent(context,ProductByIdActivity::class.java)

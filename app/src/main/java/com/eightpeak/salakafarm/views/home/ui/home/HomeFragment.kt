@@ -1,25 +1,48 @@
 package com.eightpeak.salakafarm.views.home.ui.home
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.eightpeak.salakafarm.R
+import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.databinding.FragmentHomeBinding
 import com.eightpeak.salakafarm.views.home.categories.CategoriesFragment
 import com.eightpeak.salakafarm.views.home.products.ProductFragment
 import com.eightpeak.salakafarm.views.home.slider.SliderFragment
 import com.eightpeak.salakafarm.views.login.LoginActivity
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.LatLng
+import java.lang.Exception
+import java.util.*
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), OnMapReadyCallback,
+    GoogleApiClient.ConnectionCallbacks,
+    GoogleApiClient.OnConnectionFailedListener {
 
 
+    private val MULTIPLE_PERMISSION_REQUEST_CODE = 4
 //    private lateinit var homeViewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
 
+    lateinit var userPrefManager: UserPrefManager
+
+    private var googleApiClient: GoogleApiClient? = null
 
     private val binding get() = _binding!!
 
@@ -31,13 +54,27 @@ class HomeFragment : Fragment() {
 //        homeViewModel =
 //            ViewModelProvider(this).get(HomeViewModel::class.java)
 
+        userPrefManager= UserPrefManager(requireContext())
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
+       binding.customerCurrentLocation.text=userPrefManager.currentPosition
         binding.customerProfile.setOnClickListener {
             val mainActivity = Intent(context, LoginActivity::class.java)
             startActivity(mainActivity)
         }
+
+
+        //Initializing googleApiClient
+        googleApiClient = GoogleApiClient.Builder(requireContext())
+            .addConnectionCallbacks(this)
+            .addOnConnectionFailedListener(this)
+            .addApi(LocationServices.API)
+            .build()
+
+
+
+
+
 
         setUpSliderFragment()
         setUpCategoriesFragment()
@@ -75,5 +112,62 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+
+    override fun onMapReady(p0: GoogleMap) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onConnected(p0: Bundle?) {
+        getCurrentLocation()
+    }
+
+    override fun onConnectionSuspended(p0: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onConnectionFailed(p0: ConnectionResult) {
+        TODO("Not yet implemented")
+    }
+    private fun getCurrentLocation() {
+//        mMap.clear();
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
+        val location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient)
+        var  longitude = location.longitude
+        var  latitude = location.latitude
+        val latLng = LatLng(latitude, longitude)
+        getMyPosition(latLng)
+    }
+    private fun getMyPosition(myCoordinates: LatLng) {
+        Handler(Looper.getMainLooper()).post {
+            var myCity: String? = ""
+            val geocoder = Geocoder(requireContext(), Locale.getDefault())
+            try {
+                val addresses =
+                    geocoder.getFromLocation(myCoordinates.latitude, myCoordinates.longitude, 1)
+                val subLocality = addresses[0].subLocality
+                val locality = addresses[0].locality
+                val selectedCountry = addresses[0].countryName
+                 if (subLocality != null) myCity += "$subLocality, "
+                if (locality != null) myCity += "$locality, "
+                if (selectedCountry != null) myCity += selectedCountry
+                val addressLine = addresses[0].getAddressLine(0).replace("Unnamed Road,", "")
+                binding.customerCurrentLocation.setText("Your Current Location :-$addressLine")
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "Could not get Address!!", Toast.LENGTH_SHORT)
+                    .show()
+                   e.printStackTrace()
+            }
+        }
     }
 }

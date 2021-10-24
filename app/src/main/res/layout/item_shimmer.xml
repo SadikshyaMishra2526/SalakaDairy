@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="4dp"
+    android:gravity="center_horizontal"
+    android:layout_margin="4dp">
+    <ImageView
+        android:contentDescription="@string/todo"
+        android:layout_width="170dp"
+        android:layout_height="120dp"
+        android:background="#E7E7E7"
+        android:layout_margin="2dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#E7E7E7"
+        android:padding="4dp"
+        android:layout_margin="2dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#E7E7E7"
+        android:padding="4dp"
+        android:layout_margin="2dp"/>
+
+</LinearLayout>
