@@ -1,5 +1,6 @@
 package com.eightpeak.salakafarm.views.home.categories
 
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +10,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import com.eightpeak.salakafarm.R
+import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
+import com.eightpeak.salakafarm.views.home.categories.categoriesbyid.CategoriesByIdActivity
 import kotlinx.android.synthetic.main.categories_item.view.*
 
 class CategoriesAdapter : RecyclerView.Adapter<CategoriesAdapter.CategoriesViewHolder>() {
@@ -44,10 +47,14 @@ class CategoriesAdapter : RecyclerView.Adapter<CategoriesAdapter.CategoriesViewH
         val categoriesItem = differ.currentList[position]
         Log.i("TAG", "onBindViewHolder:Categories "+categoriesItem.image)
         holder.itemView.apply {
+
             categories_thumbnail.load(BASE_URL+categoriesItem.image)
             categories_name.text = categoriesItem.descriptions[0].title
-//            tvImageSize.text = "${picItem.width} x ${picItem.height}"
-//            tvImageAuthor.text = picItem.author
+            categories_by_id.setOnClickListener {
+                val intent = Intent(context, CategoriesByIdActivity::class.java)
+                intent.putExtra(Constants.CATEGORIES_ID,categoriesItem.id.toString())
+                context.startActivity(intent)
+            }
         }
     }
 }

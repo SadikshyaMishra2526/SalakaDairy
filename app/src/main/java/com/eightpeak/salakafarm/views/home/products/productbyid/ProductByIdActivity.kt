@@ -37,9 +37,6 @@ import com.smarteist.autoimageslider.SliderAnimations
 
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
 
-import com.eightpeak.salakafarm.views.home.products.ProductAdapter
-import com.eightpeak.salakafarm.views.home.slider.Data
-import com.eightpeak.salakafarm.views.home.slider.SliderAdapter
 import com.smarteist.autoimageslider.IndicatorView.draw.controller.DrawController.ClickListener
 
 
@@ -84,8 +81,6 @@ class ProductByIdActivity : AppCompatActivity() {
     }
 
     private fun getPictures() {
-//        requireArguments().getString("id").toString()
-//        Log.i("TAG", "getPictures: "+argu.getString("id").toString())
         val product_id = intent.getStringExtra(PRODUCT_ID)
         Log.i("TAG", "getPictures: $product_id")
         if (product_id != null) {

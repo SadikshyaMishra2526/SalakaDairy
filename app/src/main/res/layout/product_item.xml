@@ -113,6 +113,7 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/bt_add_to_cart"
         android:layout_width="@dimen/_130sdp"
         android:layout_height="wrap_content"
         android:text="@string/add_to_cart"

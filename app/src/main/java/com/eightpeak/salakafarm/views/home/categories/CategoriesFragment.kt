@@ -1,5 +1,6 @@
 package com.eightpeak.salakafarm.views.home.categories
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -27,6 +28,8 @@ import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 
 import androidx.recyclerview.widget.SnapHelper
 import com.eightpeak.salakafarm.databinding.FragmentHomeSliderBinding
+import com.eightpeak.salakafarm.utils.Constants
+import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdActivity
 import com.eightpeak.salakafarm.views.home.slider.SliderAdapter
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
@@ -38,11 +41,7 @@ import java.util.ArrayList
 class CategoriesFragment : Fragment() {
     private lateinit var viewModel: CategoriesViewModel
     lateinit var categoriesAdapter: CategoriesAdapter
-
-    private lateinit var shimmer_layout: ShimmerFrameLayout
-
     private var _binding: FragmentCategoriesBinding? = null
-
 
     var layoutManager: LinearLayoutManager? = null
 
@@ -62,7 +61,6 @@ class CategoriesFragment : Fragment() {
     }
 
 
-
     private fun init() {
 //        categoriesRecyclerView = requireView().findViewById(R.id.recyclerView)
         categoriesAdapter = CategoriesAdapter()
@@ -73,7 +71,10 @@ class CategoriesFragment : Fragment() {
         binding.categoriesRecyclerView.setHasFixedSize(true)
         binding.categoriesRecyclerView.isFocusable = false
         binding.categoriesRecyclerView.adapter = categoriesAdapter
-
+        binding.seeAllCategories.setOnClickListener {
+            val intent = Intent(context, CategoriesSeeAllActivity::class.java)
+            startActivity(intent)
+        }
         setupViewModel()
     }
 
@@ -94,6 +95,7 @@ class CategoriesFragment : Fragment() {
 
                         binding.shimmerLayout.stopShimmer()
                         binding.shimmerLayout.visibility = View.GONE
+
                         categoriesAdapter.differ.submitList(picsResponse.data)
                         binding.categoriesRecyclerView.adapter = categoriesAdapter
                     }

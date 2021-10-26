@@ -1,5 +1,6 @@
 package com.eightpeak.salakafarm.viewmodel
 
+import UserProfileModel
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
@@ -12,6 +13,7 @@ import com.eightpeak.salakafarm.serverconfig.RequestBodies
 import com.eightpeak.salakafarm.utils.subutils.Event
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.Utils
+import com.eightpeak.salakafarm.views.login.LoginResponse
 import com.eightpeak.salakafarm.views.register.RegisterResponse
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
@@ -23,8 +25,8 @@ class LoginViewModel(
     private val appRepository: AppRepository
 ) : AndroidViewModel(app) {
 
-    private val _loginResponse = MutableLiveData<Event<Resource<RegisterResponse>>>()
-    val loginResponse:LiveData<Event<Resource<RegisterResponse>>> = _loginResponse
+    private val _loginResponse = MutableLiveData<Event<Resource<LoginResponse>>>()
+    val loginResponse:LiveData<Event<Resource<LoginResponse>>> = _loginResponse
 
 
     fun loginUser(body: RequestBodies.LoginBody) = viewModelScope.launch {
@@ -36,7 +38,7 @@ class LoginViewModel(
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
                 val response = appRepository.loginUser(body)
-                Log.i("TAG", "login: "+response.code())
+                Log.i("TAG", "login:login "+response)
                 _loginResponse.postValue(handlePicsResponse(response))
             } else {
                 _loginResponse.postValue(Event(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection))))
@@ -66,7 +68,7 @@ class LoginViewModel(
         }
     }
 
-    private fun handlePicsResponse(response: Response<RegisterResponse>): Event<Resource<RegisterResponse>>? {
+    private fun handlePicsResponse(response: Response<LoginResponse>): Event<Resource<LoginResponse>>? {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Event(Resource.Success(resultResponse))
@@ -74,4 +76,63 @@ class LoginViewModel(
         }
         return Event(Resource.Error(response.message()))
     }
+
+
+
+
+    private val _userDetailsResponse = MutableLiveData<Event<Resource<UserProfileModel>>>()
+    val userDetailsResponse:LiveData<Event<Resource<UserProfileModel>>> = _userDetailsResponse
+
+
+    fun userDetailsUser(id:String) = viewModelScope.launch {
+        userDetails(id)
+    }
+
+    private suspend fun userDetails(id: String) {
+        _userDetailsResponse.postValue(Event(Resource.Loading()))
+        try {
+            if (Utils.hasInternetConnection(getApplication<Application>())) {
+                val response = appRepository.getUserDetails("Bearer $id")
+                Log.i("TAG", "login:sadikshya "+appRepository.getUserDetails("Bearer $id"))
+                _userDetailsResponse.postValue(handleuserDetailsResponse(response))
+            } else {
+                _userDetailsResponse.postValue(Event(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection))))
+            }
+        } catch (t: Throwable) {
+            Log.i("TAG", "login: ${t.localizedMessage}")
+            when (t) {
+                is IOException -> {
+                    _userDetailsResponse.postValue(
+                        Event(Resource.Error(
+                            getApplication<Application>().getString(
+                                R.string.network_failure
+                            )
+                        ))
+                    )
+                }
+                else -> {
+                    _userDetailsResponse.postValue(
+                        Event(Resource.Error(
+                            getApplication<Application>().getString(
+                                R.string.conversion_error
+                            )
+                        ))
+                    )
+                }
+            }
+        }
+    }
+
+    private fun handleuserDetailsResponse(response: Response<UserProfileModel>): Event<Resource<UserProfileModel>>? {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Event(Resource.Success(resultResponse))
+            }
+        }
+        return Event(Resource.Error(response.message()))
+    }
+
+
+
+
 }

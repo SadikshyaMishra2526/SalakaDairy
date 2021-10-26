@@ -69,7 +69,7 @@ class SettingsFragment : Fragment() {
         getLanguageChange()
         return binding.fragmentSetting
     }
-        fun showDialog(msg: String?) {
+        private fun showDialog(msg: String?) {
             val dialog = Dialog(requireActivity())
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog.setCancelable(true)
@@ -79,13 +79,12 @@ class SettingsFragment : Fragment() {
             dialog.show()
         }
 
-    fun showDialogContactUs(msg: String?) {
+
+    private fun showDialogContactUs(msg: String?) {
         val dialog = Dialog(requireActivity())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(true)
         dialog.setContentView(R.layout.fragment_contact_us)
-        val text = dialog.findViewById(R.id.pdfv) as PDFView
-        text.fromAsset("policy.pdf").load();
         dialog.show()
     }
 

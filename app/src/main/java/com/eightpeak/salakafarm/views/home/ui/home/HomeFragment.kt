@@ -18,9 +18,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.databinding.FragmentHomeBinding
+import com.eightpeak.salakafarm.utils.Constants.Companion.DEFAULT
 import com.eightpeak.salakafarm.views.home.categories.CategoriesFragment
 import com.eightpeak.salakafarm.views.home.products.ProductFragment
 import com.eightpeak.salakafarm.views.home.slider.SliderFragment
+import com.eightpeak.salakafarm.views.home.ui.user_profile.UserProfile
 import com.eightpeak.salakafarm.views.login.LoginActivity
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
@@ -35,9 +37,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
     GoogleApiClient.ConnectionCallbacks,
     GoogleApiClient.OnConnectionFailedListener {
 
-
-    private val MULTIPLE_PERMISSION_REQUEST_CODE = 4
-//    private lateinit var homeViewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
 
     lateinit var userPrefManager: UserPrefManager
@@ -58,9 +57,16 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
        binding.customerCurrentLocation.text=userPrefManager.currentPosition
+
         binding.customerProfile.setOnClickListener {
-            val mainActivity = Intent(context, LoginActivity::class.java)
-            startActivity(mainActivity)
+            if(userPrefManager.userToken!=DEFAULT){
+                val mainActivity = Intent(context, UserProfile::class.java)
+                startActivity(mainActivity)
+            }else{
+                val mainActivity = Intent(context, LoginActivity::class.java)
+                startActivity(mainActivity)
+            }
+
         }
 
 

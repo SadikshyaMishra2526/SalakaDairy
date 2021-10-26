@@ -53,5 +53,23 @@
             app:destination="@id/navigation_home" />
     </fragment>
 
+    <fragment
+        android:id="@+id/navigation_categories"
+        android:name="com.eightpeak.salakafarm.views.home.categories.CategoriesFragment"
+        android:label="Categories List"
+        tools:layout="@layout/fragment_categories" >
+        <action
+            android:id="@+id/action_navigation_categories_to_navigation_categories_by_id"
+            app:destination="@id/navigation_categories_by_id" />
+    </fragment>
 
+    <fragment
+        android:id="@+id/navigation_categories_by_id"
+        android:name="com.eightpeak.salakafarm.views.home.categories.categoriesbyid.CategoriesByIdActivity"
+        android:label="Categories List by Id"
+        tools:layout="@layout/fragment_categories_by_id" >
+        <action
+            android:id="@+id/action_navigation_categories_by_id_to_navigation_categories"
+            app:destination="@id/navigation_categories" />
+    </fragment>
 </navigation>

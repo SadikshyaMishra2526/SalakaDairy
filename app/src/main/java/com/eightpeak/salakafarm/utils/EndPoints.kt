@@ -13,6 +13,7 @@ class EndPoints {
 
         //customer token
         const val REFRESH_TOKEN = "/oauth/token"
+  const val USER_DETAILS = "api/auth/user"
 
         //categories
         const val CATEGORIES_LIST = "api/categories"

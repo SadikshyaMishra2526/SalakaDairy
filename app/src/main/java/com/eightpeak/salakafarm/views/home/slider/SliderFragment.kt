@@ -22,15 +22,10 @@ import com.smarteist.autoimageslider.SliderView
 import kotlinx.android.synthetic.main.fragment_home_slider.*
 import java.util.ArrayList
 
-
-
-
-
-
 class SliderFragment : Fragment() {
     private lateinit var viewModel: SliderViewModel
     lateinit var sliderAdapter: SliderAdapter
-    private var sliderList: ArrayList<Data>? = null
+    private var sliderList: List<SliderModel>? = null
 
 
     private lateinit var binding: FragmentHomeSliderBinding
@@ -46,21 +41,20 @@ class SliderFragment : Fragment() {
     ): View? {
         binding = FragmentHomeSliderBinding.inflate(layoutInflater,parent,false)
 
-
         var sliderView: SliderView? = null
 
         sliderList = ArrayList()
         sliderAdapter.renewItems(sliderList)
-        binding.homeSlider!!.setSliderAdapter(sliderAdapter)
-        binding.homeSlider!!.setIndicatorAnimation(IndicatorAnimationType.SWAP) //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
-        binding.homeSlider!!.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
-        binding.homeSlider!!.autoCycleDirection = SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH
-        binding.homeSlider!!.indicatorSelectedColor = Color.WHITE
-        binding.homeSlider!!.indicatorUnselectedColor = Color.GRAY
-        binding.homeSlider!!.scrollTimeInSec = 3
-        binding.homeSlider!!.isAutoCycle = true
-        binding.homeSlider!!.startAutoCycle()
-        binding.homeSlider!!.setOnIndicatorClickListener {
+        binding.homeSlider.setSliderAdapter(sliderAdapter)
+        binding.homeSlider.setIndicatorAnimation(IndicatorAnimationType.SWAP) //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP
+        binding.homeSlider.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
+        binding.homeSlider.autoCycleDirection = SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH
+        binding.homeSlider.indicatorSelectedColor = Color.WHITE
+        binding.homeSlider.indicatorUnselectedColor = Color.GRAY
+        binding.homeSlider.scrollTimeInSec = 3
+        binding.homeSlider.isAutoCycle = true
+        binding.homeSlider.startAutoCycle()
+        binding.homeSlider.setOnIndicatorClickListener {
             Log.i(
                 "GGG",
                 "onIndicatorClicked: " + sliderView!!.currentPagePosition
@@ -90,11 +84,15 @@ class SliderFragment : Fragment() {
                     hideProgressBar()
 
                     response.data?.let { picsResponse ->
-                        sliderList?.clear()
-                        sliderList?.addAll(picsResponse.data)
+
+                        binding.shimmerLayout.stopShimmer()
+                        binding.shimmerLayout.visibility = View.GONE
+
+//                        sliderList?.clear()
+//                        sliderList?.addAll(picsResponse.data)
                         sliderAdapter.notifyDataSetChanged()
-                        sliderAdapter.addItem(sliderList)
-                        sliderAdapter = SliderAdapter(context,sliderList)
+                        sliderAdapter.addItem(picsResponse)
+                        sliderAdapter = SliderAdapter(context,picsResponse)
                     }
                 }
 

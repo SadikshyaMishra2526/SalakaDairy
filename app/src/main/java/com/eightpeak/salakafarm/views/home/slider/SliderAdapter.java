@@ -23,14 +23,14 @@ import java.util.List;
 public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapterVH> {
 
     private Context context;
-    private List<Data> mSliderItems = new ArrayList<>();
+    private List<SliderModel> mSliderItems = new ArrayList<>();
 
-    public SliderAdapter(Context context,List<Data>mSliderItems) {
+    public SliderAdapter(Context context,List<SliderModel>mSliderItems) {
         this.context = context;
         this.mSliderItems=mSliderItems;
     }
 
-    public void renewItems(List<Data> sliderItems) {
+    public void renewItems(List<SliderModel> sliderItems) {
         this.mSliderItems = sliderItems;
         notifyDataSetChanged();
     }
@@ -40,7 +40,7 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
         notifyDataSetChanged();
     }
 
-    public void addItem(List<Data> sliderItem) {
+    public void addItem(List<SliderModel> sliderItem) {
 //        Log.i("TAG", "addItem:........... "+sliderItem.get(0).getImage());
         this.mSliderItems=sliderItem;
         notifyDataSetChanged();
@@ -55,7 +55,7 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
     @Override
     public void onBindViewHolder(SliderAdapterVH viewHolder, final int position) {
 
-        Data sliderItem = mSliderItems.get(position);
+        SliderModel sliderItem = mSliderItems.get(position);
         viewHolder.textViewDescription.setText(mSliderItems.get(position).getTitle());
         viewHolder.textViewDescription.setTextSize(16);
         viewHolder.textViewDescription.setTextColor(Color.WHITE);

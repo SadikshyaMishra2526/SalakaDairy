@@ -1,6 +1,7 @@
 package com.eightpeak.salakafarm.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -18,7 +19,7 @@ class SliderViewModel(
     private val appRepository: AppRepository
     ) : AndroidViewModel(app) {
 
-        val picsData: MutableLiveData<Resource<SliderModel>> = MutableLiveData()
+        val picsData: MutableLiveData<Resource<List<SliderModel>>> = MutableLiveData()
 
         init {
             getSliderPictures()
@@ -34,6 +35,7 @@ class SliderViewModel(
             try {
                 if (Utils.hasInternetConnection(getApplication<Application>())) {
                     val response = appRepository.fetchSlider()
+                    Log.i("TAG", "fetchPics: "+appRepository.fetchSlider())
                     picsData.postValue(handlePicsResponse(response))
                 } else {
                     picsData.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
@@ -58,7 +60,7 @@ class SliderViewModel(
             }
         }
 
-        private fun handlePicsResponse(response: Response<SliderModel>): Resource<SliderModel> {
+        private fun handlePicsResponse(response: Response<List<SliderModel>>): Resource<List<SliderModel>> {
             if (response.isSuccessful) {
                 response.body()?.let { resultResponse ->
                     return Resource.Success(resultResponse)

@@ -26,40 +26,45 @@ import android.content.ActivityNotFoundException
 
 import android.content.Intent
 import android.net.Uri
+import androidx.appcompat.app.AppCompatActivity
+import coil.api.load
+import com.eightpeak.salakafarm.database.UserPrefManager
+import com.eightpeak.salakafarm.databinding.FragmentProductViewByIdBinding
+import com.eightpeak.salakafarm.utils.Constants
+import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
 import java.io.File
 
 
-class CategoriesByIdFragment  : Fragment() {
+class CategoriesByIdActivity  : AppCompatActivity() {
     private lateinit var viewModel: CategoriesByIdViewModel
     lateinit var categoriesByIdAdapter: CategoriesByIdAdapter
 
 
     private var _binding: FragmentCategoriesByIdBinding? = null
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+
 
     private var layoutManager: GridLayoutManager? = null
 
     private lateinit var binding: FragmentCategoriesByIdBinding
 
+    lateinit var userPrefManager: UserPrefManager
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        parent: ViewGroup?,
-        savedInstanceState: Bundle?): View? {
 
-        binding = FragmentCategoriesByIdBinding.inflate(layoutInflater, parent, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = FragmentCategoriesByIdBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        Log.i("TAG", "onCreateView: i reached here 1")
+        userPrefManager= UserPrefManager(this)
+
         init()
-        return binding.categoriesLayout
     }
+
 
 
     private fun init() {
         categoriesByIdAdapter = CategoriesByIdAdapter()
-        layoutManager = GridLayoutManager(context, 2)
+        layoutManager = GridLayoutManager(this, 2)
         binding.categoriesByIdRecyclerView.layoutManager = layoutManager
         binding.categoriesByIdRecyclerView.setHasFixedSize(true)
         binding.categoriesByIdRecyclerView.isFocusable = false
@@ -70,21 +75,49 @@ class CategoriesByIdFragment  : Fragment() {
 
     private fun setupViewModel() {
         val repository = AppRepository()
-        val factory = ViewModelProviderFactory(requireActivity().application, repository)
+        val factory = ViewModelProviderFactory(application, repository)
         viewModel = ViewModelProvider(this, factory).get(CategoriesByIdViewModel::class.java)
         getPictures()
     }
 
     private fun getPictures() {
-        viewModel.getCategoriesByIdDetails("id")
-        viewModel.categoriesbyIdData.observe(requireActivity(), Observer { response ->
+        val categories_id = intent.getStringExtra(Constants.CATEGORIES_ID)
+
+        if (categories_id != null) {
+            viewModel.getCategoriesByIdDetails(categories_id)
+        }
+        viewModel.categoriesbyIdData.observe(this, Observer { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
-                        val categoriesByIdModel: CategoriesByIdModel = picsResponse
-//                        categoriesByIdAdapter.differ.submitList(categoriesByIdModel.descriptions)
-//                        binding.categoriesByIdRecyclerView.adapter = categoriesByIdAdapter
+                        if(picsResponse.products.isNotEmpty()){
+                            binding.categoriesNotFound.visibility=View.GONE
+
+                            val categoryDetails:CategoriesByIdModel=picsResponse
+                            if(categoryDetails.descriptions.isNotEmpty()){
+
+                                binding.edtSearchInput.visibility=View.VISIBLE
+                                binding.categoriesByIdTitle.visibility=View.VISIBLE
+                                binding.categoriesThumbnail.load(BASE_URL+categoryDetails.image)
+
+                                if(userPrefManager.language.equals("ne")){
+                                    binding.categoryName.setText(categoryDetails.descriptions[1].title)
+                                }else{
+                                    binding.categoryName.setText(categoryDetails.descriptions[0].title)
+                                }
+                            }
+                            val categoriesByIdModel: List<Products> = picsResponse.products
+                            categoriesByIdAdapter.differ.submitList(categoriesByIdModel)
+                            binding.categoriesByIdRecyclerView.adapter = categoriesByIdAdapter
+
+
+                        }else{
+                            binding.categoriesNotFound.visibility=View.VISIBLE
+                        }
+                        binding.shimmerLayout.stopShimmer()
+                        binding.shimmerLayout.visibility = View.GONE
+
                     }
                 }
 
@@ -116,11 +149,8 @@ class CategoriesByIdFragment  : Fragment() {
         //Preventing Click during loading
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding=null
     }
-
-
-
 }
