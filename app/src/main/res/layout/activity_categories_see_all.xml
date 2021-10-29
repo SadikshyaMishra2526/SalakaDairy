@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/categoriesByIdRecyclerView"
     tools:context=".views.home.categories.CategoriesSeeAllActivity">
 
     <LinearLayout
@@ -16,18 +17,36 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
+<ScrollView
+    android:layout_width="wrap_content"
+    android:scrollbars="none"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/categories_list_view"
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:layout_height="wrap_content" />
+</ScrollView>
 
-        <LinearLayout
-            android:id="@+id/categories_list_view"
-            android:layout_width="wrap_content"
-            android:orientation="vertical"
-            android:layout_height="wrap_content" />
 
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/categories_list_by_id_recycler_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+        <ImageView
+        android:id="@+id/categories_not_found"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+            android:visibility="gone"
+        android:background="@drawable/categories_not_found"
+        android:layout_marginTop="@dimen/_100sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
     </LinearLayout>
     <ProgressBar
         android:id="@+id/progress"

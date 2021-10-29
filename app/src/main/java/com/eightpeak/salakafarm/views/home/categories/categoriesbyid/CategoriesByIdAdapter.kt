@@ -28,13 +28,13 @@ class CategoriesByIdAdapter : RecyclerView.Adapter<CategoriesByIdAdapter.Categor
 
     lateinit var userPrefManager: UserPrefManager
 
-    private val differCallback = object : DiffUtil.ItemCallback<Products>() {
+    private val differCallback = object : DiffUtil.ItemCallback<Products_with_description>() {
 
-        override fun areItemsTheSame(oldItem: Products, newItem: Products): Boolean {
+        override fun areItemsTheSame(oldItem: Products_with_description, newItem: Products_with_description): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Products, newItem: Products): Boolean {
+        override fun areContentsTheSame(oldItem: Products_with_description, newItem: Products_with_description): Boolean {
             return oldItem == newItem
         }
     }

@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import coil.api.load
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
@@ -23,9 +25,10 @@ import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.CategoriesByIdViewModel
 import com.eightpeak.salakafarm.viewmodel.CategoriesViewModel
+import com.eightpeak.salakafarm.viewmodel.ProductByIdViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
-import com.eightpeak.salakafarm.views.home.categories.categoriesbyid.CategoriesByIdModel
-import com.eightpeak.salakafarm.views.home.categories.categoriesbyid.Products
+import com.eightpeak.salakafarm.views.home.categories.categoriesbyid.CategoriesByIdAdapter
+import com.eightpeak.salakafarm.views.home.categories.categoriesbyid.Products_with_description
 import com.google.android.material.snackbar.Snackbar
 import com.hadi.retrofitmvvm.util.errorSnack
 import kotlinx.android.synthetic.main.fragment_categories.*
@@ -40,6 +43,11 @@ class CategoriesSeeAllActivity : AppCompatActivity() {
     private lateinit var viewModel: CategoriesViewModel
     private lateinit var viewModelById: CategoriesByIdViewModel
 
+    private var layoutManager: GridLayoutManager? = null
+
+    private var getOnClickProduct: Boolean? = true
+
+    lateinit var categoriesByIdAdapter: CategoriesByIdAdapter
     private var userPrefManager: UserPrefManager? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,8 +55,19 @@ class CategoriesSeeAllActivity : AppCompatActivity() {
         setContentView(binding.root)
         userPrefManager = UserPrefManager(this)
         setupViewModel()
+        init()
     }
 
+    private fun init() {
+        categoriesByIdAdapter = CategoriesByIdAdapter()
+        layoutManager = GridLayoutManager(this, 2)
+        binding.categoriesListByIdRecyclerView.layoutManager = layoutManager
+        binding.categoriesListByIdRecyclerView.setHasFixedSize(true)
+        binding.categoriesListByIdRecyclerView.isFocusable = false
+        binding.categoriesListByIdRecyclerView.adapter = categoriesByIdAdapter
+
+        setupViewModel()
+    }
     private fun setupViewModel() {
         val repository = AppRepository()
         val factory = ViewModelProviderFactory(application, repository)
@@ -97,9 +116,15 @@ class CategoriesSeeAllActivity : AppCompatActivity() {
             val categoryName = itemView.findViewById<TextView>(R.id.category_name)
             categoryName.text = picsResponse.data[i].descriptions[0].title
 
-
+            val categoriesCard = itemView.findViewById<CardView>(R.id.categoriesCard)
+            categoriesCard.setOnClickListener { getPictures(picsResponse.data[i].id.toString())
+                getOnClickProduct=false
+            }
+//            if(getOnClickProduct!!){
+//                getPictures("0")
+//            }
             val categoryThumbnail = itemView.findViewById<ImageView>(R.id.category_thumbnail)
-            categoryThumbnail.load(BASE_URL+picsResponse.data[i].image)
+            categoryThumbnail.load(BASE_URL + picsResponse.data[i].image)
             binding.categoriesListView.addView(itemView)
         }
     }
@@ -119,32 +144,16 @@ class CategoriesSeeAllActivity : AppCompatActivity() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
-//                        if(picsResponse.products.isNotEmpty()){
-//                            binding.categoriesNotFound.visibility=View.GONE
-//
-//                            val categoryDetails: CategoriesByIdModel =picsResponse
-//                            if(categoryDetails.descriptions.isNotEmpty()){
-//
-//                                binding.edtSearchInput.visibility=View.VISIBLE
-//                                binding.categoriesByIdTitle.visibility=View.VISIBLE
-//                                binding.categoriesThumbnail.load(EndPoints.BASE_URL +categoryDetails.image)
-//
-//                                if(userPrefManager.language.equals("ne")){
-//                                    binding.categoryName.setText(categoryDetails.descriptions[1].title)
-//                                }else{
-//                                    binding.categoryName.setText(categoryDetails.descriptions[0].title)
-//                                }
-//                            }
-//                            val categoriesByIdModel: List<Products> = picsResponse.products
-//                            categoriesByIdAdapter.differ.submitList(categoriesByIdModel)
-//                            binding.categoriesByIdRecyclerView.adapter = categoriesByIdAdapter
-//
-//
-//                        }else{
-//                            binding.categoriesNotFound.visibility=View.VISIBLE
-//                        }
-//                        binding.shimmerLayout.stopShimmer()
-//                        binding.shimmerLayout.visibility = View.GONE
+                        if (picsResponse.products_with_description.isNotEmpty()) {
+                            binding.categoriesNotFound.visibility = View.GONE
+                            val categoriesByIdModel: List<Products_with_description> = picsResponse.products_with_description
+                            categoriesByIdAdapter.differ.submitList(categoriesByIdModel)
+                            binding.categoriesListByIdRecyclerView.adapter = categoriesByIdAdapter
+
+
+                        } else {
+                            binding.categoriesNotFound.visibility = View.VISIBLE
+                        }
 
                     }
                 }
@@ -152,7 +161,7 @@ class CategoriesSeeAllActivity : AppCompatActivity() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        categoriesByIdRecyclerView.errorSnack(message, Snackbar.LENGTH_LONG)
+                        binding.categoriesByIdRecyclerView.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 
                 }

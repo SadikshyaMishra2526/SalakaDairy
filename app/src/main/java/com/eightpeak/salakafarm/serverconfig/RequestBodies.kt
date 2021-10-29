@@ -33,4 +33,14 @@ object RequestBodies {
         val id: String,
 
     )
+
+    data class AddToCart(
+        val product_id: String,
+        val qty: String,
+        val options: String,
+    )
+
+    data class WishList(
+        val product_id: String
+    )
 }

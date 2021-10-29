@@ -91,7 +91,8 @@ class CategoriesByIdActivity  : AppCompatActivity() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
-                        if(picsResponse.products.isNotEmpty()){
+                        Log.i("TAG", "getPictures: ccccccccccccccccc"+picsResponse)
+                        if(picsResponse.products_with_description.isNotEmpty()){
                             binding.categoriesNotFound.visibility=View.GONE
 
                             val categoryDetails:CategoriesByIdModel=picsResponse
@@ -102,12 +103,12 @@ class CategoriesByIdActivity  : AppCompatActivity() {
                                 binding.categoriesThumbnail.load(BASE_URL+categoryDetails.image)
 
                                 if(userPrefManager.language.equals("ne")){
-                                    binding.categoryName.setText(categoryDetails.descriptions[1].title)
+                                    binding.categoryName.text = categoryDetails.descriptions[1].name
                                 }else{
-                                    binding.categoryName.setText(categoryDetails.descriptions[0].title)
+                                    binding.categoryName.text = categoryDetails.descriptions[0].name
                                 }
                             }
-                            val categoriesByIdModel: List<Products> = picsResponse.products
+                            val categoriesByIdModel: List<Products_with_description> = picsResponse.products_with_description
                             categoriesByIdAdapter.differ.submitList(categoriesByIdModel)
                             binding.categoriesByIdRecyclerView.adapter = categoriesByIdAdapter
 

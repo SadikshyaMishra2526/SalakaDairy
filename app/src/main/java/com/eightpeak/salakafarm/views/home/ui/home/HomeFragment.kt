@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -18,12 +19,16 @@ import androidx.lifecycle.ViewModelProvider
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.databinding.FragmentHomeBinding
+import com.eightpeak.salakafarm.serverconfig.network.TokenManager
+import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.Constants.Companion.DEFAULT
+import com.eightpeak.salakafarm.utils.Constants.Companion.NO_LOGIN
 import com.eightpeak.salakafarm.views.home.categories.CategoriesFragment
 import com.eightpeak.salakafarm.views.home.products.ProductFragment
 import com.eightpeak.salakafarm.views.home.slider.SliderFragment
 import com.eightpeak.salakafarm.views.home.ui.user_profile.UserProfile
 import com.eightpeak.salakafarm.views.login.LoginActivity
+import com.eightpeak.salakafarm.views.search.SearchProductsActivity
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
@@ -44,6 +49,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
     private var googleApiClient: GoogleApiClient? = null
 
     private val binding get() = _binding!!
+    private var tokenManager: TokenManager? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,22 +59,33 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
 //        homeViewModel =
 //            ViewModelProvider(this).get(HomeViewModel::class.java)
 
-        userPrefManager= UserPrefManager(requireContext())
+        userPrefManager = UserPrefManager(requireContext())
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
-       binding.customerCurrentLocation.text=userPrefManager.currentPosition
+        binding.customerCurrentLocation.text = userPrefManager.currentPosition
 
+        tokenManager = TokenManager.getInstance(requireActivity().getSharedPreferences(
+            Constants.TOKEN_PREF,
+            AppCompatActivity.MODE_PRIVATE
+        ));
         binding.customerProfile.setOnClickListener {
-            if(userPrefManager.userToken!=DEFAULT){
-                val mainActivity = Intent(context, UserProfile::class.java)
-                startActivity(mainActivity)
-            }else{
-                val mainActivity = Intent(context, LoginActivity::class.java)
-                startActivity(mainActivity)
+            tokenManager?.let {
+                if (it.token!= NO_LOGIN) {
+                    val mainActivity = Intent(context, UserProfile::class.java)
+                    startActivity(mainActivity)
+                } else {
+                    val mainActivity = Intent(context, LoginActivity::class.java)
+                    startActivity(mainActivity)
+                }
             }
+
 
         }
 
+        binding.tvSearchInput.setOnClickListener {
+            val mainActivity = Intent(context, SearchProductsActivity::class.java)
+            startActivity(mainActivity)
+        }
 
         //Initializing googleApiClient
         googleApiClient = GoogleApiClient.Builder(requireContext())
@@ -76,10 +93,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
             .addOnConnectionFailedListener(this)
             .addApi(LocationServices.API)
             .build()
-
-
-
-
 
 
         setUpSliderFragment()
@@ -101,15 +114,18 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
         val managerCategories = childFragmentManager
         val fragmentCategories: Fragment = CategoriesFragment()
         val transactionCategories = managerCategories.beginTransaction()
-        transactionCategories.replace(R.id.containerCategories, fragmentCategories).addToBackStack(null)
+        transactionCategories.replace(R.id.containerCategories, fragmentCategories)
+            .addToBackStack(null)
         transactionCategories.commit()
 
     }
+
     private fun setUpProductFragment() {
         val managerProductList = childFragmentManager
         val fragmentProductList: Fragment = ProductFragment()
         val transactionProductList = managerProductList.beginTransaction()
-        transactionProductList.replace(R.id.containerProducts, fragmentProductList).addToBackStack(null)
+        transactionProductList.replace(R.id.containerProducts, fragmentProductList)
+            .addToBackStack(null)
         transactionProductList.commit()
 
     }
@@ -136,6 +152,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
     override fun onConnectionFailed(p0: ConnectionResult) {
         TODO("Not yet implemented")
     }
+
     private fun getCurrentLocation() {
 //        mMap.clear();
         if (ActivityCompat.checkSelfPermission(
@@ -149,11 +166,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
             return
         }
         val location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient)
-        var  longitude = location.longitude
-        var  latitude = location.latitude
+        var longitude = location.longitude
+        var latitude = location.latitude
         val latLng = LatLng(latitude, longitude)
         getMyPosition(latLng)
     }
+
     private fun getMyPosition(myCoordinates: LatLng) {
         Handler(Looper.getMainLooper()).post {
             var myCity: String? = ""
@@ -164,7 +182,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
                 val subLocality = addresses[0].subLocality
                 val locality = addresses[0].locality
                 val selectedCountry = addresses[0].countryName
-                 if (subLocality != null) myCity += "$subLocality, "
+                if (subLocality != null) myCity += "$subLocality, "
                 if (locality != null) myCity += "$locality, "
                 if (selectedCountry != null) myCity += selectedCountry
                 val addressLine = addresses[0].getAddressLine(0).replace("Unnamed Road,", "")
@@ -172,7 +190,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
             } catch (e: Exception) {
                 Toast.makeText(requireContext(), "Could not get Address!!", Toast.LENGTH_SHORT)
                     .show()
-                   e.printStackTrace()
+                e.printStackTrace()
             }
         }
     }

@@ -1,11 +1,12 @@
-package com.eightpeak.salakafarm.views.home.products
+package com.eightpeak.salakafarm.views.home.products.productbyid
 
 import android.content.Intent
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -13,31 +14,24 @@ import coil.api.load
 import com.eightpeak.salakafarm.App
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
-import com.eightpeak.salakafarm.utils.AppUtils
-import com.eightpeak.salakafarm.utils.Constants.Companion.PRODUCT_ID
+import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.EndPoints
 import com.eightpeak.salakafarm.utils.GeneralUtils
-import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdActivity
+import com.eightpeak.salakafarm.views.home.products.AddToCartView
 import kotlinx.android.synthetic.main.product_item.view.*
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import androidx.fragment.app.FragmentActivity
 
-import android.os.Bundle
-import com.eightpeak.salakafarm.repository.AppRepository
-
-
-class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductListViewHolder>() {
+class RelatedProductAdapter : RecyclerView.Adapter<RelatedProductAdapter.ProductListViewHolder>() {
 
     inner class ProductListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    private val differCallback = object : DiffUtil.ItemCallback<Data>() {
+    private val differCallback = object : DiffUtil.ItemCallback<ProductRelation>() {
 
-        override fun areItemsTheSame(oldItem: Data, newItem: Data): Boolean {
+        override fun areItemsTheSame(oldItem: ProductRelation, newItem: ProductRelation): Boolean {
             return oldItem.id == newItem.id
             Log.i("TAG", "areItemsTheSame: " + oldItem.image)
         }
 
-        override fun areContentsTheSame(oldItem: Data, newItem: Data): Boolean {
+        override fun areContentsTheSame(oldItem: ProductRelation, newItem: ProductRelation): Boolean {
             return oldItem == newItem
         }
     }
@@ -79,7 +73,7 @@ class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductListViewHolder
 
             bt_add_to_cart.setOnClickListener {
                 val args = Bundle()
-                args.putString(PRODUCT_ID, categoriesItem.id.toString())
+                args.putString(Constants.PRODUCT_ID, categoriesItem.id.toString())
                 val bottomSheet = AddToCartView()
                 bottomSheet.arguments = args
                 bottomSheet.show(
@@ -89,18 +83,10 @@ class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductListViewHolder
             }
             productViewItem.setOnClickListener {
                 val intent = Intent(context, ProductByIdActivity::class.java)
-                intent.putExtra(PRODUCT_ID, categoriesItem.id.toString())
+                intent.putExtra(Constants.PRODUCT_ID, categoriesItem.id.toString())
                 context.startActivity(intent)
-            }
-
-            product_add_to_wishlist.setOnClickListener {
-
-
             }
         }
 
-    }
-    interface OnItemClick {
-        fun onClick(value: String?)
     }
 }

@@ -1,6 +1,5 @@
 package com.eightpeak.salakafarm.viewmodel
 
-import UserProfileModel
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
@@ -8,45 +7,49 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.repository.AppRepository
+import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.Utils
-import com.eightpeak.salakafarm.views.home.slider.SliderModel
+import com.eightpeak.salakafarm.views.search.SearchModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
 
-class UserProfileViewModel (app: Application,
+class SearchViewModel (app: Application,
 private val appRepository: AppRepository
 ) : AndroidViewModel(app) {
 
-    val userProfileData: MutableLiveData<Resource<UserProfileModel>> = MutableLiveData()
-
-
-
-    private fun getUserDetails(token:String) = viewModelScope.launch {
-        fetchUserDetails(token)
+    val searchData: MutableLiveData<Resource<SearchModel>> = MutableLiveData()
+    fun getSearchData(tokenManager: TokenManager,keyword:String,filterSort :String) = viewModelScope.launch {
+        getSearchResult(tokenManager,keyword,filterSort)
     }
 
 
-    private suspend fun fetchUserDetails(token: String) {
-        userProfileData.postValue(Resource.Loading())
+    private suspend fun getSearchResult(
+        tokenManager: TokenManager,
+        keyword: String,
+        filterSort: String
+    ) {
+        searchData.postValue(Resource.Loading())
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
-//                val response = appRepository.getUserDetails(token)
-//                userProfileData.postValue(handlePicsResponse(response))
+                val response = appRepository.getSearchResponse(tokenManager,keyword,filterSort)
+                Log.i("TAG", "fetchPics: $response")
+                searchData.postValue(handlePicsResponse(response))
             } else {
-                userProfileData.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+                searchData.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
             }
         } catch (t: Throwable) {
+            Log.i("TAG", "fetchPics: "+t.localizedMessage)
             when (t) {
-                is IOException -> userProfileData.postValue(
+                is IOException -> searchData.postValue(
                     Resource.Error(
                         getApplication<Application>().getString(
                             R.string.network_failure
                         )
                     )
                 )
-                else -> userProfileData.postValue(
+                else -> searchData.postValue(
                     Resource.Error(
                         getApplication<Application>().getString(
                             R.string.conversion_error
@@ -57,7 +60,7 @@ private val appRepository: AppRepository
         }
     }
 
-    private fun handlePicsResponse(response: Response<UserProfileModel>): Resource<UserProfileModel> {
+    private fun handlePicsResponse(response: Response<SearchModel>): Resource<SearchModel> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)
@@ -65,6 +68,5 @@ private val appRepository: AppRepository
         }
         return Resource.Error(response.message())
     }
-
 
 }

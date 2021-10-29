@@ -64,5 +64,6 @@
     <string name="rs">रु।</string>
     <string name="add_to_cart">कार्टमा थप्नुहोस्</string>
     <string name="todo">Todo</string>
+    <string name="related_products">Related Products</string>
 
 </resources>

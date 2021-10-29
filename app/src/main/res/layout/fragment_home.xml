@@ -6,8 +6,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.home.ui.home.HomeFragment"
-    android:layout_marginBottom="@dimen/_50sdp">
+    android:layout_marginBottom="@dimen/_50sdp"
+    tools:context=".views.home.ui.home.HomeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -27,9 +27,9 @@
                 android:id="@+id/customer_current_location"
                 android:layout_width="@dimen/_250sdp"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/_12sdp"
                 android:layout_gravity="center"
                 android:text="@string/kathmandu_nepal"
+                android:textSize="@dimen/_12sdp"
                 app:drawableLeftCompat="@drawable/ic_baseline_location_on_24" />
 
             <View
@@ -41,19 +41,18 @@
                 android:id="@+id/customer_profile"
                 android:layout_width="@dimen/_30sdp"
                 android:layout_height="@dimen/_30sdp"
-                android:src="@drawable/user_profile"
-                android:layout_marginEnd="@dimen/_5sdp"/>
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:src="@drawable/user_profile" />
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/edt_search_input"
+        <TextView
+            android:id="@+id/tvSearchInput"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_35sdp"
-            android:background="@drawable/search_capsule"
-            android:drawableStart="@drawable/ic_baseline_search_24"
-            android:focusable="true"
-            android:layout_marginEnd="@dimen/_10sdp"
             android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:background="@drawable/search_capsule"
+            android:focusable="true"
             android:focusableInTouchMode="true"
             android:gravity="start"
             android:hapticFeedbackEnabled="true"
@@ -63,28 +62,31 @@
             android:singleLine="true"
             android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-            tools:layout_editor_absoluteX="5dp" />
-  <androidx.cardview.widget.CardView
-      android:id="@+id/add_subscription"
-      android:layout_width="wrap_content"
-      android:layout_marginEnd="@dimen/_10sdp"
-      android:layout_marginStart="@dimen/_10sdp"
-      android:layout_marginTop="@dimen/_5sdp"
-      android:layout_marginBottom="@dimen/_10sdp"
-      android:layout_height="wrap_content"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.0"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/edt_search_input"
-      app:layout_constraintVertical_bias="0.015" >
+            tools:layout_editor_absoluteX="5dp"
+            app:drawableStartCompat="@drawable/ic_baseline_search_24" />
 
-      <LinearLayout
-          android:layout_width="wrap_content"
-          android:layout_height="@dimen/_100sdp"
-          android:layout_gravity="center"
-          android:background="@drawable/subscription" />
-  </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/add_subscription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvSearchInput"
+            app:layout_constraintVertical_bias="0.0">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_100sdp"
+                android:layout_gravity="center"
+                android:background="@drawable/subscription" />
+        </androidx.cardview.widget.CardView>
+
         <FrameLayout
             android:id="@+id/containerSlider"
             android:layout_width="wrap_content"
@@ -94,9 +96,9 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/add_subscription"
-            app:layout_constraintVertical_bias="0.015" />
+            app:layout_constraintVertical_bias="0.0" />
 
-       <FrameLayout
+        <FrameLayout
             android:id="@+id/containerCategories"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -105,14 +107,14 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/containerSlider"
-            app:layout_constraintVertical_bias="0.015" />
+            app:layout_constraintVertical_bias="0.0" />
 
         <View
             android:id="@+id/divider_01"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_2sdp"
             android:background="@color/tab_indicator_gray"
-            app:layout_constraintTop_toBottomOf="@+id/containerCategories"/>
+            app:layout_constraintTop_toBottomOf="@+id/containerCategories" />
 
         <FrameLayout
             android:id="@+id/containerProducts"
@@ -123,7 +125,8 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider_01"
-            app:layout_constraintVertical_bias="0.015" />
+            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.core.widget.NestedScrollView>

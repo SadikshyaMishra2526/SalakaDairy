@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.RequestBodies
+import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.subutils.Event
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.Utils
@@ -84,17 +85,16 @@ class LoginViewModel(
     val userDetailsResponse:LiveData<Event<Resource<UserProfileModel>>> = _userDetailsResponse
 
 
-    fun userDetailsUser(id:String) = viewModelScope.launch {
-        userDetails(id)
+    fun userDetailsUser(tokenManager: TokenManager) = viewModelScope.launch {
+        userDetails(tokenManager)
     }
 
-    private suspend fun userDetails(id: String) {
+    private suspend fun userDetails(tokenManager: TokenManager) {
         _userDetailsResponse.postValue(Event(Resource.Loading()))
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
-                val response = appRepository.getUserDetails("Bearer $id")
-                Log.i("TAG", "login:sadikshya "+appRepository.getUserDetails("Bearer $id"))
-                _userDetailsResponse.postValue(handleuserDetailsResponse(response))
+                val response = appRepository.getUserDetails(tokenManager)
+               _userDetailsResponse.postValue(handleuserDetailsResponse(response))
             } else {
                 _userDetailsResponse.postValue(Event(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection))))
             }

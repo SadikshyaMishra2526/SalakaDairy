@@ -26,6 +26,7 @@ import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.ProductByIdViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.home.HomeActivity
+import com.eightpeak.salakafarm.views.home.products.ProductAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.hadi.retrofitmvvm.util.errorSnack
 import kotlinx.android.synthetic.main.fragment_product_view_by_id.*
@@ -46,6 +47,8 @@ class ProductByIdActivity : AppCompatActivity() {
     private lateinit var binding: FragmentProductViewByIdBinding
     private lateinit var sliderList: ArrayList<String>
 
+    lateinit var relatedProductAdapter: RelatedProductAdapter
+    private var layoutManager: GridLayoutManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,10 +72,17 @@ class ProductByIdActivity : AppCompatActivity() {
             finish()
         }
         setupViewModel()
+
+        relatedProductAdapter = RelatedProductAdapter()
+        layoutManager = GridLayoutManager(this, 2)
+        binding.relatedProductRecycler.layoutManager = layoutManager
+        binding.relatedProductRecycler.setHasFixedSize(true)
+        binding.relatedProductRecycler.isFocusable = false
+        binding.relatedProductRecycler.adapter = relatedProductAdapter
+
     }
 
     private fun setupViewModel() {
-        Log.i("TAG", "onCreateView: i reached here 2")
 
         val repository = AppRepository()
         val factory = ViewModelProviderFactory(application, repository)
@@ -82,8 +92,7 @@ class ProductByIdActivity : AppCompatActivity() {
 
     private fun getPictures() {
         val product_id = intent.getStringExtra(PRODUCT_ID)
-        Log.i("TAG", "getPictures: $product_id")
-        if (product_id != null) {
+          if (product_id != null) {
             viewModel.getProductById(product_id)
         }
         viewModel.productDetailsById.observe(this, Observer { response ->
@@ -92,7 +101,9 @@ class ProductByIdActivity : AppCompatActivity() {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
                         setProductsDetails(picsResponse)
-
+                        if(picsResponse.productRelation.isNotEmpty())
+                        relatedProductAdapter.differ.submitList(picsResponse.productRelation)
+                        binding.relatedProductRecycler.adapter = relatedProductAdapter
                     }
                 }
 
@@ -101,7 +112,6 @@ class ProductByIdActivity : AppCompatActivity() {
                     response.message?.let { message ->
                         product_view_id_layout.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
-
                 }
 
                 is Resource.Loading -> {

@@ -47,16 +47,17 @@ class RetrofitInstance {
             return retrofit.create(service)
         }
 
-        fun <T> createServiceWithAuth(service: Class<T>?, tokenManager: TokenManager): T {
+        private fun <T> createServiceWithAuth(service: Class<T>?, tokenManager: TokenManager): T {
             val newClient = client.newBuilder().addInterceptor(object : Interceptor {
                 @Throws(IOException::class)
                 override fun intercept(chain: Interceptor.Chain): Response {
                     var request: Request = chain.request()
                     val builder:    Request.Builder = request.newBuilder()
-                    if (tokenManager.token.getAccessToken() != null) {
+                    if (tokenManager.token != null) {
                         builder.addHeader(
+
                             "Authorization",
-                            "Bearer " + tokenManager.token.getAccessToken()
+                            "Bearer " + tokenManager.token
                         )
                     }
                     request = builder.build()
@@ -75,10 +76,12 @@ class RetrofitInstance {
             createService(ApiInterface::class.java)
         }
 
-        val useApiWithAccessToken by lazy {
-//            val  tokenManager=new
-//            createServiceWithAuth(ApiInterface::class.java)
-        }
+        fun useApiWithAccessToken( tokenManager: TokenManager)  : ApiInterface =
+            createServiceWithAuth(ApiInterface::class.java,tokenManager)
+
+//        val useApiWithAccessToken by lazy {
+//            createServiceWithAuth(ApiInterface::class.java,)
+//        }
     }
 
 }

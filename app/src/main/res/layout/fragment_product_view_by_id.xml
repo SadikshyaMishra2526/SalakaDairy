@@ -94,7 +94,7 @@
         app:cardCornerRadius="@dimen/_10sdp"
         app:layout_constraintTop_toBottomOf="@+id/products_details_title">
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -133,13 +133,14 @@
                         app:sliderIndicatorUnselectedColor="#FFF"
                         app:sliderScrollTimeInSec="1" />
 
+
                     <androidx.cardview.widget.CardView
-                        android:layout_width="@dimen/_60sdp"
-                        android:layout_height="@dimen/_30sdp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_25sdp"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentBottom="true"
-                        android:layout_marginEnd="@dimen/_15sdp"
-                        android:layout_marginBottom="@dimen/_15sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_5sdp"
                         android:backgroundTint="@color/white"
                         app:cardCornerRadius="@dimen/_5sdp">
 
@@ -148,13 +149,13 @@
                             android:layout_height="match_parent"
                             android:layout_margin="@dimen/_3sdp">
 
-                            <TextView
-                                android:id="@+id/product_rate"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                            <ImageButton
+                                android:id="@+id/product_add_to_wishlist"
+                                android:layout_width="@dimen/_18sdp"
+                                android:layout_height="@dimen/_18sdp"
                                 android:layout_gravity="center"
-                                android:drawableStart="@drawable/ic_baseline_star_rate_24"
-                                android:text="20" />
+                                android:layout_margin="@dimen/_5sdp"
+                                android:background="@drawable/favourite" />
 
                             <View
                                 android:layout_width="1dp"
@@ -162,13 +163,16 @@
                                 android:layout_gravity="center"
                                 android:background="@color/tab_indicator_gray" />
 
-                            <TextView
-                                android:id="@+id/rated_by_customers"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center" />
+                            <ImageButton
+                                android:id="@+id/product_add_to_compare_list"
+                                android:layout_width="@dimen/_18sdp"
+                                android:layout_height="@dimen/_18sdp"
+                                android:layout_gravity="center"
+                                android:layout_margin="@dimen/_5sdp"
+                                android:background="@drawable/compare" />
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
+
                 </RelativeLayout>
 
                 <TextView
@@ -197,24 +201,49 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
+
                 <View
                     android:id="@+id/view_divider"
                     android:layout_width="match_parent"
-                    android:background="@color/tab_indicator_gray"
                     android:layout_height="@dimen/_2sdp"
+                    android:background="@color/tab_indicator_gray"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/price_layout"/>
+                    app:layout_constraintTop_toBottomOf="@+id/price_layout" />
+
                 <TextView
                     android:id="@+id/product_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="@dimen/_5sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:padding="@dimen/_5sdp"
                     app:layout_constraintTop_toBottomOf="@+id/view_divider" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_5sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/product_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/related_products"
+                        android:textStyle="bold"
+                        android:textColor="@color/main_color" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/relatedProductRecycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.cardview.widget.CardView>
 

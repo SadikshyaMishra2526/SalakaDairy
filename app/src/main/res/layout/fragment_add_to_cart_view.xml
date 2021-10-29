@@ -4,39 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/add_to_cart_view"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/background"
+    android:layout_height="@dimen/_300sdp"
+    android:background="@drawable/btn_gradient_style"
     tools:context=".views.home.products.AddToCartView">
+
 
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_margin="@dimen/_10sdp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
             <ProgressBar
                 android:id="@+id/progress"
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"/>
+                android:layout_gravity="center"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="@dimen/_5sdp"
                 android:orientation="horizontal"
-                android:padding="@dimen/_10sdp">
+                android:padding="@dimen/_5sdp">
 
                 <ImageView
                     android:id="@+id/product_thumbnail"
@@ -45,58 +48,100 @@
                     android:layout_gravity="center"
                     android:src="@drawable/logo" />
 
-                <TextView
-                    android:id="@+id/product_name"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textSize="@dimen/_12sdp"
-                    android:textStyle="bold"/>
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/product_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:textSize="@dimen/_14sdp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/set_SKU"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:textSize="@dimen/_9sdp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/categories_name"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:textSize="@dimen/_9sdp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
 
             </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/linearLayout4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:layout_gravity="end"
-                    android:gravity="end">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                    <ImageButton
-                        android:id="@+id/decrease_quantity"
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_30sdp"
-                        android:layout_marginTop="20dp"
-                        android:background="@drawable/circle_background"
-                        android:contentDescription="@string/todo"
-                        android:src="@drawable/ic_baseline_add_24" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/product_quantity"
-                        android:layout_width="@dimen/_30sdp"
+                        android:id="@+id/attribute"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="23dp"
-                        android:gravity="center"
-                        android:inputType="number"
-                        android:textSize="17sp" />
-
-                    <ImageButton
-                        android:id="@+id/increase_quantity"
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_30sdp"
-                        android:layout_marginTop="20dp"
-                        android:background="@drawable/circle_background"
-                        android:contentDescription="@string/todo"
-                        android:src="@drawable/ic_baseline_remove_24" />
-
-
+                        android:text="Attributes" />
                 </LinearLayout>
-            <Button
-                android:layout_gravity="center"
-                android:text="@string/add_to_cart"
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout4"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:gravity="end">
+
+                <ImageButton
+                    android:id="@+id/decrease_quantity"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:background="@drawable/circle_background"
+                    android:contentDescription="@string/todo"
+                    android:src="@drawable/ic_baseline_remove_24" />
+
+                <TextView
+                    android:id="@+id/product_quantity"
+                    android:gravity="center"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:background="@drawable/edit_view"
+                    android:textSize="17sp" />
+
+                <ImageButton
+                    android:id="@+id/increase_quantity"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:background="@drawable/circle_background"
+                    android:contentDescription="@string/todo"
+                    android:src="@drawable/ic_baseline_add_24" />
+
+
+            </LinearLayout>
+            <Button
+                android:id="@+id/bt_add_to_cart"
+                android:layout_width="@dimen/_130sdp"
+                android:layout_height="wrap_content"
+                android:text="@string/add_to_cart"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/main_color"
+                android:textSize="@dimen/_8sdp"
+                android:drawableStart="@drawable/ic_baseline_shopping_cart_24" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

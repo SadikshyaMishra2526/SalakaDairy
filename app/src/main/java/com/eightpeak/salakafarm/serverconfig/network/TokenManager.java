@@ -24,9 +24,9 @@ public class TokenManager {
         return INSTANCE;
     }
 
-    public void saveToken(AccessToken token){
-        editor.putString("ACCESS_TOKEN", token.getAccessToken()).commit();
-        editor.putString("REFRESH_TOKEN", token.getRefreshToken()).commit();
+    public void saveToken(String token){
+        editor.putString("ACCESS_TOKEN", token).apply();
+//        editor.putString("REFRESH_TOKEN", token.getRefreshToken()).commit();
     }
 
     public void deleteToken(){
@@ -37,11 +37,11 @@ public class TokenManager {
 
     }
 
-    public AccessToken getToken(){
-        AccessToken token = new AccessToken();
-        token.setAccessToken(prefs.getString("ACCESS_TOKEN", null));
-        token.setRefreshToken(prefs.getString("REFRESH_TOKEN", null));
-        return token;
+    public String getToken(){
+//        AccessToken token = new AccessToken();
+//        token.setAccessToken(prefs.getString("ACCESS_TOKEN", null));
+//        token.setRefreshToken(prefs.getString("REFRESH_TOKEN", null));
+        return prefs.getString("ACCESS_TOKEN", null);
     }
 
 

@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/_100sdp"
-    android:layout_height="match_parent">
+    android:layout_width="@dimen/_70sdp"
+    android:id="@+id/categoriesCard"
+    android:layout_height="wrap_content">
 <LinearLayout
     android:layout_width="wrap_content"
     android:orientation="vertical"
+    android:layout_gravity="center"
     android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/category_thumbnail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"/>
     <TextView
         android:id="@+id/category_name"
         android:layout_width="@dimen/_70sdp"
+        android:textSize="@dimen/_8sdp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:textColor="@color/main_color"
         android:layout_height="wrap_content"/>
 </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_2sdp"
+        android:background="@color/tab_indicator_gray"/>
 </androidx.cardview.widget.CardView>

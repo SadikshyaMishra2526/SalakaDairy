@@ -29,6 +29,7 @@ import kotlinx.android.synthetic.main.fragment_product_list.*
 class ProductFragment : Fragment() {
     private lateinit var viewModel: ProductListViewModel
     lateinit var productAdapter: ProductAdapter
+    private var layoutManager: GridLayoutManager? = null
 
 
     private var _binding: FragmentProductListBinding? = null
@@ -37,7 +38,6 @@ class ProductFragment : Fragment() {
     }
 
     private lateinit var shimmer_layout: ShimmerFrameLayout
-    private var layoutManager: GridLayoutManager? = null
 
     private lateinit var binding: FragmentProductListBinding
 

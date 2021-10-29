@@ -45,7 +45,6 @@ class CategoriesAdapter : RecyclerView.Adapter<CategoriesAdapter.CategoriesViewH
 
     override fun onBindViewHolder(holder: CategoriesViewHolder, position: Int) {
         val categoriesItem = differ.currentList[position]
-        Log.i("TAG", "onBindViewHolder:Categories "+categoriesItem.image)
         holder.itemView.apply {
 
             categories_thumbnail.load(BASE_URL+categoriesItem.image)

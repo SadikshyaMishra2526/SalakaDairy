@@ -13,7 +13,7 @@ class EndPoints {
 
         //customer token
         const val REFRESH_TOKEN = "/oauth/token"
-  const val USER_DETAILS = "api/auth/user"
+        const val USER_DETAILS = "api/auth/user"
 
         //categories
         const val CATEGORIES_LIST = "api/categories"
@@ -35,5 +35,8 @@ class EndPoints {
         const val PRODUCT_VIA_ID = "api/products/{id}"
 
 
+        const val SEARCH_RESPONSE = "api/search/"
+        const val ADD_TO_WISHLIST = "api/add_to_wishlist"
+        const val ADD_TO_CART = "api/add_to_cart"
     }
 }

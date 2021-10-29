@@ -71,6 +71,10 @@
             android:name=".views.home.categories.categoriesbyid.CategoriesByIdActivity"
             android:theme="@style/Theme.SalakaFarm" />
 
+        <activity
+            android:name=".views.search.SearchProductsActivity"
+            android:theme="@style/Theme.SalakaFarm" />
+
     </application>
 
 </manifest>

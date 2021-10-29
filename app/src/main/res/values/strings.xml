@@ -57,4 +57,6 @@
     <string name="rs">Rs.</string>
     <string name="add_to_cart">Add to Cart</string>
     <string name="todo">Todo</string>
+    <string name="search">Search</string>
+    <string name="related_products">Related Products</string>
 </resources>

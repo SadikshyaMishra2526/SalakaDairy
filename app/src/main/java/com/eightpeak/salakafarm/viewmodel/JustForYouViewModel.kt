@@ -1,6 +1,5 @@
 package com.eightpeak.salakafarm.viewmodel
 
-import UserProfileModel
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
@@ -10,43 +9,48 @@ import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.Utils
+import com.eightpeak.salakafarm.views.home.products.ProductModel
 import com.eightpeak.salakafarm.views.home.slider.SliderModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
 
-class UserProfileViewModel (app: Application,
-private val appRepository: AppRepository
+class JustForYouViewModel (
+    app: Application,
+    private val appRepository: AppRepository
 ) : AndroidViewModel(app) {
 
-    val userProfileData: MutableLiveData<Resource<UserProfileModel>> = MutableLiveData()
+    val picsData: MutableLiveData<Resource<ProductModel>> = MutableLiveData()
 
+    init {
+        getSliderPictures()
+    }
 
-
-    private fun getUserDetails(token:String) = viewModelScope.launch {
-        fetchUserDetails(token)
+    private fun getSliderPictures() = viewModelScope.launch {
+        fetchPics()
     }
 
 
-    private suspend fun fetchUserDetails(token: String) {
-        userProfileData.postValue(Resource.Loading())
+    private suspend fun fetchPics() {
+        picsData.postValue(Resource.Loading())
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
-//                val response = appRepository.getUserDetails(token)
-//                userProfileData.postValue(handlePicsResponse(response))
+                val response = appRepository.fetchSlider()
+                Log.i("TAG", "fetchPics: "+appRepository.fetchSlider())
+                picsData.postValue(handlePicsResponse(response))
             } else {
-                userProfileData.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+                picsData.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
             }
         } catch (t: Throwable) {
             when (t) {
-                is IOException -> userProfileData.postValue(
+                is IOException -> picsData.postValue(
                     Resource.Error(
                         getApplication<Application>().getString(
                             R.string.network_failure
                         )
                     )
                 )
-                else -> userProfileData.postValue(
+                else -> picsData.postValue(
                     Resource.Error(
                         getApplication<Application>().getString(
                             R.string.conversion_error
@@ -57,7 +61,7 @@ private val appRepository: AppRepository
         }
     }
 
-    private fun handlePicsResponse(response: Response<UserProfileModel>): Resource<UserProfileModel> {
+    private fun handlePicsResponse(response: Response<ProductModel>): Resource<ProductModel> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)
