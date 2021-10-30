@@ -38,5 +38,8 @@ class EndPoints {
         const val SEARCH_RESPONSE = "api/search/"
         const val ADD_TO_WISHLIST = "api/add_to_wishlist"
         const val ADD_TO_CART = "api/add_to_cart"
+        const val GET_CART_DETAILS = "api/get_cart"
+
+        const val GET_WISHLIST_DETAILS = "api/get_wishlist"
     }
 }

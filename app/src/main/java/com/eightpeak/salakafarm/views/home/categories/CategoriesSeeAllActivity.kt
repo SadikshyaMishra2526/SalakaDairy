@@ -123,6 +123,7 @@ class CategoriesSeeAllActivity : AppCompatActivity() {
 //            if(getOnClickProduct!!){
 //                getPictures("0")
 //            }
+
             val categoryThumbnail = itemView.findViewById<ImageView>(R.id.category_thumbnail)
             categoryThumbnail.load(BASE_URL + picsResponse.data[i].image)
             binding.categoriesListView.addView(itemView)

@@ -6,31 +6,29 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import coil.api.load
-import com.eightpeak.salakafarm.databinding.ActivityHomeBinding
+import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.databinding.FragmentProductViewByIdBinding
 import com.eightpeak.salakafarm.repository.AppRepository
+import com.eightpeak.salakafarm.serverconfig.network.TokenManager
+import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.Constants.Companion.PRODUCT_ID
 import com.eightpeak.salakafarm.utils.EndPoints
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.ProductByIdViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.home.HomeActivity
-import com.eightpeak.salakafarm.views.home.products.ProductAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.hadi.retrofitmvvm.util.errorSnack
+import com.hadi.retrofitmvvm.util.successAddToCartSnack
+import com.hadi.retrofitmvvm.util.successWishListSnack
 import kotlinx.android.synthetic.main.fragment_product_view_by_id.*
-import com.smarteist.autoimageslider.IndicatorView.draw.controller.DrawController
 
 import com.smarteist.autoimageslider.SliderView
 
@@ -50,10 +48,13 @@ class ProductByIdActivity : AppCompatActivity() {
     lateinit var relatedProductAdapter: RelatedProductAdapter
     private var layoutManager: GridLayoutManager? = null
 
+    private var tokenManager: TokenManager? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentProductViewByIdBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        tokenManager = TokenManager.getInstance(getSharedPreferences(Constants.TOKEN_PREF, MODE_PRIVATE))
 
         init()
     }
@@ -71,6 +72,7 @@ class ProductByIdActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+
         setupViewModel()
 
         relatedProductAdapter = RelatedProductAdapter()
@@ -148,6 +150,67 @@ class ProductByIdActivity : AppCompatActivity() {
             binding.productsDetailSlider.visibility = View.GONE
             binding.productDetailsThumbnail.load(EndPoints.BASE_URL + productDetailsByIdResponse.image)
         }
+
+
+
+        binding.productAddToWishlist.setOnClickListener {
+            val productId = productDetailsByIdResponse.id.toString()
+            tokenManager?.let { it1 -> viewModel.addTowishlist(it1,productId) }
+            viewModel.addToCart.observe(this, Observer { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        response.data?.let {
+                            binding.productViewIdLayout.successWishListSnack(this,getString(R.string.add_to_wishlist),Snackbar.LENGTH_LONG)
+                        }
+                    }
+
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        response.message?.let { message ->
+                            product_view_id_layout.errorSnack(message, Snackbar.LENGTH_LONG)
+                        }
+                    }
+
+                    is Resource.Loading -> {
+                        showProgressBar()
+                    }
+                }
+            })
+        }
+
+
+        binding.btAddToCart.setOnClickListener {
+
+            val product_id = intent.getStringExtra(PRODUCT_ID)
+            if (product_id != null) {
+                viewModel.getProductById(product_id)
+            }
+            viewModel.wishlist.observe(this, Observer { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        response.data?.let {
+                            binding.productViewIdLayout.successAddToCartSnack(this,getString(R.string.add_to_cart),Snackbar.LENGTH_LONG)
+                        }
+                    }
+
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        response.message?.let { message ->
+                            product_view_id_layout.errorSnack(message, Snackbar.LENGTH_LONG)
+                        }
+                    }
+
+                    is Resource.Loading -> {
+                        showProgressBar()
+                    }
+                }
+            })
+
+        }
+
+
     }
 
     private fun showSlider(sliderList: ArrayList<String>) {

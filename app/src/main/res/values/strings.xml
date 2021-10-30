@@ -57,6 +57,10 @@
     <string name="rs">Rs.</string>
     <string name="add_to_cart">Add to Cart</string>
     <string name="todo">Todo</string>
-    <string name="search">Search</string>
+
     <string name="related_products">Related Products</string>
+    <string name="add_to_wishlist">Successfully added to Wishlist</string>
+    <string name="view_wishlist">View WishList</string>
+    <string name="search">Search</string>
+    <string name="view_cart">View Cart</string>
 </resources>

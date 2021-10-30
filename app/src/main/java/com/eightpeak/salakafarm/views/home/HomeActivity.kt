@@ -38,7 +38,9 @@ import android.os.Handler
 
 import android.os.Looper
 import android.util.Log
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.eightpeak.salakafarm.database.UserPrefManager
+import com.eightpeak.salakafarm.views.home.ui.home.BottomNavigationBehavior
 import java.lang.Exception
 import java.util.*
 
@@ -83,6 +85,10 @@ GoogleApiClient.OnConnectionFailedListener
         )
 //        setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        val layoutParams = navView.layoutParams as CoordinatorLayout.LayoutParams
+        layoutParams.behavior = BottomNavigationBehavior()
+
         checkPermissionsState()
 
     }

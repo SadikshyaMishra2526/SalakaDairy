@@ -79,7 +79,6 @@
         android:layout_width="@dimen/_90sdp"
         android:layout_height="@dimen/_100sdp"
         android:layout_marginTop="56dp"
-
         android:layout_marginEnd="352dp"
         android:src="@drawable/line"
         app:layout_constraintEnd_toEndOf="parent"
@@ -200,6 +199,19 @@
                         android:id="@+id/discounted_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
+                    <Button
+                        android:id="@+id/bt_add_to_cart"
+                        android:layout_width="@dimen/_75sdp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/cart"
+                        android:textSize="@dimen/_8sdp"
+                        android:background="@color/main_color"
+                        android:drawableLeft="@drawable/ic_baseline_shopping_cart_24"
+                        />
                 </LinearLayout>
 
                 <View
@@ -221,7 +233,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/view_divider" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="@dimen/_5sdp"
@@ -239,6 +251,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/relatedProductRecycler"
                         android:layout_width="match_parent"
+                        android:layout_marginBottom="@dimen/_50sdp"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
 

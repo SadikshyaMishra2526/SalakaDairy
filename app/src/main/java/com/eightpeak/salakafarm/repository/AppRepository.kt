@@ -28,12 +28,16 @@ class AppRepository {
     suspend fun getUserDetails(tokenManager: TokenManager) =  RetrofitInstance.useApiWithAccessToken(tokenManager).userDetails()
 
 
-   suspend fun getSearchResponse(tokenManager: TokenManager,keyboard:String,filterSort:String) =  RetrofitInstance.useApiWithAccessToken(tokenManager).getSearchResponse(keyboard,filterSort)
+   suspend fun getSearchResponse(keyboard:String,filterSort:String) =  RetrofitInstance.useApiWithoutToken.getSearchResponse(keyboard,filterSort)
 
 
     suspend fun addToCart(tokenManager: TokenManager,product_id:String,qty:String,options:String) =  RetrofitInstance.useApiWithAccessToken(tokenManager).addToCart(product_id,qty,options)
 
 
-    suspend fun addToWishList(tokenManager: TokenManager,product_id:String) =  RetrofitInstance.useApiWithoutToken.addToWishList(product_id)
+    suspend  fun addToWishList(tokenManager: TokenManager,product_id:String) =  RetrofitInstance.useApiWithAccessToken(tokenManager).addToWishList(product_id)
+
+
+   suspend  fun getCartList(tokenManager: TokenManager) =  RetrofitInstance.useApiWithAccessToken(tokenManager).getCartList()
+   suspend  fun getWishList(tokenManager: TokenManager) =  RetrofitInstance.useApiWithAccessToken(tokenManager).getWishList()
 
 }

@@ -3,6 +3,8 @@ package com.eightpeak.salakafarm.serverconfig
 import UserProfileModel
 import com.eightpeak.salakafarm.utils.EndPoints
 import com.eightpeak.salakafarm.serverconfig.network.AccessToken
+import com.eightpeak.salakafarm.utils.EndPoints.Companion.GET_CART_DETAILS
+import com.eightpeak.salakafarm.utils.EndPoints.Companion.GET_WISHLIST_DETAILS
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.REFRESH_TOKEN
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.SEARCH_RESPONSE
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.USER_DETAILS
@@ -12,6 +14,7 @@ import com.eightpeak.salakafarm.views.home.products.ProductModel
 import com.eightpeak.salakafarm.views.home.products.ServerResponse
 import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdModel
 import com.eightpeak.salakafarm.views.home.slider.SliderModel
+import com.eightpeak.salakafarm.views.home.ui.addtocart.CartResponse
 import com.eightpeak.salakafarm.views.login.LoginResponse
 import com.eightpeak.salakafarm.views.register.RegisterResponse
 import com.eightpeak.salakafarm.views.search.SearchModel
@@ -55,6 +58,7 @@ interface ApiInterface {
     @GET(USER_DETAILS)
     suspend fun userDetails():Response<UserProfileModel>
 
+
      @GET(SEARCH_RESPONSE)
     suspend fun getSearchResponse(@Query("keyword") keyword: String,@Query("filter_sort") filter_sort: String):Response<SearchModel>
 
@@ -66,5 +70,12 @@ interface ApiInterface {
      @POST(EndPoints.ADD_TO_CART)
     suspend fun addToCart(@Field("product_id") product_id: String,@Field("qty") qty: String,@Field("options") options: String): Response<ServerResponse>
 
+
+    @GET(GET_CART_DETAILS)
+    suspend fun getCartList():Response<List<CartResponse>>
+
+
+    @GET(GET_WISHLIST_DETAILS)
+    suspend fun getWishList():Response<List<CartResponse>>
 
 }

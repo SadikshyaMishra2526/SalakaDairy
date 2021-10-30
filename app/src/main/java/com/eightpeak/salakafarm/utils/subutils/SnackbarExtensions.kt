@@ -2,11 +2,15 @@ package com.hadi.retrofitmvvm.util
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.IntegerRes
+import com.eightpeak.salakafarm.R
+import com.eightpeak.salakafarm.views.home.HomeActivity
+import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdActivity
 import com.google.android.material.snackbar.Snackbar
 
 @SuppressLint("ResourceType")
@@ -39,6 +43,42 @@ fun View.errorSnack(message: String, length: Int = Snackbar.LENGTH_LONG) {
     snack.setActionTextColor(Color.parseColor("#FFFFFF"))
     snack.view.setBackgroundColor(Color.parseColor("#C62828"))
     snack.show()
+}
+
+
+fun View.successWishListSnack(
+
+    message1: Context,
+    message: String,
+    length: Int = Snackbar.LENGTH_LONG
+) {
+    val snackbar = Snackbar
+        .make(this, message, length)
+        .setAction(context.getString(R.string.view_wishlist)) {
+            val intent = Intent(message1, HomeActivity::class.java)
+            message1.startActivity(intent)
+
+        }
+    snackbar.setActionTextColor(Color.parseColor("#FFFFFF"))
+    snackbar.view.setBackgroundColor(Color.parseColor("#00FF00"))
+    snackbar.show()
+}
+
+fun View.successAddToCartSnack(
+    context: Context,
+    message: String,
+    length: Int = Snackbar.LENGTH_LONG
+) {
+    val snackbar = Snackbar
+        .make(this, message, length)
+        .setAction(context.getString(R.string.view_cart)) {
+            val intent = Intent(context, HomeActivity::class.java)
+            context.startActivity(intent)
+
+        }
+    snackbar.setActionTextColor(Color.parseColor("#FFFFFF"))
+    snackbar.view.setBackgroundColor(Color.parseColor("#00FF00"))
+    snackbar.show()
 }
 
 @SuppressLint("ResourceType")

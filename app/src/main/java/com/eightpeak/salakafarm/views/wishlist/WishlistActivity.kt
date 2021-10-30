@@ -1,23 +1,19 @@
-package com.eightpeak.salakafarm.views.home.ui.addtocart
+package com.eightpeak.salakafarm.views.wishlist
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.api.load
 import com.eightpeak.salakafarm.R
-import com.eightpeak.salakafarm.databinding.FragmentAddToCartBinding
+import com.eightpeak.salakafarm.databinding.ActivityWishlistBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
@@ -25,35 +21,32 @@ import com.eightpeak.salakafarm.utils.EndPoints
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.GetResponseViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
-import com.eightpeak.salakafarm.views.home.categories.CategoriesAdapter
-import com.eightpeak.salakafarm.views.home.categories.CategoriesSeeAllActivity
-import com.eightpeak.salakafarm.views.home.slider.SliderModel
+import com.eightpeak.salakafarm.views.home.ui.addtocart.CartResponse
 import com.google.android.material.snackbar.Snackbar
 import com.hadi.retrofitmvvm.util.errorSnack
-import kotlinx.android.synthetic.main.fragment_categories.*
 
-class AddToCartFragment : Fragment() {
+class WishlistActivity : AppCompatActivity() {
     private lateinit var viewModel: GetResponseViewModel
-    private var _binding: FragmentAddToCartBinding? = null
+    private var _binding: ActivityWishlistBinding? = null
+
+    var layoutManager: LinearLayoutManager? = null
     private var tokenManager: TokenManager? = null
-    private lateinit var binding: FragmentAddToCartBinding
+
+    private lateinit var binding: ActivityWishlistBinding
     private  var quantity: Int = 0
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        parent: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentAddToCartBinding.inflate(layoutInflater, parent, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityWishlistBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         tokenManager = TokenManager.getInstance(
-            requireActivity().getSharedPreferences(
+            getSharedPreferences(
                 Constants.TOKEN_PREF,
-                AppCompatActivity.MODE_PRIVATE
+                MODE_PRIVATE
             )
         )
         setupViewModel()
-        return binding.addToCart
     }
 
 
@@ -73,20 +66,20 @@ class AddToCartFragment : Fragment() {
 
     private fun setupViewModel() {
         val repository = AppRepository()
-        val factory = ViewModelProviderFactory(requireActivity().application, repository)
+        val factory = ViewModelProviderFactory(application, repository)
         viewModel = ViewModelProvider(this, factory).get(GetResponseViewModel::class.java)
         getPictures()
     }
 
     private fun getPictures() {
-        tokenManager?.let { it1 -> viewModel.getCartResponse(it1) }
+        tokenManager?.let { it1 -> viewModel.getWishListResponse(it1) }
 
-        viewModel.cartResponse.observe(requireActivity(), Observer { response ->
+        viewModel.wishListResponse.observe(this, Observer { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
-                        Log.i("TAG", "getPictures: $picsResponse")
+                        Log.i("TAG", "getPictures:cccccccccccccccccccc ${picsResponse.size}")
                         getSelectedProducts(picsResponse)
 //                        binding.shimmerLayout.stopShimmer()
 //                        binding.shimmerLayout.visibility = View.GONE
@@ -99,7 +92,7 @@ class AddToCartFragment : Fragment() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        binding.addToCart.errorSnack(message, Snackbar.LENGTH_LONG)
+                        binding.wishlistView.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 
                 }
@@ -114,7 +107,7 @@ class AddToCartFragment : Fragment() {
     private fun getSelectedProducts(cartResponse: List<CartResponse>) {
         for (i in cartResponse.indices) {
             val itemView: View =
-                LayoutInflater.from(requireContext())
+                LayoutInflater.from(this)
                     .inflate(R.layout.cart_item, binding.viewCartList, false)
 
             val categorySKU = itemView.findViewById<TextView>(R.id.product_sku)
@@ -163,8 +156,9 @@ class AddToCartFragment : Fragment() {
         //Preventing Click during loading
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun onDestroy() {
+        super.onDestroy()
         _binding = null
     }
+
 }

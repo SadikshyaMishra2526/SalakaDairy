@@ -36,7 +36,7 @@
         android:id="@+id/navigation_cart"
         android:name="com.eightpeak.salakafarm.views.home.ui.addtocart.AddToCartFragment"
         android:label="@string/cart"
-        tools:layout="@layout/layout_add_to_cart" >
+        tools:layout="@layout/fragment_add_to_cart" >
 
         <action
             android:id="@+id/action_navigation_cart_to_navigation_home"

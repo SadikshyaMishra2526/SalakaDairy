@@ -33,7 +33,7 @@ private val appRepository: AppRepository
         searchData.postValue(Resource.Loading())
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
-                val response = appRepository.getSearchResponse(tokenManager,keyword,filterSort)
+                val response = appRepository.getSearchResponse(keyword,filterSort)
                 Log.i("TAG", "fetchPics: $response")
                 searchData.postValue(handlePicsResponse(response))
             } else {

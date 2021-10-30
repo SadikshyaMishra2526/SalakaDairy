@@ -42,8 +42,12 @@ class ViewModelProviderFactory(
         if (modelClass.isAssignableFrom(UserProfileViewModel::class.java)) {
             return UserProfileViewModel(app, appRepository) as T
         }
-   if (modelClass.isAssignableFrom(SearchViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(SearchViewModel::class.java)) {
             return SearchViewModel(app, appRepository) as T
+        }
+
+        if (modelClass.isAssignableFrom(GetResponseViewModel::class.java)) {
+            return GetResponseViewModel(app, appRepository) as T
         }
 
         throw IllegalArgumentException("Unknown class name")

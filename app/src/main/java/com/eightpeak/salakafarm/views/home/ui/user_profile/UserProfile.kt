@@ -1,5 +1,6 @@
 package com.eightpeak.salakafarm.views.home.ui.user_profile
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.eightpeak.salakafarm.R
@@ -11,6 +12,7 @@ import android.view.Window
 import androidx.core.content.ContextCompat
 
 import android.view.WindowManager
+import com.eightpeak.salakafarm.views.wishlist.WishlistActivity
 
 
 class UserProfile : AppCompatActivity() {
@@ -34,6 +36,10 @@ class UserProfile : AppCompatActivity() {
         binding.userPhone.text=userPrefManager.contactNo
         binding.userLogout.setOnClickListener {
             userPrefManager.clearData()
+        }
+        binding.wishlistView.setOnClickListener {
+            val mainActivity = Intent(this, WishlistActivity::class.java)
+            startActivity(mainActivity)
         }
     }
 
