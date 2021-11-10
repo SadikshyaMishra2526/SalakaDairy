@@ -9,7 +9,7 @@ android:shape="rectangle" >
     android:topRightRadius="10dp" />
 
 <solid android:color="#FBFCFC" />
-<stroke android:color="@color/main_color"
+<stroke android:color="@color/sub_color"
     android:width="@dimen/_1sdp"/>
 <padding
     android:bottom="0dp"

@@ -8,9 +8,10 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.IntegerRes
+import androidx.core.content.ContextCompat
 import com.eightpeak.salakafarm.R
-import com.eightpeak.salakafarm.views.home.HomeActivity
-import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdActivity
+import com.eightpeak.salakafarm.views.addtocart.CartActivity
+import com.eightpeak.salakafarm.views.wishlist.WishlistActivity
 import com.google.android.material.snackbar.Snackbar
 
 @SuppressLint("ResourceType")
@@ -48,19 +49,19 @@ fun View.errorSnack(message: String, length: Int = Snackbar.LENGTH_LONG) {
 
 fun View.successWishListSnack(
 
-    message1: Context,
+    context: Context,
     message: String,
     length: Int = Snackbar.LENGTH_LONG
 ) {
     val snackbar = Snackbar
         .make(this, message, length)
         .setAction(context.getString(R.string.view_wishlist)) {
-            val intent = Intent(message1, HomeActivity::class.java)
-            message1.startActivity(intent)
+            val intent = Intent(context, WishlistActivity::class.java)
+            context.startActivity(intent)
 
         }
     snackbar.setActionTextColor(Color.parseColor("#FFFFFF"))
-    snackbar.view.setBackgroundColor(Color.parseColor("#00FF00"))
+    snackbar.view.setBackgroundColor(ContextCompat.getColor(context, R.color.main_color))
     snackbar.show()
 }
 
@@ -72,12 +73,12 @@ fun View.successAddToCartSnack(
     val snackbar = Snackbar
         .make(this, message, length)
         .setAction(context.getString(R.string.view_cart)) {
-            val intent = Intent(context, HomeActivity::class.java)
+            val intent = Intent(context, CartActivity::class.java)
             context.startActivity(intent)
 
         }
     snackbar.setActionTextColor(Color.parseColor("#FFFFFF"))
-    snackbar.view.setBackgroundColor(Color.parseColor("#00FF00"))
+    snackbar.view.setBackgroundColor(ContextCompat.getColor(context, R.color.main_color))
     snackbar.show()
 }
 

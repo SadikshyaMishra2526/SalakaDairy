@@ -7,9 +7,11 @@ import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 class AppRepository {
 
 
-    suspend fun loginUser(body: RequestBodies.LoginBody) = RetrofitInstance.useApiWithoutToken.loginCustomer(body)
+    suspend fun loginUser(body: RequestBodies.LoginBody) =
+        RetrofitInstance.useApiWithoutToken.loginCustomer(body)
 
-    suspend fun registerUser(body: RequestBodies.RegisterBody) = RetrofitInstance.useApiWithoutToken.registerCustomer(body)
+    suspend fun registerUser(body: RequestBodies.RegisterBody) =
+        RetrofitInstance.useApiWithoutToken.registerCustomer(body)
 
 
     suspend fun fetchSlider() = RetrofitInstance.useApiWithoutToken.getSlider()
@@ -17,27 +19,46 @@ class AppRepository {
     suspend fun getCategoriesList() = RetrofitInstance.useApiWithoutToken.getCategoriesList()
 
 
-    suspend fun getCategoriesListById(id: String) = RetrofitInstance.useApiWithoutToken.getCategoriesById(id)
+    suspend fun getCategoriesListById(id: String) =
+        RetrofitInstance.useApiWithoutToken.getCategoriesById(id)
 
-    suspend fun getProductList() =  RetrofitInstance.useApiWithoutToken.getProductList()
-
-
-    suspend fun getProductListById(id:String) =  RetrofitInstance.useApiWithoutToken.getProductById(id)
+    suspend fun getProductList() = RetrofitInstance.useApiWithoutToken.getProductList()
 
 
-    suspend fun getUserDetails(tokenManager: TokenManager) =  RetrofitInstance.useApiWithAccessToken(tokenManager).userDetails()
+    suspend fun getProductListById(id: String) =
+        RetrofitInstance.useApiWithoutToken.getProductById(id)
 
 
-   suspend fun getSearchResponse(keyboard:String,filterSort:String) =  RetrofitInstance.useApiWithoutToken.getSearchResponse(keyboard,filterSort)
+    suspend fun getUserDetails(tokenManager: TokenManager) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).userDetails()
 
 
-    suspend fun addToCart(tokenManager: TokenManager,product_id:String,qty:String,options:String) =  RetrofitInstance.useApiWithAccessToken(tokenManager).addToCart(product_id,qty,options)
+    suspend fun getSearchResponse(keyboard: String, filterSort: String) =
+        RetrofitInstance.useApiWithoutToken.getSearchResponse(keyboard, filterSort)
 
 
-    suspend  fun addToWishList(tokenManager: TokenManager,product_id:String) =  RetrofitInstance.useApiWithAccessToken(tokenManager).addToWishList(product_id)
+    suspend fun addToCart(
+        tokenManager: TokenManager,
+        product_id: String,
+        qty: String,
+        options: String
+    ) = RetrofitInstance.useApiWithAccessToken(tokenManager).addToCart(product_id, qty, options)
 
 
-   suspend  fun getCartList(tokenManager: TokenManager) =  RetrofitInstance.useApiWithAccessToken(tokenManager).getCartList()
-   suspend  fun getWishList(tokenManager: TokenManager) =  RetrofitInstance.useApiWithAccessToken(tokenManager).getWishList()
+    suspend fun addToWishList(tokenManager: TokenManager, product_id: String) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).addToWishList(product_id)
+
+
+    suspend fun getCartList(tokenManager: TokenManager) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).getCartList()
+
+    suspend fun getWishList(tokenManager: TokenManager) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).getWishList()
+
+  suspend fun deleteWishListItem(tokenManager: TokenManager, product_id: String) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).deleteWishlistItem(product_id)
+
+    suspend fun getCompareProduct(productId: List<String>) =
+        RetrofitInstance.useApiWithoutToken.getCompareProduct(productId)
 
 }

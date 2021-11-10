@@ -13,8 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.021">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/return_home"
@@ -101,6 +100,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <ProgressBar
+                    android:id="@+id/progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
                 <RelativeLayout
                     android:id="@+id/product_image_layout"
                     android:layout_width="wrap_content"
@@ -196,7 +204,7 @@
                         android:textColor="@color/black" />
 
                     <TextView
-                        android:id="@+id/discounted_price"
+                        android:id="@+id/product_price_discount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <View
@@ -233,6 +241,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/view_divider" />
 
                 <LinearLayout
+                    android:id="@+id/linearLayout3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -245,36 +254,27 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/related_products"
-                        android:textStyle="bold"
-                        android:textColor="@color/main_color" />
+                        android:textColor="@color/main_color"
+                        android:textStyle="bold" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/relatedProductRecycler"
                         android:layout_width="match_parent"
-                        android:layout_marginBottom="@dimen/_50sdp"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"/>
+                    <LinearLayout
+                        android:id="@+id/linearLayout2"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_16sdp"
+                        android:orientation="horizontal"
+                        android:background="@drawable/product_low_design"
+
+                        android:layout_marginBottom="@dimen/_30sdp" />
+
                 </LinearLayout>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 
     </androidx.cardview.widget.CardView>
 
-    <ProgressBar
-        android:id="@+id/progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_14sdp"
-        android:background="@drawable/product_low_design"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

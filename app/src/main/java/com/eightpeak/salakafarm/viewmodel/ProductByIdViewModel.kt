@@ -79,7 +79,7 @@ class ProductByIdViewModel (
 
 
 
-    fun addToCartView(tokenManager: TokenManager, productId:String,qty:String,options:String) = viewModelScope.launch {
+    fun addToCart(tokenManager: TokenManager, productId:String,qty:String,options:String) = viewModelScope.launch {
         addToCartById(tokenManager,productId,qty,options)
     }
 
@@ -129,9 +129,6 @@ class ProductByIdViewModel (
 //    add to wishlist
 
     val wishlist: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
-
-
-
     fun addTowishlist(tokenManager: TokenManager, productId:String) = viewModelScope.launch {
         wishlistByView(tokenManager,productId)
     }

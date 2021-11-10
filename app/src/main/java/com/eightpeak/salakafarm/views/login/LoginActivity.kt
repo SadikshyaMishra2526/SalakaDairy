@@ -116,7 +116,7 @@ class LoginActivity : AppCompatActivity() {
                                  userPrefManager.userCountry=loginResponse.country
                                 val mainActivity = Intent(this@LoginActivity, HomeActivity::class.java)
                                 startActivity(mainActivity)
-
+                                finish()
                             }
                         }
 

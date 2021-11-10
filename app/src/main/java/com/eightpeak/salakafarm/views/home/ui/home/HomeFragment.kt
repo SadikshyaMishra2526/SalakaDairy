@@ -67,7 +67,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
         tokenManager = TokenManager.getInstance(requireActivity().getSharedPreferences(
             Constants.TOKEN_PREF,
             AppCompatActivity.MODE_PRIVATE
-        ));
+        ))
         binding.customerProfile.setOnClickListener {
             tokenManager?.let {
                 if (it.token!= NO_LOGIN) {

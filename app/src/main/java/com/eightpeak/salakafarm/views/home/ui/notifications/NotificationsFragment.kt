@@ -15,7 +15,7 @@ class NotificationsFragment : Fragment() {
 
     private lateinit var notificationsViewModel: NotificationsViewModel
     private var _binding: FragmentNotificationsBinding? = null
-private var TAG: String?="NotificationsFragment"
+    private var TAG: String?="NotificationsFragment"
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -31,11 +31,11 @@ private var TAG: String?="NotificationsFragment"
         _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textNotifications
-            notificationsViewModel.text.observe(viewLifecycleOwner, Observer {
-                Log.i(TAG, "onCreateView: $it")
-            textView.text = it
-        })
+//        val textView: TextView = binding.textNotifications
+//            notificationsViewModel.text.observe(viewLifecycleOwner, Observer {
+//                Log.i(TAG, "onCreateView: $it")
+//            textView.text = it
+//        })
         return root
     }
 

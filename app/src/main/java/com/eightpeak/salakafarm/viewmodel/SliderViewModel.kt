@@ -21,6 +21,33 @@ class SliderViewModel(
 
         val picsData: MutableLiveData<Resource<List<SliderModel>>> = MutableLiveData()
 
+
+
+    init {
+        getWifiConnectionCheck()
+    }
+
+    private fun getWifiConnectionCheck() = viewModelScope.launch {
+        if (Utils.hasInternetConnection(getApplication<Application>())) {
+
+        } else {
+            picsData.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         init {
             getSliderPictures()
         }

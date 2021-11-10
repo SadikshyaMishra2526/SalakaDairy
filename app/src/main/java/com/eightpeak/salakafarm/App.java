@@ -3,6 +3,8 @@ package com.eightpeak.salakafarm;
 import android.app.Application;
 import android.content.Context;
 
+import java.util.ArrayList;
+
 
 public class App extends Application {
      private static Context appContext;
@@ -20,6 +22,16 @@ public class App extends Application {
         appContext = mAppContext;
     }
 
+
+    private static ArrayList<String> data = new ArrayList<>();
+
+    public static void addItem(String item) {
+        data.add(item);
+    }
+
+    public static ArrayList<String> getData() {
+        return data;
+    }
     @Override
     public void onCreate() {
         super.onCreate();

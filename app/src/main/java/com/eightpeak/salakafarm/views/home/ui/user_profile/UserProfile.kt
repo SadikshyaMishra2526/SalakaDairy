@@ -1,17 +1,22 @@
 package com.eightpeak.salakafarm.views.home.ui.user_profile
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
-import com.eightpeak.salakafarm.databinding.ActivityHomeBinding
-import com.eightpeak.salakafarm.databinding.ActivityUserProfileBinding
 import android.view.Window
 
 import androidx.core.content.ContextCompat
 
 import android.view.WindowManager
+import com.eightpeak.salakafarm.databinding.ActivityUserProfileBinding
+import com.eightpeak.salakafarm.serverconfig.network.TokenManager
+import com.eightpeak.salakafarm.utils.Constants
+import com.eightpeak.salakafarm.views.home.HomeActivity
+import com.eightpeak.salakafarm.views.splash.SplashActivity
 import com.eightpeak.salakafarm.views.wishlist.WishlistActivity
 
 
@@ -21,25 +26,48 @@ class UserProfile : AppCompatActivity() {
 
     private lateinit var binding: ActivityUserProfileBinding
 
+    private var tokenManager: TokenManager? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        tokenManager = TokenManager.getInstance(
+            getSharedPreferences(
+                Constants.TOKEN_PREF,
+                AppCompatActivity.MODE_PRIVATE
+            )
+        );
         binding = ActivityUserProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
         getStatusColor()
         userPrefManager = UserPrefManager(this)
-         binding.userName.text=userPrefManager.firstName+" "+userPrefManager.lastName
-        binding.userEmail.text=userPrefManager.email
-        binding.userAddress1.text=userPrefManager.userAddress1
-        binding.userAddress2.text=userPrefManager.userAddress2
-        binding.userCountry.text=userPrefManager.userCountry
-        binding.userPhone.text=userPrefManager.contactNo
+        binding.userName.text = userPrefManager.firstName + " " + userPrefManager.lastName
+        binding.userEmail.text = userPrefManager.email
+        binding.userAddress1.text = userPrefManager.userAddress1
+        binding.userAddress2.text = userPrefManager.userAddress2
+        binding.userCountry.text = userPrefManager.userCountry
+        binding.userPhone.text = userPrefManager.contactNo
+
+        binding.headerLayout.headerName.text = "User Profile"
+
         binding.userLogout.setOnClickListener {
-            userPrefManager.clearData()
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle(R.string.logout)
+            builder.setMessage(R.string.logout_msg)
+            builder.setPositiveButton(R.string.logout,
+                DialogInterface.OnClickListener { dialog, which ->
+                    userPrefManager.clearData()
+                    tokenManager?.deleteToken()
+                    startActivity(Intent(this@UserProfile, HomeActivity::class.java))
+                    finish()
+                })
+            builder.setNegativeButton(R.string.cancel, null)
+
+            val dialog = builder.create()
+            dialog.show()
+
         }
-        binding.wishlistView.setOnClickListener {
-            val mainActivity = Intent(this, WishlistActivity::class.java)
-            startActivity(mainActivity)
+        binding.viewWishlist.setOnClickListener {
+            startActivity(Intent(this@UserProfile,WishlistActivity::class.java))
+            finish()
         }
     }
 

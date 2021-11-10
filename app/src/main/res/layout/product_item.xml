@@ -69,6 +69,7 @@
         android:text="Product Name"
         android:textColor="@color/main_color"
         android:textSize="@dimen/_10sdp"
+        android:textStyle="bold"
         android:layout_marginStart="@dimen/_5sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.00"
@@ -80,7 +81,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Product Feature"
-        android:textSize="@dimen/_10sdp"
+        android:textSize="@dimen/_9sdp"
+        android:layout_margin="@dimen/_3sdp"
         android:layout_marginStart="@dimen/_5sdp"
         android:textColor="@color/tab_indicator_gray"
         app:layout_constraintEnd_toEndOf="parent"
@@ -106,10 +108,15 @@
             android:textColor="@color/sub_color"
             android:text="Rs.100" />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/product_price_discount"
+            android:textSize="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/sub_color"
+            android:text="Rs.100" />
     </LinearLayout>
 
     <Button

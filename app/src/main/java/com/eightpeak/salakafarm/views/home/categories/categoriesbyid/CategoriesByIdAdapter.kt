@@ -2,6 +2,7 @@ package com.eightpeak.salakafarm.views.home.categories.categoriesbyid
 
 import android.app.Application
 import android.content.Intent
+import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,6 +19,7 @@ import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.EndPoints
+import com.eightpeak.salakafarm.utils.GeneralUtils
 import com.eightpeak.salakafarm.views.home.products.AddToCartView
 import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdActivity
 import kotlinx.android.synthetic.main.product_item.view.*
@@ -55,18 +57,37 @@ class CategoriesByIdAdapter : RecyclerView.Adapter<CategoriesByIdAdapter.Categor
         val categoriesItem = differ.currentList[position]
         userPrefManager= UserPrefManager(App.getContext())
 
-        Log.i("TAG", "onBindViewHolder:Categories "+categoriesItem.image)
         holder.itemView.apply {
             product_thumbnail.load(EndPoints.BASE_URL +categoriesItem.image)
-//            if(productsItem.descriptions.isNotEmpty()){
-//              if(userPrefManager.language.equals("ne")){
-//                  product_name.text = productsItem.descriptions[1].name
-//              }else{
-//                  product_name.text = productsItem.descriptions[0].name
-//
-//              }
-//            }
-            product_price.text = categoriesItem.price.toString()
+            if (categoriesItem.descriptions.isNotEmpty()) {
+                if (userPrefManager.language.equals("ne")) {
+                    product_name.text = categoriesItem.descriptions[1].name
+
+                    if(!categoriesItem.cost.equals("0")){
+                        product_price_discount.text= GeneralUtils.getUnicodeNumber(categoriesItem.price.toString())
+                        product_price_discount.paintFlags = product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                        product_price.text =
+                            context.getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(categoriesItem.cost.toString())
+                    }else{
+                        product_price.text =
+                            context.getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(categoriesItem.price.toString())
+                    }
+
+                } else {
+                    product_name.text = categoriesItem.descriptions[0].name
+
+                    if(!categoriesItem.cost.equals("0")){
+                        product_price_discount.text=categoriesItem.price.toString()
+                        product_price_discount.paintFlags = product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                        product_price.text =
+                            context.getString(R.string.rs) + categoriesItem.cost.toString()
+                    }else{
+                        product_price.text =
+                            context.getString(R.string.rs) + categoriesItem.price.toString()
+                    }
+                }
+            }
+
             bt_add_to_cart.setOnClickListener {
                 val args = Bundle()
                 args.putString(Constants.PRODUCT_ID, categoriesItem.id.toString())

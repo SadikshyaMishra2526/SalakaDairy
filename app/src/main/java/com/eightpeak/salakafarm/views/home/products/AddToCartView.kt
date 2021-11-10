@@ -110,7 +110,7 @@ class AddToCartView : BottomSheetDialogFragment() {
         }
 
         binding.btAddToCart.setOnClickListener {
-            tokenManager?.let { it1 -> viewModel.addToCartView(it1,picsResponse.id.toString(),quantity.toString(),"") }
+            tokenManager?.let { it1 -> viewModel.addToCart(it1,picsResponse.id.toString(),quantity.toString(),"") }
         }
         viewModel.addToCart.observe(this, Observer { response ->
             when (response) {

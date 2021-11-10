@@ -1,11 +1,11 @@
 package com.eightpeak.salakafarm.views.home.products
 
 import android.content.Intent
+import android.graphics.Paint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +13,6 @@ import coil.api.load
 import com.eightpeak.salakafarm.App
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
-import com.eightpeak.salakafarm.utils.AppUtils
 import com.eightpeak.salakafarm.utils.Constants.Companion.PRODUCT_ID
 import com.eightpeak.salakafarm.utils.EndPoints
 import com.eightpeak.salakafarm.utils.GeneralUtils
@@ -23,7 +22,13 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import androidx.fragment.app.FragmentActivity
 
 import android.os.Bundle
-import com.eightpeak.salakafarm.repository.AppRepository
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+
+
+
+
+
+
 
 
 class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductListViewHolder>() {
@@ -57,7 +62,6 @@ class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductListViewHolder
 
     override fun onBindViewHolder(holder: ProductListViewHolder, position: Int) {
         val categoriesItem = differ.currentList[position]
-        Log.i("TAG", "onBindViewHolder:Categories " + categoriesItem.image)
         holder.itemView.apply {
             product_thumbnail.load(EndPoints.BASE_URL + categoriesItem.image)
 
@@ -66,17 +70,34 @@ class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductListViewHolder
             if (categoriesItem.descriptions.isNotEmpty()) {
                 if (userPrefManager.language.equals("ne")) {
                     product_name.text = categoriesItem.descriptions[1].name
-                    product_price.text =
-                        context.getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(categoriesItem.price.toString())
+
+                  if(!categoriesItem.cost.equals("0")){
+                      product_price_discount.text=GeneralUtils.getUnicodeNumber(categoriesItem.price.toString())
+                      product_price_discount.paintFlags = product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                      product_price.text =
+                          context.getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(categoriesItem.cost.toString())
+                  }else{
+                      product_price.text =
+                          context.getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(categoriesItem.price.toString())
+                  }
 
                 } else {
                     product_name.text = categoriesItem.descriptions[0].name
-                    product_price.text =
-                        context.getString(R.string.rs) + categoriesItem.price.toString()
 
+                    if(!categoriesItem.cost.equals("0")){
+                        product_price_discount.text=categoriesItem.price.toString()
+                        product_price_discount.paintFlags = product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                        product_price.text =
+                            context.getString(R.string.rs) + categoriesItem.cost.toString()
+                    }else{
+                        product_price.text =
+                            context.getString(R.string.rs) + categoriesItem.price.toString()
+                    }
                 }
             }
 
+
+            product_feature.text=categoriesItem.sku
             bt_add_to_cart.setOnClickListener {
                 val args = Bundle()
                 args.putString(PRODUCT_ID, categoriesItem.id.toString())
@@ -94,13 +115,21 @@ class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductListViewHolder
             }
 
             product_add_to_wishlist.setOnClickListener {
+                val intent = Intent("custom-message")
+                 intent.putExtra("wishlist", true)
+                intent.putExtra("product_id", categoriesItem.id.toString())
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
 
+            }
+
+            product_add_to_compare_list.setOnClickListener {
+                val intent = Intent("custom-message")
+                intent.putExtra("compare_list", true)
+                intent.putExtra("product_id", categoriesItem.id.toString())
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
 
             }
         }
 
-    }
-    interface OnItemClick {
-        fun onClick(value: String?)
     }
 }

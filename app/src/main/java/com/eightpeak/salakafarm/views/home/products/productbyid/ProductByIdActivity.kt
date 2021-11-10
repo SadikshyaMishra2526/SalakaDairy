@@ -2,6 +2,7 @@ package com.eightpeak.salakafarm.views.home.products.productbyid
 
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Paint
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
@@ -14,19 +15,21 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import coil.api.load
 import com.eightpeak.salakafarm.R
+import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.databinding.FragmentProductViewByIdBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.Constants.Companion.PRODUCT_ID
 import com.eightpeak.salakafarm.utils.EndPoints
+import com.eightpeak.salakafarm.utils.GeneralUtils
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.ProductByIdViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
+import com.eightpeak.salakafarm.views.addtocart.CartActivity
 import com.eightpeak.salakafarm.views.home.HomeActivity
 import com.google.android.material.snackbar.Snackbar
 import com.hadi.retrofitmvvm.util.errorSnack
-import com.hadi.retrofitmvvm.util.successAddToCartSnack
 import com.hadi.retrofitmvvm.util.successWishListSnack
 import kotlinx.android.synthetic.main.fragment_product_view_by_id.*
 
@@ -37,6 +40,7 @@ import com.smarteist.autoimageslider.SliderAnimations
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
 
 import com.smarteist.autoimageslider.IndicatorView.draw.controller.DrawController.ClickListener
+import kotlinx.android.synthetic.main.product_item.view.*
 
 
 class ProductByIdActivity : AppCompatActivity() {
@@ -50,11 +54,13 @@ class ProductByIdActivity : AppCompatActivity() {
 
     private var tokenManager: TokenManager? = null
 
+    private var userPrefManager: UserPrefManager? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentProductViewByIdBinding.inflate(layoutInflater)
         setContentView(binding.root)
         tokenManager = TokenManager.getInstance(getSharedPreferences(Constants.TOKEN_PREF, MODE_PRIVATE))
+        userPrefManager = UserPrefManager(this)
 
         init()
     }
@@ -123,29 +129,69 @@ class ProductByIdActivity : AppCompatActivity() {
         })
     }
 
+
+
     @RequiresApi(Build.VERSION_CODES.N)
     private fun setProductsDetails(productDetailsByIdResponse: ProductByIdModel) {
 
+        product_price.text = productDetailsByIdResponse.price.toString()
+
         if (productDetailsByIdResponse.descriptions.isNotEmpty()) {
-            product_details_name.text = productDetailsByIdResponse.descriptions[0].name
-            product_content.text =
-                Html.fromHtml(
-                    productDetailsByIdResponse.descriptions[0].content,
-                    Html.FROM_HTML_MODE_COMPACT
-                )
+            if (userPrefManager?.language.equals("ne")) {
+                product_details_name.text = productDetailsByIdResponse.descriptions[1].name
+                product_content.text =
+                    Html.fromHtml(
+                        productDetailsByIdResponse.descriptions[1].content,
+                        Html.FROM_HTML_MODE_COMPACT
+                    )
+                if(!productDetailsByIdResponse.cost.equals("0")){
+                    product_price_discount.text= GeneralUtils.getUnicodeNumber(productDetailsByIdResponse.price.toString())
+                    product_price_discount.paintFlags = product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                    product_price.text =
+                      getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(productDetailsByIdResponse.cost.toString())
+                }else{
+                    product_price.text =
+                        getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(productDetailsByIdResponse.price.toString())
+                }
+
+            } else {
+                product_details_name.text = productDetailsByIdResponse.descriptions[0].name
+                product_content.text =
+                    Html.fromHtml(
+                        productDetailsByIdResponse.descriptions[0].content,
+                        Html.FROM_HTML_MODE_COMPACT
+                    )
+
+                if(!productDetailsByIdResponse.cost.equals("0")){
+                    product_price_discount.text=productDetailsByIdResponse.price.toString()
+                    product_price_discount.paintFlags = product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                    product_price.text =
+                        getString(R.string.rs) + productDetailsByIdResponse.cost.toString()
+                }else{
+                    product_price.text =
+                        getString(R.string.rs) + productDetailsByIdResponse.price.toString()
+                }
+            }
         }
 
-        product_price.text = productDetailsByIdResponse.price.toString()
+
+
+
+
+
+
+
+
+
         product_details_sku.text = productDetailsByIdResponse.sku
         if (productDetailsByIdResponse.images.isNotEmpty()) {
             binding.productDetailsThumbnail.visibility = View.GONE
             sliderList = ArrayList()
             sliderList.add(productDetailsByIdResponse.image)
             for (item in productDetailsByIdResponse.images) {
-                Log.i("TAG", "setProductsDetails: " + item.image)
                 sliderList.add(item.image)
             }
-            showSlider(sliderList!!)
+            showSlider(sliderList)
         } else {
             binding.productsDetailSlider.visibility = View.GONE
             binding.productDetailsThumbnail.load(EndPoints.BASE_URL + productDetailsByIdResponse.image)
@@ -156,7 +202,7 @@ class ProductByIdActivity : AppCompatActivity() {
         binding.productAddToWishlist.setOnClickListener {
             val productId = productDetailsByIdResponse.id.toString()
             tokenManager?.let { it1 -> viewModel.addTowishlist(it1,productId) }
-            viewModel.addToCart.observe(this, Observer { response ->
+            viewModel.wishlist.observe(this, Observer { response ->
                 when (response) {
                     is Resource.Success -> {
                         hideProgressBar()
@@ -181,32 +227,34 @@ class ProductByIdActivity : AppCompatActivity() {
 
 
         binding.btAddToCart.setOnClickListener {
+            val intent = Intent(this, CartActivity::class.java)
+            startActivity(intent)
 
-            val product_id = intent.getStringExtra(PRODUCT_ID)
-            if (product_id != null) {
-                viewModel.getProductById(product_id)
-            }
-            viewModel.wishlist.observe(this, Observer { response ->
-                when (response) {
-                    is Resource.Success -> {
-                        hideProgressBar()
-                        response.data?.let {
-                            binding.productViewIdLayout.successAddToCartSnack(this,getString(R.string.add_to_cart),Snackbar.LENGTH_LONG)
-                        }
-                    }
-
-                    is Resource.Error -> {
-                        hideProgressBar()
-                        response.message?.let { message ->
-                            product_view_id_layout.errorSnack(message, Snackbar.LENGTH_LONG)
-                        }
-                    }
-
-                    is Resource.Loading -> {
-                        showProgressBar()
-                    }
-                }
-            })
+//            val product_id = intent.getStringExtra(PRODUCT_ID)
+//            if (product_id != null) {
+//                tokenManager?.let { it1 -> viewModel.addToCart(it1,product_id,"1","") }
+//            }
+//            viewModel.addToCart.observe(this, Observer { response ->
+//                when (response) {
+//                    is Resource.Success -> {
+//                        hideProgressBar()
+//                        response.data?.let {
+//                            binding.productViewIdLayout.successAddToCartSnack(this,getString(R.string.add_to_cart),Snackbar.LENGTH_LONG)
+//                        }
+//                    }
+//
+//                    is Resource.Error -> {
+//                        hideProgressBar()
+//                        response.message?.let { message ->
+//                            product_view_id_layout.errorSnack(message, Snackbar.LENGTH_LONG)
+//                        }
+//                    }
+//
+//                    is Resource.Loading -> {
+//                        showProgressBar()
+//                    }
+//                }
+//            })
 
         }
 

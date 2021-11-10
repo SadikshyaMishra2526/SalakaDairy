@@ -1,18 +1,21 @@
 package com.eightpeak.salakafarm.views.wishlist
 
+import android.app.AlertDialog
+import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageButton
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import coil.api.load
 import com.eightpeak.salakafarm.R
+import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.databinding.ActivityWishlistBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
@@ -21,24 +24,25 @@ import com.eightpeak.salakafarm.utils.EndPoints
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.GetResponseViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
-import com.eightpeak.salakafarm.views.home.ui.addtocart.CartResponse
+import com.eightpeak.salakafarm.views.addtocart.addtocartfragment.CartResponse
+import com.eightpeak.salakafarm.views.home.HomeActivity
 import com.google.android.material.snackbar.Snackbar
 import com.hadi.retrofitmvvm.util.errorSnack
+import com.hadi.retrofitmvvm.util.successAddToCartSnack
 
 class WishlistActivity : AppCompatActivity() {
     private lateinit var viewModel: GetResponseViewModel
     private var _binding: ActivityWishlistBinding? = null
-
-    var layoutManager: LinearLayoutManager? = null
     private var tokenManager: TokenManager? = null
-
     private lateinit var binding: ActivityWishlistBinding
-    private  var quantity: Int = 0
+    lateinit var userPrefManager: UserPrefManager
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityWishlistBinding.inflate(layoutInflater)
+
+        userPrefManager= UserPrefManager(this)
         setContentView(binding.root)
         tokenManager = TokenManager.getInstance(
             getSharedPreferences(
@@ -47,22 +51,11 @@ class WishlistActivity : AppCompatActivity() {
             )
         )
         setupViewModel()
+
+
     }
 
 
-    private fun init() {
-//        categoriesAdapter = CategoriesAdapter()
-//        layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-//        binding.viewCartList.layoutManager = layoutManager
-//        binding.viewCartList.setHasFixedSize(true)
-//        binding.viewCartList.isFocusable = false
-//        binding.viewCartList.adapter = categoriesAdapter
-//        binding.seeAllCategories.setOnClickListener {
-//            val intent = Intent(context, CategoriesSeeAllActivity::class.java)
-//            startActivity(intent)
-//        }
-        setupViewModel()
-    }
 
     private fun setupViewModel() {
         val repository = AppRepository()
@@ -108,39 +101,84 @@ class WishlistActivity : AppCompatActivity() {
         for (i in cartResponse.indices) {
             val itemView: View =
                 LayoutInflater.from(this)
-                    .inflate(R.layout.cart_item, binding.viewCartList, false)
+                    .inflate(R.layout.wishlist_item, binding.viewCartList, false)
 
             val categorySKU = itemView.findViewById<TextView>(R.id.product_sku)
             val productThumbnail = itemView.findViewById<ImageView>(R.id.product_thumbnail)
             val productName = itemView.findViewById<TextView>(R.id.product_name)
             val productPrice = itemView.findViewById<TextView>(R.id.product_price)
-            val productAttribute = itemView.findViewById<TextView>(R.id.category_name)
-            val increaseQuantity = itemView.findViewById<ImageButton>(R.id.increase_quantity)
-            val decreaseQuantity = itemView.findViewById<ImageButton>(R.id.decrease_quantity)
-            val quantityView = itemView.findViewById<TextView>(R.id.product_quantity)
-            quantity=cartResponse[i].qty
-            decreaseQuantity.setOnClickListener {
+            val addToCart = itemView.findViewById<Button>(R.id.add_to_cart)
 
-            }
-            increaseQuantity.setOnClickListener {
+            val deleteWishListItem = itemView.findViewById<ImageView>(R.id.delete_wishlist_item)
 
-            }
-
-            increaseQuantity.setOnClickListener { quantity=1
-                quantityView.text=quantity.toString()}
-            decreaseQuantity.setOnClickListener { if(quantity>1){
-                quantity -= 1
-                quantityView.text=quantity.toString()
-            }
-            }
             categorySKU.text = cartResponse[i].products_with_description.sku
-            productName.text = cartResponse[i].products_with_description.descriptions[0].name
-            productPrice.text = cartResponse[i].products_with_description.price.toString()
-            quantityView.text = cartResponse[i].qty.toString()
-            categorySKU.text = cartResponse[i].products_with_description.sku
+             productPrice.text = cartResponse[i].products_with_description.price.toString()
             productThumbnail.load(EndPoints.BASE_URL + cartResponse[i].products_with_description.image)
+
+
+
+            deleteWishListItem.setOnClickListener {
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle("Delete Wishlist Item")
+                builder.setMessage("Are you sure you want to delete this item?")
+                builder.setPositiveButton(R.string.logout,
+                    DialogInterface.OnClickListener { dialog, which ->
+                      tokenManager?.let { it1 -> viewModel.deleteWishlistById(it1,cartResponse[i].id.toString()) }
+                        dialog.dismiss()
+                    })
+                builder.setNegativeButton(R.string.cancel, null)
+
+                val dialog = builder.create()
+                dialog.show()
+
+            }
+
+
+
+
+
+
+
+
+           if(cartResponse[i].products_with_description.descriptions.isEmpty()){
+               if(userPrefManager.language.equals("ne")){
+                   productName.text = cartResponse[i].products_with_description.descriptions[1].name
+               }else{
+                   productName.text = cartResponse[i].products_with_description.descriptions[0].name
+               }
+           }
+
+            addToCart.setOnClickListener {
+                tokenManager?.let { it1 -> viewModel.addToCartView(it1,cartResponse[i].id.toString(),"1","") }
+                getCartResponse()
+            }
             binding.viewCartList.addView(itemView)
         }
+    }
+
+    private fun getCartResponse() {
+        viewModel.addToCart.observe(this, Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let {
+                         binding.wishlistView.successAddToCartSnack(this,getString(R.string.add_to_cart),Snackbar.LENGTH_LONG)
+
+                    }
+                }
+
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let { message ->
+                        binding.wishlistView.errorSnack(message, Snackbar.LENGTH_LONG)
+                    }
+                }
+
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+            }
+        })
     }
 
     private fun hideProgressBar() {

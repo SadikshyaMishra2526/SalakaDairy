@@ -1,6 +1,7 @@
 package com.eightpeak.salakafarm.views.splash
 
 import android.app.Activity
+import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender.SendIntentException
@@ -9,11 +10,14 @@ import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.pm.PackageInfoCompat
+import com.eightpeak.salakafarm.App
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
+import com.eightpeak.salakafarm.utils.subutils.Utils
 import com.eightpeak.salakafarm.views.welcomeActivity.IntroActivity
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
@@ -33,10 +37,20 @@ class SplashActivity :AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash_screen)
          userPrefManager= UserPrefManager(this)
-        setLocal(this)
 
+        if (!Utils.hasInternetSplashConnection(this@SplashActivity)){
+            setContentView(R.layout.no_internet_connection)
+            var refresh=findViewById<Button>(R.id.refresh)
+            refresh.setOnClickListener {
+                startActivity(Intent(this@SplashActivity, SplashActivity::class.java))
+                finish()
+            }
+        }else{
+            setContentView(R.layout.activity_splash_screen)
+        }
+
+        setLocal(this)
         checkUpdate()
         goToHome()
     }

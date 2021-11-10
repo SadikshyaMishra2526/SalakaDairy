@@ -7,7 +7,7 @@
         android:title="@string/title_home" />
 
     <item
-        android:id="@+id/navigation_messages"
+        android:id="@+id/navigation_message"
         android:icon="@drawable/ic_baseline_message_24"
         android:title="@string/messages" />
 

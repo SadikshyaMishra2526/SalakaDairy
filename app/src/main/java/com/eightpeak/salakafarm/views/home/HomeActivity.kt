@@ -80,7 +80,7 @@ GoogleApiClient.OnConnectionFailedListener
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_messages, R.id.navigation_cart,R.id.navigation_setting
+                R.id.navigation_home, R.id.navigation_message, R.id.navigation_cart,R.id.navigation_setting
             )
         )
 //        setupActionBarWithNavController(navController, appBarConfiguration)
@@ -229,21 +229,20 @@ GoogleApiClient.OnConnectionFailedListener
             try {
                 val addresses: List<Address> =
                     geocoder.getFromLocation(myCoordinates.latitude, myCoordinates.longitude, 1)
-                val subLocality: String = addresses[0].getSubLocality()
-                val locality: String = addresses[0].getLocality()
-                val selectedCountry: String = addresses[0].getCountryName()
-                if (subLocality != null) myCity += "$subLocality, "
-                if (locality != null) myCity += "$locality, "
-                if (selectedCountry != null) myCity += selectedCountry
+                val subLocality: String = addresses[0].subLocality
+                val locality: String = addresses[0].locality
+                val selectedCountry: String = addresses[0].countryName
+                myCity += "$subLocality, "
+                myCity += "$locality, "
+                myCity += selectedCountry
                 val addressLine: String =
                     addresses[0].getAddressLine(0).replace("Unnamed Road,", "")
 //                currentlocation.setText("Your Current Location :-$addressLine")
                 userPrefManager.currentPosition=addressLine
                 Log.i("TAG", "getMyPosition: $addressLine")
              } catch (e: Exception) {
-                Toast.makeText(this@HomeActivity, "Could not get Address!!", Toast.LENGTH_SHORT)
-                    .show()
-                //                    To.info(ShippingAddressActivity.this, "Could not get Address!!", Toasty.LENGTH_SHORT).show();
+//                Toast.makeText(this@HomeActivity, "Could not get Address!!", Toast.LENGTH_SHORT)
+//                    .show()
                 e.printStackTrace()
             }
         })

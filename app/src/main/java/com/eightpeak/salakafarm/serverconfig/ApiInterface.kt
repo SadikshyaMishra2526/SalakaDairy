@@ -3,22 +3,24 @@ package com.eightpeak.salakafarm.serverconfig
 import UserProfileModel
 import com.eightpeak.salakafarm.utils.EndPoints
 import com.eightpeak.salakafarm.serverconfig.network.AccessToken
+import com.eightpeak.salakafarm.utils.EndPoints.Companion.COMPARE_LIST_DETAILS
+import com.eightpeak.salakafarm.utils.EndPoints.Companion.DELETE_WISHLIST_ITEM
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.GET_CART_DETAILS
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.GET_WISHLIST_DETAILS
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.REFRESH_TOKEN
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.SEARCH_RESPONSE
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.USER_DETAILS
+import com.eightpeak.salakafarm.views.comparelist.CompareResponse
 import com.eightpeak.salakafarm.views.home.categories.CategoriesModel
 import com.eightpeak.salakafarm.views.home.categories.categoriesbyid.CategoriesByIdModel
 import com.eightpeak.salakafarm.views.home.products.ProductModel
 import com.eightpeak.salakafarm.views.home.products.ServerResponse
 import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdModel
 import com.eightpeak.salakafarm.views.home.slider.SliderModel
-import com.eightpeak.salakafarm.views.home.ui.addtocart.CartResponse
+import com.eightpeak.salakafarm.views.addtocart.addtocartfragment.CartResponse
 import com.eightpeak.salakafarm.views.login.LoginResponse
 import com.eightpeak.salakafarm.views.register.RegisterResponse
 import com.eightpeak.salakafarm.views.search.SearchModel
-import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -77,5 +79,19 @@ interface ApiInterface {
 
     @GET(GET_WISHLIST_DETAILS)
     suspend fun getWishList():Response<List<CartResponse>>
+
+
+    @FormUrlEncoded
+    @POST(COMPARE_LIST_DETAILS)
+    suspend fun getCompareProduct(
+        @Field("product_id[]") productId: List<String>
+    ): Response<CompareResponse>
+
+
+    @POST(DELETE_WISHLIST_ITEM)
+    suspend fun deleteWishlistItem(
+        @Query("id") productId:String
+    ): Response<ServerResponse>
+
 
 }

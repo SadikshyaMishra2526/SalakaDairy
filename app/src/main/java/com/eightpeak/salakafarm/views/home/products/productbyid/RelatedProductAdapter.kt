@@ -1,6 +1,7 @@
 package com.eightpeak.salakafarm.views.home.products.productbyid
 
 import android.content.Intent
+import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -28,7 +29,6 @@ class RelatedProductAdapter : RecyclerView.Adapter<RelatedProductAdapter.Product
 
         override fun areItemsTheSame(oldItem: ProductRelation, newItem: ProductRelation): Boolean {
             return oldItem.id == newItem.id
-            Log.i("TAG", "areItemsTheSame: " + oldItem.image)
         }
 
         override fun areContentsTheSame(oldItem: ProductRelation, newItem: ProductRelation): Boolean {
@@ -51,7 +51,6 @@ class RelatedProductAdapter : RecyclerView.Adapter<RelatedProductAdapter.Product
 
     override fun onBindViewHolder(holder: ProductListViewHolder, position: Int) {
         val categoriesItem = differ.currentList[position]
-        Log.i("TAG", "onBindViewHolder:Categories " + categoriesItem.image)
         holder.itemView.apply {
             product_thumbnail.load(EndPoints.BASE_URL + categoriesItem.image)
 
@@ -60,14 +59,29 @@ class RelatedProductAdapter : RecyclerView.Adapter<RelatedProductAdapter.Product
             if (categoriesItem.descriptions.isNotEmpty()) {
                 if (userPrefManager.language.equals("ne")) {
                     product_name.text = categoriesItem.descriptions[1].name
-                    product_price.text =
-                        context.getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(categoriesItem.price.toString())
+
+                    if(!categoriesItem.cost.equals("0")){
+                        product_price_discount.text=GeneralUtils.getUnicodeNumber(categoriesItem.price.toString())
+                        product_price_discount.paintFlags = product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                        product_price.text =
+                            context.getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(categoriesItem.cost.toString())
+                    }else{
+                        product_price.text =
+                            context.getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(categoriesItem.price.toString())
+                    }
 
                 } else {
                     product_name.text = categoriesItem.descriptions[0].name
-                    product_price.text =
-                        context.getString(R.string.rs) + categoriesItem.price.toString()
 
+                    if(!categoriesItem.cost.equals("0")){
+                        product_price_discount.text=categoriesItem.price.toString()
+                        product_price_discount.paintFlags = product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                        product_price.text =
+                            context.getString(R.string.rs) + categoriesItem.cost.toString()
+                    }else{
+                        product_price.text =
+                            context.getString(R.string.rs) + categoriesItem.price.toString()
+                    }
                 }
             }
 

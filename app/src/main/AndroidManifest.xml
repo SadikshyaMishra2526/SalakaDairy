@@ -23,6 +23,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SalakaFarm">
         <activity
+            android:name=".views.addtocart.CartActivity"
+            android:theme="@style/Theme.SalakaFarm"/>
+        <activity
             android:name=".views.home.categories.CategoriesSeeAllActivity"
             android:theme="@style/Theme.SalakaFarm" />
         <activity
@@ -70,14 +73,13 @@
         <activity
             android:name=".views.home.categories.categoriesbyid.CategoriesByIdActivity"
             android:theme="@style/Theme.SalakaFarm" />
-
         <activity
             android:name=".views.search.SearchProductsActivity"
             android:theme="@style/Theme.SalakaFarm" />
         <activity
             android:name=".views.wishlist.WishlistActivity"
             android:theme="@style/Theme.SalakaFarm" />
-
+      
     </application>
 
 </manifest>

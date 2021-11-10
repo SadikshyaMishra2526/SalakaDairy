@@ -1,29 +1,37 @@
 package com.eightpeak.salakafarm.views.home.products
 
+import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.SnapHelper
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.eightpeak.salakafarm.databinding.FragmentProductListBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.ProductListViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
-import com.eightpeak.salakafarm.views.home.categories.CategoriesAdapter
-import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.google.android.material.snackbar.Snackbar
 import com.hadi.retrofitmvvm.util.errorSnack
-import kotlinx.android.synthetic.main.fragment_categories.*
 import androidx.recyclerview.widget.GridLayoutManager
 import com.facebook.shimmer.ShimmerFrameLayout
-import kotlinx.android.synthetic.main.fragment_product_list.*
+import android.widget.Toast
+
+import android.content.Intent
+
+import android.content.BroadcastReceiver
+import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
+import com.eightpeak.salakafarm.App
+import com.eightpeak.salakafarm.R
+import com.eightpeak.salakafarm.serverconfig.network.TokenManager
+import com.eightpeak.salakafarm.utils.Constants
+import com.hadi.retrofitmvvm.util.successAddToCartSnack
+import com.hadi.retrofitmvvm.util.successWishListSnack
 
 
 class ProductFragment : Fragment() {
@@ -31,13 +39,12 @@ class ProductFragment : Fragment() {
     lateinit var productAdapter: ProductAdapter
     private var layoutManager: GridLayoutManager? = null
 
+    private var tokenManager: TokenManager? = null
 
     private var _binding: FragmentProductListBinding? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
-
-    private lateinit var shimmer_layout: ShimmerFrameLayout
 
     private lateinit var binding: FragmentProductListBinding
 
@@ -48,15 +55,62 @@ class ProductFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentProductListBinding.inflate(layoutInflater, parent, false)
+        tokenManager = TokenManager.getInstance(requireActivity().getSharedPreferences(
+            Constants.TOKEN_PREF,
+            AppCompatActivity.MODE_PRIVATE
+        ))
 
-        Log.i("TAG", "onCreateView: i reached here 1")
         init()
         return binding.categoriesLayout
     }
 
 
+    var mMessageReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent) {
+            val wishlist = intent.getBooleanExtra("wishlist",false)
+            val compareList = intent.getBooleanExtra("compare_list",false)
+            val productId = intent.getStringExtra("product_id")
+            if(wishlist){
+                if (productId != null) {
+                    tokenManager?.let { viewModel.addtowishlist(it,productId)}
+                    addToWishListResponse()
+                }
+            }else if(compareList){
+                App.addItem(productId)
+                binding.categoriesLayout.successWishListSnack(requireContext(),getString(R.string.add_to_wishlist),Snackbar.LENGTH_LONG)
+
+            }
+
+            }
+    }
+
+    private fun addToWishListResponse() {
+        viewModel.wishlist.observe(requireActivity(), Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let { picsResponse ->
+                          val serverResponse:ServerResponse = picsResponse
+                        Log.i("TAG", "getPictures: $serverResponse")
+                        binding.categoriesLayout.successWishListSnack(requireContext(),getString(R.string.add_to_wishlist),Snackbar.LENGTH_LONG)
+
+                    }
+                }
+
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let { message ->
+                        binding.productRecyclerView.errorSnack(message, Snackbar.LENGTH_LONG)
+                    }
+                }
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+            }
+        })
+    }
+
     private fun init() {
-//        categoriesRecyclerView = requireView().findViewById(R.id.recyclerView)
         productAdapter = ProductAdapter()
         layoutManager = GridLayoutManager(context, 2)
         binding.productRecyclerView.layoutManager = layoutManager
@@ -68,15 +122,20 @@ class ProductFragment : Fragment() {
     }
 
     private fun setupViewModel() {
-        Log.i("TAG", "onCreateView: i reached here 2")
-
         val repository = AppRepository()
         val factory = ViewModelProviderFactory(requireActivity().application, repository)
         viewModel = ViewModelProvider(this, factory).get(ProductListViewModel::class.java)
-        getPictures()
+        getProductList()
+        initializeWishCompare()
     }
 
-    private fun getPictures() {
+    private fun initializeWishCompare() {
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(mMessageReceiver,
+        IntentFilter("custom-message")
+    )
+    }
+
+    private fun getProductList() {
 
         viewModel.picsData.observe(requireActivity(), Observer { response ->
             when (response) {
@@ -85,10 +144,7 @@ class ProductFragment : Fragment() {
                     response.data?.let { picsResponse ->
                         binding.shimmerLayout.stopShimmer()
                         binding.shimmerLayout.visibility = View.GONE
-
-                        Log.i("TAG", "onCreateView: i reached here 3$picsResponse")
                         val productModel:ProductModel = picsResponse
-                        Log.i("TAG", "getPictures: ,,,,,,,,," +productModel.data[0].image)
                         productAdapter.differ.submitList(productModel.data)
                         binding.productRecyclerView.adapter = productAdapter
                     }
