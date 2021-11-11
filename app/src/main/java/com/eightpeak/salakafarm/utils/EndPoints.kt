@@ -2,13 +2,13 @@ package com.eightpeak.salakafarm.utils
 
 class EndPoints {
     companion object {
+
         //customer apis
         const val BASE_URL = "https://salakafarm.com/public/"
         const val REGISTER = "api/auth/create"
         const val LOGIN = "api/auth/login"
         const val CUSTOMER_INFORMATION = "api/auth/user"
         const val LOGOUT = "api/auth/logout"
-
         const val SLIDER = "api/banners"
 
         //customer token
@@ -25,9 +25,11 @@ class EndPoints {
 
         //        orders
         const val ORDER_LIST = "api/auth/orders"
-        const val ORDER_VIA_ID = "api/auth/orders/{id}"   //        products
+        const val ORDER_VIA_ID = "api/auth/orders/{id}"
+
+
         const val CANCEL_ORDER = "api/member/cancel_order/{id}"
-        const val CREATE_ORDER = "api/member/create_order"   //
+        const val CREATE_ORDER = "api/member/create_order"
 
 
         //      products

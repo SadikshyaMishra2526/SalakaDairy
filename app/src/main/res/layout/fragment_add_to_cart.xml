@@ -132,6 +132,7 @@
         android:layout_marginRight="@dimen/_15sdp"
         android:backgroundTint="@color/white"
         app:cardCornerRadius="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_50sdp"
         app:layout_constraintTop_toBottomOf="@+id/products_details_title">
 
         <androidx.core.widget.NestedScrollView

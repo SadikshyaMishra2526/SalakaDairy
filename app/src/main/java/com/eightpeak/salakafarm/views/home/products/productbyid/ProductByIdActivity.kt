@@ -30,6 +30,7 @@ import com.eightpeak.salakafarm.views.addtocart.CartActivity
 import com.eightpeak.salakafarm.views.home.HomeActivity
 import com.google.android.material.snackbar.Snackbar
 import com.hadi.retrofitmvvm.util.errorSnack
+import com.hadi.retrofitmvvm.util.successAddToCartSnack
 import com.hadi.retrofitmvvm.util.successWishListSnack
 import kotlinx.android.synthetic.main.fragment_product_view_by_id.*
 
@@ -135,7 +136,6 @@ class ProductByIdActivity : AppCompatActivity() {
     private fun setProductsDetails(productDetailsByIdResponse: ProductByIdModel) {
 
         product_price.text = productDetailsByIdResponse.price.toString()
-
         if (productDetailsByIdResponse.descriptions.isNotEmpty()) {
             if (userPrefManager?.language.equals("ne")) {
                 product_details_name.text = productDetailsByIdResponse.descriptions[1].name
@@ -227,34 +227,33 @@ class ProductByIdActivity : AppCompatActivity() {
 
 
         binding.btAddToCart.setOnClickListener {
-            val intent = Intent(this, CartActivity::class.java)
-            startActivity(intent)
 
-//            val product_id = intent.getStringExtra(PRODUCT_ID)
-//            if (product_id != null) {
-//                tokenManager?.let { it1 -> viewModel.addToCart(it1,product_id,"1","") }
-//            }
-//            viewModel.addToCart.observe(this, Observer { response ->
-//                when (response) {
-//                    is Resource.Success -> {
-//                        hideProgressBar()
-//                        response.data?.let {
-//                            binding.productViewIdLayout.successAddToCartSnack(this,getString(R.string.add_to_cart),Snackbar.LENGTH_LONG)
-//                        }
-//                    }
-//
-//                    is Resource.Error -> {
-//                        hideProgressBar()
-//                        response.message?.let { message ->
-//                            product_view_id_layout.errorSnack(message, Snackbar.LENGTH_LONG)
-//                        }
-//                    }
-//
-//                    is Resource.Loading -> {
-//                        showProgressBar()
-//                    }
-//                }
-//            })
+
+            val product_id = intent.getStringExtra(PRODUCT_ID)
+            if (product_id != null) {
+                tokenManager?.let { it1 -> viewModel.addToCart(it1,product_id,"1","") }
+            }
+            viewModel.addToCart.observe(this, Observer { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        response.data?.let {
+                            binding.productViewIdLayout.successAddToCartSnack(this,getString(R.string.add_to_cart),Snackbar.LENGTH_LONG)
+                        }
+                    }
+
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        response.message?.let { message ->
+                            product_view_id_layout.errorSnack(message, Snackbar.LENGTH_LONG)
+                        }
+                    }
+
+                    is Resource.Loading -> {
+                        showProgressBar()
+                    }
+                }
+            })
 
         }
 

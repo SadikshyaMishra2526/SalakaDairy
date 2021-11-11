@@ -5,7 +5,7 @@
     android:id="@+id/addToCart"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.addtocart.ViewCartActivity">
+    tools:context=".views.addtocart.CartActivity">
 
     <ImageView
         android:id="@+id/imageView2"
@@ -46,8 +46,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.021">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/return_home"
@@ -62,7 +62,6 @@
             android:layout_weight="1" />
 
         <TextView
-
             android:id="@+id/headerLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -84,46 +83,6 @@
             android:background="@color/white"
             android:src="@drawable/ic_baseline_search_24" />
     </LinearLayout>
-    <LinearLayout
-        android:id="@+id/proceed"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.021">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:src="@drawable/ic_baseline_arrow_back_24" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <TextView
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textColor="@color/main_color"
-            android:textSize="@dimen/_13sdp"
-            android:textStyle="bold" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <ImageButton
-            android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_35sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:background="@color/white"
-            android:src="@drawable/ic_baseline_search_24" />
-    </LinearLayout>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -133,6 +92,33 @@
         android:backgroundTint="@color/white"
         app:cardCornerRadius="@dimen/_10sdp"
         app:layout_constraintTop_toBottomOf="@+id/products_details_title">
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/shimmer_layout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/products_title"
+            app:layout_constraintVertical_bias="0.0">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+                    <include layout="@layout/shimmer_cart_layout"/>
+                    <include layout="@layout/shimmer_cart_layout"/>
+                    <include layout="@layout/shimmer_cart_layout"/>
+                    <include layout="@layout/shimmer_cart_layout"/>
+                    <include layout="@layout/shimmer_cart_layout"/>
+                    <include layout="@layout/shimmer_cart_layout"/>
+                </LinearLayout>
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"

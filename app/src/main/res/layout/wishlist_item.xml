@@ -24,6 +24,7 @@
 
             <TextView
                 android:id="@+id/product_name"
+                android:text="@string/messages"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -66,11 +67,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end|bottom"
                     android:contentDescription="@string/todo"
-
                     android:drawableLeft="@drawable/ic_baseline_shopping_cart_24"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/add"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_9sdp" />
 
             </LinearLayout>
         </LinearLayout>

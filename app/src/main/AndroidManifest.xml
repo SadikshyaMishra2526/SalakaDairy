@@ -79,6 +79,9 @@
         <activity
             android:name=".views.wishlist.WishlistActivity"
             android:theme="@style/Theme.SalakaFarm" />
+        <activity
+            android:name=".subscription.SubscriptionActivity"
+            android:theme="@style/Theme.SalakaFarm" />
       
     </application>
 

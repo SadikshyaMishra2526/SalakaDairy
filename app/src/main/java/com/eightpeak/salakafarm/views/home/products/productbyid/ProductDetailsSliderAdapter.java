@@ -54,13 +54,11 @@ public class ProductDetailsSliderAdapter extends SliderViewAdapter<ProductDetail
     public void onBindViewHolder(SliderAdapterVH viewHolder, final int position) {
 
         String sliderItem = mSliderItems.get(position);
-        Log.i("TAG", "onBindViewHolder: "+sliderItem);
         Glide.with(viewHolder.itemView)
                 .load(BASE_URL+sliderItem)
                 .fitCenter()
                 .placeholder(R.drawable.logo)
                 .into(viewHolder.imageViewBackground);
-
     }
 
     @Override

@@ -33,7 +33,6 @@ import com.eightpeak.salakafarm.utils.Constants
 import com.hadi.retrofitmvvm.util.successAddToCartSnack
 import com.hadi.retrofitmvvm.util.successWishListSnack
 
-
 class ProductFragment : Fragment() {
     private lateinit var viewModel: ProductListViewModel
     lateinit var productAdapter: ProductAdapter

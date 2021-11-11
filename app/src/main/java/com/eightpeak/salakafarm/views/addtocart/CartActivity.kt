@@ -77,13 +77,9 @@ class CartActivity : AppCompatActivity() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
-                        Log.i("TAG", "getPictures: $picsResponse")
                         getSelectedProducts(picsResponse)
-//                        binding.shimmerLayout.stopShimmer()
-//                        binding.shimmerLayout.visibility = View.GONE
-//
-//                        categoriesAdapter.differ.submitList(picsResponse.data)
-//                        binding.binding..adapter = categoriesAdapter
+                        binding.shimmerLayout.stopShimmer()
+                        binding.shimmerLayout.visibility = View.GONE
                     }
                 }
 

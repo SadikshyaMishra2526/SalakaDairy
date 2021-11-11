@@ -25,7 +25,6 @@ import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.GetResponseViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.addtocart.addtocartfragment.CartResponse
-import com.eightpeak.salakafarm.views.home.HomeActivity
 import com.google.android.material.snackbar.Snackbar
 import com.hadi.retrofitmvvm.util.errorSnack
 import com.hadi.retrofitmvvm.util.successAddToCartSnack
@@ -51,11 +50,7 @@ class WishlistActivity : AppCompatActivity() {
             )
         )
         setupViewModel()
-
-
     }
-
-
 
     private fun setupViewModel() {
         val repository = AppRepository()
@@ -72,7 +67,6 @@ class WishlistActivity : AppCompatActivity() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
-                        Log.i("TAG", "getPictures:cccccccccccccccccccc ${picsResponse.size}")
                         getSelectedProducts(picsResponse)
 //                        binding.shimmerLayout.stopShimmer()
 //                        binding.shimmerLayout.visibility = View.GONE

@@ -1,6 +1,5 @@
 package com.eightpeak.salakafarm.serverconfig
 
-import retrofit2.http.Field
 
 object RequestBodies {
 

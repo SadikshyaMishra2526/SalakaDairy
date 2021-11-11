@@ -20,6 +20,7 @@ import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.databinding.FragmentHomeBinding
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
+import com.eightpeak.salakafarm.subscription.SubscriptionActivity
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.Constants.Companion.DEFAULT
 import com.eightpeak.salakafarm.utils.Constants.Companion.NO_LOGIN
@@ -84,6 +85,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
 
         binding.tvSearchInput.setOnClickListener {
             val mainActivity = Intent(context, SearchProductsActivity::class.java)
+            startActivity(mainActivity)
+        }
+
+        binding.subscriptionLayout.setOnClickListener {
+            val mainActivity = Intent(context, SubscriptionActivity::class.java)
             startActivity(mainActivity)
         }
 

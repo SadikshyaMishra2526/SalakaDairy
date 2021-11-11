@@ -94,7 +94,7 @@ class ViewCartFragment : Fragment() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                       addToCart.errorSnack(message, Snackbar.LENGTH_LONG)
+                      binding.addToCart.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 
                 }
