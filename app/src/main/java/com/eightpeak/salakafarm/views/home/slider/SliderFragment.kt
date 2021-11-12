@@ -88,8 +88,6 @@ class SliderFragment : Fragment() {
                         binding.shimmerLayout.stopShimmer()
                         binding.shimmerLayout.visibility = View.GONE
 
-//                        sliderList?.clear()
-//                        sliderList?.addAll(picsResponse.data)
                         sliderAdapter.notifyDataSetChanged()
                         sliderAdapter.addItem(picsResponse)
                         sliderAdapter = SliderAdapter(context,picsResponse)

@@ -50,6 +50,10 @@ class ViewModelProviderFactory(
             return GetResponseViewModel(app, appRepository) as T
         }
 
+        if (modelClass.isAssignableFrom(SubscriptionViewModel::class.java)) {
+            return SubscriptionViewModel(app, appRepository) as T
+        }
+
         throw IllegalArgumentException("Unknown class name")
     }
 

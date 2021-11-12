@@ -42,4 +42,18 @@ object RequestBodies {
     data class WishList(
         val product_id: String
     )
+
+
+      data class AddSubscription(
+        val sub_item_id: String,
+        val sub_package_id: String,
+        val delivery_peroid: String,
+        val starting_date: String,
+        val branch_id: String,
+    )
+
+
+
+
 }
+

@@ -3,6 +3,10 @@ package com.eightpeak.salakafarm.serverconfig
 import UserProfileModel
 import com.eightpeak.salakafarm.utils.EndPoints
 import com.eightpeak.salakafarm.serverconfig.network.AccessToken
+import com.eightpeak.salakafarm.subscription.attributes.BranchModel
+import com.eightpeak.salakafarm.subscription.attributes.SubscriptionItemModel
+import com.eightpeak.salakafarm.subscription.attributes.SubscriptionPackageModel
+import com.eightpeak.salakafarm.subscription.attributes.SubscriptionResponse
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.COMPARE_LIST_DETAILS
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.DELETE_WISHLIST_ITEM
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.GET_CART_DETAILS
@@ -46,7 +50,6 @@ interface ApiInterface {
     suspend fun getProductById(@Path("id") id: String): Response<ProductByIdModel>
 
 
-
     //user details
     @POST(EndPoints.LOGIN)
     suspend fun loginCustomer(@Body body: RequestBodies.LoginBody): Response<LoginResponse>
@@ -55,30 +58,37 @@ interface ApiInterface {
     suspend fun registerCustomer(@Body body: RequestBodies.RegisterBody): Response<RegisterResponse>
 
     @POST(REFRESH_TOKEN)
-    suspend fun refresh(@Body body: RequestBodies.TokenBody):Response<AccessToken>
+    suspend fun refresh(@Body body: RequestBodies.TokenBody): Response<AccessToken>
 
     @GET(USER_DETAILS)
-    suspend fun userDetails():Response<UserProfileModel>
+    suspend fun userDetails(): Response<UserProfileModel>
 
 
-     @GET(SEARCH_RESPONSE)
-    suspend fun getSearchResponse(@Query("keyword") keyword: String,@Query("filter_sort") filter_sort: String):Response<SearchModel>
+    @GET(SEARCH_RESPONSE)
+    suspend fun getSearchResponse(
+        @Query("keyword") keyword: String,
+        @Query("filter_sort") filter_sort: String
+    ): Response<SearchModel>
 
     @FormUrlEncoded
     @POST(EndPoints.ADD_TO_WISHLIST)
     suspend fun addToWishList(@Field("product_id") product_id: String): Response<ServerResponse>
 
-     @FormUrlEncoded
-     @POST(EndPoints.ADD_TO_CART)
-    suspend fun addToCart(@Field("product_id") product_id: String,@Field("qty") qty: String,@Field("options") options: String): Response<ServerResponse>
+    @FormUrlEncoded
+    @POST(EndPoints.ADD_TO_CART)
+    suspend fun addToCart(
+        @Field("product_id") product_id: String,
+        @Field("qty") qty: String,
+        @Field("options") options: String
+    ): Response<ServerResponse>
 
 
     @GET(GET_CART_DETAILS)
-    suspend fun getCartList():Response<List<CartResponse>>
+    suspend fun getCartList(): Response<List<CartResponse>>
 
 
     @GET(GET_WISHLIST_DETAILS)
-    suspend fun getWishList():Response<List<CartResponse>>
+    suspend fun getWishList(): Response<List<CartResponse>>
 
 
     @FormUrlEncoded
@@ -90,8 +100,24 @@ interface ApiInterface {
 
     @POST(DELETE_WISHLIST_ITEM)
     suspend fun deleteWishlistItem(
-        @Query("id") productId:String
+        @Query("id") productId: String
     ): Response<ServerResponse>
+
+
+    //    for subscription
+
+    @POST(EndPoints.ADD_SUBSCRIPTION)
+    suspend fun addSubscription(@Body body: RequestBodies.AddSubscription): Response<SubscriptionResponse>
+
+    @FormUrlEncoded
+    @POST(EndPoints.GET_SUB_PACKAGE)
+    suspend fun getSubscriptionPackage(@Field("sub_item_id")sub_item_id:String): Response<SubscriptionPackageModel>
+
+    @GET(EndPoints.GET_BRANCHES)
+    suspend fun getBranches(): Response<BranchModel>
+
+    @GET(EndPoints.GET_SUB_ITEM)
+    suspend fun getSubscriptionItem(): Response<SubscriptionItemModel>
 
 
 }
