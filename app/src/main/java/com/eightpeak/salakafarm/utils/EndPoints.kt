@@ -44,7 +44,7 @@ class EndPoints {
 
         const val GET_WISHLIST_DETAILS = "api/get_wishlist"
         const val DELETE_WISHLIST_ITEM = "api/delete_wishlist"
-        const val COMPARE_LIST_DETAILS = "api/compare"
+        const val COMPARE_LIST_DETAILS = "api/get_product_list_for_compare"
 
 //        subscription
         const val GET_SUB_PACKAGE = "api/get_sub_packages"

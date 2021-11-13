@@ -51,7 +51,7 @@
     <style name="modifiedEditText" parent="parent">
         <item name="android:textSize">@dimen/_14sdp</item>
         <item name="android:layout_marginStart">@dimen/_15sdp</item>
-        <item name="android:layout_marginEnd">@dimen/_26sdp</item>
+        <item name="android:layout_marginEnd">@dimen/_15sdp</item>
         <item name="android:background">@drawable/capsule</item>
         <item name="android:layout_marginTop">@dimen/_3sdp</item>
     </style>

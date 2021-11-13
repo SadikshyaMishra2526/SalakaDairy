@@ -31,6 +31,7 @@ import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
 import com.hadi.retrofitmvvm.util.successAddToCartSnack
+import com.hadi.retrofitmvvm.util.successCompareSnack
 import com.hadi.retrofitmvvm.util.successWishListSnack
 
 class ProductFragment : Fragment() {
@@ -76,7 +77,7 @@ class ProductFragment : Fragment() {
                 }
             }else if(compareList){
                 App.addItem(productId)
-                binding.categoriesLayout.successWishListSnack(requireContext(),getString(R.string.add_to_wishlist),Snackbar.LENGTH_LONG)
+                binding.categoriesLayout.successCompareSnack(requireContext(),"Add to Compare List",Snackbar.LENGTH_LONG)
 
             }
 

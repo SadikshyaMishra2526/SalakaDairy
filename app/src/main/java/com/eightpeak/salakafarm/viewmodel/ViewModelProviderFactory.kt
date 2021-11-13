@@ -53,6 +53,9 @@ class ViewModelProviderFactory(
         if (modelClass.isAssignableFrom(SubscriptionViewModel::class.java)) {
             return SubscriptionViewModel(app, appRepository) as T
         }
+        if (modelClass.isAssignableFrom(CompareViewModel::class.java)) {
+            return CompareViewModel(app, appRepository) as T
+        }
 
         throw IllegalArgumentException("Unknown class name")
     }

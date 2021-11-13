@@ -86,28 +86,30 @@ class CategoriesByIdActivity  : AppCompatActivity() {
         if (categories_id != null) {
             viewModel.getCategoriesByIdDetails(categories_id)
         }
+
         viewModel.categoriesbyIdData.observe(this, Observer { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
-                        Log.i("TAG", "getPictures: ccccccccccccccccc"+picsResponse)
+                        val categoryDetails:CategoriesByIdModel=picsResponse
+                        Log.i("TAG", "getPictures: $categoryDetails")
+                        if(categoryDetails.descriptions.isNotEmpty()){
+                            binding.edtSearchInput.visibility=View.VISIBLE
+                            binding.categoriesByIdTitle.visibility=View.VISIBLE
+                            binding.categoriesThumbnail.load(BASE_URL+categoryDetails.image)
+
+                            if(userPrefManager.language.equals("ne")){
+                                binding.categoryName.text = categoryDetails.descriptions[1].name
+                            }else{
+                                binding.categoryName.text = categoryDetails.descriptions[0].name
+                            }
+                        }
+
                         if(picsResponse.products_with_description.isNotEmpty()){
                             binding.categoriesNotFound.visibility=View.GONE
 
-                            val categoryDetails:CategoriesByIdModel=picsResponse
-                            if(categoryDetails.descriptions.isNotEmpty()){
 
-                                binding.edtSearchInput.visibility=View.VISIBLE
-                                binding.categoriesByIdTitle.visibility=View.VISIBLE
-                                binding.categoriesThumbnail.load(BASE_URL+categoryDetails.image)
-
-                                if(userPrefManager.language.equals("ne")){
-                                    binding.categoryName.text = categoryDetails.descriptions[1].name
-                                }else{
-                                    binding.categoryName.text = categoryDetails.descriptions[0].name
-                                }
-                            }
                             val categoriesByIdModel: List<Products_with_description> = picsResponse.products_with_description
                             categoriesByIdAdapter.differ.submitList(categoriesByIdModel)
                             binding.categoriesByIdRecyclerView.adapter = categoriesByIdAdapter

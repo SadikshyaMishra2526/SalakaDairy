@@ -11,6 +11,7 @@ import androidx.annotation.IntegerRes
 import androidx.core.content.ContextCompat
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.views.addtocart.CartActivity
+import com.eightpeak.salakafarm.views.comparelist.CompareListActivity
 import com.eightpeak.salakafarm.views.wishlist.WishlistActivity
 import com.google.android.material.snackbar.Snackbar
 
@@ -74,6 +75,22 @@ fun View.successAddToCartSnack(
         .make(this, message, length)
         .setAction(context.getString(R.string.view_cart)) {
             val intent = Intent(context, CartActivity::class.java)
+            context.startActivity(intent)
+
+        }
+    snackbar.setActionTextColor(Color.parseColor("#FFFFFF"))
+    snackbar.view.setBackgroundColor(ContextCompat.getColor(context, R.color.main_color))
+    snackbar.show()
+}
+fun View.successCompareSnack(
+    context: Context,
+    message: String,
+    length: Int = Snackbar.LENGTH_LONG
+) {
+    val snackbar = Snackbar
+        .make(this, message, length)
+        .setAction("View Compare List") {
+            val intent = Intent(context, CompareListActivity::class.java)
             context.startActivity(intent)
 
         }

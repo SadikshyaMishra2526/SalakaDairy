@@ -91,10 +91,10 @@ interface ApiInterface {
     suspend fun getWishList(): Response<List<CartResponse>>
 
 
-    @FormUrlEncoded
-    @POST(COMPARE_LIST_DETAILS)
+
+    @GET(COMPARE_LIST_DETAILS)
     suspend fun getCompareProduct(
-        @Field("product_id[]") productId: List<String>
+        @Query("product_ids") product_ids: String
     ): Response<CompareResponse>
 
 
@@ -111,7 +111,7 @@ interface ApiInterface {
 
     @FormUrlEncoded
     @POST(EndPoints.GET_SUB_PACKAGE)
-    suspend fun getSubscriptionPackage(@Field("sub_item_id")sub_item_id:String): Response<SubscriptionPackageModel>
+    suspend fun getSubscriptionPackage(@Field("sub_item_id")sub_item_id:Int): Response<SubscriptionPackageModel>
 
     @GET(EndPoints.GET_BRANCHES)
     suspend fun getBranches(): Response<BranchModel>

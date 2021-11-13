@@ -9,7 +9,7 @@ class BranchModel (
 data class Branches (
     @SerializedName("id") val id : Int,
     @SerializedName("name") val name : String,
-    @SerializedName("contact") val contact : Int,
+    @SerializedName("contact") val contact : String,
     @SerializedName("address") val address : String,
     @SerializedName("latitude") val latitude : Double,
     @SerializedName("longitude") val longitude : Double,

@@ -12,7 +12,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.eightpeak.salakafarm.R
-import com.eightpeak.salakafarm.databinding.FragmentCategoriesBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.CategoriesViewModel
@@ -27,16 +26,7 @@ import android.view.Gravity
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 
 import androidx.recyclerview.widget.SnapHelper
-import com.eightpeak.salakafarm.databinding.FragmentHomeSliderBinding
-import com.eightpeak.salakafarm.utils.Constants
-import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdActivity
-import com.eightpeak.salakafarm.views.home.slider.SliderAdapter
-import com.facebook.shimmer.ShimmerFrameLayout
-import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
-import com.smarteist.autoimageslider.SliderAnimations
-import com.smarteist.autoimageslider.SliderView
-import java.util.ArrayList
-
+import com.eightpeak.salakafarm.databinding.FragmentCategoriesBinding
 
 class CategoriesFragment : Fragment() {
     private lateinit var viewModel: CategoriesViewModel

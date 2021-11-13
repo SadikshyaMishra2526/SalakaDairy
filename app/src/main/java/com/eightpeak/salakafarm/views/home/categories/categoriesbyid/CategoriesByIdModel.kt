@@ -15,8 +15,6 @@ data class CategoriesByIdModel(
     @SerializedName("products_with_description") val products_with_description : List<Products_with_description>
 )
 
-
-
 data class Products_with_description (
 
     @SerializedName("id") val id : Int,
@@ -56,7 +54,6 @@ data class Products_with_description (
 )
 
 data class Descriptions (
-
     @SerializedName("product_id") val product_id : Int,
     @SerializedName("lang") val lang : String,
     @SerializedName("name") val name : String,

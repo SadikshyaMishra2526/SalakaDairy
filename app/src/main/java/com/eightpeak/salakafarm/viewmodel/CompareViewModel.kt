@@ -23,16 +23,16 @@ class CompareViewModel (
 ) : AndroidViewModel(app) {
 
     val compareResponse: MutableLiveData<Resource<CompareResponse>> = MutableLiveData()
-    fun getCompareResponse(compareId:List<String>) = viewModelScope.launch {
-        compareResponseFetch(compareId)
+    fun getCompareResponse(tokenManager: TokenManager,compareId:String) = viewModelScope.launch {
+        compareResponseFetch(tokenManager,compareId)
     }
 
-    private suspend fun compareResponseFetch(compareId:List<String>) {
+    private suspend fun compareResponseFetch(tokenManager: TokenManager,compareId:String) {
         compareResponse.postValue(Resource.Loading())
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
-                val response = appRepository.getCompareProduct(compareId)
-                Log.i("TAG", "fetchPics: " + appRepository.getCompareProduct(compareId))
+                val response = appRepository.getCompareProduct(tokenManager,compareId)
+                Log.i("TAG", "fetchPics: " + appRepository.getCompareProduct(tokenManager,compareId))
                 compareResponse.postValue(handleCartResponse(response))
             } else {
                 compareResponse.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))

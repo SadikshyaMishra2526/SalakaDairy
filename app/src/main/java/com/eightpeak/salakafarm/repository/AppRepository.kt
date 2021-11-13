@@ -59,8 +59,8 @@ class AppRepository {
         RetrofitInstance.useApiWithAccessToken(tokenManager).deleteWishlistItem(product_id)
 
 
-    suspend fun getCompareProduct(productId: List<String>) =
-        RetrofitInstance.useApiWithoutToken.getCompareProduct(productId)
+    suspend fun getCompareProduct(tokenManager: TokenManager, productId: String) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).getCompareProduct(productId)
 
 
 
@@ -70,7 +70,7 @@ class AppRepository {
     suspend fun getSubscriptionItemList(tokenManager: TokenManager) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).getSubscriptionItem()
 
-    suspend fun getSubscriptionPackage(tokenManager: TokenManager, sub_item_id: String) =
+    suspend fun getSubscriptionPackage(tokenManager: TokenManager, sub_item_id: Int) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).getSubscriptionPackage(sub_item_id)
 
     suspend fun addSubscription(tokenManager: TokenManager , body: RequestBodies.AddSubscription) =

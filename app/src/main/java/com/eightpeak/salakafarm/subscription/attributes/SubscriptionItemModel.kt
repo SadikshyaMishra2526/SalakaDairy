@@ -13,10 +13,10 @@ data class SubItem (
 	@SerializedName("image") val image : String,
 	@SerializedName("sort") val sort : Int,
 	@SerializedName("price") val price : Int,
-	@SerializedName("unit") val unit : Int,
+	@SerializedName("unit") val unit : String,
 	@SerializedName("created_at") val created_at : String,
 	@SerializedName("updated_at") val updated_at : String,
-	@SerializedName("descriptions") val descriptions : List<String>
+	@SerializedName("descriptions") val descriptions : List<Descriptions>
 )
 
 data class Descriptions (
