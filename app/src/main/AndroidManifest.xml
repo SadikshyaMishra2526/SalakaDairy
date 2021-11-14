@@ -87,6 +87,9 @@
         <activity
             android:name=".views.comparelist.CompareListActivity"
             android:theme="@style/Theme.SalakaFarm" />
-    </application>
+        <activity
+            android:name=".views.forgotpassword.ForgotPassword"
+            android:theme="@style/Theme.SalakaFarm" />
+       </application>
 
 </manifest>

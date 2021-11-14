@@ -11,7 +11,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
-import com.eightpeak.salakafarm.databinding.ActivityHomeBinding
 import com.eightpeak.salakafarm.databinding.ActivityLoginBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.RequestBodies
@@ -20,7 +19,6 @@ import com.eightpeak.salakafarm.utils.Constants.Companion.TOKEN_PREF
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.LoginViewModel
 import com.eightpeak.salakafarm.viewmodel.SliderViewModel
-import com.eightpeak.salakafarm.viewmodel.UserProfileViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.home.HomeActivity
 import com.eightpeak.salakafarm.views.register.RegisterActivity
@@ -44,6 +42,10 @@ class LoginActivity : AppCompatActivity() {
 
         binding.newCustomer.setOnClickListener {
             val mainActivity = Intent(this@LoginActivity, RegisterActivity::class.java)
+            startActivity(mainActivity)
+        }
+        binding.forgetPassword.setOnClickListener {
+            val mainActivity = Intent(this@LoginActivity, ForgotPassword::class.java)
             startActivity(mainActivity)
         }
         init()

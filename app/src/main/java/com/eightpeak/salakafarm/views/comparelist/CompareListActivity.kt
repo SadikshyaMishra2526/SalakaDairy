@@ -2,17 +2,24 @@ package com.eightpeak.salakafarm.views.comparelist
 
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import coil.api.load
 import com.eightpeak.salakafarm.App
+import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.databinding.ActivityCompareListBinding
 import com.eightpeak.salakafarm.databinding.ActivityWishlistBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
+import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.CompareViewModel
 import com.eightpeak.salakafarm.viewmodel.GetResponseViewModel
@@ -72,6 +79,8 @@ class CompareListActivity :AppCompatActivity(){
 //                        sliderAdapter.notifyDataSetChanged()
 //                        sliderAdapter.addItem(picsResponse)
 //                        sliderAdapter = SliderAdapter(context,picsResponse)
+
+                        displayCompareList(picsResponse)
                     }
                 }
 
@@ -89,6 +98,29 @@ class CompareListActivity :AppCompatActivity(){
             }
         })
     }
+
+    private fun displayCompareList(compareResponse: CompareResponse) {
+        for (i in compareResponse.products.indices) {
+            val itemView: View =
+                LayoutInflater.from(this)
+                    .inflate(R.layout.compare_list_item, binding.productsList, false)
+            binding.header.text = "My Compare List"
+
+            val categorySKU = itemView.findViewById<TextView>(R.id.product_sku)
+            val productThumbnail = itemView.findViewById<ImageView>(R.id.product_thumbnail)
+            val productName = itemView.findViewById<TextView>(R.id.product_name)
+            val productPrice = itemView.findViewById<TextView>(R.id.product_price)
+            val productAttribute = itemView.findViewById<TextView>(R.id.category_name)
+            categorySKU.text=compareResponse.products[i].sku
+            productName.text=compareResponse.products[i].descriptions[0].title
+            productPrice.text=compareResponse.products[i].price.toString()
+            productAttribute.text=compareResponse.products[i].categories_description[0].alias
+            productThumbnail.load(BASE_URL+compareResponse.products[i].image)
+            binding.productsList.addView(itemView)
+
+          }
+        }
+
     private fun hideProgressBar() {
        binding. progress.visibility = View.GONE
     }

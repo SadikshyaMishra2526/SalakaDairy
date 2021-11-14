@@ -49,10 +49,10 @@
             android:layout_alignStart="@+id/email_img"
             android:layout_alignParentEnd="true"
             android:gravity="center"
-            android:text="testing123456@gmail.com"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:text="testing123456@gmail.com" />
 
         <ImageView
             android:id="@+id/email_img"
@@ -83,6 +83,7 @@
                 style="@style/modifiedEditText"
                 android:layout_alignStart="@+id/address_second_img"
                 android:gravity="center"
+                android:layout_gravity="center"
                 android:text="123456789"
                 android:hint="@string/password"
                 android:inputType="textPassword"

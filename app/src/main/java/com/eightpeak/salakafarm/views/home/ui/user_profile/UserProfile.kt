@@ -15,8 +15,8 @@ import android.view.WindowManager
 import com.eightpeak.salakafarm.databinding.ActivityUserProfileBinding
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
+import com.eightpeak.salakafarm.views.comparelist.CompareListActivity
 import com.eightpeak.salakafarm.views.home.HomeActivity
-import com.eightpeak.salakafarm.views.splash.SplashActivity
 import com.eightpeak.salakafarm.views.wishlist.WishlistActivity
 
 
@@ -67,6 +67,14 @@ class UserProfile : AppCompatActivity() {
         }
         binding.viewWishlist.setOnClickListener {
             startActivity(Intent(this@UserProfile,WishlistActivity::class.java))
+            finish()
+        }
+        binding.orderHistory.setOnClickListener {
+            startActivity(Intent(this@UserProfile,WishlistActivity::class.java))
+            finish()
+        }
+        binding.compareList.setOnClickListener {
+            startActivity(Intent(this@UserProfile,CompareListActivity::class.java))
             finish()
         }
     }
