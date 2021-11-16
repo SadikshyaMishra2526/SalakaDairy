@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/order_history"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".views.order.orderview.orderhistory.OrderHistory">
+    <LinearLayout
+        android:id="@+id/header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/return_home"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:src="@drawable/ic_baseline_arrow_back_24" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/header_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/main_color"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/go_to_cart"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:background="@color/white"
+            android:src="@drawable/ic_baseline_shopping_cart_24" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/titles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/_5sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header_layout"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:layout_gravity="center"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_2sdp"
+            android:textColor="@color/sub_color"
+            android:text="Sn."
+            android:textStyle="bold"
+            android:textSize="@dimen/_11sdp" />
+
+
+        <TextView
+            android:textStyle="bold"
+            android:text="Product Id"
+            android:layout_gravity="center"
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_2sdp"
+            android:textColor="@color/sub_color"
+            android:textSize="@dimen/_11sdp" />
+
+        <TextView
+            android:textStyle="bold"
+            android:text="Total"
+            android:layout_gravity="center"
+            android:layout_width="@dimen/_50sdp"
+            android:textColor="@color/sub_color"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_2sdp" />
+        <TextView
+            android:textStyle="bold"
+            android:text="Created At"
+            android:layout_gravity="center"
+            android:id="@+id/product_created"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/sub_color"
+            android:layout_margin="@dimen/_2sdp" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/order_history_list"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titles"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

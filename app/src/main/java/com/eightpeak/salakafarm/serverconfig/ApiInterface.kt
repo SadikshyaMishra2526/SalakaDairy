@@ -8,12 +8,19 @@ import com.eightpeak.salakafarm.subscription.attributes.SubscriptionItemModel
 import com.eightpeak.salakafarm.subscription.attributes.SubscriptionPackageModel
 import com.eightpeak.salakafarm.subscription.attributes.SubscriptionResponse
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.COMPARE_LIST_DETAILS
+import com.eightpeak.salakafarm.utils.EndPoints.Companion.DELETE_CART
+import com.eightpeak.salakafarm.utils.EndPoints.Companion.DELETE_CART_ITEM
+import com.eightpeak.salakafarm.utils.EndPoints.Companion.DELETE_WISHLIST
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.DELETE_WISHLIST_ITEM
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.GET_CART_DETAILS
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.GET_WISHLIST_DETAILS
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.REFRESH_TOKEN
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.SEARCH_RESPONSE
+import com.eightpeak.salakafarm.utils.EndPoints.Companion.UPDATE_ADDRESS_LIST
+import com.eightpeak.salakafarm.utils.EndPoints.Companion.UPDATE_USER_INFO
+import com.eightpeak.salakafarm.utils.EndPoints.Companion.UPDATE_USER_PASSWORD
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.USER_DETAILS
+import com.eightpeak.salakafarm.views.addresslist.AddressListModel
 import com.eightpeak.salakafarm.views.comparelist.CompareResponse
 import com.eightpeak.salakafarm.views.home.categories.CategoriesModel
 import com.eightpeak.salakafarm.views.home.categories.categoriesbyid.CategoriesByIdModel
@@ -23,6 +30,8 @@ import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdModel
 import com.eightpeak.salakafarm.views.home.slider.SliderModel
 import com.eightpeak.salakafarm.views.addtocart.addtocartfragment.CartResponse
 import com.eightpeak.salakafarm.views.login.LoginResponse
+import com.eightpeak.salakafarm.views.order.orderview.orderhistory.OrderHistoryModel
+import com.eightpeak.salakafarm.views.order.orderview.viewordercheckoutdetails.CheckOutModel
 import com.eightpeak.salakafarm.views.register.RegisterResponse
 import com.eightpeak.salakafarm.views.search.SearchModel
 import retrofit2.Response
@@ -91,17 +100,31 @@ interface ApiInterface {
     suspend fun getWishList(): Response<List<CartResponse>>
 
 
-
     @GET(COMPARE_LIST_DETAILS)
     suspend fun getCompareProduct(
         @Query("product_ids") product_ids: String
     ): Response<CompareResponse>
 
-
+    //for wishlist
     @POST(DELETE_WISHLIST_ITEM)
     suspend fun deleteWishlistItem(
         @Query("id") productId: String
     ): Response<ServerResponse>
+
+    //for all items
+    @POST(DELETE_WISHLIST)
+    suspend fun deleteWishlist(
+    ): Response<ServerResponse>
+
+    //    for cart
+    @POST(DELETE_CART_ITEM)
+    suspend fun deleteCartItem(
+        @Query("id") productId: String
+    ): Response<ServerResponse>
+
+    //for all cart
+    @POST(DELETE_CART)
+    suspend fun deleteCart(): Response<ServerResponse>
 
 
     //    for subscription
@@ -111,7 +134,7 @@ interface ApiInterface {
 
     @FormUrlEncoded
     @POST(EndPoints.GET_SUB_PACKAGE)
-    suspend fun getSubscriptionPackage(@Field("sub_item_id")sub_item_id:Int): Response<SubscriptionPackageModel>
+    suspend fun getSubscriptionPackage(@Field("sub_item_id") sub_item_id: Int): Response<SubscriptionPackageModel>
 
     @GET(EndPoints.GET_BRANCHES)
     suspend fun getBranches(): Response<BranchModel>
@@ -119,5 +142,30 @@ interface ApiInterface {
     @GET(EndPoints.GET_SUB_ITEM)
     suspend fun getSubscriptionItem(): Response<SubscriptionItemModel>
 
+    @GET(EndPoints.GET_CHECKOUT_DETAILS)
+    suspend fun getCheckoutDetails(): Response<CheckOutModel>
+
+//user info update
+    @POST(UPDATE_USER_INFO)
+    suspend fun getUserProfile(
+        @Body body: RequestBodies.UserProfile
+    ): Response<ServerResponse>
+
+
+    @POST(UPDATE_ADDRESS_LIST)
+    suspend fun updateAddressList(
+        @Body body: RequestBodies.UpdateAddressList
+    ): Response<ServerResponse>
+
+
+    @POST(UPDATE_USER_PASSWORD)
+    suspend fun updatePassword(@Body body: RequestBodies.UpdatePassword): Response<ServerResponse>
+
+    @GET(EndPoints.GET_ADDRESS)
+    suspend fun getAddressList(): Response<AddressListModel>
+
+
+    @GET(EndPoints.GET_ORDER_LIST)
+    suspend fun getOrderHistoryList(): Response<OrderHistoryModel>
 
 }

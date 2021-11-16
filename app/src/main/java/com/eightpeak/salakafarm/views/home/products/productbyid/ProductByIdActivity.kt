@@ -26,7 +26,6 @@ import com.eightpeak.salakafarm.utils.GeneralUtils
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.ProductByIdViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
-import com.eightpeak.salakafarm.views.addtocart.CartActivity
 import com.eightpeak.salakafarm.views.home.HomeActivity
 import com.google.android.material.snackbar.Snackbar
 import com.hadi.retrofitmvvm.util.errorSnack

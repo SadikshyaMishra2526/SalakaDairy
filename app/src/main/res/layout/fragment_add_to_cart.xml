@@ -34,7 +34,6 @@
         android:layout_width="@dimen/_90sdp"
         android:layout_height="@dimen/_100sdp"
         android:layout_marginTop="56dp"
-
         android:layout_marginEnd="352dp"
         android:src="@drawable/line"
         app:layout_constraintEnd_toEndOf="parent"
@@ -62,7 +61,6 @@
             android:layout_weight="1" />
 
         <TextView
-
             android:id="@+id/headerLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

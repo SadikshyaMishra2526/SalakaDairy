@@ -107,6 +107,7 @@ class ViewCartFragment : Fragment() {
     }
 
     private fun getSelectedProducts(cartResponse: List<CartResponse>) {
+        binding.viewCartList.removeAllViews()
         for (i in cartResponse.indices) {
             val itemView: View =
                 LayoutInflater.from(requireContext())

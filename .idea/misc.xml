@@ -15,6 +15,7 @@
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.202734375" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.202734375" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/drawable/ic_baseline_arrow_forward_ios_24.xml" value="0.202734375" />
+        <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/drawable/ic_baseline_close_24.xml" value="0.202734375" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/drawable/ic_baseline_remove_24.xml" value="0.202734375" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.202734375" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/drawable/ic_baseline_vpn_key_24.xml" value="0.202734375" />
@@ -26,6 +27,7 @@
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/activity_add_to_cart.xml" value="0.1755464480874317" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/activity_cart.xml" value="0.176" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/activity_categories_see_all.xml" value="0.12568306010928962" />
+        <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/activity_checkout_details_view.xml" value="0.13763661202185792" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/activity_compare_list.xml" value="0.15095628415300547" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/activity_home.xml" value="0.1755464480874317" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/activity_login.xml" value="0.264" />
@@ -43,6 +45,7 @@
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/activity_wishlist.xml" value="0.1096311475409836" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/add_to_cart_item.xml" value="0.18681693989071038" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/add_to_cart_view.xml" value="0.12568306010928962" />
+        <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/cart_checkout_item.xml" value="0.13763661202185792" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/cart_item.xml" value="0.1755464480874317" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/categories_item.xml" value="0.6" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/categories_see_add_title.xml" value="0.12568306010928962" />
@@ -59,6 +62,8 @@
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/fragment_home.xml" value="0.2" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/fragment_home_slider.xml" value="0.10314207650273224" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/fragment_notifications.xml" value="0.1" />
+        <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/fragment_order_history.xml" value="0.18954918032786885" />
+        <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/fragment_order_history_details.xml" value="0.18954918032786885" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/fragment_product_list.xml" value="0.2" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/fragment_product_view_by_id.xml" value="0.176" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/fragment_settings.xml" value="0.2" />
@@ -72,7 +77,9 @@
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/languages.xml" value="0.1489071038251366" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/layout_add_to_cart.xml" value="0.264" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/layout_branchs_list.xml" value="0.1489071038251366" />
-        <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/layout_customer_order_view.xml" value="0.15710382513661203" />
+        <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/layout_checkout_details.xml" value="0.13763661202185792" />
+        <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/layout_customer_order_view.xml" value="0.2" />
+        <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/layout_edit_address.xml" value="0.18954918032786885" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/layout_forgot_password.xml" value="0.15095628415300547" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/layout_ipen_pdf.xml" value="0.15300546448087432" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/layout_new_notifications.xml" value="0.15710382513661203" />
@@ -85,6 +92,7 @@
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/shimmer_cart_layout.xml" value="0.15846994535519127" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/shimmer_item_categories.xml" value="0.1489071038251366" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/sub_items.xml" value="0.1489071038251366" />
+        <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/total_price_item.xml" value="0.13763661202185792" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/user_password_change.xml" value="0.15095628415300547" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/user_profile.xml" value="0.1" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/SalakaFarm/app/src/main/res/layout/user_profile_change.xml" value="0.1444672131147541" />

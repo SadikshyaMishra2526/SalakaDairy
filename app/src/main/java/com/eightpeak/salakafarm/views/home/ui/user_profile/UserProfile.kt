@@ -15,8 +15,10 @@ import android.view.WindowManager
 import com.eightpeak.salakafarm.databinding.ActivityUserProfileBinding
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
+import com.eightpeak.salakafarm.views.addtocart.CartActivity
 import com.eightpeak.salakafarm.views.comparelist.CompareListActivity
 import com.eightpeak.salakafarm.views.home.HomeActivity
+import com.eightpeak.salakafarm.views.order.orderview.orderhistory.OrderHistory
 import com.eightpeak.salakafarm.views.wishlist.WishlistActivity
 
 
@@ -32,7 +34,7 @@ class UserProfile : AppCompatActivity() {
         tokenManager = TokenManager.getInstance(
             getSharedPreferences(
                 Constants.TOKEN_PREF,
-                AppCompatActivity.MODE_PRIVATE
+                MODE_PRIVATE
             )
         );
         binding = ActivityUserProfileBinding.inflate(layoutInflater)
@@ -74,8 +76,15 @@ class UserProfile : AppCompatActivity() {
             finish()
         }
         binding.compareList.setOnClickListener {
-            startActivity(Intent(this@UserProfile,CompareListActivity::class.java))
-            finish()
+//            startActivity(Intent(this@UserProfile,CompareListActivity::class.java))
+//            finish()
+            val intent = Intent(this@UserProfile, CartActivity::class.java)
+            startActivity(intent)
+        }
+     binding.orderHistory.setOnClickListener {
+            val intent = Intent(this@UserProfile, OrderHistory::class.java)
+            startActivity(intent)
+
         }
     }
 

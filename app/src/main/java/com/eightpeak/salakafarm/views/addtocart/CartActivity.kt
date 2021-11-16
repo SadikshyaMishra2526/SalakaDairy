@@ -1,7 +1,7 @@
 package com.eightpeak.salakafarm.views.addtocart
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageButton
@@ -11,14 +11,9 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import coil.api.load
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.databinding.ActivityCartBinding
-import com.eightpeak.salakafarm.databinding.ActivityViewCartBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
@@ -27,6 +22,7 @@ import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.GetResponseViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.addtocart.addtocartfragment.CartResponse
+import com.eightpeak.salakafarm.views.order.orderview.viewordercheckoutdetails.CheckoutDetailsView
 import com.hadi.retrofitmvvm.util.errorSnack
 import kotlinx.android.synthetic.main.fragment_add_to_cart.*
 import kotlinx.android.synthetic.main.product_item.view.*
@@ -52,13 +48,10 @@ class CartActivity : AppCompatActivity() {
                 MODE_PRIVATE
             )
         )
-        setupViewModel()
-        init()
-    }
-
-
-    private fun init() {
-
+        binding.proceedWithCheckout.setOnClickListener {
+            startActivity(Intent(this@CartActivity, CheckoutDetailsView::class.java))
+            finish()
+        }
         setupViewModel()
     }
 

@@ -23,15 +23,6 @@ class EndPoints {
         const val BRAND_LIST = "api/brands"
         const val BRAND_VIA_ID = "api/products/{id}"
 
-        //        orders
-        const val ORDER_LIST = "api/auth/orders"
-        const val ORDER_VIA_ID = "api/auth/orders/{id}"
-
-
-        const val CANCEL_ORDER = "api/member/cancel_order/{id}"
-        const val CREATE_ORDER = "api/member/create_order"
-
-
         //      products
         const val PRODUCT_LIST = "api/products"
         const val PRODUCT_VIA_ID = "api/products/{id}"
@@ -41,16 +32,50 @@ class EndPoints {
         const val ADD_TO_WISHLIST = "api/add_to_wishlist"
         const val ADD_TO_CART = "api/add_to_cart"
         const val GET_CART_DETAILS = "api/get_cart"
+        const val UPDATE_CART = "api/update_to_cart"
 
         const val GET_WISHLIST_DETAILS = "api/get_wishlist"
         const val DELETE_WISHLIST_ITEM = "api/delete_wishlist"
         const val COMPARE_LIST_DETAILS = "api/get_product_list_for_compare"
+        const val DELETE_WISHLIST = "api/clear_wishlist"
 
-//        subscription
+
+//        cart
+
+        const val DELETE_CART_ITEM = "api/delete_cart"
+        const val DELETE_CART = "api/clear_cart"
+
+        //        subscription
         const val GET_SUB_PACKAGE = "api/get_sub_packages"
         const val ADD_SUBSCRIPTION = "api/subscribed"
         const val GET_SUB_ITEM = "api/get_sub_item"
         const val GET_BRANCHES = "api/get_branch"
+
+        //address
+        const val GET_ADDRESS = "api/get_address_list"
+
+
+        //        order
+        const val GET_CHECKOUT_DETAILS = " api/get_checkout_details"
+        const val GET_ORDER_LIST = " api/get_order_list"
+        const val GET_ORDER_DETAILS = " api/get_order_details"
+
+        const val UPDATE_ADDRESS_LIST = " api/update_address_list"
+
+        const val UPDATE_USER_INFO = " api/update_user_info"
+
+       const val UPDATE_USER_PASSWORD = " api/update_user_password"
+        const val GET_ADDRESS_LIST = " api/get_address_list"
+
+
+        //        orders
+//        const val ORDER_LIST = "api/auth/orders"
+//        const val ORDER_VIA_ID = "api/auth/orders/{id}"
+
+
+        const val CANCEL_ORDER = "api/member/cancel_order/{id}"
+        const val CREATE_ORDER = "api/member/create_order"
+
 
     }
 }

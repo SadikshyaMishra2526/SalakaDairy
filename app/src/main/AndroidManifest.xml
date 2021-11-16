@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.eightpeak.salakafarm">
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -23,7 +22,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SalakaFarm">
-
+        <activity
+            android:name=".views.order.orderview.viewordercheckoutdetails.CheckoutDetailsView"
+            android:exported="true" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -36,7 +37,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-            <activity
+        <activity
             android:name=".views.addtocart.CartActivity"
             android:theme="@style/Theme.SalakaFarm" />
         <activity
@@ -88,8 +89,8 @@
             android:name=".views.comparelist.CompareListActivity"
             android:theme="@style/Theme.SalakaFarm" />
         <activity
-            android:name=".views.forgotpassword.ForgotPassword"
+            android:name=".views.order.orderview.orderhistory.OrderHistory"
             android:theme="@style/Theme.SalakaFarm" />
-       </application>
+    </application>
 
 </manifest>

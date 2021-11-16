@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.eightpeak.salakafarm.repository.AppRepository
+import com.eightpeak.salakafarm.views.order.orderview.orderhistory.OrderHistory
 
 class ViewModelProviderFactory(
     val app: Application,
@@ -55,6 +56,13 @@ class ViewModelProviderFactory(
         }
         if (modelClass.isAssignableFrom(CompareViewModel::class.java)) {
             return CompareViewModel(app, appRepository) as T
+        }
+
+        if (modelClass.isAssignableFrom(CheckOutViewModel::class.java)) {
+            return CheckOutViewModel(app, appRepository) as T
+        }
+  if (modelClass.isAssignableFrom(OrderViewModel::class.java)) {
+            return OrderViewModel(app, appRepository) as T
         }
 
         throw IllegalArgumentException("Unknown class name")

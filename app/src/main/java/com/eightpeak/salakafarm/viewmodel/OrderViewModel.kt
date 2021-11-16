@@ -7,9 +7,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.repository.AppRepository
+import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.Utils
 import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdModel
+import com.eightpeak.salakafarm.views.order.orderview.orderhistory.OrderHistoryModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
@@ -20,20 +22,20 @@ class OrderViewModel  (
 ) : AndroidViewModel(app) {
 
 //get Order list
-    val getOrderList: MutableLiveData<Resource<ProductByIdModel>> = MutableLiveData()
+val getOrderList: MutableLiveData<Resource<OrderHistoryModel>> = MutableLiveData()
 
 
 
-    fun getProductById(id:String) = viewModelScope.launch {
-        getProductDetailsById(id)
+    fun getOrderProductById(tokenManager: TokenManager) = viewModelScope.launch {
+        getOrderProductDetailsById(tokenManager)
     }
 
 
-    private suspend fun getProductDetailsById(id:String) {
+    private suspend fun getOrderProductDetailsById(tokenManager:TokenManager) {
         getOrderList.postValue(Resource.Loading())
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
-                val response = appRepository.getProductListById(id)
+                val response = appRepository.getOrderList(tokenManager)
                 Log.i("TAG", "fetchPics: $response")
                 getOrderList.postValue(handlePicsResponse(response))
             } else {
@@ -62,7 +64,7 @@ class OrderViewModel  (
         }
     }
 
-    private fun handlePicsResponse(response: Response<ProductByIdModel>): Resource<ProductByIdModel> {
+    private fun handlePicsResponse(response: Response<OrderHistoryModel>): Resource<OrderHistoryModel> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)

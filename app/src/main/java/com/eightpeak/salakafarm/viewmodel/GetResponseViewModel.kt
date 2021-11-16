@@ -210,4 +210,53 @@ val deleteWishlistById: MutableLiveData<Resource<ServerResponse>> = MutableLiveD
         return Resource.Error(response.message())
     }
 
+
+    //    delete all wishlist
+    val deleteWishlistItem: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
+
+    fun deleteAllWishlist(tokenManager: TokenManager, productId:String) = viewModelScope.launch {
+        deleteWishlist(tokenManager,productId)
+    }
+
+
+    private suspend fun deleteWishlist(tokenManager: TokenManager, productId:String) {
+        deleteWishlistItem.postValue(Resource.Loading())
+        try {
+            if (Utils.hasInternetConnection(getApplication<Application>())) {
+                val response = appRepository.deleteWishListItem(tokenManager,productId)
+                Log.i("TAG", "fetchPics: $response")
+                deleteWishlistItem.postValue(handledeleteWishlistItemResponse(response))
+            } else {
+                deleteWishlistItem.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+            }
+        } catch (t: Throwable) {
+            Log.i("TAG", "fetchPics: "+t.localizedMessage)
+            when (t) {
+                is IOException -> deleteWishlistItem.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.network_failure
+                        )
+                    )
+                )
+                else -> deleteWishlistItem.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.conversion_error
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun handledeleteWishlistItemResponse(response: Response<ServerResponse>): Resource<ServerResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
 }

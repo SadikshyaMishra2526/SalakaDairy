@@ -49,6 +49,8 @@ class WishlistActivity : AppCompatActivity() {
                 MODE_PRIVATE
             )
         )
+
+
         setupViewModel()
     }
 
@@ -92,6 +94,11 @@ class WishlistActivity : AppCompatActivity() {
     }
 
     private fun getSelectedProducts(cartResponse: List<CartResponse>) {
+        if(cartResponse.isNotEmpty()){
+            binding.deleteWishlist.setOnClickListener {
+
+            }
+        }
         for (i in cartResponse.indices) {
             val itemView: View =
                 LayoutInflater.from(this)

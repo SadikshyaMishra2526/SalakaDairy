@@ -1,5 +1,7 @@
 package com.eightpeak.salakafarm.serverconfig
 
+import retrofit2.http.Field
+
 
 object RequestBodies {
 
@@ -53,7 +55,25 @@ object RequestBodies {
     )
 
 
+    data class UserProfile(
+        val first_name: String,
+        val last_name: String,
+        val sex: String,
+        val starting_date: String
+    )
+    data class UpdateAddressList(
+        val first_name: String,
+        val last_name: String,
+        val postcode: String,
+        val address1: String,
+        val address2: String,
+        val id: String
+    )
 
+    data class UpdatePassword(
+        val old_password: String,
+        val new_password: String,
+    )
 
 }
 

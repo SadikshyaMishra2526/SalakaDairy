@@ -59,6 +59,16 @@ class AppRepository {
         RetrofitInstance.useApiWithAccessToken(tokenManager).deleteWishlistItem(product_id)
 
 
+    suspend fun deleteWishListAll(tokenManager: TokenManager) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).deleteWishlist()
+
+    suspend fun deleteCartItem(tokenManager: TokenManager, product_id: String) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).deleteCartItem(product_id)
+
+
+    suspend fun deleteCart(tokenManager: TokenManager) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).deleteCart()
+
     suspend fun getCompareProduct(tokenManager: TokenManager, productId: String) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).getCompareProduct(productId)
 
@@ -76,5 +86,25 @@ class AppRepository {
     suspend fun addSubscription(tokenManager: TokenManager , body: RequestBodies.AddSubscription) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).addSubscription(body)
 
+
+  suspend fun getCheckoutDetails(tokenManager: TokenManager) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).getCheckoutDetails()
+
+
+  suspend fun getAddressList(tokenManager: TokenManager) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).getAddressList()
+
+ suspend fun getUserProfile(tokenManager: TokenManager,body: RequestBodies.UserProfile) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).getUserProfile(body)
+
+
+ suspend fun updateAddressList(tokenManager: TokenManager,body: RequestBodies.UpdateAddressList) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).updateAddressList(body)
+
+ suspend fun updatePassword(tokenManager: TokenManager,body: RequestBodies.UpdatePassword) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).updatePassword(body)
+
+ suspend fun getOrderList(tokenManager: TokenManager) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).getOrderHistoryList()
 
 }

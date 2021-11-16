@@ -29,7 +29,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.hadi.retrofitmvvm.util.errorSnack
 import kotlinx.android.synthetic.main.fragment_home_slider.*
 
-class CompareListActivity :AppCompatActivity(){
+class CompareListActivity : AppCompatActivity() {
 
     private lateinit var viewModel: CompareViewModel
     private var _binding: ActivityCompareListBinding? = null
@@ -41,7 +41,7 @@ class CompareListActivity :AppCompatActivity(){
         super.onCreate(savedInstanceState)
         binding = ActivityCompareListBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        userPrefManager= UserPrefManager(this)
+        userPrefManager = UserPrefManager(this)
 
         tokenManager = TokenManager.getInstance(
             getSharedPreferences(
@@ -53,18 +53,20 @@ class CompareListActivity :AppCompatActivity(){
 
 
     }
+
     private fun setupViewModel() {
         val repository = AppRepository()
         val factory = ViewModelProviderFactory(application, repository)
         viewModel = ViewModelProvider(this, factory).get(CompareViewModel::class.java)
         getCompareList()
     }
+
     private fun getCompareList() {
-  var ids=""
-            for(i in  App.getData()){
-                ids += "$i,"
-            }
-        tokenManager?.let { it1 -> viewModel.getCompareResponse(it1,ids) }
+        var ids = ""
+        for (i in App.getData()) {
+            ids += "$i,"
+        }
+        tokenManager?.let { it1 -> viewModel.getCompareResponse(it1, ids) }
 
         viewModel.compareResponse.observe(this, Observer { response ->
             when (response) {
@@ -72,7 +74,10 @@ class CompareListActivity :AppCompatActivity(){
                     hideProgressBar()
 
                     response.data?.let { picsResponse ->
-                        Log.i("TAG", "getCompareList: gggggggggggggggggggggg"+picsResponse.products)
+                        Log.i(
+                            "TAG",
+                            "getCompareList: gggggggggggggggggggggg" + picsResponse.products
+                        )
 //                        binding.shimmerLayout.stopShimmer()
 //                        binding.shimmerLayout.visibility = View.GONE
 //
@@ -111,18 +116,18 @@ class CompareListActivity :AppCompatActivity(){
             val productName = itemView.findViewById<TextView>(R.id.product_name)
             val productPrice = itemView.findViewById<TextView>(R.id.product_price)
             val productAttribute = itemView.findViewById<TextView>(R.id.category_name)
-            categorySKU.text=compareResponse.products[i].sku
-            productName.text=compareResponse.products[i].descriptions[0].title
-            productPrice.text=compareResponse.products[i].price.toString()
-            productAttribute.text=compareResponse.products[i].categories_description[0].alias
-            productThumbnail.load(BASE_URL+compareResponse.products[i].image)
+            categorySKU.text = compareResponse.products[i].sku
+            productName.text = compareResponse.products[i].descriptions[0].title
+            productPrice.text = compareResponse.products[i].price.toString()
+            productAttribute.text = compareResponse.products[i].categories_description[0].alias
+            productThumbnail.load(BASE_URL + compareResponse.products[i].image)
             binding.productsList.addView(itemView)
 
-          }
         }
+    }
 
     private fun hideProgressBar() {
-       binding. progress.visibility = View.GONE
+        binding.progress.visibility = View.GONE
     }
 
     private fun showProgressBar() {
