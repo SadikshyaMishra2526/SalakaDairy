@@ -25,11 +25,9 @@ class OrderViewModel  (
 val getOrderList: MutableLiveData<Resource<OrderHistoryModel>> = MutableLiveData()
 
 
-
     fun getOrderProductById(tokenManager: TokenManager) = viewModelScope.launch {
         getOrderProductDetailsById(tokenManager)
     }
-
 
     private suspend fun getOrderProductDetailsById(tokenManager:TokenManager) {
         getOrderList.postValue(Resource.Loading())
@@ -73,4 +71,55 @@ val getOrderList: MutableLiveData<Resource<OrderHistoryModel>> = MutableLiveData
         return Resource.Error(response.message())
     }
 
+
+
+//get Order details list
+private val getOrderListByDetails: MutableLiveData<Resource<OrderHistoryModel>> = MutableLiveData()
+
+
+fun getOrderHistoryDetails(tokenManager: TokenManager,id:String) = viewModelScope.launch {
+    fetchOrderHistoryDetails(tokenManager,id)
+}
+
+private suspend fun fetchOrderHistoryDetails(tokenManager:TokenManager,id: String) {
+    getOrderListByDetails.postValue(Resource.Loading())
+    try {
+        if (Utils.hasInternetConnection(getApplication<Application>())) {
+            val response = appRepository.getOrderHistoryDetails(tokenManager,id)
+            Log.i("TAG", "fetchPics,,,,,,,,,,,,,,: $response")
+            getOrderListByDetails.postValue(handleOrderHistoryDetails(response))
+        } else {
+            getOrderListByDetails.postValue(
+                Resource.Error(getApplication<Application>().getString(
+                    R.string.no_internet_connection)))
+        }
+    } catch (t: Throwable) {
+        Log.i("TAG", "fetchPics: "+t.localizedMessage)
+        when (t) {
+            is IOException -> getOrderListByDetails.postValue(
+                Resource.Error(
+                    getApplication<Application>().getString(
+                        R.string.network_failure
+                    )
+                )
+            )
+            else -> getOrderListByDetails.postValue(
+                Resource.Error(
+                    getApplication<Application>().getString(
+                        R.string.conversion_error
+                    )
+                )
+            )
+        }
+    }
+}
+
+private fun handleOrderHistoryDetails(response: Response<OrderHistoryModel>): Resource<OrderHistoryModel> {
+    if (response.isSuccessful) {
+        response.body()?.let { resultResponse ->
+            return Resource.Success(resultResponse)
+        }
+    }
+    return Resource.Error(response.message())
+}
 }

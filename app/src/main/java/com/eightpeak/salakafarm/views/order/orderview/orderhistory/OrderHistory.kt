@@ -45,7 +45,12 @@ class OrderHistory : AppCompatActivity() {
                 MODE_PRIVATE
             )
         )
-
+        tokenManager = TokenManager.getInstance(
+            getSharedPreferences(
+                Constants.TOKEN_PREF,
+                MODE_PRIVATE
+            )
+        )
         setupViewModel()
     }
 
@@ -102,7 +107,12 @@ class OrderHistory : AppCompatActivity() {
             val created: String = createdAt.substring(0, createdAt.length.coerceAtMost(10))
             productCreated.text=created
             orderHistoryDetails.setOnClickListener {
-
+                 var fragment:Fragment=OrderHistoryDetails()
+                if (fragment == null) return@setOnClickListener
+                val fm = supportFragmentManager
+                val tr = fm.beginTransaction()
+                tr.add(R.id.order_history, fragment)
+                tr.commitAllowingStateLoss()
             }
                 binding.orderHistoryList.addView(itemView)
         }

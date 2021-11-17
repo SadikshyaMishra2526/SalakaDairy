@@ -164,8 +164,10 @@ interface ApiInterface {
     @GET(EndPoints.GET_ADDRESS)
     suspend fun getAddressList(): Response<AddressListModel>
 
-
     @GET(EndPoints.GET_ORDER_LIST)
     suspend fun getOrderHistoryList(): Response<OrderHistoryModel>
+
+    @GET(EndPoints.GET_ORDER_DETAILS)
+    suspend fun getOrderHistoryDetails(@Query("id")id:String): Response<OrderHistoryModel>
 
 }

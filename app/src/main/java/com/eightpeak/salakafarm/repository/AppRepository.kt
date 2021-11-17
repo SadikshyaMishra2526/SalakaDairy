@@ -107,4 +107,8 @@ class AppRepository {
  suspend fun getOrderList(tokenManager: TokenManager) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).getOrderHistoryList()
 
+
+ suspend fun getOrderHistoryDetails(tokenManager: TokenManager,id:String) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).getOrderHistoryDetails(id)
+
 }

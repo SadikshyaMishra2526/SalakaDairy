@@ -2,6 +2,7 @@ package com.eightpeak.salakafarm.views.order.orderview.orderhistory
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,8 +12,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
-import com.eightpeak.salakafarm.databinding.FragmentHomeBinding
-import com.eightpeak.salakafarm.databinding.FragmentOrderHistoryBinding
 import com.eightpeak.salakafarm.databinding.FragmentOrderHistoryDetailsBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
@@ -20,11 +19,6 @@ import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.OrderViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
-import com.eightpeak.salakafarm.views.home.ui.user_profile.UserProfile
-import com.eightpeak.salakafarm.views.login.LoginActivity
-import com.google.android.material.snackbar.Snackbar
-import com.hadi.retrofitmvvm.util.errorSnack
-
 class OrderHistoryDetails : Fragment() {
 
     private var tokenManager: TokenManager? = null
@@ -50,26 +44,27 @@ class OrderHistoryDetails : Fragment() {
             )
         )
 
-        return root
         setupViewModel()
+        return root
     }
 
     private fun setupViewModel() {
         val repository = AppRepository()
         val factory = ViewModelProviderFactory(requireActivity().application, repository)
         viewModel = ViewModelProvider(this, factory).get(OrderViewModel::class.java)
-
+        getOrderHistoryDetails()
     }
 
 
     private fun getOrderHistoryDetails() {
-        tokenManager?.let { it1 -> viewModel.getOrderProductById(it1) }
+        tokenManager?.let { it1 -> viewModel.getOrderHistoryDetails(it1,"2") }
 
-        viewModel.getOrderList.observe(this, Observer { response ->
+        viewModel.getOrderList.observe(requireActivity(), Observer { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
+                        Log.i("TAG", "getOrderHistoryDetails: i m here")
 //                        populateHistoryView(picsResponse)
 //                        binding.shimmerLayout.stopShimmer()
 //                        binding.shimmerLayout.visibility = View.GONE
