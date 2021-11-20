@@ -59,25 +59,25 @@
 
                         <TextView
                             android:id="@+id/user_name"
-                            android:textStyle="bold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/main_color" />
+                            android:textColor="@color/main_color"
+                            android:textStyle="bold" />
 
-                         <TextView
+                        <TextView
                             android:id="@+id/user_phone"
-                             android:layout_margin="@dimen/_1sdp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/_1sdp"
                             android:textColor="@color/sub_color" />
 
                         <TextView
                             android:id="@+id/user_email"
-                            android:layout_margin="@dimen/_1sdp"
-                            android:textSize="@dimen/_9sdp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/sub_color" />
+                            android:layout_margin="@dimen/_1sdp"
+                            android:textColor="@color/sub_color"
+                            android:textSize="@dimen/_9sdp" />
                     </LinearLayout>
 
                     <View
@@ -106,72 +106,11 @@
                 app:cardCornerRadius="@dimen/_10sdp">
 
                 <LinearLayout
+                    android:id="@+id/viewAddressList"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                     android:orientation="vertical">
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/_5sdp">
-                        <TextView
-                            android:textStyle="bold"
-                            android:textColor="@color/sub_color"
-                            android:layout_width="@dimen/_60sdp"
-                            android:layout_height="wrap_content"
-                            android:text="Address 1 :-" />
-
-                        <TextView
-                            android:id="@+id/user_address1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_5sdp"
-                            android:textColor="@color/main_color" />
-
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/_5sdp">
-
-                        <TextView
-                            android:textStyle="bold"
-                            android:textColor="@color/sub_color"
-                            android:layout_width="@dimen/_60sdp"
-                            android:layout_height="wrap_content"
-                            android:text="Address 2 :-" />
-
-                        <TextView
-                            android:id="@+id/user_address2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_5sdp"
-                            android:textColor="@color/main_color" />
-
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/_5sdp">
-
-                        <TextView
-                            android:textStyle="bold"
-                            android:textColor="@color/sub_color"
-                            android:layout_width="@dimen/_60sdp"
-                            android:layout_height="wrap_content"
-                            android:text="Country    :-" />
-
-                        <TextView
-                            android:id="@+id/user_country"
-                            android:layout_marginStart="@dimen/_5sdp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/main_color" />
-                    </LinearLayout>
-                      </LinearLayout>
+                    android:layout_margin="@dimen/_3sdp"
+                    android:orientation="vertical" />
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -225,6 +164,7 @@
                         android:background="#ECEAEA" />
 
                     <LinearLayout
+                        android:id="@+id/edit_profile_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
@@ -261,6 +201,7 @@
                         android:background="#ECEAEA" />
 
                     <LinearLayout
+                        android:id="@+id/layout_user_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
@@ -363,6 +304,44 @@
                             android:layout_height="@dimen/_30sdp"
                             android:src="@drawable/ic_baseline_keyboard_arrow_right_24" />
                     </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1.5dp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:background="#ECEAEA" />
+
+                    <LinearLayout
+                        android:id="@+id/cart_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:src="@drawable/email" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="Cart List"
+                            android:textColor="@color/sub_color" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:src="@drawable/ic_baseline_keyboard_arrow_right_24" />
+                    </LinearLayout>
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1.5dp"
@@ -424,8 +403,8 @@
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_16sdp"
-        android:orientation="horizontal"
         android:background="@drawable/product_low_design"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

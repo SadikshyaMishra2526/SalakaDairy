@@ -51,70 +51,108 @@
             android:src="@drawable/ic_baseline_shopping_cart_24" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/titles"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/_5sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <androidx.core.widget.NestedScrollView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header_layout"
         app:layout_constraintVertical_bias="0.0">
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:orientation="vertical"
+          android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_gravity="center"
-            android:layout_width="@dimen/_20sdp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_2sdp"
-            android:textColor="@color/sub_color"
-            android:text="Sn."
-            android:textStyle="bold"
-            android:textSize="@dimen/_11sdp" />
+          <LinearLayout
+              android:id="@+id/titles"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:padding="@dimen/_5sdp">
+
+              <TextView
+                  android:layout_gravity="center"
+                  android:layout_width="@dimen/_20sdp"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="@dimen/_2sdp"
+                  android:textColor="@color/sub_color"
+                  android:text="Sn."
+                  android:textStyle="bold"
+                  android:textSize="@dimen/_11sdp" />
 
 
-        <TextView
-            android:textStyle="bold"
-            android:text="Product Id"
-            android:layout_gravity="center"
-            android:layout_width="@dimen/_70sdp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_2sdp"
-            android:textColor="@color/sub_color"
-            android:textSize="@dimen/_11sdp" />
+              <TextView
+                  android:textStyle="bold"
+                  android:text="Product Id"
+                  android:layout_gravity="center"
+                  android:layout_width="@dimen/_70sdp"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="@dimen/_2sdp"
+                  android:textColor="@color/sub_color"
+                  android:textSize="@dimen/_11sdp" />
 
-        <TextView
-            android:textStyle="bold"
-            android:text="Total"
-            android:layout_gravity="center"
-            android:layout_width="@dimen/_50sdp"
-            android:textColor="@color/sub_color"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_2sdp" />
-        <TextView
-            android:textStyle="bold"
-            android:text="Created At"
-            android:layout_gravity="center"
-            android:id="@+id/product_created"
-            android:layout_width="@dimen/_80sdp"
-            android:layout_height="wrap_content"
-            android:textColor="@color/sub_color"
-            android:layout_margin="@dimen/_2sdp" />
+              <TextView
+                  android:textStyle="bold"
+                  android:text="Total"
+                  android:layout_gravity="center"
+                  android:layout_width="@dimen/_50sdp"
+                  android:textColor="@color/sub_color"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="@dimen/_2sdp" />
+              <TextView
+                  android:textStyle="bold"
+                  android:text="Created At"
+                  android:layout_gravity="center"
+                  android:id="@+id/product_created"
+                  android:layout_width="@dimen/_80sdp"
+                  android:layout_height="wrap_content"
+                  android:textColor="@color/sub_color"
+                  android:layout_margin="@dimen/_2sdp" />
 
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/order_history_list"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titles"
-        app:layout_constraintVertical_bias="0.0" />
+          </LinearLayout>
+          <LinearLayout
+              android:id="@+id/order_history_list"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"/>
+
+          <LinearLayout
+              android:id="@+id/design"
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/_10sdp"
+              android:layout_gravity="bottom"
+              android:background="@drawable/product_low_design"
+              android:orientation="horizontal" />
+
+          <LinearLayout
+              android:id="@+id/just_for_you"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_margin="@dimen/_10sdp">
+
+              <TextView
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:text="@string/just_for_you"
+                  android:gravity="center"
+                  android:textSize="@dimen/_15sdp"
+                  android:textColor="@color/sub_color"
+                  android:textStyle="bold" />
+          </LinearLayout>
+
+          <androidx.recyclerview.widget.RecyclerView
+              android:id="@+id/productRecyclerView"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginBottom="@dimen/_80sdp"
+              app:snapGravity="start" />
+
+      </LinearLayout>
+  </androidx.core.widget.NestedScrollView>
+
+
+
+
 
     <ProgressBar
         android:id="@+id/progress"

@@ -12,6 +12,8 @@ import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.Utils
 import com.eightpeak.salakafarm.views.home.products.ServerResponse
 import com.eightpeak.salakafarm.views.addtocart.addtocartfragment.CartResponse
+import com.eightpeak.salakafarm.views.home.products.Data
+import com.eightpeak.salakafarm.views.pages.PageDetailsModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
@@ -251,6 +253,106 @@ val deleteWishlistById: MutableLiveData<Resource<ServerResponse>> = MutableLiveD
     }
 
     private fun handledeleteWishlistItemResponse(response: Response<ServerResponse>): Resource<ServerResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+
+
+
+    //    get Page Title
+    val getPageDetails: MutableLiveData<Resource<PageDetailsModel>> = MutableLiveData()
+
+    fun getPageDetailsView(pageId:String) = viewModelScope.launch {
+        fetchPageDetails(pageId)
+    }
+
+
+    private suspend fun fetchPageDetails( pageId:String) {
+        getPageDetails.postValue(Resource.Loading())
+        try {
+            if (Utils.hasInternetConnection(getApplication<Application>())) {
+                val response = appRepository.getPageDetails(pageId)
+                Log.i("TAG", "fetchPics: $response")
+                getPageDetails.postValue(handleGetPageDetailsResponse(response))
+            } else {
+                getPageDetails.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+            }
+        } catch (t: Throwable) {
+            Log.i("TAG", "fetchPics: "+t.localizedMessage)
+            when (t) {
+                is IOException -> getPageDetails.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.network_failure
+                        )
+                    )
+                )
+                else -> getPageDetails.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.conversion_error
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun handleGetPageDetailsResponse(response: Response<PageDetailsModel>): Resource<PageDetailsModel> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+
+    //    get Random Title
+    val getRandomListResponse: MutableLiveData<Resource<List<Data>>> = MutableLiveData()
+
+    fun getRandomListResponseView() = viewModelScope.launch {
+        fetchRandomDetails()
+    }
+
+
+    private suspend fun fetchRandomDetails() {
+        getRandomListResponse.postValue(Resource.Loading())
+        try {
+            if (Utils.hasInternetConnection(getApplication<Application>())) {
+                val response = appRepository.getRandomList()
+                Log.i("TAG", "fetchPics: $response")
+                getRandomListResponse.postValue(handleRandomListDetails(response))
+            } else {
+                getRandomListResponse.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+            }
+        } catch (t: Throwable) {
+            Log.i("TAG", "fetchPics: "+t.localizedMessage)
+            when (t) {
+                is IOException -> getRandomListResponse.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.network_failure
+                        )
+                    )
+                )
+                else -> getRandomListResponse.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.conversion_error
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun handleRandomListDetails(response: Response<List<Data>>): Resource<List<Data>> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)

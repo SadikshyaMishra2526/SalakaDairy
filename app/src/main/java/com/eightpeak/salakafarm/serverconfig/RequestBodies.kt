@@ -59,7 +59,7 @@ object RequestBodies {
         val first_name: String,
         val last_name: String,
         val sex: String,
-        val starting_date: String
+        val birthday: String
     )
     data class UpdateAddressList(
         val first_name: String,

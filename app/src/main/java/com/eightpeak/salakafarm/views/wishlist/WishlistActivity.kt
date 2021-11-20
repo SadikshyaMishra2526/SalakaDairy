@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import coil.api.load
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
@@ -25,9 +26,12 @@ import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.GetResponseViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.addtocart.addtocartfragment.CartResponse
+import com.eightpeak.salakafarm.views.home.products.Data
+import com.eightpeak.salakafarm.views.home.products.ProductAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.hadi.retrofitmvvm.util.errorSnack
 import com.hadi.retrofitmvvm.util.successAddToCartSnack
+import kotlinx.android.synthetic.main.fragment_add_to_cart.*
 
 class WishlistActivity : AppCompatActivity() {
     private lateinit var viewModel: GetResponseViewModel
@@ -36,11 +40,13 @@ class WishlistActivity : AppCompatActivity() {
     private lateinit var binding: ActivityWishlistBinding
     lateinit var userPrefManager: UserPrefManager
 
+    lateinit var productAdapter: ProductAdapter
+    private var layoutManager: GridLayoutManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityWishlistBinding.inflate(layoutInflater)
-
+        binding.headerTitle.text="WishList"
         userPrefManager= UserPrefManager(this)
         setContentView(binding.root)
         tokenManager = TokenManager.getInstance(
@@ -50,7 +56,7 @@ class WishlistActivity : AppCompatActivity() {
             )
         )
 
-
+init()
         setupViewModel()
     }
 
@@ -59,6 +65,7 @@ class WishlistActivity : AppCompatActivity() {
         val factory = ViewModelProviderFactory(application, repository)
         viewModel = ViewModelProvider(this, factory).get(GetResponseViewModel::class.java)
         getPictures()
+        getRandomProducts()
     }
 
     private fun getPictures() {
@@ -95,9 +102,7 @@ class WishlistActivity : AppCompatActivity() {
 
     private fun getSelectedProducts(cartResponse: List<CartResponse>) {
         if(cartResponse.isNotEmpty()){
-            binding.deleteWishlist.setOnClickListener {
 
-            }
         }
         for (i in cartResponse.indices) {
             val itemView: View =
@@ -122,7 +127,7 @@ class WishlistActivity : AppCompatActivity() {
                 val builder = AlertDialog.Builder(this)
                 builder.setTitle("Delete Wishlist Item")
                 builder.setMessage("Are you sure you want to delete this item?")
-                builder.setPositiveButton(R.string.logout,
+                builder.setPositiveButton("Confirm",
                     DialogInterface.OnClickListener { dialog, which ->
                       tokenManager?.let { it1 -> viewModel.deleteWishlistById(it1,cartResponse[i].id.toString()) }
                         dialog.dismiss()
@@ -180,6 +185,47 @@ class WishlistActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+    private fun init() {
+        productAdapter = ProductAdapter()
+        layoutManager = GridLayoutManager(this, 2)
+        binding.productRecyclerView.layoutManager = layoutManager
+        binding.productRecyclerView.setHasFixedSize(true)
+        binding.productRecyclerView.isFocusable = false
+        binding.productRecyclerView.adapter = productAdapter
+
+    }
+    private fun getRandomProducts() {
+        viewModel.getRandomListResponseView()
+
+        viewModel.getRandomListResponse.observe(this, Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let { picsResponse ->
+                        getRandomProductsDetails(picsResponse)
+                    }
+                }
+
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let { message ->
+                        addToCart.errorSnack(message, Snackbar.LENGTH_LONG)
+                    }
+
+                }
+
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+            }
+        })
+    }
+
+    private fun getRandomProductsDetails(data: List<Data>) {
+        productAdapter.differ.submitList(data)
+        binding.productRecyclerView.adapter = productAdapter
+
     }
 
     private fun hideProgressBar() {

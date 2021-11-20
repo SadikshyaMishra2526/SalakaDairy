@@ -29,9 +29,12 @@ import com.eightpeak.salakafarm.views.home.products.ServerResponse
 import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdModel
 import com.eightpeak.salakafarm.views.home.slider.SliderModel
 import com.eightpeak.salakafarm.views.addtocart.addtocartfragment.CartResponse
+import com.eightpeak.salakafarm.views.home.products.Data
 import com.eightpeak.salakafarm.views.login.LoginResponse
+import com.eightpeak.salakafarm.views.order.orderview.orderhistory.OrderHistoryDetailsModel
 import com.eightpeak.salakafarm.views.order.orderview.orderhistory.OrderHistoryModel
 import com.eightpeak.salakafarm.views.order.orderview.viewordercheckoutdetails.CheckOutModel
+import com.eightpeak.salakafarm.views.pages.PageDetailsModel
 import com.eightpeak.salakafarm.views.register.RegisterResponse
 import com.eightpeak.salakafarm.views.search.SearchModel
 import retrofit2.Response
@@ -168,6 +171,14 @@ interface ApiInterface {
     suspend fun getOrderHistoryList(): Response<OrderHistoryModel>
 
     @GET(EndPoints.GET_ORDER_DETAILS)
-    suspend fun getOrderHistoryDetails(@Query("id")id:String): Response<OrderHistoryModel>
+    suspend fun getOrderHistoryDetails(@Query("id")id:String): Response<OrderHistoryDetailsModel>
+
+
+    @GET(EndPoints.GET_PAGE_DETAILS)
+    suspend fun getPageDetails(@Path("id")id:String): Response<PageDetailsModel>
+
+
+    @GET(EndPoints.GET_RANDOM_PRODUCTS)
+    suspend fun getRandomList(): Response<List<Data>>
 
 }

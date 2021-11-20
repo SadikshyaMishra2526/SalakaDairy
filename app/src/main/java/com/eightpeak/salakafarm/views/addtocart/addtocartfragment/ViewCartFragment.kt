@@ -1,17 +1,14 @@
 package com.eightpeak.salakafarm.views.addtocart.addtocartfragment
 
+import android.R.attr
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.databinding.FragmentAddToCartBinding
@@ -22,10 +19,20 @@ import com.eightpeak.salakafarm.utils.EndPoints
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.GetResponseViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
+import com.eightpeak.salakafarm.views.home.products.Data
+import com.eightpeak.salakafarm.views.home.products.ProductAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.hadi.retrofitmvvm.util.errorSnack
 import kotlinx.android.synthetic.main.fragment_add_to_cart.*
-import kotlinx.android.synthetic.main.fragment_categories.*
+import android.view.View.OnTouchListener
+
+import androidx.core.view.MotionEventCompat
+import android.R.attr.right
+
+import android.R.attr.left
+import android.view.*
+import android.widget.*
+
 
 class ViewCartFragment : Fragment() {
     private lateinit var viewModel: GetResponseViewModel
@@ -34,6 +41,8 @@ class ViewCartFragment : Fragment() {
     private lateinit var binding: FragmentAddToCartBinding
     private  var quantity: Int = 0
 
+    lateinit var productAdapter: ProductAdapter
+    private var layoutManager: GridLayoutManager? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,30 +56,27 @@ class ViewCartFragment : Fragment() {
                 AppCompatActivity.MODE_PRIVATE
             )
         )
-        setupViewModel()
+         init()
         return binding.addToCart
     }
-
-
     private fun init() {
-//        categoriesAdapter = CategoriesAdapter()
-//        layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-//        binding.viewCartList.layoutManager = layoutManager
-//        binding.viewCartList.setHasFixedSize(true)
-//        binding.viewCartList.isFocusable = false
-//        binding.viewCartList.adapter = categoriesAdapter
-//        binding.seeAllCategories.setOnClickListener {
-//            val intent = Intent(context, CategoriesSeeAllActivity::class.java)
-//            startActivity(intent)
-//        }
+        productAdapter = ProductAdapter()
+        layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.productRecyclerView.layoutManager = layoutManager
+        binding.productRecyclerView.setHasFixedSize(true)
+        binding.productRecyclerView.isFocusable = false
+        binding.productRecyclerView.adapter = productAdapter
         setupViewModel()
+
     }
+
 
     private fun setupViewModel() {
         val repository = AppRepository()
         val factory = ViewModelProviderFactory(requireActivity().application, repository)
         viewModel = ViewModelProvider(this, factory).get(GetResponseViewModel::class.java)
         getPictures()
+        getRandomProducts()
     }
 
     private fun getPictures() {
@@ -139,6 +145,90 @@ class ViewCartFragment : Fragment() {
             binding.viewCartList.addView(itemView)
         }
     }
+    private fun getRandomProducts() {
+        viewModel.getRandomListResponseView()
+
+        viewModel.getRandomListResponse.observe(requireActivity(), Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let { picsResponse ->
+                        getRandomProductsDetails(picsResponse)
+                    }
+                }
+
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let { message ->
+                        addToCart.errorSnack(message, Snackbar.LENGTH_LONG)
+                    }
+
+                }
+
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+            }
+        })
+
+    }
+
+    private fun getRandomProductsDetails(data: List<Data>) {
+        val params = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        productAdapter.differ.submitList(data)
+        binding.productRecyclerView.adapter = productAdapter
+//        binding.productRecyclerView.setOnTouchListener(object : OnTouchListener {
+//            var initialY = 0f
+//            var finalY = 0f
+//            var isScrollingUp = false
+//            override fun onTouch(v: View, event: MotionEvent): Boolean {
+//                val action = MotionEventCompat.getActionMasked(event)
+//                when (action) {
+//                    MotionEvent.ACTION_DOWN -> {
+//                        initialY = event.y
+//                        finalY = event.y
+//                        if (initialY < finalY) {
+//                            Log.d("TAG", "Scrolling up")
+//                            isScrollingUp = true
+//                        } else if (initialY > finalY) {
+//                            Log.d("TAG", "Scrolling down")
+//                            isScrollingUp = false
+//                        }
+//                    }
+//                    MotionEvent.ACTION_UP -> {
+//                        finalY = event.y
+//                        if (initialY < finalY) {
+//                            Log.d("TAG HERE", "Scrolling up")
+//                            isScrollingUp = true
+//                        } else if (initialY > finalY) {
+//                            Log.d("TAG HERE", "Scrolling down")
+//                            isScrollingUp = false
+//                        }
+//                    }
+//                    else -> {
+//                    }
+//                }
+//                if (isScrollingUp) {
+//                    Log.i("TAG", "onTouch: UPPPPPPPPPPPPPPPPPPP")
+//                    // do animation for scrolling up
+//                    params.gravity = Gravity.END
+//                    binding.proceedWithCheckout.layoutParams = params
+//                } else {
+//                    Log.i("TAG", "onTouch: DOWNNNNNNNNNNNNNNNNN")
+//
+////                    params.setMargins(100, 100, 100, 10)
+////                    binding.proceedWithCheckout.layoutParams = params
+//
+//                    // do animation for scrolling down
+//                }
+//                return false // has to be false, or it will freeze the listView
+//            }
+//        })
+     }
+
 
     private fun hideProgressBar() {
         binding.progress.visibility = View.GONE

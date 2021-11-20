@@ -68,6 +68,10 @@ class EndPoints {
         const val GET_ADDRESS_LIST = " api/get_address_list"
 
 
+
+        const val GET_PAGE_DETAILS = " api/get_order_details/{id}"
+        const val GET_RANDOM_PRODUCTS = "api/random_products"
+
         //        orders
 //        const val ORDER_LIST = "api/auth/orders"
 //        const val ORDER_VIA_ID = "api/auth/orders/{id}"

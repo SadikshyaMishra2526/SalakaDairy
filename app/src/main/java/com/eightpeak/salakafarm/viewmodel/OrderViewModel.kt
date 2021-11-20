@@ -10,7 +10,9 @@ import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.Utils
+import com.eightpeak.salakafarm.views.home.products.Data
 import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdModel
+import com.eightpeak.salakafarm.views.order.orderview.orderhistory.OrderHistoryDetailsModel
 import com.eightpeak.salakafarm.views.order.orderview.orderhistory.OrderHistoryModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -74,7 +76,7 @@ val getOrderList: MutableLiveData<Resource<OrderHistoryModel>> = MutableLiveData
 
 
 //get Order details list
-private val getOrderListByDetails: MutableLiveData<Resource<OrderHistoryModel>> = MutableLiveData()
+val getOrderListByDetails: MutableLiveData<Resource<OrderHistoryDetailsModel>> = MutableLiveData()
 
 
 fun getOrderHistoryDetails(tokenManager: TokenManager,id:String) = viewModelScope.launch {
@@ -86,7 +88,6 @@ private suspend fun fetchOrderHistoryDetails(tokenManager:TokenManager,id: Strin
     try {
         if (Utils.hasInternetConnection(getApplication<Application>())) {
             val response = appRepository.getOrderHistoryDetails(tokenManager,id)
-            Log.i("TAG", "fetchPics,,,,,,,,,,,,,,: $response")
             getOrderListByDetails.postValue(handleOrderHistoryDetails(response))
         } else {
             getOrderListByDetails.postValue(
@@ -114,7 +115,7 @@ private suspend fun fetchOrderHistoryDetails(tokenManager:TokenManager,id: Strin
     }
 }
 
-private fun handleOrderHistoryDetails(response: Response<OrderHistoryModel>): Resource<OrderHistoryModel> {
+private fun handleOrderHistoryDetails(response: Response<OrderHistoryDetailsModel>): Resource<OrderHistoryDetailsModel> {
     if (response.isSuccessful) {
         response.body()?.let { resultResponse ->
             return Resource.Success(resultResponse)
@@ -122,4 +123,55 @@ private fun handleOrderHistoryDetails(response: Response<OrderHistoryModel>): Re
     }
     return Resource.Error(response.message())
 }
+
+
+    //    get Random Title
+    val getRandomListResponse: MutableLiveData<Resource<List<Data>>> = MutableLiveData()
+
+    fun getRandomListResponseView() = viewModelScope.launch {
+        fetchRandomDetails()
+    }
+
+
+    private suspend fun fetchRandomDetails() {
+        getRandomListResponse.postValue(Resource.Loading())
+        try {
+            if (Utils.hasInternetConnection(getApplication<Application>())) {
+                val response = appRepository.getRandomList()
+                Log.i("TAG", "fetchPics: $response")
+                getRandomListResponse.postValue(handleRandomListDetails(response))
+            } else {
+                getRandomListResponse.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+            }
+        } catch (t: Throwable) {
+            Log.i("TAG", "fetchPics: "+t.localizedMessage)
+            when (t) {
+                is IOException -> getRandomListResponse.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.network_failure
+                        )
+                    )
+                )
+                else -> getRandomListResponse.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.conversion_error
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun handleRandomListDetails(response: Response<List<Data>>): Resource<List<Data>> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+
 }

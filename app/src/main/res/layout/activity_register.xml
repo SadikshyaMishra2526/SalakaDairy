@@ -82,7 +82,7 @@
                 android:layout_alignStart="@+id/last_name_img"
                 android:layout_alignParentEnd="true"
                 android:gravity="center"
-                android:hint="@string/second_name"
+                android:hint="@string/last_name"
                 android:text="Mishra"
                 android:inputType="textEmailAddress"
                 android:maxLines="1" />
@@ -90,7 +90,7 @@
             <ImageView
                 android:id="@+id/last_name_img"
                 style="@style/editLeftIcon"
-                android:contentDescription="@string/second_name"
+                android:contentDescription="@string/last_name"
                 android:src="@drawable/email" />
 
         </RelativeLayout>

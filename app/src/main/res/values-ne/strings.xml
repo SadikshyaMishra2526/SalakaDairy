@@ -23,7 +23,7 @@
 
 
     <string name="first_name"><font color='#FFFFFF' size="13">First Name</font></string>
-    <string name="second_name"><font color='#FFFFFF' size="13">Second Name</font></string>
+    <string name="last_name"><font color='#FFFFFF' size="13">Second Name</font></string>
     <string name="address_1"><font color='#FFFFFF' size="13">Address 1</font></string>
     <string name="address_2"><font color='#FFFFFF' size="13">Address 2</font></string>
     <string name="contact"><font color='#FFFFFF' size="13">Contact</font></string>
@@ -72,4 +72,5 @@
     <string name="logout">बाहिर निस्कनु</string>
 
     <string name="cancel">रद्द गर्नुहोस्</string>
+    <string name="change_your_password">Change Your Password</string>
 </resources>

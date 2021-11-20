@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import coil.api.load
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.databinding.FragmentOrderHistoryBinding
@@ -21,8 +22,11 @@ import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.OrderViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
+import com.eightpeak.salakafarm.views.home.products.Data
+import com.eightpeak.salakafarm.views.home.products.ProductAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.hadi.retrofitmvvm.util.errorSnack
+import kotlinx.android.synthetic.main.fragment_add_to_cart.*
 
 class OrderHistory : AppCompatActivity() {
 
@@ -30,6 +34,8 @@ class OrderHistory : AppCompatActivity() {
     private lateinit var binding: FragmentOrderHistoryBinding
 
 
+    lateinit var productAdapter: ProductAdapter
+    private var layoutManager: GridLayoutManager? = null
     private var tokenManager: TokenManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,6 +58,7 @@ class OrderHistory : AppCompatActivity() {
             )
         )
         setupViewModel()
+        init()
     }
 
     private fun setupViewModel() {
@@ -59,6 +66,7 @@ class OrderHistory : AppCompatActivity() {
         val factory = ViewModelProviderFactory(application, repository)
         viewModel = ViewModelProvider(this, factory).get(OrderViewModel::class.java)
         getOrderHistory()
+        getRandomProducts()
     }
 
     private fun getOrderHistory() {
@@ -130,6 +138,48 @@ class OrderHistory : AppCompatActivity() {
 
     fun onProgressClick(view: View) {
         //Preventing Click during loading
+    }
+
+    private fun init() {
+        productAdapter = ProductAdapter()
+        layoutManager = GridLayoutManager(this, 2)
+        binding.productRecyclerView.layoutManager = layoutManager
+        binding.productRecyclerView.setHasFixedSize(true)
+        binding.productRecyclerView.isFocusable = false
+        binding.productRecyclerView.adapter = productAdapter
+
+    }
+    private fun getRandomProducts() {
+        viewModel.getRandomListResponseView()
+
+        viewModel.getRandomListResponse.observe(this, Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let { picsResponse ->
+                        getRandomProductsDetails(picsResponse)
+                    }
+                }
+
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let { message ->
+                        addToCart.errorSnack(message, Snackbar.LENGTH_LONG)
+                    }
+
+                }
+
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+            }
+        })
+    }
+
+    private fun getRandomProductsDetails(data: List<Data>) {
+        productAdapter.differ.submitList(data)
+        binding.productRecyclerView.adapter = productAdapter
+
     }
 
 }

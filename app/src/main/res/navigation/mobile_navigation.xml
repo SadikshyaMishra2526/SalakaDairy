@@ -48,9 +48,17 @@
         android:name="com.eightpeak.salakafarm.views.settings.SettingsFragment"
         android:label="@string/settings"
         tools:layout="@layout/fragment_settings" >
+        <argument android:name="page_id"
+            app:argType="string"/>
         <action
             android:id="@+id/action_navigation_productlist_by_id_to_navigation_home"
             app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_navigation_setting_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
+        <action
+            android:id="@+id/action_navigation_setting_to_pageDetailsView"
+            app:destination="@id/pageDetailsView" />
     </fragment>
 
     <fragment
@@ -72,4 +80,22 @@
             android:id="@+id/action_navigation_categories_by_id_to_navigation_categories"
             app:destination="@id/navigation_categories" />
     </fragment>
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="com.eightpeak.salakafarm.mapfunctions.MapsFragment"
+        android:label="MapsFragment" >
+        <action
+            android:id="@+id/action_mapsFragment_to_navigation_setting"
+            app:destination="@id/navigation_setting" />
+    </fragment>
+    <fragment
+        android:id="@+id/pageDetailsView"
+        android:name="com.eightpeak.salakafarm.views.pages.PageDetailsView"
+        android:label="page_detail_view"
+        tools:layout="@layout/page_detail_view" >
+        <action
+            android:id="@+id/action_pageDetailsView_to_navigation_setting"
+            app:destination="@id/navigation_setting" />
+    </fragment>
+
 </navigation>

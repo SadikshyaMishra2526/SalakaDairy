@@ -39,8 +39,10 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.fragment.app.FragmentManager
 import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.views.home.ui.home.BottomNavigationBehavior
+import com.eightpeak.salakafarm.views.home.ui.home.HomeFragment
 import java.lang.Exception
 import java.util.*
 
@@ -93,10 +95,10 @@ GoogleApiClient.OnConnectionFailedListener
 
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        exitProcess(-1)
-    }
+//    override fun onBackPressed() {
+//        super.onBackPressed()
+//        exitProcess(-1)
+//    }
 
     override fun onMapReady(p0: GoogleMap) {
 
@@ -246,5 +248,19 @@ GoogleApiClient.OnConnectionFailedListener
                 e.printStackTrace()
             }
         })
+    }
+
+    override fun onBackPressed() {
+        val fm: android.app.FragmentManager? = fragmentManager
+        if (fm != null) {
+            if (fm.getBackStackEntryCount() > 0) {
+                Log.i("MainActivity", "popping backstack")
+                fm.popBackStack()
+            } else {
+                Log.i("MainActivity", "nothing on backstack, calling super")
+                super.onBackPressed()
+            }
+        }
+
     }
 }

@@ -1,11 +1,12 @@
 package com.eightpeak.salakafarm.repository
 
+import androidx.lifecycle.LiveData
+import com.eightpeak.salakafarm.database.NotificationDetails
 import com.eightpeak.salakafarm.serverconfig.RequestBodies
 import com.eightpeak.salakafarm.serverconfig.RetrofitInstance
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 
 class AppRepository {
-
 
     suspend fun loginUser(body: RequestBodies.LoginBody) =
         RetrofitInstance.useApiWithoutToken.loginCustomer(body)
@@ -110,5 +111,13 @@ class AppRepository {
 
  suspend fun getOrderHistoryDetails(tokenManager: TokenManager,id:String) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).getOrderHistoryDetails(id)
+
+
+ suspend fun getPageDetails(id:String) =
+     RetrofitInstance.useApiWithoutToken.getPageDetails(id)
+
+
+ suspend fun getRandomList() =
+     RetrofitInstance.useApiWithoutToken.getRandomList()
 
 }

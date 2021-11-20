@@ -11,6 +11,7 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import coil.api.load
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.databinding.ActivityCartBinding
@@ -22,6 +23,9 @@ import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.GetResponseViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.addtocart.addtocartfragment.CartResponse
+import com.eightpeak.salakafarm.views.home.products.Data
+import com.eightpeak.salakafarm.views.home.products.ProductAdapter
+import com.eightpeak.salakafarm.views.home.products.ProductModel
 import com.eightpeak.salakafarm.views.order.orderview.viewordercheckoutdetails.CheckoutDetailsView
 import com.hadi.retrofitmvvm.util.errorSnack
 import kotlinx.android.synthetic.main.fragment_add_to_cart.*
@@ -34,6 +38,9 @@ class CartActivity : AppCompatActivity() {
     private var _binding: ActivityCartBinding? = null
     private var tokenManager: TokenManager? = null
     private  var quantity: Int = 0
+
+    lateinit var productAdapter: ProductAdapter
+    private var layoutManager: GridLayoutManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +59,8 @@ class CartActivity : AppCompatActivity() {
             startActivity(Intent(this@CartActivity, CheckoutDetailsView::class.java))
             finish()
         }
+
+        init()
         setupViewModel()
     }
 
@@ -60,8 +69,17 @@ class CartActivity : AppCompatActivity() {
         val factory = ViewModelProviderFactory(application, repository)
         viewModel = ViewModelProvider(this, factory).get(GetResponseViewModel::class.java)
         getPictures()
+        getRandomProducts()
     }
+    private fun init() {
+        productAdapter = ProductAdapter()
+        layoutManager = GridLayoutManager(this, 2)
+        binding.productRecyclerView.layoutManager = layoutManager
+        binding.productRecyclerView.setHasFixedSize(true)
+        binding.productRecyclerView.isFocusable = false
+        binding.productRecyclerView.adapter = productAdapter
 
+    }
     private fun getPictures() {
         tokenManager?.let { it1 -> viewModel.getCartResponse(it1) }
 
@@ -89,6 +107,39 @@ class CartActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    private fun getRandomProducts() {
+        viewModel.getRandomListResponseView()
+
+        viewModel.getRandomListResponse.observe(this, Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let { picsResponse ->
+                        getRandomProductsDetails(picsResponse)
+                        }
+                }
+
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let { message ->
+                        addToCart.errorSnack(message, Snackbar.LENGTH_LONG)
+                    }
+
+                }
+
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+            }
+        })
+    }
+
+    private fun getRandomProductsDetails(data: List<Data>) {
+        productAdapter.differ.submitList(data)
+        binding.productRecyclerView.adapter = productAdapter
+
     }
 
     private fun getSelectedProducts(cartResponse: List<CartResponse>) {

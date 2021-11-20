@@ -147,11 +147,21 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.0" />
-
+                <LinearLayout
+                    android:id="@+id/linearLayout2"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="@dimen/_16sdp"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/product_low_design"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
                 <LinearLayout
                     android:id="@+id/just_for_you"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_10sdp"
                     app:layout_constraintTop_toBottomOf="@+id/view_cart_list"
                     tools:layout_editor_absoluteX="16dp">
 
@@ -159,29 +169,31 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/just_for_you"
+                        android:gravity="center"
+                        android:textSize="@dimen/_13sdp"
                         android:textColor="@color/main_color"
                         android:textStyle="bold" />
                 </LinearLayout>
 
+
+
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/productRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/just_for_you" />
+                    app:layout_constraintTop_toBottomOf="@+id/products_title"
+                    app:layout_constraintVertical_bias="0.0"
+                    android:layout_marginBottom="@dimen/_80sdp"
+                    app:snapGravity="start" />
+
+
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
-        <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_height="@dimen/_16sdp"
-            android:layout_gravity="bottom"
-            android:background="@drawable/product_low_design"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
     </androidx.cardview.widget.CardView>
 
     <Button

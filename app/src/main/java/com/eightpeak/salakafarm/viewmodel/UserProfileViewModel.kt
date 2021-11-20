@@ -1,6 +1,7 @@
 package com.eightpeak.salakafarm.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -20,9 +21,9 @@ class UserProfileViewModel (app: Application,
 private val appRepository: AppRepository
 ) : AndroidViewModel(app) {
 
-    private val userAddressList: MutableLiveData<Resource<AddressListModel>> = MutableLiveData()
+    val userAddressList: MutableLiveData<Resource<AddressListModel>> = MutableLiveData()
 
-    private fun getUserAddressList(token:TokenManager) = viewModelScope.launch {
+    fun getUserAddressList(token:TokenManager) = viewModelScope.launch {
         fetchUserAddress(token)
     }
 
@@ -68,22 +69,27 @@ private val appRepository: AppRepository
 
 // user profile details
 
-    private val userProfileDetails: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
+    val userProfileDetails: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
 
-    private fun getUserProfileDetails(token:TokenManager,body: RequestBodies.UserProfile) = viewModelScope.launch {
+    public fun getUserProfileDetails(token:TokenManager,body: RequestBodies.UserProfile) = viewModelScope.launch {
         fetchUserDetails(token,body)
     }
 
     private suspend fun fetchUserDetails(token: TokenManager,body: RequestBodies.UserProfile) {
         userProfileDetails.postValue(Resource.Loading())
+
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
                 val response = appRepository.getUserProfile(token,body)
+                Log.i("TAG", "fetchPics: $response")
+
                 userProfileDetails.postValue(handleUserProfileResponse(response))
             } else {
                 userProfileDetails.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
             }
         } catch (t: Throwable) {
+            Log.i("TAG", "fetchPics: ${t.localizedMessage}")
+
             when (t) {
                 is IOException -> userProfileDetails.postValue(
                     Resource.Error(
@@ -162,10 +168,10 @@ private val appRepository: AppRepository
 
     }
 
-    //    for update details address
-    private val updatePassword: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
+    //    for update details password
+    val updatePassword: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
 
-    private fun updatePasswordDetails(token:TokenManager,body: RequestBodies.UpdatePassword) = viewModelScope.launch {
+    public fun updatePasswordDetails(token:TokenManager,body: RequestBodies.UpdatePassword) = viewModelScope.launch {
         fetchPasswordDetails(token,body)
     }
 

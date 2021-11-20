@@ -20,7 +20,7 @@
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_home">Home</string>
     <string name="first_name"><font color='#FFFFFF' size="13">First Name</font></string>
-    <string name="second_name"><font color='#FFFFFF' size="13">Second Name</font></string>
+    <string name="last_name"><font color='#FFFFFF' size="13">Last Name</font></string>
     <string name="address_1"><font color='#FFFFFF' size="13">Address 1</font></string>
     <string name="address_2"><font color='#FFFFFF' size="13">Address 2</font></string>
     <string name="contact"><font color='#FFFFFF' size="13">Contact</font></string>
@@ -80,4 +80,6 @@
     <string name="delete">Delete</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="title_activity_maps_fragment">MapsFragment</string>
+    <string name="change_your_password">Change Your Password</string>
+    <string name="user_profile">User Profile</string>
 </resources>

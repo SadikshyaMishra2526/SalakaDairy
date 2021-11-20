@@ -13,9 +13,12 @@ import android.content.Intent
 import android.view.Window
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.views.home.HomeActivity
+import com.eightpeak.salakafarm.views.pages.PageDetailsView
 import com.eightpeak.salakafarm.views.splash.SplashActivity
 import com.github.barteksc.pdfviewer.PDFView
 import java.util.*
@@ -47,19 +50,26 @@ class SettingsFragment : Fragment() {
 
         setLocal(requireActivity())
 
+     binding.ourBranches.setOnClickListener {
+         view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.action_navigation_setting_to_mapsFragment) }
 
+     }
         binding.fragmentFaq.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString("page_id", "3")
+            view?.let { it1 -> Navigation.findNavController(it1).setGraph(R.navigation.mobile_navigation,bundle) }
 
-            showDialog(",,,")
         }
         binding.privacyPolicy.setOnClickListener {
 
-            showDialog(",,,")
+            view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.action_navigation_setting_to_pageDetailsView) }
+
         }
 
         binding.termsConditions.setOnClickListener {
 
-            showDialog(",,,")
+            view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.action_navigation_setting_to_pageDetailsView) }
+
         }
 
         binding.contactUs.setOnClickListener {
