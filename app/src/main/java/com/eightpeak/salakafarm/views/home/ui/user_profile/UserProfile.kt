@@ -21,6 +21,7 @@ import android.view.WindowManager
 import android.widget.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.eightpeak.salakafarm.App
 import com.eightpeak.salakafarm.databinding.ActivityUserProfileBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.RequestBodies
@@ -38,7 +39,17 @@ import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
 import com.eightpeak.salakafarm.views.addresslist.AddressListModel
-import com.hadi.retrofitmvvm.util.errorSnack
+import com.eightpeak.salakafarm.utils.subutils.errorSnack
+import javax.crypto.Cipher.SECRET_KEY
+
+import com.eightpeak.salakafarm.utils.GeneralUtils
+import java.lang.Exception
+import android.widget.Toast
+
+import android.widget.RadioButton
+
+
+
 
 
 class UserProfile : AppCompatActivity() {
@@ -51,6 +62,7 @@ class UserProfile : AppCompatActivity() {
 
     var dateSelected: Calendar = Calendar.getInstance()
 
+//    var value1: ByteArray = GeneralUtils.decoderfun(Constants.SECRET_KEY)
     private var dialog:Dialog?=null
     private var datePickerDialog: DatePickerDialog? = null
     private fun init() {
@@ -119,8 +131,13 @@ class UserProfile : AppCompatActivity() {
             finish()
         }
         binding.compareList.setOnClickListener {
-            val intent = Intent(this@UserProfile, CompareListActivity::class.java)
-            startActivity(intent)
+            if(App.getData().size!=0){
+
+                val intent = Intent(this@UserProfile, CompareListActivity::class.java)
+                startActivity(intent)
+            }else{
+               Toast.makeText(this@UserProfile,getString(R.string.compare_list_empty),Toast.LENGTH_SHORT).show()
+            }
         }
 
         binding.cartList.setOnClickListener {
@@ -150,8 +167,7 @@ class UserProfile : AppCompatActivity() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
-                        Log.i("TAG", "getAddressList: vvvvvvvvvvvvvvvvvvvvvvvvvvv")
-                        viewAddressList(picsResponse)
+                         viewAddressList(picsResponse)
                         viewAddress(picsResponse)
 
 
@@ -261,11 +277,19 @@ class UserProfile : AppCompatActivity() {
     }
 
     private fun passwordChange(oldPasswordString: String, newPasswordString: String, dialog: Dialog) {
-        val body = RequestBodies.UpdatePassword(
-            oldPasswordString,newPasswordString
-        )
+        try {
+//           val encrOldPassword = Encrypt.encrypt(value1, oldPasswordString)
+//            val encrNewPassword = Encrypt.encrypt(value1, newPasswordString)
+//            val body = RequestBodies.UpdatePassword(
+//                encrOldPassword,encrNewPassword
+//            )
+//            tokenManager?.let { it1 -> viewModel.updatePasswordDetails(it1,body) }
 
-        tokenManager?.let { it1 -> viewModel.updatePasswordDetails(it1,body) }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
 
         viewModel.updatePassword.observe(this, Observer { response ->
             when (response) {
@@ -278,6 +302,7 @@ class UserProfile : AppCompatActivity() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
+                        dialog.dismiss()
                        binding.productViewIdLayout.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 
@@ -320,17 +345,21 @@ class UserProfile : AppCompatActivity() {
 
         }
         val selectedId: Int = userGender.checkedRadioButtonId
-        Log.i("TAG", "editProfile: "+selectedId)
-//       val radioButton = findViewById<RadioButton>(selectedId) as RadioButton
 
+        Log.i("TAG", "editProfile: "+selectedId)
 
 
         btnSummit.setOnClickListener {
-            val name = firstName.text.toString()
-            val email = lastName.text.toString()
-            val dob = userDoB.text.toString()
-            val gender =  "radioButton.text"
-            changeUserProfile(name, email, dob, gender.toString())
+            val radioButton = dialog.findViewById<View>(selectedId) as RadioButton
+
+
+            Log.i("TAG", "editProfile: "+radioButton.text)
+
+//            val name = firstName.text.toString()
+//            val email = lastName.text.toString()
+//            val dob = userDoB.text.toString()
+//            val gender =  "radioButton.text"
+//            changeUserProfile(name, email, dob, gender.toString())
         }
         dialog.setCanceledOnTouchOutside(true)
         dialog.show()

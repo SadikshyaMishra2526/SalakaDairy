@@ -1,5 +1,7 @@
 package com.eightpeak.salakafarm.views.addtocart
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -25,9 +27,8 @@ import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.addtocart.addtocartfragment.CartResponse
 import com.eightpeak.salakafarm.views.home.products.Data
 import com.eightpeak.salakafarm.views.home.products.ProductAdapter
-import com.eightpeak.salakafarm.views.home.products.ProductModel
 import com.eightpeak.salakafarm.views.order.orderview.viewordercheckoutdetails.CheckoutDetailsView
-import com.hadi.retrofitmvvm.util.errorSnack
+import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import kotlinx.android.synthetic.main.fragment_add_to_cart.*
 import kotlinx.android.synthetic.main.product_item.view.*
 
@@ -59,7 +60,7 @@ class CartActivity : AppCompatActivity() {
             startActivity(Intent(this@CartActivity, CheckoutDetailsView::class.java))
             finish()
         }
-
+        binding.header.text="Your Shopping Cart"
         init()
         setupViewModel()
     }
@@ -143,55 +144,133 @@ class CartActivity : AppCompatActivity() {
     }
 
     private fun getSelectedProducts(cartResponse: List<CartResponse>) {
-        for (i in cartResponse.indices) {
-            val itemView: View =
-                LayoutInflater.from(this)
-                    .inflate(R.layout.cart_item, binding.viewCartList, false)
-            binding.header.text = "Shopping Cart"
+        if(cartResponse.isNotEmpty()){
+            binding.ifEmpty.visibility=View.GONE
+            for (i in cartResponse.indices) {
+                val itemView: View =
+                    LayoutInflater.from(this)
+                        .inflate(R.layout.cart_item, binding.viewCartList, false)
 
-            val categorySKU = itemView.findViewById<TextView>(R.id.product_sku)
-            val productThumbnail = itemView.findViewById<ImageView>(R.id.product_thumbnail)
-            val productName = itemView.findViewById<TextView>(R.id.product_name)
-            val productPrice = itemView.findViewById<TextView>(R.id.product_price)
-            val productAttribute = itemView.findViewById<TextView>(R.id.category_name)
-            val increaseQuantity = itemView.findViewById<ImageButton>(R.id.increase_quantity)
-            val decreaseQuantity = itemView.findViewById<ImageButton>(R.id.decrease_quantity)
-            val quantityView = itemView.findViewById<TextView>(R.id.product_quantity)
-            val itemSelected = itemView.findViewById<ImageView>(R.id.item_selected)
-            quantityView.text =  cartResponse[i].qty.toString()
-
-           binding.deleteCartItems.setOnClickListener {
-               itemSelected.load(R.drawable.green_tick)
-
-           }
-            increaseQuantity.setOnClickListener {
-                quantity= cartResponse[i].qty
-                quantity += 1
-                quantityView.text = quantity.toString()
-            }
-            decreaseQuantity.setOnClickListener { if(quantity>1){
-                quantity= cartResponse[i].qty
-                quantity -= 1
-                quantityView.text = quantity.toString()
-             }
-            }
-           var isClicked=true
-            itemSelected.setOnClickListener {
-                if(isClicked){
-                    itemSelected.load(R.drawable.green_tick)
-                    isClicked=false
+                val categorySKU = itemView.findViewById<TextView>(R.id.product_sku)
+                val productThumbnail = itemView.findViewById<ImageView>(R.id.product_thumbnail)
+                val productName = itemView.findViewById<TextView>(R.id.product_name)
+                val productPrice = itemView.findViewById<TextView>(R.id.product_price)
+                val increaseQuantity = itemView.findViewById<ImageButton>(R.id.increase_quantity)
+                val decreaseQuantity = itemView.findViewById<ImageButton>(R.id.decrease_quantity)
+                val quantityView = itemView.findViewById<TextView>(R.id.product_quantity)
+                val itemSelected = itemView.findViewById<ImageView>(R.id.item_selected)
+                val outOfStock = itemView.findViewById<ImageView>(R.id.out_of_stock)
+                quantityView.text =  cartResponse[i].qty.toString()
+                if(cartResponse[i].products_with_description.stock>0){
+                    outOfStock.visibility=View.GONE
                 }else{
-                    itemSelected.load(R.drawable.ic_baseline_radio_button_unchecked_24)
-                    isClicked=true
+                    outOfStock.visibility=View.VISIBLE
                 }
 
+
+                binding.deleteCartItems.setOnClickListener {
+                    val builder = AlertDialog.Builder(this)
+                    builder.setTitle("Delete Cart's all Item")
+                    builder.setMessage("Are you sure you want to delete this item?")
+                    builder.setPositiveButton("Confirm",
+                        DialogInterface.OnClickListener { dialog, which ->
+                            tokenManager?.let { it1 -> viewModel.deleteCart(it1) }
+                            getDeleteResponse()
+                            dialog.dismiss()
+                        })
+                    builder.setNegativeButton(R.string.cancel, null)
+
+                    val dialog = builder.create()
+                    dialog.show()
+                }
+                increaseQuantity.setOnClickListener {
+                    quantity= cartResponse[i].qty
+                    quantity += 1
+                    quantityView.text = quantity.toString()
+                    updateCart(cartResponse[i].id.toString(),quantity.toString())
+                }
+                decreaseQuantity.setOnClickListener {
+                    if(quantity>1){
+                        quantity= cartResponse[i].qty
+                        quantity -= 1
+                        quantityView.text = quantity.toString()
+                        updateCart(cartResponse[i].id.toString(),quantity.toString())
+                    }
+                }
+                var isClicked=true
+                itemSelected.setOnClickListener {
+                    if(isClicked){
+                        itemSelected.load(R.drawable.green_tick)
+                        isClicked=false
+                    }else{
+                        itemSelected.load(R.drawable.ic_baseline_close_24)
+                        isClicked=true
+                    }
+
+                }
+                categorySKU.text = cartResponse[i].products_with_description.sku
+                productName.text = cartResponse[i].products_with_description.descriptions[0].name
+                productPrice.text = cartResponse[i].products_with_description.price.toString()
+                productThumbnail.load(EndPoints.BASE_URL + cartResponse[i].products_with_description.image)
+                binding.viewCartList.addView(itemView)
             }
-            categorySKU.text = cartResponse[i].products_with_description.sku
-            productName.text = cartResponse[i].products_with_description.descriptions[0].name
-            productPrice.text = cartResponse[i].products_with_description.price.toString()
-            productThumbnail.load(EndPoints.BASE_URL + cartResponse[i].products_with_description.image)
-            binding.viewCartList.addView(itemView)
+        }else{
+            binding.ifEmpty.visibility=View.VISIBLE
         }
+    }
+
+    private fun getDeleteResponse() {
+        viewModel.deleteCart.observe(this, Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let { picsResponse ->
+                        finish()
+                        startActivity(intent)
+                    }
+                }
+
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let { message ->
+                        addToCart.errorSnack(message, Snackbar.LENGTH_LONG)
+                    }
+
+                }
+
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+            }
+        })
+    }
+
+    private fun updateCart(id:String,qty:String) {
+        tokenManager?.let { it1 -> viewModel.updateCartResponseView(it1,id,qty) }
+
+        viewModel.updateCartResponse.observe(this, Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let { picsResponse ->
+                        finish()
+                        startActivity(intent)
+                    }
+                }
+
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let { message ->
+                        addToCart.errorSnack(message, Snackbar.LENGTH_LONG)
+                    }
+
+                }
+
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+            }
+        })
     }
 
     private fun hideProgressBar() {

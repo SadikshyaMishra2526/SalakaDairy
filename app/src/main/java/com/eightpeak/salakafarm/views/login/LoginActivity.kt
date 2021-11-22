@@ -23,7 +23,7 @@ import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.home.HomeActivity
 import com.eightpeak.salakafarm.views.register.RegisterActivity
 import com.google.android.material.snackbar.Snackbar
-import com.hadi.retrofitmvvm.util.errorSnack
+import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import kotlinx.android.synthetic.main.activity_login.*
 class LoginActivity : AppCompatActivity() {
     lateinit var loginViewModel: LoginViewModel
@@ -76,8 +76,7 @@ class LoginActivity : AppCompatActivity() {
                         is Resource.Success -> {
                             hideProgressBar()
                             response.data?.let { loginResponse ->
-                                 userPrefManager.userToken=loginResponse.access_token
-                                tokenManager?.saveToken(loginResponse.access_token)
+                                 tokenManager?.saveToken(loginResponse.access_token)
                                 getUserDetails()
 
                             }

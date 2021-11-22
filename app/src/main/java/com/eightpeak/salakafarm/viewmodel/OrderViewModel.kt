@@ -11,6 +11,7 @@ import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.Utils
 import com.eightpeak.salakafarm.views.home.products.Data
+import com.eightpeak.salakafarm.views.home.products.ServerResponse
 import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdModel
 import com.eightpeak.salakafarm.views.order.orderview.orderhistory.OrderHistoryDetailsModel
 import com.eightpeak.salakafarm.views.order.orderview.orderhistory.OrderHistoryModel
@@ -173,5 +174,102 @@ private fun handleOrderHistoryDetails(response: Response<OrderHistoryDetailsMode
         return Resource.Error(response.message())
     }
 
+    val addToCart: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
+
+    fun addToCartView(tokenManager: TokenManager, productId:String,qty:String,options:String) = viewModelScope.launch {
+        addToCartById(tokenManager,productId,qty,options)
+    }
+
+
+    private suspend fun addToCartById(tokenManager: TokenManager, productId:String,qty:String,options:String) {
+        addToCart.postValue(Resource.Loading())
+        try {
+            if (Utils.hasInternetConnection(getApplication<Application>())) {
+                val response = appRepository.addToCart(tokenManager,productId,qty,options)
+                Log.i("TAG", "fetchPics: $response")
+                addToCart.postValue(handleAddToCartResponse(response))
+            } else {
+                addToCart.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+            }
+        } catch (t: Throwable) {
+            Log.i("TAG", "fetchPics: "+t.localizedMessage)
+            when (t) {
+                is IOException -> addToCart.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.network_failure
+                        )
+                    )
+                )
+                else -> addToCart.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.conversion_error
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun handleAddToCartResponse(response: Response<ServerResponse>): Resource<ServerResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+    val wishlist: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
+
+
+
+    fun addtowishlist(tokenManager: TokenManager, productId:String) = viewModelScope.launch {
+        wishlistByView(tokenManager,productId)
+    }
+
+
+    private suspend fun wishlistByView(tokenManager: TokenManager, productId:String) {
+        wishlist.postValue(Resource.Loading())
+        try {
+            if (Utils.hasInternetConnection(getApplication<Application>())) {
+                val response = appRepository.addToWishList(tokenManager,productId)
+                Log.i("TAG", "fetchPics: $response")
+                wishlist.postValue(handleWishListResponse(response))
+            } else {
+                wishlist.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+            }
+        } catch (t: Throwable) {
+
+            when (t) {
+                is IOException -> wishlist.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.network_failure
+                        )
+                    )
+                )
+                else -> wishlist.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.conversion_error
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun handleWishListResponse(response: Response<ServerResponse>): Resource<ServerResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }else{
+            Log.i("TAG", "handleWishListResponse:$response ")
+        }
+        return Resource.Error(response.message())
+    }
 
 }

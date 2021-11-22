@@ -53,7 +53,11 @@ class RelatedProductAdapter : RecyclerView.Adapter<RelatedProductAdapter.Product
         val categoriesItem = differ.currentList[position]
         holder.itemView.apply {
             product_thumbnail.load(EndPoints.BASE_URL + categoriesItem.image)
-
+            if(categoriesItem.stock>0){
+                out_of_stock.visibility=View.GONE
+            }else{
+                out_of_stock.visibility=View.VISIBLE
+            }
             var userPrefManager = UserPrefManager(App.getContext())
 
             if (categoriesItem.descriptions.isNotEmpty()) {

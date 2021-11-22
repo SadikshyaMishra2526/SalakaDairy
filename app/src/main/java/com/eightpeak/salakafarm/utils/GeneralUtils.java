@@ -1,5 +1,7 @@
 package com.eightpeak.salakafarm.utils;
 
+import android.util.Base64;
+
 public class GeneralUtils {
     public static String getUnicodeNumber(String number) {
         String unicodeChar = "";
@@ -34,4 +36,10 @@ public class GeneralUtils {
 
         return unicodeChar;
     }
+
+//    public static byte[] decoderfun(String enval) {
+//        byte[] conVal = Base64.decode(enval, Base64.DEFAULT);
+//        return conVal;
+//
+//    }
 }

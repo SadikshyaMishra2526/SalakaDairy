@@ -27,7 +27,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
-import com.hadi.retrofitmvvm.util.errorSnack
+import com.eightpeak.salakafarm.utils.subutils.errorSnack
 
 class MapsFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
 
@@ -80,7 +80,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
                                 val personDetails = SpannableString(
                                     """
                   Outlet Name :- ${branches.get(i).name.toString()}
-                  Authorized Person :- ${branches.get(i).name.toString()}
                   Contact Number :- ${branches.get(i).contact.toString()}
                   Outlet Location :- ${branches.get(i).address}
                   """.trimIndent()
@@ -101,7 +100,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
                                                 BitmapDescriptorFactory.HUE_ORANGE
                                             )
                                         )
-                                        .title("AIMS Shop Outlets")
+                                        .title("Salaka Shop Outlets")
                                 )
                                 mark.setTag(i)
 //                                markerList.add(mark)

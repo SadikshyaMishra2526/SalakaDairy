@@ -14,9 +14,8 @@ import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.RegisterViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.home.HomeActivity
-import com.eightpeak.salakafarm.views.otpverification.OTPActivity
 import com.google.android.material.snackbar.Snackbar
-import com.hadi.retrofitmvvm.util.errorSnack
+import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import kotlinx.android.synthetic.main.activity_login.*
 
 class RegisterActivity : AppCompatActivity() {

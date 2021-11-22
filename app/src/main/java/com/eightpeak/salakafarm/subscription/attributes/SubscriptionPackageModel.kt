@@ -13,7 +13,7 @@ data class Sub_item(
     @SerializedName("number_of_days") val number_of_days: Int,
     @SerializedName("sub_item_id") val sub_item_id: Int,
     @SerializedName("total_price") val total_price: Int,
-    @SerializedName("discount_price") val discount_price: Int,
+    @SerializedName("discount_price_per_unit") val discount_price: Int,
     @SerializedName("created_at") val created_at: String,
     @SerializedName("updated_at") val updated_at: String
 )

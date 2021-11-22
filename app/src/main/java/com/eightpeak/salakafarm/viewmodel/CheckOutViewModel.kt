@@ -85,7 +85,7 @@ class CheckOutViewModel (app: Application,
         deleteCartById.postValue(Resource.Loading())
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
-                val response = appRepository.deleteWishListItem(tokenManager,productId)
+                val response = appRepository.deleteCartItem(tokenManager,productId)
                 Log.i("TAG", "fetchPics: $response")
                 deleteCartById.postValue(handledeleteCartByIdResponse(response))
             } else {

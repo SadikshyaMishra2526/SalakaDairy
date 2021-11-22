@@ -92,6 +92,10 @@
             android:name=".views.order.orderview.orderhistory.OrderHistory"
             android:theme="@style/Theme.SalakaFarm" />
 
+        <activity
+            android:name=".views.pages.PageDetailsView"
+            android:theme="@style/Theme.SalakaFarm" />
+
 
         <service android:name=".views.home.ui.notifications.PushNotificationService" android:exported="false">
             <intent-filter>

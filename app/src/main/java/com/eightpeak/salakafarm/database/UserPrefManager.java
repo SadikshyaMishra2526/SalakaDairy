@@ -27,6 +27,12 @@ public class UserPrefManager {
     private static final String USER_TOKEN= "user_token";
 
 
+    private static final String SELECTED_SUB_ITEM= "sub_item_selected";
+    private static final String SELECTED_PACKAGE_ITEM= "package_item_selected";
+
+    private static final String CURRENT_LAT= "current_lat";
+    private static final String CURRENT_LNG= "current_lng";
+
 
     public UserPrefManager(Context context) {
         this.mContext = context;
@@ -120,13 +126,42 @@ public class UserPrefManager {
         return userPref.getString(USER_ADDRESS_2, DEFAULT);
     }
 
-    public  void setUserToken(String language) {
-        userPrefEditor.putString(USER_TOKEN, language);
+
+    public  void setSubSelected(Integer subSelected) {
+        userPrefEditor.putInt(SELECTED_SUB_ITEM, subSelected);
         userPrefEditor.commit();
     }
 
-    public String getUserToken() {
-        return userPref.getString(USER_TOKEN, DEFAULT);
+    public Integer getSubSelected() {
+        return userPref.getInt(SELECTED_SUB_ITEM, 0);
+    }
+
+
+    public  void setPackageSelected(Integer subSelected) {
+        userPrefEditor.putInt(SELECTED_PACKAGE_ITEM, subSelected);
+        userPrefEditor.commit();
+    }
+
+    public Integer getPackageSelected() {
+        return userPref.getInt(SELECTED_PACKAGE_ITEM, 0);
+    }
+
+
+    public  void setCurrentLat(Float currentLat) {
+        userPrefEditor.putFloat(CURRENT_LAT, currentLat);
+        userPrefEditor.commit();
+    }
+
+    public Float getCurrentLat() {
+        return userPref.getFloat(CURRENT_LAT, 0);
+    }
+   public  void setCurrentLng(Float currentLng) {
+        userPrefEditor.putFloat(CURRENT_LNG, currentLng);
+        userPrefEditor.commit();
+    }
+
+    public Float getCurrentLng() {
+        return userPref.getFloat(CURRENT_LNG, 0);
     }
 
 

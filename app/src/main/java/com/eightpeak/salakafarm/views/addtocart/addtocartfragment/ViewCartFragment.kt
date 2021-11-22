@@ -1,6 +1,5 @@
 package com.eightpeak.salakafarm.views.addtocart.addtocartfragment
 
-import android.R.attr
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.databinding.FragmentAddToCartBinding
@@ -22,14 +20,9 @@ import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.home.products.Data
 import com.eightpeak.salakafarm.views.home.products.ProductAdapter
 import com.google.android.material.snackbar.Snackbar
-import com.hadi.retrofitmvvm.util.errorSnack
+import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import kotlinx.android.synthetic.main.fragment_add_to_cart.*
-import android.view.View.OnTouchListener
 
-import androidx.core.view.MotionEventCompat
-import android.R.attr.right
-
-import android.R.attr.left
 import android.view.*
 import android.widget.*
 
@@ -123,7 +116,6 @@ class ViewCartFragment : Fragment() {
             val productThumbnail = itemView.findViewById<ImageView>(R.id.product_thumbnail)
             val productName = itemView.findViewById<TextView>(R.id.product_name)
             val productPrice = itemView.findViewById<TextView>(R.id.product_price)
-            val productAttribute = itemView.findViewById<TextView>(R.id.category_name)
             val increaseQuantity = itemView.findViewById<ImageButton>(R.id.increase_quantity)
             val decreaseQuantity = itemView.findViewById<ImageButton>(R.id.decrease_quantity)
             val quantityView = itemView.findViewById<TextView>(R.id.product_quantity)

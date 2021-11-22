@@ -23,7 +23,13 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_150sdp"
             android:scaleType="fitXY" />
-
+        <ImageView
+            android:id="@+id/out_of_stock"
+            android:visibility="gone"
+            android:layout_width="120dp"
+            android:layout_height="100dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/stock" />
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_25sdp"

@@ -37,6 +37,11 @@
     <string name="categories">Categories</string>
     <string name="see_all">See All</string>
 
+    <string name="payment_status"><font color='#5FA95F' size="10">Payment Status111</font></string>
+    <string name="order_status"><font color='#5FA95F' size="10">Order Status</font></string>
+    <string name="shipping_status"><font color='#5FA95F' size="10">Shipping Status </font></string>
+    <string name="order_at"><font color='#5FA95F' size="10">Order At</font> </string>
+
     <string name="telephone_n9808608666"><font color='black' size="16">Telephone</font>\n9801234567</string>
     <string name="opening_times_n7_am_8_pm"><font color='black' size="16"> Opening Times</font>\n7 Am - 8 Pm</string>
     <string name="company_name">Salaka Organic and Traning Center</string>
@@ -82,4 +87,13 @@
     <string name="title_activity_maps_fragment">MapsFragment</string>
     <string name="change_your_password">Change Your Password</string>
     <string name="user_profile">User Profile</string>
+    <string name="compare_list_empty">Compare List is empty</string>
+    <string name="my_compare_list">My Compare List</string>
+    <string name="in_stock">In Stock</string>
+    <string name="out_of_stock">Out of Stock</string>
+    <string name="product_image">Product Image</string>
+    <string name="product_name">Product Name</string>
+    <string name="price">Price</string>
+    <string name="brand">Brand</string>
+    <string name="availability">Availability</string>
 </resources>

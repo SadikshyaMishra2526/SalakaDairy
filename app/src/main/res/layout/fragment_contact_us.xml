@@ -55,47 +55,73 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_15sdp"
         android:orientation="vertical">
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputFirstName"
-            style="@style/parent"
-            android:layout_marginTop="@dimen/_10sdp">
+        <RelativeLayout
+            android:id="@+id/old_password_layout"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/editTextName"
                 style="@style/modifiedEditText"
-                android:textSize="@dimen/_10sdp"
-                android:hint="Customer Name"
-                android:inputType="textCapWords|textPersonName"
-                android:maxLines="1" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_alignStart="@+id/password_img"
+                android:layout_alignParentEnd="true"
+                android:gravity="center"
+                android:hint="Name"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textSize="@dimen/_12sdp" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLastName"
-            style="@style/parent"
-            android:layout_marginTop="@dimen/_10sdp">
+            <ImageView
+                android:id="@+id/password_img"
+                style="@style/editLeftIcon"
+                android:src="@drawable/email" />
 
-            <EditText
-                android:id="@+id/editEmail"
-                style="@style/modifiedEditText"
-                android:textSize="@dimen/_10sdp"
-                android:hint="Email Address"
-                android:inputType="textEmailAddress"
-                android:maxLines="1" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputEmail"
-            style="@style/parent"
-            android:layout_marginTop="@dimen/_10sdp">
+        </RelativeLayout>
+<RelativeLayout
+            android:id="@+id/edtSubject_layout"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <EditText
-
-                android:id="@+id/editEnquiry"
+                android:id="@+id/edtSubject"
                 style="@style/modifiedEditText"
-                android:textSize="@dimen/_10sdp"
-                android:hint="Enquiry"
-                android:inputType="textMultiLine" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_alignStart="@+id/edtSubject_img"
+                android:layout_alignParentEnd="true"
+                android:gravity="center"
+                android:hint="Subject"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textSize="@dimen/_12sdp" />
+
+            <ImageView
+                android:id="@+id/edtSubject_img"
+                style="@style/editLeftIcon"
+                android:src="@drawable/email" />
+
+        </RelativeLayout>
+<RelativeLayout
+            android:id="@+id/edtDescription_layout"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+    android:background="@drawable/edit_view"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/edtDescription"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_80sdp"
+                 android:hint="Description"
+                android:inputType="textMultiLine"
+                android:textSize="@dimen/_12sdp" />
+
+
+        </RelativeLayout>
+
 
        <Button
             android:id="@+id/btSummit"

@@ -181,4 +181,12 @@ interface ApiInterface {
     @GET(EndPoints.GET_RANDOM_PRODUCTS)
     suspend fun getRandomList(): Response<List<Data>>
 
+
+    @POST(EndPoints.UPDATE_CART_PRODUCTS)
+    suspend fun updateCart(@Query("id")id:String,@Query("new_qty")new_qty:String): Response<ServerResponse>
+
+
+    @POST(EndPoints.ADD_COMPLAIN)
+    suspend fun addComplain(@Body body:RequestBodies.AddComplain): Response<ServerResponse>
+
 }

@@ -74,6 +74,10 @@ object RequestBodies {
         val old_password: String,
         val new_password: String,
     )
+ data class AddComplain(
+        val title: String,
+        val description: String,
+    )
 
 }
 

@@ -76,7 +76,7 @@ class AppRepository {
 
 
     suspend fun getBranchList(tokenManager: TokenManager) =
-        RetrofitInstance.useApiWithAccessToken(tokenManager).getBranches()
+        RetrofitInstance.useApiWithoutToken.getBranches()
 
     suspend fun getSubscriptionItemList(tokenManager: TokenManager) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).getSubscriptionItem()
@@ -119,5 +119,13 @@ class AppRepository {
 
  suspend fun getRandomList() =
      RetrofitInstance.useApiWithoutToken.getRandomList()
+
+
+    suspend fun updateCart(tokenManager: TokenManager,id: String,qty:String) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).updateCart(id,qty)
+
+
+    suspend fun addComplain(tokenManager: TokenManager,body: RequestBodies.AddComplain) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).addComplain(body)
 
 }

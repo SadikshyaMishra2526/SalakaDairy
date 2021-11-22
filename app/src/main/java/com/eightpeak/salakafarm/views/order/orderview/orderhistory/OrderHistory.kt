@@ -1,19 +1,15 @@
 package com.eightpeak.salakafarm.views.order.orderview.orderhistory
 
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import coil.api.load
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.databinding.FragmentOrderHistoryBinding
 import com.eightpeak.salakafarm.repository.AppRepository
@@ -25,7 +21,7 @@ import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.home.products.Data
 import com.eightpeak.salakafarm.views.home.products.ProductAdapter
 import com.google.android.material.snackbar.Snackbar
-import com.hadi.retrofitmvvm.util.errorSnack
+import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import kotlinx.android.synthetic.main.fragment_add_to_cart.*
 
 class OrderHistory : AppCompatActivity() {
@@ -77,8 +73,14 @@ class OrderHistory : AppCompatActivity() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
-                        populateHistoryView(picsResponse)
-//                        binding.shimmerLayout.stopShimmer()
+                        if(picsResponse.orderlist.isNotEmpty()){
+                            populateHistoryView(picsResponse)
+//
+                            binding.ifEmpty.visibility=View.GONE
+                        }else{
+                            binding.ifEmpty.visibility=View.VISIBLE
+                        }
+//                          binding.shimmerLayout.stopShimmer()
 //                        binding.shimmerLayout.visibility = View.GONE
                     }
                 }
@@ -114,11 +116,14 @@ class OrderHistory : AppCompatActivity() {
             productTotal.text=getString(R.string.rs)+orderHistory.orderlist[i].total.toString()
             val created: String = createdAt.substring(0, createdAt.length.coerceAtMost(10))
             productCreated.text=created
+            val bundle = Bundle()
+            bundle.putString("order_id", orderHistory.orderlist[i].id.toString())
             orderHistoryDetails.setOnClickListener {
-                 var fragment:Fragment=OrderHistoryDetails()
-                if (fragment == null) return@setOnClickListener
+                 val fragment:Fragment=OrderHistoryDetails()
                 val fm = supportFragmentManager
                 val tr = fm.beginTransaction()
+                fragment.arguments = bundle
+                Log.i("TAG", "populateHistoryView: "+ orderHistory.orderlist[i].id.toString())
                 tr.add(R.id.order_history, fragment)
                 tr.commitAllowingStateLoss()
             }

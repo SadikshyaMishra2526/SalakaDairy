@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -15,19 +14,17 @@ import com.eightpeak.salakafarm.App
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.databinding.ActivityCompareListBinding
-import com.eightpeak.salakafarm.databinding.ActivityWishlistBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.CompareViewModel
-import com.eightpeak.salakafarm.viewmodel.GetResponseViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
-import com.eightpeak.salakafarm.views.home.slider.SliderAdapter
 import com.google.android.material.snackbar.Snackbar
-import com.hadi.retrofitmvvm.util.errorSnack
-import kotlinx.android.synthetic.main.fragment_home_slider.*
+import com.eightpeak.salakafarm.utils.subutils.errorSnack
+import com.eightpeak.salakafarm.utils.subutils.successAddToCartSnack
+import com.eightpeak.salakafarm.utils.subutils.successWishListSnack
 
 class CompareListActivity : AppCompatActivity() {
 
@@ -49,6 +46,8 @@ class CompareListActivity : AppCompatActivity() {
                 MODE_PRIVATE
             )
         )
+        binding.header.text = getString(R.string.my_compare_list)
+
         setupViewModel()
 
 
@@ -78,13 +77,8 @@ class CompareListActivity : AppCompatActivity() {
                             "TAG",
                             "getCompareList: gggggggggggggggggggggg" + picsResponse.products
                         )
-//                        binding.shimmerLayout.stopShimmer()
-//                        binding.shimmerLayout.visibility = View.GONE
-//
-//                        sliderAdapter.notifyDataSetChanged()
-//                        sliderAdapter.addItem(picsResponse)
-//                        sliderAdapter = SliderAdapter(context,picsResponse)
-
+                        binding.shimmerLayout.stopShimmer()
+                        binding.shimmerLayout.visibility = View.GONE
                         displayCompareList(picsResponse)
                     }
                 }
@@ -92,9 +86,8 @@ class CompareListActivity : AppCompatActivity() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        rootLayout.errorSnack(message, Snackbar.LENGTH_LONG)
+                        binding.compareListView.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
-
                 }
 
                 is Resource.Loading -> {
@@ -109,29 +102,99 @@ class CompareListActivity : AppCompatActivity() {
             val itemView: View =
                 LayoutInflater.from(this)
                     .inflate(R.layout.compare_list_item, binding.productsList, false)
-            binding.header.text = "My Compare List"
 
             val categorySKU = itemView.findViewById<TextView>(R.id.product_sku)
             val productThumbnail = itemView.findViewById<ImageView>(R.id.product_thumbnail)
             val productName = itemView.findViewById<TextView>(R.id.product_name)
             val productPrice = itemView.findViewById<TextView>(R.id.product_price)
             val productAttribute = itemView.findViewById<TextView>(R.id.category_name)
+            val productBrand = itemView.findViewById<TextView>(R.id.product_brand)
+            val stock = itemView.findViewById<TextView>(R.id.stock)
+            val wishList = itemView.findViewById<TextView>(R.id.product_add_to_wishlist)
+            val addToCart = itemView.findViewById<TextView>(R.id.product_add_to_cart)
+            Log.i("TAG", "displayCompareList: "+compareResponse.products.toString())
             categorySKU.text = compareResponse.products[i].sku
             productName.text = compareResponse.products[i].descriptions[0].title
             productPrice.text = compareResponse.products[i].price.toString()
-            productAttribute.text = compareResponse.products[i].categories_description[0].alias
+            productBrand.text = compareResponse.products[i].categories_description[0].alias
             productThumbnail.load(BASE_URL + compareResponse.products[i].image)
+            if(compareResponse.products[i].stock>0){
+                stock.text = getString(R.string.in_stock)
+            }else{
+                stock.text = getString(R.string.out_of_stock)
+
+            }
+
+            wishList.setOnClickListener {
+                tokenManager?.let { it1 -> viewModel.addtowishlist(it1, compareResponse.products[i].id.toString()) }
+                getWishListResponse()
+
+            }
+
+            addToCart.setOnClickListener {
+                tokenManager?.let { it1 -> viewModel.addToCartView(it1, compareResponse.products[i].id.toString(),"1","") }
+                getCartResponse()
+            }
             binding.productsList.addView(itemView)
 
         }
     }
 
+    private fun getWishListResponse() {
+        viewModel.wishlist.observe(this, Observer { response ->
+        when (response) {
+            is Resource.Success -> {
+                hideProgressBar()
+                response.data?.let {
+                    binding.compareListView.successWishListSnack(this,getString(R.string.add_to_cart),Snackbar.LENGTH_LONG)
+
+                }
+            }
+
+            is Resource.Error -> {
+                hideProgressBar()
+                response.message?.let { message ->
+                    binding.compareListView.errorSnack(message, Snackbar.LENGTH_LONG)
+                }
+            }
+
+            is Resource.Loading -> {
+                showProgressBar()
+            }
+        }
+    })
+    }
+
+    private fun getCartResponse() {
+        viewModel.addToCart.observe(this, Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let {
+                        binding.compareListView.successAddToCartSnack(this,getString(R.string.add_to_cart),Snackbar.LENGTH_LONG)
+
+                    }
+                }
+
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let { message ->
+                        binding.compareListView.errorSnack(message, Snackbar.LENGTH_LONG)
+                    }
+                }
+
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+            }
+        })
+    }
     private fun hideProgressBar() {
         binding.progress.visibility = View.GONE
     }
 
     private fun showProgressBar() {
-//        progress.visibility = View.VISIBLE
+        binding.progress.visibility = View.VISIBLE
     }
 
 

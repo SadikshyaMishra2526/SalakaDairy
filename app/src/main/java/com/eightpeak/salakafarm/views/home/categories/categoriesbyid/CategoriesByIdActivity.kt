@@ -2,37 +2,24 @@ package com.eightpeak.salakafarm.views.home.categories.categoriesbyid
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.eightpeak.salakafarm.databinding.FragmentCategoriesByIdBinding
-import com.eightpeak.salakafarm.databinding.FragmentProductListBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.CategoriesByIdViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
-import com.eightpeak.salakafarm.views.home.products.ProductModel
 import com.google.android.material.snackbar.Snackbar
-import com.hadi.retrofitmvvm.util.errorSnack
+import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import kotlinx.android.synthetic.main.fragment_categories_by_id.*
-import kotlinx.android.synthetic.main.fragment_product_list.*
-import android.widget.Toast
 
-import android.content.ActivityNotFoundException
-
-import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import coil.api.load
 import com.eightpeak.salakafarm.database.UserPrefManager
-import com.eightpeak.salakafarm.databinding.FragmentProductViewByIdBinding
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
-import java.io.File
 
 
 class CategoriesByIdActivity  : AppCompatActivity() {

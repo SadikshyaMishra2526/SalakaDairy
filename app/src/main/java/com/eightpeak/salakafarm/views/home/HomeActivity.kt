@@ -139,8 +139,10 @@ GoogleApiClient.OnConnectionFailedListener
         val location: Location? = LocationServices.FusedLocationApi.getLastLocation(googleApiClient)
         if (location != null) {
             //Getting longitude and latitude
-            longitude = location.getLongitude()
-            latitude = location.getLatitude()
+            longitude = location.longitude
+            latitude = location.latitude
+            userPrefManager.currentLat=location.latitude.toFloat()
+            userPrefManager.currentLng=location.longitude.toFloat()
             val latLng = LatLng(latitude, longitude)
             getMyPosition(latLng)
         }

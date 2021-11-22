@@ -23,9 +23,8 @@ import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
 import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdModel
-import com.hadi.retrofitmvvm.util.errorSnack
+import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import kotlinx.android.synthetic.main.fragment_add_to_cart_view.view.*
-import java.util.*
 
 class AddToCartView : BottomSheetDialogFragment() {
     private var _binding: FragmentAddToCartViewBinding? = null

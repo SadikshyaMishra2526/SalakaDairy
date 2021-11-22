@@ -7,12 +7,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.eightpeak.salakafarm.App
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.databinding.FragmentOrderHistoryDetailsBinding
@@ -20,9 +22,13 @@ import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.subutils.Resource
+import com.eightpeak.salakafarm.utils.subutils.errorSnack
+import com.eightpeak.salakafarm.utils.subutils.successCompareSnack
+import com.eightpeak.salakafarm.utils.subutils.successWishListSnack
 import com.eightpeak.salakafarm.viewmodel.OrderViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
-import com.eightpeak.salakafarm.views.order.orderview.viewordercheckoutdetails.DataTotal
+import com.eightpeak.salakafarm.views.home.products.ServerResponse
+import com.google.android.material.snackbar.Snackbar
 
 class OrderHistoryDetails : Fragment() {
 
@@ -59,12 +65,19 @@ class OrderHistoryDetails : Fragment() {
         val repository = AppRepository()
         val factory = ViewModelProviderFactory(requireActivity().application, repository)
         viewModel = ViewModelProvider(this, factory).get(OrderViewModel::class.java)
-        getOrderHistoryDetails()
+         val intent=Intent()
+        val orderId = intent.getStringExtra("order_id")
+        Log.i("TAG", "setupViewModel: "+orderId)
+        getOrderHistoryDetails("4")
     }
 
 
-    private fun getOrderHistoryDetails() {
-        tokenManager?.let { it1 -> viewModel.getOrderHistoryDetails(it1, "4") }
+    private fun getOrderHistoryDetails(orderId: String?) {
+        tokenManager?.let { it1 ->
+            if (orderId != null) {
+                viewModel.getOrderHistoryDetails(it1, orderId)
+            }
+        }
 
         viewModel.getOrderListByDetails.observe(requireActivity(), Observer { response ->
             when (response) {
@@ -83,7 +96,7 @@ class OrderHistoryDetails : Fragment() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-//                        binding.orderHistory.errorSnack(message, Snackbar.LENGTH_LONG)
+                        binding.orderHistoryDetails.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
                 }
 
@@ -95,7 +108,7 @@ class OrderHistoryDetails : Fragment() {
     }
 
     private fun viewTotalPrice(dataTotal: List<Order_total>) {
-
+        binding.orderTotal.removeAllViews()
         for (i in dataTotal.indices) {
             val itemView: View =
                 LayoutInflater.from(requireContext())
@@ -128,10 +141,10 @@ class OrderHistoryDetails : Fragment() {
        binding.customerPhone.text=orderDetails.phone
        binding.customerAddress.text=orderDetails.address1+" "+orderDetails.address2
 
-        binding.paymentStatus.text="Payment Status \n"+orderDetails.payment_status.name
-        binding.orderStatus.text="Order Status \n"+orderDetails.order_status.name
-        binding.paymentType.text="Shipping Status \n"+orderDetails.shipping_method
-        binding.orderDate.text="Order At \n"+orderDetails.created_at
+        binding.paymentStatus.text=getString(R.string.payment_status)+"\n"+orderDetails.payment_status.name
+        binding.orderStatus.text=getString(R.string.order_status)+" \n"+orderDetails.order_status.name
+        binding.paymentType.text=getString(R.string.shipping_status)+" \n"+orderDetails.shipping_method
+        binding.orderDate.text=getString(R.string.order_at)+" \n"+orderDetails.created_at
 
 
 
@@ -139,6 +152,7 @@ class OrderHistoryDetails : Fragment() {
     }
 
     private fun viewProductDetails(details: List<Details>) {
+        binding.productListView.removeAllViews()
         for (i in details.indices) {
             val itemView: View =
                 LayoutInflater.from(requireContext())
@@ -150,13 +164,57 @@ class OrderHistoryDetails : Fragment() {
             val productPrice = itemView.findViewById<TextView>(R.id.product_price)
             val productUnit = itemView.findViewById<TextView>(R.id.product_unit)
             val quantityTotal = itemView.findViewById<TextView>(R.id.product_price_total)
+
+
+            val productWishList = itemView.findViewById<ImageButton>(R.id.product_add_to_wishlist)
+            val productCart = itemView.findViewById<ImageButton>(R.id.product_add_to_cart)
+            val productCompare = itemView.findViewById<ImageButton>(R.id.product_add_to_compare_list)
             categorySKU.text = details[i].sku
             productName.text = details[i].sku
-            productPrice.text = getString(R.string.rs)+ details[i].price.toString()+" ("+details[i].qty.toString()+")"
+            productPrice.text = "( "+getString(R.string.rs)+ details[i].price.toString()+" )"
+            productUnit.text=details[i].qty.toString()+" units"
             quantityTotal.text = getString(R.string.rs)+ details[i].total_price.toString()
 
+            productWishList.setOnClickListener {
+                tokenManager?.let { viewModel.addtowishlist(it,details[i].id.toString())}
+                addToWishListResponse()
+            }
+            productCart.setOnClickListener {
+
+            }
+            productCompare.setOnClickListener {
+                App.addItem(details[i].id.toString())
+                binding.orderHistoryDetails.successCompareSnack(requireContext(),"Add to Compare List",
+                    Snackbar.LENGTH_LONG)
+
+            }
         }
 
+    }
+    private fun addToWishListResponse() {
+        viewModel.wishlist.observe(requireActivity(), Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let { picsResponse ->
+                        val serverResponse: ServerResponse = picsResponse
+                        Log.i("TAG", "getPictures: $serverResponse")
+                        binding.orderHistoryDetails.successWishListSnack(requireContext(),getString(R.string.add_to_wishlist),Snackbar.LENGTH_LONG)
+
+                    }
+                }
+
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let { message ->
+                        binding.orderHistoryDetails.errorSnack(message, Snackbar.LENGTH_LONG)
+                    }
+                }
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+            }
+        })
     }
 
     private fun hideProgressBar() {

@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.repository.AppRepository
+import com.eightpeak.salakafarm.serverconfig.RequestBodies
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.Utils
@@ -129,13 +130,11 @@ class GetResponseViewModel (
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
                 val response = appRepository.addToCart(tokenManager,productId,qty,options)
-                Log.i("TAG", "fetchPics: $response")
                 addToCart.postValue(handleAddToCartResponse(response))
             } else {
                 addToCart.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
             }
         } catch (t: Throwable) {
-            Log.i("TAG", "fetchPics: "+t.localizedMessage)
             when (t) {
                 is IOException -> addToCart.postValue(
                     Resource.Error(
@@ -214,34 +213,33 @@ val deleteWishlistById: MutableLiveData<Resource<ServerResponse>> = MutableLiveD
 
 
     //    delete all wishlist
-    val deleteWishlistItem: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
+    val deleteWishlist: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
 
-    fun deleteAllWishlist(tokenManager: TokenManager, productId:String) = viewModelScope.launch {
-        deleteWishlist(tokenManager,productId)
+    fun deleteAllWish(tokenManager: TokenManager) = viewModelScope.launch {
+        deleteWishlist(tokenManager)
     }
 
-
-    private suspend fun deleteWishlist(tokenManager: TokenManager, productId:String) {
-        deleteWishlistItem.postValue(Resource.Loading())
+    suspend fun deleteWishlist(tokenManager: TokenManager) {
+        deleteWishlist.postValue(Resource.Loading())
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
-                val response = appRepository.deleteWishListItem(tokenManager,productId)
+                val response = appRepository.deleteWishListAll(tokenManager)
                 Log.i("TAG", "fetchPics: $response")
-                deleteWishlistItem.postValue(handledeleteWishlistItemResponse(response))
+                deleteWishlist.postValue(handledeleteWishlistResponse(response))
             } else {
-                deleteWishlistItem.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+                deleteWishlist.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
             }
         } catch (t: Throwable) {
             Log.i("TAG", "fetchPics: "+t.localizedMessage)
             when (t) {
-                is IOException -> deleteWishlistItem.postValue(
+                is IOException -> deleteWishlist.postValue(
                     Resource.Error(
                         getApplication<Application>().getString(
                             R.string.network_failure
                         )
                     )
                 )
-                else -> deleteWishlistItem.postValue(
+                else -> deleteWishlist.postValue(
                     Resource.Error(
                         getApplication<Application>().getString(
                             R.string.conversion_error
@@ -252,7 +250,7 @@ val deleteWishlistById: MutableLiveData<Resource<ServerResponse>> = MutableLiveD
         }
     }
 
-    private fun handledeleteWishlistItemResponse(response: Response<ServerResponse>): Resource<ServerResponse> {
+    private fun handledeleteWishlistResponse(response: Response<ServerResponse>): Resource<ServerResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)
@@ -361,4 +359,158 @@ val deleteWishlistById: MutableLiveData<Resource<ServerResponse>> = MutableLiveD
         return Resource.Error(response.message())
     }
 
+
+
+    //    get updateCart
+    val updateCartResponse: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
+
+    fun updateCartResponseView(tokenManager: TokenManager, productId:String, QTY:String) = viewModelScope.launch {
+        updateCartDetails(tokenManager,productId,QTY)
+    }
+
+
+    private suspend fun updateCartDetails(
+        tokenManager: TokenManager,
+        productId: String,
+        QTY: String
+    ) {
+        updateCartResponse.postValue(Resource.Loading())
+        try {
+            if (Utils.hasInternetConnection(getApplication<Application>())) {
+                val response = appRepository.updateCart(tokenManager,productId,QTY)
+                Log.i("TAG", "fetchPics: $response")
+                updateCartResponse.postValue(handleUpdateCartDetails(response))
+            } else {
+                updateCartResponse.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+            }
+        } catch (t: Throwable) {
+            Log.i("TAG", "fetchPics: "+t.localizedMessage)
+            when (t) {
+                is IOException -> updateCartResponse.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.network_failure
+                        )
+                    )
+                )
+                else -> updateCartResponse.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.conversion_error
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun handleUpdateCartDetails(response: Response<ServerResponse>): Resource<ServerResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+
+
+
+    //    delete wishlist
+    val deleteCart: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
+
+    fun deleteCart(tokenManager: TokenManager) = viewModelScope.launch {
+        deleteCartItem(tokenManager)
+    }
+
+
+    private suspend fun deleteCartItem(tokenManager: TokenManager) {
+        deleteCart.postValue(Resource.Loading())
+        try {
+            if (Utils.hasInternetConnection(getApplication<Application>())) {
+                val response = appRepository.deleteCart(tokenManager)
+                Log.i("TAG", "fetchPics: $response")
+                deleteCart.postValue(handledeleteCartResponse(response))
+            } else {
+                deleteCart.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+            }
+        } catch (t: Throwable) {
+            Log.i("TAG", "fetchPics: "+t.localizedMessage)
+            when (t) {
+                is IOException -> deleteCart.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.network_failure
+                        )
+                    )
+                )
+                else -> deleteCart.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.conversion_error
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun handledeleteCartResponse(response: Response<ServerResponse>): Resource<ServerResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+
+
+    //    delete wishlist
+    val addComplain: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
+
+    fun addComplain(tokenManager: TokenManager,body: RequestBodies.AddComplain) = viewModelScope.launch {
+        addComplainItem(tokenManager,body)
+    }
+
+
+    private suspend fun addComplainItem(tokenManager: TokenManager,body: RequestBodies.AddComplain) {
+        addComplain.postValue(Resource.Loading())
+        try {
+            if (Utils.hasInternetConnection(getApplication<Application>())) {
+                val response = appRepository.addComplain(tokenManager,body)
+                Log.i("TAG", "fetchPics: $response")
+                addComplain.postValue(handleAddComplainResponse(response))
+            } else {
+                addComplain.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+            }
+        } catch (t: Throwable) {
+            Log.i("TAG", "fetchPics: "+t.localizedMessage)
+            when (t) {
+                is IOException -> addComplain.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.network_failure
+                        )
+                    )
+                )
+                else -> addComplain.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.conversion_error
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun handleAddComplainResponse(response: Response<ServerResponse>): Resource<ServerResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
 }

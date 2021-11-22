@@ -9,9 +9,9 @@ import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.HorizontalScrollView
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -27,16 +27,20 @@ import androidx.lifecycle.Observer
 import coil.api.load
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
-import com.eightpeak.salakafarm.subscription.attributes.BranchModel
 import com.eightpeak.salakafarm.subscription.attributes.Sub_item
 import com.eightpeak.salakafarm.subscription.attributes.SubscriptionItemModel
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
 import com.eightpeak.salakafarm.views.home.HomeActivity
-import com.hadi.retrofitmvvm.util.errorSnack
-import android.widget.LinearLayout
+import com.eightpeak.salakafarm.utils.subutils.errorSnack
+import androidx.core.content.ContextCompat
+import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.databinding.ActivitySubscriptionBinding
 import com.eightpeak.salakafarm.mapfunctions.MapsFragment
+import com.eightpeak.salakafarm.utils.GeneralUtils
+import com.esewa.android.sdk.payment.ESewaConfiguration
+import com.esewa.android.sdk.payment.ESewaPayment
+import com.esewa.android.sdk.payment.ESewaPaymentActivity
 
 
 class SubscriptionActivity : AppCompatActivity() {
@@ -46,10 +50,24 @@ class SubscriptionActivity : AppCompatActivity() {
     private var _binding: ActivitySubscriptionBinding? = null
     var dateSelected: Calendar = Calendar.getInstance()
 
+    lateinit var userPrefManager: UserPrefManager
     private var tokenManager: TokenManager? = null
     private var datePickerDialog: DatePickerDialog? = null
+
+    private val CONFIG_ENVIRONMENT: String = ESewaConfiguration.ENVIRONMENT_TEST
+    private val REQUEST_CODE_PAYMENT = 1
+    private var eSewaConfiguration: ESewaConfiguration? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+
+        eSewaConfiguration = ESewaConfiguration()
+            .clientId(Constants.MERCHANT_ID)
+            .secretKey(Constants.MERCHANT_SECRET_KEY)
+            .environment(CONFIG_ENVIRONMENT)
+
         tokenManager = TokenManager.getInstance(
             getSharedPreferences(
                 Constants.TOKEN_PREF,
@@ -57,6 +75,7 @@ class SubscriptionActivity : AppCompatActivity() {
             )
         )
         binding = ActivitySubscriptionBinding.inflate(layoutInflater)
+        userPrefManager= UserPrefManager(this)
 
         binding.headerTitle.text = "Add Your Subscription Plan"
         binding.returnHome.setOnClickListener {
@@ -125,10 +144,7 @@ class SubscriptionActivity : AppCompatActivity() {
 
                     response.data?.let {
                         displayPackageList(response.data.sub_item)
-                        Log.i(
-                            "TAG",
-                            "getSubscriptionPackageList: " + response.data.sub_item[0].name
-                        )
+
                     }
                 }
 
@@ -164,13 +180,20 @@ class SubscriptionActivity : AppCompatActivity() {
             subPackageTitle.text = subItem[i].name
             subPackagePrice.text = getString(R.string.rs) + " " + subItem[i].total_price.toString()
             subPackageDays.text = subItem[i].number_of_days.toString() + " days"
-            subPackageDiscount.text =
-                getString(R.string.rs) + " " + subItem[i].discount_price.toString()
+            subPackageDiscount.text = subItem[i].discount_price.toString()+"%"
             selectSubPackage.setOnClickListener {
-                selectSubPackage.setBackgroundColor(getColor(R.color.sub_color));
-                itemView.isSelected = true;
-                (itemView.parent as LinearLayout).dispatchSetSelected(false)
+                userPrefManager.packageSelected = i
+                selectSubPackage.setBackgroundColor(getColor(R.color.sub_color))
+
             }
+
+
+//            if(i==userPrefManager.packageSelected){
+//                selectSubPackage.setBackgroundColor(getColor(R.color.sub_color))
+//            }else{
+//                selectSubPackage.setBackgroundColor(getColor(R.color.white))
+//            }
+
             binding.layoutSubPackage.addView(itemView)
         }
     }
@@ -213,21 +236,35 @@ class SubscriptionActivity : AppCompatActivity() {
             val subItemTitle = itemView.findViewById<TextView>(R.id.sub_item_title)
             val subItemPrice = itemView.findViewById<TextView>(R.id.sub_item_price)
             val subItemThumbnail = itemView.findViewById<ImageView>(R.id.sub_item_thumbnail)
+            val subItemDescription = itemView.findViewById<TextView>(R.id.sub_item_description)
             val subItemView = itemView.findViewById<CardView>(R.id.sub_item_view)
 
             subItemView.setOnClickListener {
+                userPrefManager.subSelected = i
                 getSubscriptionPackageList(data.sub_item[i].descriptions[0].sub_item_id)
-                binding.subItemSelected.text="Select Subscription Item :- "+data.sub_item[2].descriptions[0].title
+                binding.subItemSelected.text="Select Subscription Item :- "+data.sub_item[i].descriptions[0].title
                 binding.subItemSlide.visibility=View.GONE
                 binding.subPackageView.visibility=View.VISIBLE
+                binding.proceedSubscription.visibility=View.VISIBLE
             }
 
+         if(i==userPrefManager.subSelected){
+             subItemView.setBackgroundColor(ContextCompat.getColor(this, R.color.sub_color))
+         }else{
+             subItemView.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
 
+         }
             if (data.sub_item.isNotEmpty()) {
-                subItemTitle.text = data.sub_item[i].descriptions[0].title
-
+                if(userPrefManager.language.equals("ne")){
+                    subItemTitle.text = data.sub_item[i].descriptions[1].title
+                    subItemDescription.text = data.sub_item[i].descriptions[1].description
+                    subItemPrice.text =getString(R.string.rs)+GeneralUtils.getUnicodeNumber(data.sub_item[i].price.toString())+" per litre"
+                }else{
+                    subItemTitle.text = data.sub_item[i].descriptions[0].title
+                    subItemDescription.text = data.sub_item[i].descriptions[0].description
+                    subItemPrice.text = getString(R.string.rs)+data.sub_item[i].price.toString()+" per litre"
+                }
             }
-            subItemPrice.text = data.sub_item[i].price.toString()
             subItemThumbnail.load(BASE_URL + data.sub_item[i].image)
             binding.layoutSubItem.addView(itemView)
         }
@@ -248,5 +285,36 @@ class SubscriptionActivity : AppCompatActivity() {
         //Preventing Click during loading
     }
 
+    private fun makePayment(amount: String) {
+        val eSewaPayment = ESewaPayment(
+            amount,
+            "someProductName",
+            "someUniqueId_" + System.nanoTime(),
+            "https://somecallbackurl.com"
+        )
+        val intent = Intent(this@SubscriptionActivity, ESewaPaymentActivity::class.java)
+        intent.putExtra(ESewaConfiguration.ESEWA_CONFIGURATION, eSewaConfiguration)
+        intent.putExtra(ESewaPayment.ESEWA_PAYMENT, eSewaPayment)
+        startActivityForResult(
+            intent,
+            REQUEST_CODE_PAYMENT
+        )
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_PAYMENT) {
+            if (resultCode == RESULT_OK) {
+                val s = data?.getStringExtra(ESewaPayment.EXTRA_RESULT_MESSAGE)
+                Log.i("Proof of Payment", s!!)
+                Toast.makeText(this, "SUCCESSFUL PAYMENT", Toast.LENGTH_SHORT).show()
+            } else if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(this, "Canceled By User", Toast.LENGTH_SHORT).show()
+            } else if (resultCode == ESewaPayment.RESULT_EXTRAS_INVALID) {
+                val s = data?.getStringExtra(ESewaPayment.EXTRA_RESULT_MESSAGE)
+                Log.i("Proof of Payment", s!!)
+            }
+        }
+    }
 
 }

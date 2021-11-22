@@ -1,27 +1,28 @@
 package com.eightpeak.salakafarm.views.pages
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.text.Html
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.navArgs
+import coil.api.load
 import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.databinding.PageDetailViewBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
+import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.GetResponseViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
-import com.eightpeak.salakafarm.views.settings.SettingsFragment
+import com.eightpeak.salakafarm.views.order.orderview.viewordercheckoutdetails.CheckoutDetailsView
 import com.google.android.material.snackbar.Snackbar
-import com.hadi.retrofitmvvm.util.errorSnack
+import com.eightpeak.salakafarm.utils.subutils.errorSnack
+import com.eightpeak.salakafarm.views.home.HomeActivity
 
-class PageDetailsView : Fragment() {
+class PageDetailsView : AppCompatActivity() {
 
     private var tokenManager: TokenManager? = null
     private lateinit var viewModel: GetResponseViewModel
@@ -30,44 +31,74 @@ class PageDetailsView : Fragment() {
     lateinit var userPrefManager: UserPrefManager
 
     private val binding get() = _binding!!
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
 
-        userPrefManager = UserPrefManager(requireContext())
-        _binding = PageDetailViewBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        _binding = PageDetailViewBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         tokenManager = TokenManager.getInstance(
-            requireActivity().getSharedPreferences(
+            getSharedPreferences(
                 Constants.TOKEN_PREF,
-                AppCompatActivity.MODE_PRIVATE
+                MODE_PRIVATE
             )
         )
 
-        binding.header.text = "About Us"
-        setupViewModel()
-        return root
-    }
+        userPrefManager = UserPrefManager(this)
+        binding.returnHome.setOnClickListener {
+            startActivity(Intent(this@PageDetailsView, HomeActivity::class.java))
+            finish()
+        }
 
+        setupViewModel()
+    }
 
     private fun setupViewModel() {
         val repository = AppRepository()
-        val factory = ViewModelProviderFactory(requireActivity().application, repository)
+        val factory = ViewModelProviderFactory(application, repository)
         viewModel = ViewModelProvider(this, factory).get(GetResponseViewModel::class.java)
         getPageDetails()
     }
 
     private fun getPageDetails() {
-        viewModel.getPageDetailsView( "3")
+        val mIntent = intent
+        val intValue = mIntent.getStringExtra("page_id")
+        if (intValue != null) {
+            viewModel.getPageDetailsView(intValue)
+        }
 
-        viewModel.getPageDetails.observe(requireActivity(), Observer { response ->
+        viewModel.getPageDetails.observe(this, Observer { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
 
+
+                        if (picsResponse.page.descriptions.isNotEmpty()) {
+                            if(userPrefManager.language.equals("ne")){
+                                binding.header.text = picsResponse.page.descriptions[1].title
+                                binding.pageDescription.text =
+                                    picsResponse.page.descriptions[1].description
+                                binding.pageContent.text =    Html.fromHtml(
+                                    picsResponse.page.descriptions[1].content,
+                                    Html.FROM_HTML_MODE_COMPACT
+                                )
+                                binding.pageThumbnail.load(BASE_URL + picsResponse.page.image)
+
+                            }else{
+                                binding.pageContent.text =    Html.fromHtml(
+                                    picsResponse.page.descriptions[0].content,
+                                    Html.FROM_HTML_MODE_COMPACT
+                                )
+
+
+                                binding.header.text = picsResponse.page.descriptions[0].title
+                                binding.pageDescription.text =
+                                    picsResponse.page.descriptions[0].description
+                                binding.pageThumbnail.load(BASE_URL + picsResponse.page.image)
+                            }
+                        }
                     }
                 }
 

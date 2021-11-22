@@ -1,7 +1,6 @@
 package com.eightpeak.salakafarm.views.home.categories
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,14 +10,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.CategoriesViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
-import com.github.rubensousa.gravitysnaphelper.GravitySnapRecyclerView
 import com.google.android.material.snackbar.Snackbar
-import com.hadi.retrofitmvvm.util.errorSnack
+import com.eightpeak.salakafarm.utils.subutils.errorSnack
 
 import kotlinx.android.synthetic.main.fragment_categories.*
 import android.view.Gravity

@@ -66,32 +66,36 @@ class CompareViewModel (
         return Resource.Error(response.message())
     }
 
+    val wishlist: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
 
-    private val wishListResponse: MutableLiveData<Resource<List<CartResponse>>> = MutableLiveData()
-    fun getWishListResponse(tokenManager: TokenManager) = viewModelScope.launch {
-        wishlistResponseFetch(tokenManager)
+
+
+    fun addtowishlist(tokenManager: TokenManager, productId:String) = viewModelScope.launch {
+        wishlistByView(tokenManager,productId)
     }
 
-    private suspend fun wishlistResponseFetch(tokenManager: TokenManager) {
-        wishListResponse.postValue(Resource.Loading())
+
+    private suspend fun wishlistByView(tokenManager: TokenManager, productId:String) {
+        wishlist.postValue(Resource.Loading())
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
-                val response = appRepository.getWishList(tokenManager)
-                Log.i("TAG", "fetchPics: " + appRepository.getWishList(tokenManager))
-                wishListResponse.postValue(handleWishListResponse(response))
+                val response = appRepository.addToWishList(tokenManager,productId)
+                Log.i("TAG", "fetchPics: $response")
+                wishlist.postValue(handleWishListResponse(response))
             } else {
-                wishListResponse.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+                wishlist.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
             }
         } catch (t: Throwable) {
+
             when (t) {
-                is IOException -> wishListResponse.postValue(
+                is IOException -> wishlist.postValue(
                     Resource.Error(
                         getApplication<Application>().getString(
                             R.string.network_failure
                         )
                     )
                 )
-                else -> wishListResponse.postValue(
+                else -> wishlist.postValue(
                     Resource.Error(
                         getApplication<Application>().getString(
                             R.string.conversion_error
@@ -102,14 +106,17 @@ class CompareViewModel (
         }
     }
 
-    private fun handleWishListResponse(response: Response<List<CartResponse>>): Resource<List<CartResponse>> {
+    private fun handleWishListResponse(response: Response<ServerResponse>): Resource<ServerResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)
             }
+        }else{
+            Log.i("TAG", "handleWishListResponse:$response ")
         }
         return Resource.Error(response.message())
     }
+
 
 
 //    add to cart

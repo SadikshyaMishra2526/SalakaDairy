@@ -1,6 +1,5 @@
 package com.eightpeak.salakafarm.views.order.orderview.viewordercheckoutdetails
 
-import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,7 +14,6 @@ import androidx.cardview.widget.CardView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import coil.api.load
-import com.eightpeak.salakafarm.App
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.databinding.ActivityCheckoutDetailsViewBinding
@@ -30,16 +28,13 @@ import com.esewa.android.sdk.payment.ESewaConfiguration
 import com.esewa.android.sdk.payment.ESewaPayment
 import com.esewa.android.sdk.payment.ESewaPaymentActivity
 import com.google.android.material.snackbar.Snackbar
-import com.hadi.retrofitmvvm.util.errorSnack
+import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import kotlinx.android.synthetic.main.fragment_home_slider.*
 
 class CheckoutDetailsView : AppCompatActivity() {
     private val CONFIG_ENVIRONMENT: String = ESewaConfiguration.ENVIRONMENT_TEST
     private val REQUEST_CODE_PAYMENT = 1
     private var eSewaConfiguration: ESewaConfiguration? = null
-
-    private val MERCHANT_ID = "JB0BBQ4aD0UqIThFJwAKBgAXEUkEGQUBBAwdOgABHD4DChwUAB0R"
-    private val MERCHANT_SECRET_KEY = "BhwIWQQADhIYSxILExMcAgFXFhcOBwAKBgAXEQ=="
 
 
     private lateinit var userPrefManager: UserPrefManager
@@ -51,10 +46,9 @@ class CheckoutDetailsView : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         eSewaConfiguration = ESewaConfiguration()
-            .clientId(MERCHANT_ID)
-            .secretKey(MERCHANT_SECRET_KEY)
+            .clientId(Constants.MERCHANT_ID)
+            .secretKey(Constants.MERCHANT_SECRET_KEY)
             .environment(CONFIG_ENVIRONMENT)
-
 
 
         tokenManager = TokenManager.getInstance(
@@ -69,6 +63,8 @@ class CheckoutDetailsView : AppCompatActivity() {
         binding.payByEsewa.setOnClickListener {
             makePayment("10")
         }
+
+        binding.header.text="Your Checkout Details"
     }
     private fun setupViewModel() {
         val repository = AppRepository()
@@ -184,7 +180,8 @@ class CheckoutDetailsView : AppCompatActivity() {
                     hideProgressBar()
 
                     response.data?.let { picsResponse ->
-                        Log.i("TAG", "observeData: m here")
+                        finish()
+                        startActivity(intent)
 
                     }
                 }
@@ -256,20 +253,4 @@ class CheckoutDetailsView : AppCompatActivity() {
         }
     }
 
-
-//    protected fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (requestCode == REQUEST_CODE_PAYMENT) {
-//            if (resultCode == RESULT_OK) {
-//                val s = data.getStringExtra(ESewaPayment.EXTRA_RESULT_MESSAGE)
-//                Log.i("Proof of Payment", s!!)
-//                Toast.makeText(this, "SUCCESSFUL PAYMENT", Toast.LENGTH_SHORT).show()
-//            } else if (resultCode == RESULT_CANCELED) {
-//                Toast.makeText(this, "Canceled By User", Toast.LENGTH_SHORT).show()
-//            } else if (resultCode == ESewaPayment.RESULT_EXTRAS_INVALID) {
-//                val s = data.getStringExtra(ESewaPayment.EXTRA_RESULT_MESSAGE)
-//                Log.i("Proof of Payment", s!!)
-//            }
-//        }
-//    }
 }

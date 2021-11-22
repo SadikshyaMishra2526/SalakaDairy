@@ -139,6 +139,13 @@
                         app:sliderIndicatorSelectedColor="#5A5A5A"
                         app:sliderIndicatorUnselectedColor="#FFF"
                         app:sliderScrollTimeInSec="1" />
+                    <ImageView
+                        android:id="@+id/out_of_stock"
+                        android:visibility="gone"
+                        android:layout_width="120dp"
+                        android:layout_height="100dp"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/stock" />
 
 
                     <androidx.cardview.widget.CardView

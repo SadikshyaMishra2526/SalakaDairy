@@ -26,11 +26,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 
 
 
-
-
-
-
-
 class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductListViewHolder>() {
 
     inner class ProductListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
@@ -66,7 +61,11 @@ class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductListViewHolder
             product_thumbnail.load(EndPoints.BASE_URL + categoriesItem.image)
 
             var userPrefManager = UserPrefManager(App.getContext())
-
+                  if(categoriesItem.stock>0){
+                      out_of_stock.visibility=View.GONE
+                  }else{
+                      out_of_stock.visibility=View.VISIBLE
+                  }
             if (categoriesItem.descriptions.isNotEmpty()) {
                 if (userPrefManager.language.equals("ne")) {
                     product_name.text = categoriesItem.descriptions[1].name

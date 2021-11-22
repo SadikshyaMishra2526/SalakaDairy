@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.repository.AppRepository
-import com.eightpeak.salakafarm.utils.subutils.MyApplication
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.Utils.hasInternetConnection
 import com.eightpeak.salakafarm.views.home.categories.CategoriesModel

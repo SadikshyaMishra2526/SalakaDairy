@@ -56,10 +56,7 @@
         <action
             android:id="@+id/action_navigation_setting_to_mapsFragment"
             app:destination="@id/mapsFragment" />
-        <action
-            android:id="@+id/action_navigation_setting_to_pageDetailsView"
-            app:destination="@id/pageDetailsView" />
-    </fragment>
+      </fragment>
 
     <fragment
         android:id="@+id/navigation_categories"
@@ -88,14 +85,14 @@
             android:id="@+id/action_mapsFragment_to_navigation_setting"
             app:destination="@id/navigation_setting" />
     </fragment>
-    <fragment
-        android:id="@+id/pageDetailsView"
-        android:name="com.eightpeak.salakafarm.views.pages.PageDetailsView"
-        android:label="page_detail_view"
-        tools:layout="@layout/page_detail_view" >
-        <action
-            android:id="@+id/action_pageDetailsView_to_navigation_setting"
-            app:destination="@id/navigation_setting" />
-    </fragment>
+<!--    <fragment-->
+<!--        android:id="@+id/pageDetailsView"-->
+<!--        android:name="com.eightpeak.salakafarm.views.pages.PageDetailsView"-->
+<!--        android:label="page_detail_view"-->
+<!--        tools:layout="@layout/page_detail_view" >-->
+<!--        <action-->
+<!--            android:id="@+id/action_pageDetailsView_to_navigation_setting"-->
+<!--            app:destination="@id/navigation_setting" />-->
+<!--    </fragment>-->
 
 </navigation>

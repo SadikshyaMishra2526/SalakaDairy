@@ -15,22 +15,16 @@ import coil.api.load
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.databinding.ActivityCategoriesSeeAllBinding
-import com.eightpeak.salakafarm.databinding.FragmentAddToCartViewBinding
-import com.eightpeak.salakafarm.databinding.FragmentCategoriesByIdBinding
-import com.eightpeak.salakafarm.databinding.FragmentProductViewByIdBinding
 import com.eightpeak.salakafarm.repository.AppRepository
-import com.eightpeak.salakafarm.utils.Constants
-import com.eightpeak.salakafarm.utils.EndPoints
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.CategoriesByIdViewModel
 import com.eightpeak.salakafarm.viewmodel.CategoriesViewModel
-import com.eightpeak.salakafarm.viewmodel.ProductByIdViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.home.categories.categoriesbyid.CategoriesByIdAdapter
 import com.eightpeak.salakafarm.views.home.categories.categoriesbyid.Products_with_description
 import com.google.android.material.snackbar.Snackbar
-import com.hadi.retrofitmvvm.util.errorSnack
+import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import kotlinx.android.synthetic.main.fragment_categories.*
 import kotlinx.android.synthetic.main.fragment_categories_by_id.*
 

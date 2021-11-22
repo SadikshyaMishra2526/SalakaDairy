@@ -6,6 +6,13 @@ class Constants {
         const val merchantCode = "AIMSSHOP"
         const val merchantName = "Aims Shop"
 
+         val MERCHANT_ID = "JB0BBQ4aD0UqIThFJwAKBgAXEUkEGQUBBAwdOgABHD4DChwUAB0R"
+         val MERCHANT_SECRET_KEY = "BhwIWQQADhIYSxILExMcAgFXFhcOBwAKBgAXEQ=="
+
+
+
+        const val SECRET_KEY = "PWXA2PwqJqufvAaP0OIhogwbhPZCxoaFsK4V7GaCs0="
+
 
         const val TOKEN_PREF = "token_pref"
         const val PRODUCT_ID = "product_id"

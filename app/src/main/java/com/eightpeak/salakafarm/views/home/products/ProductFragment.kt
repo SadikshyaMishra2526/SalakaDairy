@@ -16,10 +16,8 @@ import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.ProductListViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.google.android.material.snackbar.Snackbar
-import com.hadi.retrofitmvvm.util.errorSnack
+import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import androidx.recyclerview.widget.GridLayoutManager
-import com.facebook.shimmer.ShimmerFrameLayout
-import android.widget.Toast
 
 import android.content.Intent
 
@@ -30,9 +28,8 @@ import com.eightpeak.salakafarm.App
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
-import com.hadi.retrofitmvvm.util.successAddToCartSnack
-import com.hadi.retrofitmvvm.util.successCompareSnack
-import com.hadi.retrofitmvvm.util.successWishListSnack
+import com.eightpeak.salakafarm.utils.subutils.successCompareSnack
+import com.eightpeak.salakafarm.utils.subutils.successWishListSnack
 
 class ProductFragment : Fragment() {
     private lateinit var viewModel: ProductListViewModel

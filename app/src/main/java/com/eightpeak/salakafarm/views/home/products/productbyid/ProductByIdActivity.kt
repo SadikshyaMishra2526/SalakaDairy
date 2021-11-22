@@ -28,9 +28,9 @@ import com.eightpeak.salakafarm.viewmodel.ProductByIdViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.home.HomeActivity
 import com.google.android.material.snackbar.Snackbar
-import com.hadi.retrofitmvvm.util.errorSnack
-import com.hadi.retrofitmvvm.util.successAddToCartSnack
-import com.hadi.retrofitmvvm.util.successWishListSnack
+import com.eightpeak.salakafarm.utils.subutils.errorSnack
+import com.eightpeak.salakafarm.utils.subutils.successAddToCartSnack
+import com.eightpeak.salakafarm.utils.subutils.successWishListSnack
 import kotlinx.android.synthetic.main.fragment_product_view_by_id.*
 
 import com.smarteist.autoimageslider.SliderView
@@ -40,7 +40,6 @@ import com.smarteist.autoimageslider.SliderAnimations
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
 
 import com.smarteist.autoimageslider.IndicatorView.draw.controller.DrawController.ClickListener
-import kotlinx.android.synthetic.main.product_item.view.*
 
 
 class ProductByIdActivity : AppCompatActivity() {
@@ -133,7 +132,11 @@ class ProductByIdActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.N)
     private fun setProductsDetails(productDetailsByIdResponse: ProductByIdModel) {
-
+        if(productDetailsByIdResponse.stock>0){
+            binding.outOfStock.visibility=View.GONE
+        }else{
+            binding.outOfStock.visibility=View.VISIBLE
+        }
         product_price.text = productDetailsByIdResponse.price.toString()
         if (productDetailsByIdResponse.descriptions.isNotEmpty()) {
             if (userPrefManager?.language.equals("ne")) {

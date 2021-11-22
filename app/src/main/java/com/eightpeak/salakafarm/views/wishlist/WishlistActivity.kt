@@ -2,7 +2,6 @@ package com.eightpeak.salakafarm.views.wishlist
 
 import android.app.AlertDialog
 import android.content.DialogInterface
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -29,8 +28,8 @@ import com.eightpeak.salakafarm.views.addtocart.addtocartfragment.CartResponse
 import com.eightpeak.salakafarm.views.home.products.Data
 import com.eightpeak.salakafarm.views.home.products.ProductAdapter
 import com.google.android.material.snackbar.Snackbar
-import com.hadi.retrofitmvvm.util.errorSnack
-import com.hadi.retrofitmvvm.util.successAddToCartSnack
+import com.eightpeak.salakafarm.utils.subutils.errorSnack
+import com.eightpeak.salakafarm.utils.subutils.successAddToCartSnack
 import kotlinx.android.synthetic.main.fragment_add_to_cart.*
 
 class WishlistActivity : AppCompatActivity() {
@@ -46,7 +45,7 @@ class WishlistActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityWishlistBinding.inflate(layoutInflater)
-        binding.headerTitle.text="WishList"
+        binding.headerTitle.text="Your WishList"
         userPrefManager= UserPrefManager(this)
         setContentView(binding.root)
         tokenManager = TokenManager.getInstance(
@@ -56,7 +55,7 @@ class WishlistActivity : AppCompatActivity() {
             )
         )
 
-init()
+        init()
         setupViewModel()
     }
 
@@ -77,11 +76,8 @@ init()
                     hideProgressBar()
                     response.data?.let { picsResponse ->
                         getSelectedProducts(picsResponse)
-//                        binding.shimmerLayout.stopShimmer()
-//                        binding.shimmerLayout.visibility = View.GONE
-//
-//                        categoriesAdapter.differ.submitList(picsResponse.data)
-//                        binding.binding..adapter = categoriesAdapter
+                        binding.shimmerLayout.stopShimmer()
+                        binding.shimmerLayout.visibility = View.GONE
                     }
                 }
 
@@ -100,66 +96,106 @@ init()
         })
     }
 
-    private fun getSelectedProducts(cartResponse: List<CartResponse>) {
-        if(cartResponse.isNotEmpty()){
-
-        }
-        for (i in cartResponse.indices) {
-            val itemView: View =
-                LayoutInflater.from(this)
-                    .inflate(R.layout.wishlist_item, binding.viewCartList, false)
-
-            val categorySKU = itemView.findViewById<TextView>(R.id.product_sku)
-            val productThumbnail = itemView.findViewById<ImageView>(R.id.product_thumbnail)
-            val productName = itemView.findViewById<TextView>(R.id.product_name)
-            val productPrice = itemView.findViewById<TextView>(R.id.product_price)
-            val addToCart = itemView.findViewById<Button>(R.id.add_to_cart)
-
-            val deleteWishListItem = itemView.findViewById<ImageView>(R.id.delete_wishlist_item)
-
-            categorySKU.text = cartResponse[i].products_with_description.sku
-             productPrice.text = cartResponse[i].products_with_description.price.toString()
-            productThumbnail.load(EndPoints.BASE_URL + cartResponse[i].products_with_description.image)
+    private fun getSelectedProducts(wishlist: List<CartResponse>) {
+        if(wishlist.isNotEmpty()){
+            binding.ifEmpty.visibility=View.GONE
 
 
-
-            deleteWishListItem.setOnClickListener {
+            binding.deleteWishlist.setOnClickListener {
                 val builder = AlertDialog.Builder(this)
-                builder.setTitle("Delete Wishlist Item")
+                builder.setTitle("Delete Wishlist's all Item")
                 builder.setMessage("Are you sure you want to delete this item?")
                 builder.setPositiveButton("Confirm",
-                    DialogInterface.OnClickListener { dialog, which ->
-                      tokenManager?.let { it1 -> viewModel.deleteWishlistById(it1,cartResponse[i].id.toString()) }
+                    DialogInterface.OnClickListener { dialog, _ ->
+                        tokenManager?.let { it1 -> viewModel.deleteAllWish(it1) }
+                        getDeleteResponse()
                         dialog.dismiss()
                     })
                 builder.setNegativeButton(R.string.cancel, null)
 
                 val dialog = builder.create()
                 dialog.show()
-
             }
+            for (i in wishlist.indices) {
+                val itemView: View =
+                    LayoutInflater.from(this)
+                        .inflate(R.layout.wishlist_item, binding.viewCartList, false)
+
+                val categorySKU = itemView.findViewById<TextView>(R.id.product_sku)
+                val productThumbnail = itemView.findViewById<ImageView>(R.id.product_thumbnail)
+                val productName = itemView.findViewById<TextView>(R.id.product_name_wishlist)
+                val outOfStock = itemView.findViewById<ImageView>(R.id.out_of_stock)
+               val productPrice = itemView.findViewById<TextView>(R.id.product_price)
+                val addToCart = itemView.findViewById<Button>(R.id.add_to_cart)
+                val deleteWishListItem = itemView.findViewById<ImageView>(R.id.delete_wishlist_item)
+
+                categorySKU.text = wishlist[i].products_with_description.sku
+                productPrice.text = wishlist[i].products_with_description.price.toString()
+                productThumbnail.load(EndPoints.BASE_URL + wishlist[i].products_with_description.image)
+
+                if(wishlist[i].products_with_description.stock>0){
+                    outOfStock.visibility=View.GONE
+                }else{
+                    outOfStock.visibility=View.VISIBLE
+                }
+
+                deleteWishListItem.setOnClickListener {
+                    val builder = AlertDialog.Builder(this)
+                    builder.setTitle("Delete Wishlist Item")
+                    builder.setMessage("Are you sure you want to delete this item?")
+                    builder.setPositiveButton("Confirm",
+                        DialogInterface.OnClickListener { dialog, _ ->
+                            tokenManager?.let { it1 -> viewModel.deleteWishlistById(it1,wishlist[i].id.toString()) }
+                            dialog.dismiss()
+                        })
+                    builder.setNegativeButton(R.string.cancel, null)
+
+                    val dialog = builder.create()
+                    dialog.show()
+                }
+
+                     if(userPrefManager.language.equals("ne")){
+                        productName.text = wishlist[i].products_with_description.descriptions[1].name
+                    }else{
+                        productName.text = wishlist[i].products_with_description.descriptions[0].name
+                    }
 
 
-
-
-
-
-
-
-           if(cartResponse[i].products_with_description.descriptions.isEmpty()){
-               if(userPrefManager.language.equals("ne")){
-                   productName.text = cartResponse[i].products_with_description.descriptions[1].name
-               }else{
-                   productName.text = cartResponse[i].products_with_description.descriptions[0].name
-               }
-           }
-
-            addToCart.setOnClickListener {
-                tokenManager?.let { it1 -> viewModel.addToCartView(it1,cartResponse[i].id.toString(),"1","") }
-                getCartResponse()
+                addToCart.setOnClickListener {
+                    tokenManager?.let { it1 -> viewModel.addToCartView(it1,wishlist[i].id.toString(),"1","") }
+                    getCartResponse()
+                }
+                binding.viewCartList.addView(itemView)
             }
-            binding.viewCartList.addView(itemView)
+        }else{
+            binding.ifEmpty.visibility=View.VISIBLE
         }
+    }
+
+    private fun getDeleteResponse() {
+        viewModel.deleteWishlist.observe(this, Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let { picsResponse ->
+                        finish()
+                        startActivity(intent)
+                    }
+                }
+
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let { message ->
+                        addToCart.errorSnack(message, Snackbar.LENGTH_LONG)
+                    }
+
+                }
+
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+            }
+        })
     }
 
     private fun getCartResponse() {
