@@ -189,4 +189,8 @@ interface ApiInterface {
     @POST(EndPoints.ADD_COMPLAIN)
     suspend fun addComplain(@Body body:RequestBodies.AddComplain): Response<ServerResponse>
 
+
+    @POST(EndPoints.ADD_ORDER)
+    suspend fun addOrder(@Body body:RequestBodies.AddOrder): Response<ServerResponse>
+
 }

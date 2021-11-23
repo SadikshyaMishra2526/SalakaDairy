@@ -50,6 +50,9 @@ class ViewCartFragment : Fragment() {
             )
         )
          init()
+        binding.returnHome.setOnClickListener {
+
+        }
         return binding.addToCart
     }
     private fun init() {

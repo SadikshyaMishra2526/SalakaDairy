@@ -128,4 +128,7 @@ class AppRepository {
     suspend fun addComplain(tokenManager: TokenManager,body: RequestBodies.AddComplain) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).addComplain(body)
 
+    suspend fun addOrder(tokenManager: TokenManager,body: RequestBodies.AddOrder) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).addOrder(body)
+
 }

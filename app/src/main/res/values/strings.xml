@@ -96,4 +96,14 @@
     <string name="price">Price</string>
     <string name="brand">Brand</string>
     <string name="availability">Availability</string>
+    <string name="shopping_cart">Your Shopping Cart</string>
+    <string name="total_cost">Total Cost :-</string>
+
+
+    <string name="shipped">Shipped</string>
+    <string name="processed">Processed</string>
+    <string name="processing">Processing</string>
+    <string name="pending">Pending</string>
+    <string name="complete">Complete</string>
+    <string name="track_your_order">Track Your Order</string>
 </resources>

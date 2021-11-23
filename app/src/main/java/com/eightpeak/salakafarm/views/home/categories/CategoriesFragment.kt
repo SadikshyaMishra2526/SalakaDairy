@@ -91,7 +91,7 @@ class CategoriesFragment : Fragment() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        categoriesRecyclerView.errorSnack(message, Snackbar.LENGTH_LONG)
+                       binding.categoriesLayout.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 
                 }

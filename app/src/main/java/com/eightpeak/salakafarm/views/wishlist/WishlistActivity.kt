@@ -3,7 +3,6 @@ package com.eightpeak.salakafarm.views.wishlist
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
@@ -30,7 +29,6 @@ import com.eightpeak.salakafarm.views.home.products.ProductAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.utils.subutils.successAddToCartSnack
-import kotlinx.android.synthetic.main.fragment_add_to_cart.*
 
 class WishlistActivity : AppCompatActivity() {
     private lateinit var viewModel: GetResponseViewModel
@@ -55,6 +53,7 @@ class WishlistActivity : AppCompatActivity() {
             )
         )
 
+        binding.btBackpressed.setOnClickListener { finish() }
         init()
         setupViewModel()
     }
@@ -186,7 +185,7 @@ class WishlistActivity : AppCompatActivity() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        addToCart.errorSnack(message, Snackbar.LENGTH_LONG)
+                      binding.wishlistView.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 
                 }
@@ -246,7 +245,7 @@ class WishlistActivity : AppCompatActivity() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        addToCart.errorSnack(message, Snackbar.LENGTH_LONG)
+                        binding.wishlistView.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 
                 }

@@ -74,6 +74,7 @@ class EndPoints {
 
         const val UPDATE_CART_PRODUCTS = "api/update_to_cart"
         const val ADD_COMPLAIN = "api/store_complain"
+        const val ADD_ORDER = "api/create_order"
 
 
     }

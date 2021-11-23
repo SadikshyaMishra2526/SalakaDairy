@@ -65,11 +65,15 @@
                 android:textColor="@color/tab_indicator_gray"
                 android:textSize="@dimen/_8sdp" />
 
+
             <TextView
-                android:id="@+id/product_attributes"
+                android:id="@+id/product_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone" />
+                android:layout_margin="@dimen/_2sdp"
+                android:textSize="@dimen/_8sdp"
+
+                android:textColor="@color/blue" />
 
             <LinearLayout
                 android:id="@+id/linearLayout4"
@@ -77,13 +81,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|bottom"
                 android:layout_marginEnd="@dimen/_5sdp">
-
-                <TextView
-                    android:id="@+id/product_price"
+                  <TextView
+                    android:id="@+id/product_total_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_2sdp"
-                    android:textColor="@color/main_color" />
+                 />
 
                 <View
                     android:layout_width="0dp"

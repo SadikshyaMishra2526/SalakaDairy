@@ -31,6 +31,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.utils.subutils.successAddToCartSnack
 import com.eightpeak.salakafarm.utils.subutils.successWishListSnack
+import com.eightpeak.salakafarm.views.addtocart.CartActivity
 import kotlinx.android.synthetic.main.fragment_product_view_by_id.*
 
 import com.smarteist.autoimageslider.SliderView
@@ -66,18 +67,11 @@ class ProductByIdActivity : AppCompatActivity() {
 
 
     private fun init() {
-        return_home.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java)
+        binding.goToCart.setOnClickListener {
+            val intent = Intent(this, CartActivity::class.java)
             startActivity(intent)
             finish()
         }
-
-        go_to_cart.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
-
         setupViewModel()
 
         relatedProductAdapter = RelatedProductAdapter()
@@ -86,6 +80,7 @@ class ProductByIdActivity : AppCompatActivity() {
         binding.relatedProductRecycler.setHasFixedSize(true)
         binding.relatedProductRecycler.isFocusable = false
         binding.relatedProductRecycler.adapter = relatedProductAdapter
+        binding.returnHome.setOnClickListener { finish() }
 
     }
 

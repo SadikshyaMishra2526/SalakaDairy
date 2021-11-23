@@ -82,6 +82,9 @@ class UserProfile : AppCompatActivity() {
             )
         );
         binding = ActivityUserProfileBinding.inflate(layoutInflater)
+        binding.headerLayout.headerName.text=getString(R.string.user_profile)
+        binding.headerLayout.btBackpressed.setOnClickListener { finish() }
+
         setContentView(binding.root)
         getStatusColor()
         userPrefManager = UserPrefManager(this)
@@ -89,13 +92,7 @@ class UserProfile : AppCompatActivity() {
         binding.userEmail.text = userPrefManager.email
         dialog=Dialog(this)
 
-//        binding.userAddress1.text = userPrefManager.userAddress1
-//        binding.userAddress2.text = userPrefManager.userAddress2
-//        binding.userCountry.text = userPrefManager.userCountry
         binding.userPhone.text = userPrefManager.contactNo
-
-//        binding.headerLayout.headerName.text = getString(R.string.user_profile)
-
         binding.userLogout.setOnClickListener {
             val builder = AlertDialog.Builder(this)
             builder.setTitle(R.string.logout)
@@ -126,10 +123,7 @@ class UserProfile : AppCompatActivity() {
             startActivity(Intent(this@UserProfile,WishlistActivity::class.java))
             finish()
         }
-        binding.orderHistory.setOnClickListener {
-            startActivity(Intent(this@UserProfile,WishlistActivity::class.java))
-            finish()
-        }
+
         binding.compareList.setOnClickListener {
             if(App.getData().size!=0){
 
@@ -350,16 +344,16 @@ class UserProfile : AppCompatActivity() {
 
 
         btnSummit.setOnClickListener {
-            val radioButton = dialog.findViewById<View>(selectedId) as RadioButton
+            val radioButton :RadioButton = dialog.findViewById(selectedId)
 
 
             Log.i("TAG", "editProfile: "+radioButton.text)
 
-//            val name = firstName.text.toString()
-//            val email = lastName.text.toString()
-//            val dob = userDoB.text.toString()
-//            val gender =  "radioButton.text"
-//            changeUserProfile(name, email, dob, gender.toString())
+            val name = firstName.text.toString()
+            val email = lastName.text.toString()
+            val dob = userDoB.text.toString()
+            val gender =  "radioButton.text"
+            changeUserProfile(name, email, dob, gender.toString())
         }
         dialog.setCanceledOnTouchOutside(true)
         dialog.show()

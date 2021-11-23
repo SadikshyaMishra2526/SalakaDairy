@@ -75,10 +75,19 @@
     <string name="change_your_password">Change Your Password</string>
 
 
-    <string name="payment_status"><font color='#5FA95F' size="10">Paycccment Status</font></string>
+    <string name="payment_status"><font color='#5FA95F' size="10">Payment Status</font></string>
     <string name="order_status"><font color='#5FA95F' size="10">Order Status</font></string>
     <string name="shipping_status"><font color='#5FA95F' size="10">Shipping Status </font></string>
     <string name="order_at"><font color='#5FA95F' size="10">Order At</font> </string>
     <string name="compare_list_empty">Compare List is empty</string>
+    <string name="user_profile">User Profile</string>
+    <string name="total_cost">Total Cost</string>
+
+    <string name="shipped">ढुवानी गरियो</string>
+    <string name="processed">प्रक्रिया गरिएको</string>
+    <string name="processing">प्रशोधन गर्दै</string>
+    <string name="pending">पेन्दिङ</string>
+    <string name="complete">पूर्ण</string>
+    <string name="track_your_order">तपाईंको अर्डर ट्र्याक</string>
 
 </resources>

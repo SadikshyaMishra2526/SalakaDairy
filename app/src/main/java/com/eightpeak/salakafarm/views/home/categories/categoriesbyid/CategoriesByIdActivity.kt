@@ -84,7 +84,6 @@ class CategoriesByIdActivity  : AppCompatActivity() {
                         if(categoryDetails.descriptions.isNotEmpty()){
                             binding.edtSearchInput.visibility=View.VISIBLE
                             binding.categoriesByIdTitle.visibility=View.VISIBLE
-                            binding.categoriesThumbnail.load(BASE_URL+categoryDetails.image)
 
                             if(userPrefManager.language.equals("ne")){
                                 binding.categoryName.text = categoryDetails.descriptions[1].name
@@ -96,6 +95,7 @@ class CategoriesByIdActivity  : AppCompatActivity() {
                         if(picsResponse.products_with_description.isNotEmpty()){
                             binding.categoriesNotFound.visibility=View.GONE
 
+                            binding.categoriesThumbnail.load(BASE_URL+categoryDetails.image)
 
                             val categoriesByIdModel: List<Products_with_description> = picsResponse.products_with_description
                             categoriesByIdAdapter.differ.submitList(categoriesByIdModel)

@@ -513,4 +513,50 @@ val deleteWishlistById: MutableLiveData<Resource<ServerResponse>> = MutableLiveD
         }
         return Resource.Error(response.message())
     }
+
+    val deleteCartItem: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
+
+    fun deleteCartItemById(tokenManager: TokenManager, productId:String) = viewModelScope.launch {
+        deleteCart(tokenManager,productId)
+    }
+
+
+    private suspend fun deleteCart(tokenManager: TokenManager, productId:String) {
+        deleteCartItem.postValue(Resource.Loading())
+        try {
+            if (Utils.hasInternetConnection(getApplication<Application>())) {
+                val response = appRepository.deleteCartItem(tokenManager,productId)
+                Log.i("TAG", "fetchPics: $response")
+                deleteCartItem.postValue(handledeleteCartItemResponse(response))
+            } else {
+                deleteCartItem.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+            }
+        } catch (t: Throwable) {
+            when (t) {
+                is IOException -> deleteCartItem.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.network_failure
+                        )
+                    )
+                )
+                else -> deleteCartItem.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.conversion_error
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun handledeleteCartItemResponse(response: Response<ServerResponse>): Resource<ServerResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
 }

@@ -44,7 +44,7 @@ class PageDetailsView : AppCompatActivity() {
                 MODE_PRIVATE
             )
         )
-
+     binding.returnHome.setOnClickListener { finish() }
         userPrefManager = UserPrefManager(this)
         binding.returnHome.setOnClickListener {
             startActivity(Intent(this@PageDetailsView, HomeActivity::class.java))

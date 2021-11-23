@@ -46,6 +46,8 @@ class CompareListActivity : AppCompatActivity() {
                 MODE_PRIVATE
             )
         )
+        binding.goAddToCart.setOnClickListener {  }
+        binding.returnHome.setOnClickListener { finish() }
         binding.header.text = getString(R.string.my_compare_list)
 
         setupViewModel()

@@ -1,10 +1,12 @@
 package com.eightpeak.salakafarm.views.order.orderview.orderhistory
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -22,6 +24,8 @@ import com.eightpeak.salakafarm.views.home.products.Data
 import com.eightpeak.salakafarm.views.home.products.ProductAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
+import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdActivity
+import com.eightpeak.salakafarm.views.order.orderview.confirmOrder.OrderTracking
 import kotlinx.android.synthetic.main.fragment_add_to_cart.*
 
 class OrderHistory : AppCompatActivity() {
@@ -80,8 +84,6 @@ class OrderHistory : AppCompatActivity() {
                         }else{
                             binding.ifEmpty.visibility=View.VISIBLE
                         }
-//                          binding.shimmerLayout.stopShimmer()
-//                        binding.shimmerLayout.visibility = View.GONE
                     }
                 }
 
@@ -109,12 +111,46 @@ class OrderHistory : AppCompatActivity() {
             val productId = itemView.findViewById<TextView>(R.id.product_id)
             val productTotal = itemView.findViewById<TextView>(R.id.product_total)
             val productCreated = itemView.findViewById<TextView>(R.id.product_created)
+            val orderStatus = itemView.findViewById<TextView>(R.id.order_status)
             val orderHistoryDetails = itemView.findViewById<TextView>(R.id.order_history_details)
+            val orderTracking = itemView.findViewById<TextView>(R.id.order_history_track)
            val createdAt:String=orderHistory.orderlist[i].created_at.toString()
              snId.text= (i+1).toString()
             productId.text=" # "+orderHistory.orderlist[i].id.toString()
             productTotal.text=getString(R.string.rs)+orderHistory.orderlist[i].total.toString()
+
+
+            if(orderHistory.orderlist[i].status == 1){
+                orderStatus.text="New"
+
+                orderStatus.setTextColor(getColor(R.color.blue))
+            }else if(orderHistory.orderlist[i].status == 2){
+                orderStatus.text="Processing"
+                orderStatus.setTextColor(getColor(R.color.green1))
+            }else if(orderHistory.orderlist[i].status == 3){
+                orderStatus.text="Hold"
+            }else if(orderHistory.orderlist[i].status == 4){
+                orderStatus.text="Cancelled"
+                orderStatus.setTextColor(getColor(R.color.gray_1))
+            }else if(orderHistory.orderlist[i].status == 5){
+                orderStatus.text="Completed"
+                orderStatus.setTextColor(getColor(R.color.green2))
+            }else if(orderHistory.orderlist[i].status == 6){
+                orderStatus.text="Failed"
+                orderStatus.setTextColor(getColor(R.color.red))
+
+
+            }
+
             val created: String = createdAt.substring(0, createdAt.length.coerceAtMost(10))
+
+            orderTracking.setOnClickListener {
+                val intent = Intent(this@OrderHistory,OrderTracking::class.java)
+                intent.putExtra(Constants.ORDER_STATUS, orderHistory.orderlist[i].status.toString())
+                startActivity(intent)
+            }
+
+
             productCreated.text=created
             val bundle = Bundle()
             bundle.putString("order_id", orderHistory.orderlist[i].id.toString())

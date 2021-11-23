@@ -59,6 +59,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone" />
+            <TextView
+                android:id="@+id/product_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_2sdp"
+                android:textSize="@dimen/_8sdp"
+                android:textColor="@color/blue" />
+
+
 
             <LinearLayout
                 android:id="@+id/linearLayout4"
@@ -68,18 +77,17 @@
                 android:layout_marginEnd="@dimen/_5sdp">
 
                 <TextView
-                    android:id="@+id/product_price"
+                    android:id="@+id/product_total_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_2sdp"
-                    android:textColor="@color/main_color" />
-
+                    />
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_weight="1" />
 
                 <LinearLayout
+                    android:id="@+id/update_cart"
                     android:layout_width="@dimen/_70sdp"
                     android:layout_height="@dimen/_25sdp"
                     android:layout_gravity="center"

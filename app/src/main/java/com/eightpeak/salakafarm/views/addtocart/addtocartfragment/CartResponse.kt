@@ -12,6 +12,8 @@ class CartResponse (
     @SerializedName("options") val options : String,
     @SerializedName("created_at") val created_at : String,
     @SerializedName("updated_at") val updated_at : String,
+    @SerializedName("total_price") val total_price : String,
+    @SerializedName("final_price") val final_price : String,
     @SerializedName("products_with_description") val products_with_description : ProductsWithDescription
 )
 

@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.repository.AppRepository
+import com.eightpeak.salakafarm.serverconfig.RequestBodies
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.subscription.attributes.BranchModel
 import com.eightpeak.salakafarm.utils.subutils.Resource
@@ -123,33 +124,32 @@ class CheckOutViewModel (app: Application,
 
 
 
-    val deleteCartItem: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
+    val addOrder: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
 
-    fun deleteCartItemById(tokenManager: TokenManager, productId:String) = viewModelScope.launch {
-        deleteCart(tokenManager,productId)
+    fun addOrder(tokenManager: TokenManager,body:RequestBodies.AddOrder) = viewModelScope.launch {
+        addOrderResponse(tokenManager,body)
     }
 
-
-    private suspend fun deleteCart(tokenManager: TokenManager, productId:String) {
-        deleteCartItem.postValue(Resource.Loading())
+    private suspend fun addOrderResponse(tokenManager: TokenManager,body:RequestBodies.AddOrder) {
+        addOrder.postValue(Resource.Loading())
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
-                val response = appRepository.deleteCartItem(tokenManager,productId)
+                val response = appRepository.addOrder(tokenManager,body)
                 Log.i("TAG", "fetchPics: $response")
-                deleteCartItem.postValue(handledeleteCartItemResponse(response))
+                addOrder.postValue(handleAddOrderResponse(response))
             } else {
-                deleteCartItem.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+                addOrder.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
             }
         } catch (t: Throwable) {
             when (t) {
-                is IOException -> deleteCartItem.postValue(
+                is IOException -> addOrder.postValue(
                     Resource.Error(
                         getApplication<Application>().getString(
                             R.string.network_failure
                         )
                     )
                 )
-                else -> deleteCartItem.postValue(
+                else -> addOrder.postValue(
                     Resource.Error(
                         getApplication<Application>().getString(
                             R.string.conversion_error
@@ -160,7 +160,59 @@ class CheckOutViewModel (app: Application,
         }
     }
 
-    private fun handledeleteCartItemResponse(response: Response<ServerResponse>): Resource<ServerResponse> {
+    private fun handleAddOrderResponse(response: Response<ServerResponse>): Resource<ServerResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+    //    get updateCart
+    val updateCartResponse: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
+
+    fun updateCartResponseView(tokenManager: TokenManager, productId:String, QTY:String) = viewModelScope.launch {
+        updateCartDetails(tokenManager,productId,QTY)
+    }
+
+
+    private suspend fun updateCartDetails(
+        tokenManager: TokenManager,
+        productId: String,
+        QTY: String
+    ) {
+        updateCartResponse.postValue(Resource.Loading())
+        try {
+            if (Utils.hasInternetConnection(getApplication<Application>())) {
+                val response = appRepository.updateCart(tokenManager,productId,QTY)
+                Log.i("TAG", "fetchPics: $response")
+                updateCartResponse.postValue(handleUpdateCartDetails(response))
+            } else {
+                updateCartResponse.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+            }
+        } catch (t: Throwable) {
+            Log.i("TAG", "fetchPics: "+t.localizedMessage)
+            when (t) {
+                is IOException -> updateCartResponse.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.network_failure
+                        )
+                    )
+                )
+                else -> updateCartResponse.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.conversion_error
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun handleUpdateCartDetails(response: Response<ServerResponse>): Resource<ServerResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)

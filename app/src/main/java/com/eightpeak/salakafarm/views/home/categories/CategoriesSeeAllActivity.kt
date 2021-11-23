@@ -1,7 +1,9 @@
 package com.eightpeak.salakafarm.views.home.categories
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +27,8 @@ import com.eightpeak.salakafarm.views.home.categories.categoriesbyid.CategoriesB
 import com.eightpeak.salakafarm.views.home.categories.categoriesbyid.Products_with_description
 import com.google.android.material.snackbar.Snackbar
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
+import com.eightpeak.salakafarm.views.login.LoginActivity
+import com.eightpeak.salakafarm.views.search.SearchProductsActivity
 import kotlinx.android.synthetic.main.fragment_categories.*
 import kotlinx.android.synthetic.main.fragment_categories_by_id.*
 
@@ -43,6 +47,9 @@ class CategoriesSeeAllActivity : AppCompatActivity() {
 
     lateinit var categoriesByIdAdapter: CategoriesByIdAdapter
     private var userPrefManager: UserPrefManager? = null
+
+
+    private  var  categoriesModel: CategoriesModel? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCategoriesSeeAllBinding.inflate(layoutInflater)
@@ -67,10 +74,17 @@ class CategoriesSeeAllActivity : AppCompatActivity() {
         val factory = ViewModelProviderFactory(application, repository)
         viewModel = ViewModelProvider(this, factory).get(CategoriesViewModel::class.java)
         setupViewModelById()
-        getCategories()
+      getCategories()
+        getPictures("1")
+        binding.btBackpressed.setOnClickListener { finish() }
+        binding.headerName.text="See All your Categories"
+        binding.searchProduct.setOnClickListener {
+            val mainActivity = Intent(this@CategoriesSeeAllActivity, SearchProductsActivity::class.java)
+            startActivity(mainActivity)
+        }
     }
 
-    private fun getCategories() {
+    private fun getCategories() :String{
         viewModel.picsData.observe(this, Observer { response ->
             when (response) {
                 is Resource.Success -> {
@@ -78,6 +92,7 @@ class CategoriesSeeAllActivity : AppCompatActivity() {
                     response.data?.let { picsResponse ->
                         Log.i("TAG", "getPictures: " + picsResponse.data.size)
                         getSelectedCategoryProducts(picsResponse)
+                        categoriesModel=picsResponse
 //                        binding.shimmerLayout.stopShimmer()
 //                        binding.shimmerLayout.visibility = View.GONE
 //
@@ -99,6 +114,9 @@ class CategoriesSeeAllActivity : AppCompatActivity() {
                 }
             }
         })
+
+
+        return  categoriesModel?.data?.get(0)?.id.toString()
     }
 
     private fun getSelectedCategoryProducts(picsResponse: CategoriesModel) {

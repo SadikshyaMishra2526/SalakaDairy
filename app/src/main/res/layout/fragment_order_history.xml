@@ -141,6 +141,15 @@
                   android:text="Created At"
                   android:layout_gravity="center"
                   android:id="@+id/product_created"
+                  android:layout_width="@dimen/_60sdp"
+                  android:layout_height="wrap_content"
+                  android:textColor="@color/sub_color"
+                  android:layout_margin="@dimen/_2sdp" />
+              <TextView
+                  android:textStyle="bold"
+                  android:text="Order Status"
+                  android:layout_gravity="center"
+                  android:id="@+id/product_status"
                   android:layout_width="@dimen/_80sdp"
                   android:layout_height="wrap_content"
                   android:textColor="@color/sub_color"

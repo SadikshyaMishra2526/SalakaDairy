@@ -16,11 +16,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import coil.api.load
 import com.eightpeak.salakafarm.R
+import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.databinding.ActivityCartBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.EndPoints
+import com.eightpeak.salakafarm.utils.GeneralUtils
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.GetResponseViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
@@ -43,6 +45,7 @@ class CartActivity : AppCompatActivity() {
     lateinit var productAdapter: ProductAdapter
     private var layoutManager: GridLayoutManager? = null
 
+    private lateinit var userPrefManager: UserPrefManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -58,9 +61,14 @@ class CartActivity : AppCompatActivity() {
         )
         binding.proceedWithCheckout.setOnClickListener {
             startActivity(Intent(this@CartActivity, CheckoutDetailsView::class.java))
+
+        }
+
+        userPrefManager=UserPrefManager(this)
+        binding.header.text=getString(R.string.shopping_cart)
+        binding.returnHome.setOnClickListener {
             finish()
         }
-        binding.header.text="Your Shopping Cart"
         init()
         setupViewModel()
     }
@@ -155,6 +163,7 @@ class CartActivity : AppCompatActivity() {
                 val productThumbnail = itemView.findViewById<ImageView>(R.id.product_thumbnail)
                 val productName = itemView.findViewById<TextView>(R.id.product_name)
                 val productPrice = itemView.findViewById<TextView>(R.id.product_price)
+                val productTotalPrice = itemView.findViewById<TextView>(R.id.product_total_price)
                 val increaseQuantity = itemView.findViewById<ImageButton>(R.id.increase_quantity)
                 val decreaseQuantity = itemView.findViewById<ImageButton>(R.id.decrease_quantity)
                 val quantityView = itemView.findViewById<TextView>(R.id.product_quantity)
@@ -197,26 +206,56 @@ class CartActivity : AppCompatActivity() {
                         updateCart(cartResponse[i].id.toString(),quantity.toString())
                     }
                 }
-                var isClicked=true
                 itemSelected.setOnClickListener {
-                    if(isClicked){
-                        itemSelected.load(R.drawable.green_tick)
-                        isClicked=false
-                    }else{
-                        itemSelected.load(R.drawable.ic_baseline_close_24)
-                        isClicked=true
-                    }
+                    tokenManager?.let { it1 -> viewModel.deleteCartItemById(it1,cartResponse[i].id.toString()) }
+                    getDeleteProductResponse()
 
                 }
                 categorySKU.text = cartResponse[i].products_with_description.sku
-                productName.text = cartResponse[i].products_with_description.descriptions[0].name
-                productPrice.text = cartResponse[i].products_with_description.price.toString()
-                productThumbnail.load(EndPoints.BASE_URL + cartResponse[i].products_with_description.image)
+                 productThumbnail.load(EndPoints.BASE_URL + cartResponse[i].products_with_description.image)
+                if(cartResponse[i].products_with_description.descriptions.isNotEmpty()){
+                    if(userPrefManager.language.equals("ne")){
+                        productName.text = cartResponse[i].products_with_description.descriptions[1].name
+                        productPrice.text =getString(R.string.rs)+GeneralUtils.getUnicodeNumber( cartResponse[i].final_price.toString())
+                        productTotalPrice.text =getString(R.string.rs)+GeneralUtils.getUnicodeNumber(cartResponse[i].total_price.toString())
+                    }else{
+                        productName.text = cartResponse[i].products_with_description.descriptions[0].name
+                        productPrice.text = getString(R.string.rs)+cartResponse[i].final_price.toString()
+                        productTotalPrice.text = getString(R.string.rs)+cartResponse[i].total_price.toString()
+
+                    }
+                }
                 binding.viewCartList.addView(itemView)
             }
         }else{
             binding.ifEmpty.visibility=View.VISIBLE
         }
+    }
+
+    private fun getDeleteProductResponse() {
+        viewModel.deleteCartItem.observe(this, Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let {
+                        finish()
+                        startActivity(intent)
+                    }
+                }
+
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let { message ->
+                        addToCart.errorSnack(message, Snackbar.LENGTH_LONG)
+                    }
+
+                }
+
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+            }
+        })
     }
 
     private fun getDeleteResponse() {

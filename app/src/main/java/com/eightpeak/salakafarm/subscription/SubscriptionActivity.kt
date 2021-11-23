@@ -79,9 +79,7 @@ class SubscriptionActivity : AppCompatActivity() {
 
         binding.headerTitle.text = "Add Your Subscription Plan"
         binding.returnHome.setOnClickListener {
-            val mainActivity = Intent(this, HomeActivity::class.java)
-            startActivity(mainActivity)
-            finish()
+             finish()
         }
         binding.goToCart.setOnClickListener {
             val mainActivity = Intent(this, CartActivity::class.java)

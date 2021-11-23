@@ -79,5 +79,14 @@ object RequestBodies {
         val description: String,
     )
 
+
+ data class AddOrder(
+        val oid: String,
+        val refId: String,
+        val amt: String,
+        val shipping: String,
+        val address_id: String,
+    )
+
 }
 
