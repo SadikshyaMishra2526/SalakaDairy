@@ -89,5 +89,6 @@
     <string name="pending">पेन्दिङ</string>
     <string name="complete">पूर्ण</string>
     <string name="track_your_order">तपाईंको अर्डर ट्र्याक</string>
+    <string name="deliver_to">डेलिभर ठेगाना:</string>
 
 </resources>

@@ -23,6 +23,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SalakaFarm">
         <activity
+            android:name=".subscription.confirmSubscription.ConfirmSubscription"
+            android:exported="true" />
+        <activity
             android:name=".views.order.orderview.confirmOrder.OrderTracking"
             android:exported="true" />
         <activity
