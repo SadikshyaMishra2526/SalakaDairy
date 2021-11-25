@@ -15,6 +15,22 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.eightpeak.salakafarm.App
 import com.eightpeak.salakafarm.database.NotificationDao
 import com.eightpeak.salakafarm.database.NotificationDetails
+import android.app.NotificationManager
+
+import android.R
+
+import android.graphics.BitmapFactory
+
+import android.graphics.Bitmap
+
+import android.app.PendingIntent
+import android.app.appsearch.AppSearchSchema
+import android.content.Context
+import android.os.Build
+import android.window.SplashScreen
+import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
+import com.eightpeak.salakafarm.views.settings.SettingsFragmentArgs
 
 
 class PushNotificationService : FirebaseMessagingService() {
@@ -63,7 +79,30 @@ class PushNotificationService : FirebaseMessagingService() {
 ////        return PrefUtils.getInstance(context).getStringValue(PrefKeys.FCM_TOKEN, "")
 //    }
 
-
+    @RequiresApi(Build.VERSION_CODES.S)
+    fun zzm(intent: Intent) {
+        val launchIntent = Intent(App.getContext(), SplashScreen::class.java)
+        launchIntent.action = Intent.ACTION_MAIN
+        launchIntent.addCategory(Intent.CATEGORY_LAUNCHER)
+        val pendingIntent = PendingIntent.getActivity(
+            this, 0 /* R    equest code */, launchIntent,
+            PendingIntent.FLAG_ONE_SHOT
+        )
+        val rawBitmap = BitmapFactory.decodeResource(
+            resources,
+            R.drawable.ic_notification_overlay
+        )
+        val notificationBuilder: NotificationCompat.Builder =  NotificationCompat.Builder(this)
+            .setSmallIcon(R.drawable.ic_notification_overlay)
+            .setLargeIcon(rawBitmap)
+            .setContentTitle(intent.getStringExtra("gcm.notification.title"))
+            .setContentText(intent.getStringExtra("gcm.notification.body"))
+            .setAutoCancel(true)
+            .setContentIntent(pendingIntent)
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
+    }
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
