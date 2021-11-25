@@ -37,7 +37,9 @@ import androidx.core.content.ContextCompat
 import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.databinding.ActivitySubscriptionBinding
 import com.eightpeak.salakafarm.mapfunctions.MapsFragment
+import com.eightpeak.salakafarm.subscription.confirmSubscription.ConfirmSubscription
 import com.eightpeak.salakafarm.utils.GeneralUtils
+import com.eightpeak.salakafarm.views.order.orderview.confirmOrder.ConfirmOrderActivity
 import com.esewa.android.sdk.payment.ESewaConfiguration
 import com.esewa.android.sdk.payment.ESewaPayment
 import com.esewa.android.sdk.payment.ESewaPaymentActivity
@@ -105,6 +107,9 @@ class SubscriptionActivity : AppCompatActivity() {
             datePickerDialog!!.show()
             Log.i("TAG", "onCreate: " + dateSelected.time)
 
+        }
+        binding.proceedWithCheckout.setOnClickListener {
+            makePayment("100")
         }
         setContentView(binding.root)
 
@@ -305,6 +310,8 @@ class SubscriptionActivity : AppCompatActivity() {
             if (resultCode == RESULT_OK) {
                 val s = data?.getStringExtra(ESewaPayment.EXTRA_RESULT_MESSAGE)
                 Log.i("Proof of Payment", s!!)
+                startActivity(Intent(this@SubscriptionActivity, ConfirmSubscription::class.java))
+
                 Toast.makeText(this, "SUCCESSFUL PAYMENT", Toast.LENGTH_SHORT).show()
             } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(this, "Canceled By User", Toast.LENGTH_SHORT).show()

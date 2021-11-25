@@ -43,8 +43,16 @@ import androidx.fragment.app.FragmentManager
 import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.views.home.ui.home.BottomNavigationBehavior
 import com.eightpeak.salakafarm.views.home.ui.home.HomeFragment
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.android.gms.tasks.Task
+import com.google.firebase.installations.FirebaseInstallations
+import com.google.firebase.ktx.Firebase
 import java.lang.Exception
 import java.util.*
+import com.google.firebase.messaging.FirebaseMessaging
+
+
+
 
 
 class HomeActivity : AppCompatActivity() , OnMapReadyCallback,
@@ -76,7 +84,7 @@ GoogleApiClient.OnConnectionFailedListener
             .addOnConnectionFailedListener(this)
             .addApi(LocationServices.API)
             .build()
-
+        PushNotificationService()
         val navController = findNavController(R.id.nav_host_fragment_activity_home)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -264,5 +272,23 @@ GoogleApiClient.OnConnectionFailedListener
             }
         }
 
+    }
+
+    fun PushNotificationService() {
+        FirebaseMessaging.getInstance().subscribeToTopic("salaka")
+            .addOnSuccessListener {
+                Toast.makeText(applicationContext, "Success", Toast.LENGTH_LONG).show()
+            }
+        FirebaseInstallations.getInstance().id.addOnCompleteListener { task: Task<String?> ->
+            if (task.isSuccessful) {
+                val token = task.result
+                if (token != null) {
+                    Log.i("token ---->>", token)
+                }
+
+                // store the token in shared preferences
+//                PrefUtils.getInstance(applicationContext).setValue(PrefKeys.FCM_TOKEN, token)
+            }
+        }
     }
 }

@@ -20,9 +20,12 @@ import androidx.lifecycle.Observer
 
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
+import com.eightpeak.salakafarm.databinding.ActivityConfirmOrderBinding
+import com.eightpeak.salakafarm.databinding.ActivityConfirmSubscriptionBinding
 import com.eightpeak.salakafarm.databinding.ActivitySubscriptionBinding
 import com.eightpeak.salakafarm.mapfunctions.MapsFragment
 import com.eightpeak.salakafarm.repository.AppRepository
+import com.eightpeak.salakafarm.serverconfig.RequestBodies
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.subscription.attributes.Sub_item
 import com.eightpeak.salakafarm.subscription.attributes.SubscriptionItemModel
@@ -41,9 +44,9 @@ import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
 class ConfirmSubscription : AppCompatActivity() {
-    private lateinit var binding: ActivitySubscriptionBinding
+    private lateinit var binding: ActivityConfirmSubscriptionBinding
     private lateinit var viewModel: SubscriptionViewModel
-    private var _binding: ActivitySubscriptionBinding? = null
+    private var _binding: ActivityConfirmSubscriptionBinding? = null
     var dateSelected: Calendar = Calendar.getInstance()
 
     lateinit var userPrefManager: UserPrefManager
@@ -59,7 +62,7 @@ class ConfirmSubscription : AppCompatActivity() {
                 MODE_PRIVATE
             )
         )
-        binding = ActivitySubscriptionBinding.inflate(layoutInflater)
+        binding = ActivityConfirmSubscriptionBinding.inflate(layoutInflater)
         userPrefManager= UserPrefManager(this)
 
         binding.headerTitle.text = "Add Your Subscription Plan"
@@ -90,6 +93,11 @@ class ConfirmSubscription : AppCompatActivity() {
             datePickerDialog!!.show()
             Log.i("TAG", "onCreate: " + dateSelected.time)
 
+        }
+
+        binding.proceedWithSubscription.setOnClickListener {
+            val  body=RequestBodies.AddSubscription("1","1","1","2021-10-12","1")
+            tokenManager?.let { it1 -> viewModel.addSubscription(it1, body) }
         }
         setContentView(binding.root)
 

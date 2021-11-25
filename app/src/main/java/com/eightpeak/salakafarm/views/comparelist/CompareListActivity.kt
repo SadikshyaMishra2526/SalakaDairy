@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -112,8 +113,8 @@ class CompareListActivity : AppCompatActivity() {
             val productAttribute = itemView.findViewById<TextView>(R.id.category_name)
             val productBrand = itemView.findViewById<TextView>(R.id.product_brand)
             val stock = itemView.findViewById<TextView>(R.id.stock)
-            val wishList = itemView.findViewById<TextView>(R.id.product_add_to_wishlist)
-            val addToCart = itemView.findViewById<TextView>(R.id.product_add_to_cart)
+            val wishList = itemView.findViewById<ImageButton>(R.id.product_add_to_wishlist)
+            val addToCart = itemView.findViewById<ImageButton>(R.id.product_add_to_cart)
             Log.i("TAG", "displayCompareList: "+compareResponse.products.toString())
             categorySKU.text = compareResponse.products[i].sku
             productName.text = compareResponse.products[i].descriptions[0].title

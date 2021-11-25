@@ -107,4 +107,5 @@
     <string name="complete">Complete</string>
     <string name="track_your_order">Track Your Order</string>
     <string name="deliver_to">Deliver To :</string>
+    <string name="select_subscription_item">Select Subscription Item</string>
 </resources>

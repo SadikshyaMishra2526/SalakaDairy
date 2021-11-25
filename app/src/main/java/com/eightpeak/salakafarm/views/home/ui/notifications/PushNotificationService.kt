@@ -9,7 +9,9 @@ import com.google.firebase.messaging.RemoteMessage
 import com.google.firebase.installations.FirebaseInstallations
 import java.lang.Exception
 import android.R.attr.data
+import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.eightpeak.salakafarm.App
 import com.eightpeak.salakafarm.database.NotificationDao
 import com.eightpeak.salakafarm.database.NotificationDetails
@@ -39,27 +41,22 @@ class PushNotificationService : FirebaseMessagingService() {
                     }
                 }
             }
-//    NotificationDao.addLogDetails(logRecorded)
+
+//        val intent = Intent("notification-message")
+//        intent.putExtra("title", title)
+//        intent.putExtra("message", message)
+//        intent.putExtra("imageUrl", imageUrl)
+//        LocalBroadcastManager.getInstance(App.getContext()).sendBroadcast(intent)
+
 //        Log.i("TAG", "onMessageReceived: action : $action")
 //        if (imageUrl == null) {
 //            sendNotification(title, message, action)
 //        } else {
 //            BigPictureNotification(this, title, message, imageUrl, action)
 //        }
-    }
-    fun PushNotificationService() {
-        FirebaseInstallations.getInstance().id.addOnCompleteListener { task: Task<String?> ->
-            if (task.isSuccessful) {
-                val token = task.result
-                if (token != null) {
-                    Log.i("token ---->>", token)
-                }
 
-                // store the token in shared preferences
-//                PrefUtils.getInstance(applicationContext).setValue(PrefKeys.FCM_TOKEN, token)
-            }
-        }
     }
+
 
     // either use below function to get the token or directly get from the shared preferences
 //    fun getToken(context: Context?): String? {
