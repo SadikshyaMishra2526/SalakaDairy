@@ -131,4 +131,12 @@ class AppRepository {
     suspend fun addOrder(tokenManager: TokenManager,body: RequestBodies.AddOrder) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).addOrder(body)
 
+
+    suspend fun addNewAddress(tokenManager: TokenManager,body: RequestBodies.AddAddress) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).addNewAddress(body)
+
+
+    suspend fun deleteAddress(tokenManager: TokenManager,addressId:String) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).deleteAddress(addressId)
+
 }

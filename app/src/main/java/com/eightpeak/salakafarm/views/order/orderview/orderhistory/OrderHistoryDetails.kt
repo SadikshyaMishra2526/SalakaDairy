@@ -1,6 +1,7 @@
 package com.eightpeak.salakafarm.views.order.orderview.orderhistory
 
 import android.content.Intent
+import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import coil.api.load
 import com.eightpeak.salakafarm.App
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
@@ -21,6 +23,8 @@ import com.eightpeak.salakafarm.databinding.FragmentOrderHistoryDetailsBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
+import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
+import com.eightpeak.salakafarm.utils.GeneralUtils
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.utils.subutils.successCompareSnack
@@ -29,6 +33,7 @@ import com.eightpeak.salakafarm.viewmodel.OrderViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.home.products.ServerResponse
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.product_item.view.*
 
 class OrderHistoryDetails : Fragment() {
 
@@ -170,15 +175,47 @@ class OrderHistoryDetails : Fragment() {
             val productCart = itemView.findViewById<ImageButton>(R.id.product_add_to_cart)
             val productCompare = itemView.findViewById<ImageButton>(R.id.product_add_to_compare_list)
             categorySKU.text = details[i].sku
-            productName.text = details[i].sku
             productPrice.text = "( "+getString(R.string.rs)+ details[i].price.toString()+" )"
             productUnit.text=details[i].qty.toString()+" units"
             quantityTotal.text = getString(R.string.rs)+ details[i].total_price.toString()
+
+
+
+            if (userPrefManager.language.equals("ne")) {
+                productName.text = details[i].product.descriptions[1].name
+
+                if(!details[i].product.cost.equals("0")){
+                   productPrice.text =
+                       getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(details[i].product.cost.toString())
+                }else{
+                    productPrice.text =
+                        getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(details[i].product.price.toString())
+                }
+
+            } else {
+                productName.text = details[i].product.descriptions[0].name
+
+                if(!details[i].product.cost.equals("0")){
+                    productPrice.text =
+                        getString(R.string.rs) + details[i].product.cost.toString()
+                }else{
+                    productPrice.text =
+                        getString(R.string.rs) + details[i].product.price.toString()
+                }
+            }
+
+
+
+
+
+
 
             productWishList.setOnClickListener {
                 tokenManager?.let { viewModel.addtowishlist(it,details[i].id.toString())}
                 addToWishListResponse()
             }
+
+            productThumbnail.load(BASE_URL+details[i].product.image)
             productCart.setOnClickListener {
 
             }

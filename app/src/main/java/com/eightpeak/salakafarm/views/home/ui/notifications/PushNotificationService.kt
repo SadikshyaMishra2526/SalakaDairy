@@ -48,21 +48,13 @@ class PushNotificationService : FirebaseMessagingService() {
         Log.i("TAG", "onMessageReceived: title : $title")
         Log.i("TAG", "onMessageReceived: message : $message")
         Log.i("TAG", "onMessageReceived: imageUrl : $imageUrl")
-        val logRecorded =
-            title?.let {
-                if (message != null) {
-                    if (imageUrl != null) {
-                        NotificationDetails(0,
-                            it, message, imageUrl,"fffff")
-                    }
-                }
-            }
 
-//        val intent = Intent("notification-message")
-//        intent.putExtra("title", title)
-//        intent.putExtra("message", message)
-//        intent.putExtra("imageUrl", imageUrl)
-//        LocalBroadcastManager.getInstance(App.getContext()).sendBroadcast(intent)
+
+        val intent = Intent("notification-message")
+        intent.putExtra("title", title)
+        intent.putExtra("message", message)
+        intent.putExtra("imageUrl", imageUrl)
+        LocalBroadcastManager.getInstance(App.getContext()).sendBroadcast(intent)
 
 //        Log.i("TAG", "onMessageReceived: action : $action")
 //        if (imageUrl == null) {
@@ -79,30 +71,6 @@ class PushNotificationService : FirebaseMessagingService() {
 ////        return PrefUtils.getInstance(context).getStringValue(PrefKeys.FCM_TOKEN, "")
 //    }
 
-    @RequiresApi(Build.VERSION_CODES.S)
-    fun zzm(intent: Intent) {
-        val launchIntent = Intent(App.getContext(), SplashScreen::class.java)
-        launchIntent.action = Intent.ACTION_MAIN
-        launchIntent.addCategory(Intent.CATEGORY_LAUNCHER)
-        val pendingIntent = PendingIntent.getActivity(
-            this, 0 /* R    equest code */, launchIntent,
-            PendingIntent.FLAG_ONE_SHOT
-        )
-        val rawBitmap = BitmapFactory.decodeResource(
-            resources,
-            R.drawable.ic_notification_overlay
-        )
-        val notificationBuilder: NotificationCompat.Builder =  NotificationCompat.Builder(this)
-            .setSmallIcon(R.drawable.ic_notification_overlay)
-            .setLargeIcon(rawBitmap)
-            .setContentTitle(intent.getStringExtra("gcm.notification.title"))
-            .setContentText(intent.getStringExtra("gcm.notification.body"))
-            .setAutoCancel(true)
-            .setContentIntent(pendingIntent)
-        val notificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
-    }
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)

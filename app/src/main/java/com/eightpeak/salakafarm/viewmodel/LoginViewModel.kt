@@ -94,6 +94,8 @@ class LoginViewModel(
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
                 val response = appRepository.getUserDetails(tokenManager)
+
+                Log.i("TAG", "login:user details "+response)
                _userDetailsResponse.postValue(handleuserDetailsResponse(response))
             } else {
                 _userDetailsResponse.postValue(Event(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection))))
@@ -122,7 +124,6 @@ class LoginViewModel(
             }
         }
     }
-
     private fun handleuserDetailsResponse(response: Response<UserProfileModel>): Event<Resource<UserProfileModel>>? {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->

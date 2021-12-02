@@ -31,6 +31,7 @@ import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.comparelist.CompareListActivity
 import com.eightpeak.salakafarm.views.home.HomeActivity
 import com.eightpeak.salakafarm.views.pages.PageDetailsView
+import com.eightpeak.salakafarm.views.pages.videos.VideoViewActivity
 import com.eightpeak.salakafarm.views.splash.SplashActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_add_to_cart.*
@@ -101,6 +102,11 @@ class SettingsFragment : Fragment() {
             intent.putExtra("page_id","3")
             requireContext().startActivity(intent)
 
+        }
+
+        binding.videosList.setOnClickListener {
+            val intent = Intent(requireContext(), VideoViewActivity::class.java)
+            requireContext().startActivity(intent)
         }
 
         binding.compareProducts.setOnClickListener {

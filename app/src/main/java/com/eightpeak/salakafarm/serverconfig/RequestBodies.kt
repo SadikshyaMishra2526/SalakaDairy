@@ -88,5 +88,13 @@ object RequestBodies {
         val address_id: String,
     )
 
+    data class AddAddress(
+        val oid: String,
+        val refId: String,
+        val amt: String,
+        val shipping: String,
+        val address_id: String,
+    )
+
 }
 

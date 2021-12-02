@@ -5,6 +5,9 @@ import static com.eightpeak.salakafarm.utils.Constants.DEFAULT;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.List;
+import java.util.Set;
+
 public class UserPrefManager {
 
     private SharedPreferences userPref;
@@ -32,6 +35,9 @@ public class UserPrefManager {
 
     private static final String CURRENT_LAT= "current_lat";
     private static final String CURRENT_LNG= "current_lng";
+
+
+    private static final String ADDRESS_LIST= "address_list";
 
 
     public UserPrefManager(Context context) {
@@ -155,13 +161,24 @@ public class UserPrefManager {
     public Float getCurrentLat() {
         return userPref.getFloat(CURRENT_LAT, 0);
     }
-   public  void setCurrentLng(Float currentLng) {
+
+    public  void setCurrentLng(Float currentLng) {
         userPrefEditor.putFloat(CURRENT_LNG, currentLng);
         userPrefEditor.commit();
     }
 
     public Float getCurrentLng() {
         return userPref.getFloat(CURRENT_LNG, 0);
+    }
+
+
+ public  void setAddressList(String addressList) {
+        userPrefEditor.putString(ADDRESS_LIST, addressList);
+        userPrefEditor.commit();
+    }
+
+    public String getAddressList() {
+        return userPref.getString(ADDRESS_LIST,null);
     }
 
 

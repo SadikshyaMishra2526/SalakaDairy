@@ -99,7 +99,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun getUserDetails() {
-
+        var addressListString =""
         tokenManager?.let { loginViewModel.userDetailsUser(it) }
           loginViewModel.userDetailsResponse.observe(this, Observer { event ->
                 event.getContentIfNotHandled()?.let { response ->
@@ -115,6 +115,11 @@ class LoginActivity : AppCompatActivity() {
                                  userPrefManager.userAddress1=loginResponse.address1
                                  userPrefManager.userAddress2=loginResponse.address2
                                  userPrefManager.userCountry=loginResponse.country
+                                addressListString =addressListString+
+                                         loginResponse.address1 + " " + loginResponse.address2+ " Nepal" + "\n"
+
+                                userPrefManager.addressList = addressListString
+
                                 val mainActivity = Intent(this@LoginActivity, HomeActivity::class.java)
                                 startActivity(mainActivity)
                                 finish()

@@ -47,6 +47,7 @@ import java.lang.Exception
 import android.widget.Toast
 
 import android.widget.RadioButton
+import android.widget.RadioGroup
 
 
 
@@ -63,7 +64,7 @@ class UserProfile : AppCompatActivity() {
     var dateSelected: Calendar = Calendar.getInstance()
 
 //    var value1: ByteArray = GeneralUtils.decoderfun(Constants.SECRET_KEY)
-    private var dialog:Dialog?=null
+    private var dialog: Dialog? = null
     private var datePickerDialog: DatePickerDialog? = null
     private fun init() {
         val repository = AppRepository()
@@ -72,7 +73,7 @@ class UserProfile : AppCompatActivity() {
 
     }
 
-    private  var tokenManager: TokenManager? = null
+    private var tokenManager: TokenManager? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         tokenManager = TokenManager.getInstance(
@@ -82,7 +83,7 @@ class UserProfile : AppCompatActivity() {
             )
         );
         binding = ActivityUserProfileBinding.inflate(layoutInflater)
-        binding.headerLayout.headerName.text=getString(R.string.user_profile)
+        binding.headerLayout.headerName.text = getString(R.string.user_profile)
         binding.headerLayout.btBackpressed.setOnClickListener { finish() }
 
         setContentView(binding.root)
@@ -90,7 +91,7 @@ class UserProfile : AppCompatActivity() {
         userPrefManager = UserPrefManager(this)
         binding.userName.text = userPrefManager.firstName + " " + userPrefManager.lastName
         binding.userEmail.text = userPrefManager.email
-        dialog=Dialog(this)
+        dialog = Dialog(this)
 
         binding.userPhone.text = userPrefManager.contactNo
         binding.userLogout.setOnClickListener {
@@ -112,25 +113,29 @@ class UserProfile : AppCompatActivity() {
         }
 
         binding.editProfileLayout.setOnClickListener {
-          editProfile()
+            editProfile()
         }
 
-          binding.layoutUserPassword.setOnClickListener {
-          editPassword()
+        binding.layoutUserPassword.setOnClickListener {
+            editPassword()
         }
 
         binding.viewWishlist.setOnClickListener {
-            startActivity(Intent(this@UserProfile,WishlistActivity::class.java))
+            startActivity(Intent(this@UserProfile, WishlistActivity::class.java))
             finish()
         }
 
         binding.compareList.setOnClickListener {
-            if(App.getData().size!=0){
+            if (App.getData().size != 0) {
 
                 val intent = Intent(this@UserProfile, CompareListActivity::class.java)
                 startActivity(intent)
-            }else{
-               Toast.makeText(this@UserProfile,getString(R.string.compare_list_empty),Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(
+                    this@UserProfile,
+                    getString(R.string.compare_list_empty),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -139,7 +144,7 @@ class UserProfile : AppCompatActivity() {
             startActivity(intent)
         }
 
-     binding.orderHistory.setOnClickListener {
+        binding.orderHistory.setOnClickListener {
             val intent = Intent(this@UserProfile, OrderHistory::class.java)
             startActivity(intent)
 
@@ -147,23 +152,113 @@ class UserProfile : AppCompatActivity() {
 
         binding.editAddress.setOnClickListener {
             dialog!!.show()
-         }
+        }
         init()
+        viewAddress()
         getAddressList()
 
     }
 
     private fun getAddressList() {
         tokenManager?.let { it1 -> viewModel.getUserAddressList(it1) }
-
+        var addressListString = ""
         viewModel.userAddressList.observe(this, Observer { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
-                         viewAddressList(picsResponse)
-                        viewAddress(picsResponse)
+                        viewAddressList(picsResponse)
+                        for (i in picsResponse.address_list.indices) {
+                            addressListString =addressListString+
+                                picsResponse.address_list[i].address1 + " " + picsResponse.address_list[i].address2 + " Nepal" + "\n"
+                        }
+                        userPrefManager.addressList = addressListString
+                    }
+                }
 
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let { message ->
+                        binding.productViewIdLayout.errorSnack(message, Snackbar.LENGTH_LONG)
+                    }
+                }
+
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+            }
+        })
+    }
+
+    private fun viewAddress() {
+
+        var addressListModel: MutableList<List<String>> =
+            listOf(userPrefManager.addressList.split("\n")) as MutableList<List<String>>
+
+        for (i in addressListModel.indices) {
+            val itemView: View =
+                LayoutInflater.from(this)
+                    .inflate(R.layout.address_list_item, binding.viewAddressList, false)
+
+            val addressListItem = itemView.findViewById<TextView>(R.id.addressListItem)
+            val addressListItemEdit = itemView.findViewById<ImageView>(R.id.edit_address)
+            val addressListItemDelete = itemView.findViewById<ImageView>(R.id.delete_address)
+            addressListItem.text = i.toString()
+
+            addressListItemEdit.visibility = View.GONE
+            addressListItemDelete.visibility = View.GONE
+            binding.viewAddressList.addView(itemView)
+        }
+
+    }
+
+    private fun viewAddressList(addressListModel: AddressListModel) {
+        if (addressListModel.address_list.isNotEmpty()) {
+            binding.viewAddressList.removeAllViews()
+
+            dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog?.setCancelable(true)
+            dialog?.setContentView(R.layout.layout_view_address)
+            val fetchAddressList = dialog?.findViewById<LinearLayout>(R.id.fetch_address_list)
+
+            for (i in addressListModel.address_list) {
+                val itemView: View =
+                    LayoutInflater.from(this)
+                        .inflate(R.layout.address_list_item, fetchAddressList, false)
+
+                val addressListItem = itemView.findViewById<TextView>(R.id.addressListItem)
+                val addressListItemEdit = itemView.findViewById<ImageView>(R.id.edit_address)
+                val addressListItemDelete = itemView.findViewById<ImageView>(R.id.delete_address)
+                addressListItem.text = i.address1 + ", " + i.address2 + ", Nepal"
+                addressListItemEdit.setOnClickListener {
+
+                }
+
+                addressListItemDelete.setOnClickListener {
+                    tokenManager?.let { it1 ->
+                        viewModel.deleteAddressDetails(
+                            it1,
+                            i.id.toString()
+                        )
+                    }
+                    getDeleteResponse()
+                }
+
+                fetchAddressList?.addView(itemView)
+            }
+
+            dialog?.setCanceledOnTouchOutside(true)
+
+        }
+    }
+
+    private fun getDeleteResponse() {
+
+        viewModel.deleteAddress.observe(this, Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let {
 
                     }
                 }
@@ -171,6 +266,7 @@ class UserProfile : AppCompatActivity() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
+
                         binding.productViewIdLayout.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 
@@ -183,58 +279,6 @@ class UserProfile : AppCompatActivity() {
         })
     }
 
-    private fun viewAddress(addressListModel: AddressListModel) {
-        for(i in addressListModel.address_list){
-            val itemView: View =
-                LayoutInflater.from(this)
-                    .inflate(R.layout.address_list_item, binding.viewAddressList, false)
-
-            val addressListItem = itemView.findViewById<TextView>(R.id.addressListItem)
-            val addressListItemEdit = itemView.findViewById<ImageView>(R.id.edit_address)
-            val addressListItemDelete = itemView.findViewById<ImageView>(R.id.delete_address)
-            addressListItem.text = i.address1+", "+i.address2+", Nepal"
-
-            addressListItemEdit.visibility=View.GONE
-            addressListItemDelete.visibility=View.GONE
-            binding.viewAddressList.addView(itemView)
-        }
-
-    }
-
-    private fun viewAddressList(addressListModel: AddressListModel) {
-    if(addressListModel.address_list.isNotEmpty()) {
-        binding.viewAddressList.removeAllViews()
-
-        dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            dialog?.setCancelable(true)
-            dialog?.setContentView(R.layout.layout_view_address)
-            val fetchAddressList = dialog?.findViewById<LinearLayout>(R.id.fetch_address_list)
-
-
-            for(i in addressListModel.address_list){
-                val itemView: View =
-                    LayoutInflater.from(this)
-                        .inflate(R.layout.address_list_item, fetchAddressList, false)
-
-                val addressListItem = itemView.findViewById<TextView>(R.id.addressListItem)
-                val addressListItemEdit = itemView.findViewById<ImageView>(R.id.edit_address)
-                val addressListItemDelete = itemView.findViewById<ImageView>(R.id.delete_address)
-                addressListItem.text = i.address1+", "+i.address2+", Nepal"
-
-                addressListItemEdit.setOnClickListener {
-
-                }
-                addressListItemDelete.setOnClickListener {
-
-                }
-                fetchAddressList?.addView(itemView)
-            }
-
-            dialog?.setCanceledOnTouchOutside(true)
-
-      }
-    }
-
     private fun getStatusColor() {
         val window: Window = window
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
@@ -243,7 +287,7 @@ class UserProfile : AppCompatActivity() {
     }
 
 
-    private fun editPassword(){
+    private fun editPassword() {
         val dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(true)
@@ -259,10 +303,10 @@ class UserProfile : AppCompatActivity() {
             val oldPasswordString = oldPassword.text.toString()
             val newPasswordString = newPassword.text.toString()
             val confirmPasswordString = confirmPassword.text.toString()
-            if(newPasswordString == confirmPasswordString){
-                passwordChange(oldPasswordString, newPasswordString,  dialog)
-            }else{
-                confirmPassword.error="New and Confirm Password is not equal."
+            if (newPasswordString == confirmPasswordString) {
+                passwordChange(oldPasswordString, newPasswordString, dialog)
+            } else {
+                confirmPassword.error = "New and Confirm Password is not equal."
             }
 
         }
@@ -270,14 +314,18 @@ class UserProfile : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun passwordChange(oldPasswordString: String, newPasswordString: String, dialog: Dialog) {
+    private fun passwordChange(
+        oldPasswordString: String,
+        newPasswordString: String,
+        dialog: Dialog
+    ) {
         try {
-//           val encrOldPassword = Encrypt.encrypt(value1, oldPasswordString)
+//            val encrOldPassword = Encrypt.encrypt(value1, oldPasswordString)
 //            val encrNewPassword = Encrypt.encrypt(value1, newPasswordString)
 //            val body = RequestBodies.UpdatePassword(
-//                encrOldPassword,encrNewPassword
+//                encrOldPassword, encrNewPassword
 //            )
-//            tokenManager?.let { it1 -> viewModel.updatePasswordDetails(it1,body) }
+//            tokenManager?.let { it1 -> viewModel.updatePasswordDetails(it1, body) }
 
 
         } catch (e: Exception) {
@@ -290,14 +338,14 @@ class UserProfile : AppCompatActivity() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
-                          }
+                    }
                 }
 
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
                         dialog.dismiss()
-                       binding.productViewIdLayout.errorSnack(message, Snackbar.LENGTH_LONG)
+                        binding.productViewIdLayout.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 
                 }
@@ -309,7 +357,7 @@ class UserProfile : AppCompatActivity() {
         })
     }
 
-    private fun editProfile(){
+    private fun editProfile() {
         val dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(true)
@@ -328,7 +376,7 @@ class UserProfile : AppCompatActivity() {
                 this,
                 { view, year, monthOfYear, dayOfMonth ->
                     dateSelected[year, monthOfYear, dayOfMonth, 0] = 0
-                  userDoB.text = dateFormat?.format(dateSelected.time)
+                    userDoB.text = dateFormat?.format(dateSelected.time)
                 },
                 newCalendar[Calendar.YEAR],
                 newCalendar[Calendar.MONTH],
@@ -340,20 +388,22 @@ class UserProfile : AppCompatActivity() {
         }
         val selectedId: Int = userGender.checkedRadioButtonId
 
-        Log.i("TAG", "editProfile: "+selectedId)
+        Log.i("TAG", "editProfile: " + selectedId)
 
 
         btnSummit.setOnClickListener {
-            val radioButton :RadioButton = dialog.findViewById(selectedId)
 
+            val radioGroup = findViewById<View>(R.id.customer_gender) as RadioGroup
+            val radioButtonID = radioGroup.checkedRadioButtonId
+            val radioButton = radioGroup.findViewById<View>(radioButtonID) as RadioButton
 
-            Log.i("TAG", "editProfile: "+radioButton.text)
 
             val name = firstName.text.toString()
             val email = lastName.text.toString()
             val dob = userDoB.text.toString()
-            val gender =  "radioButton.text"
-            changeUserProfile(name, email, dob, gender.toString())
+            val gender =radioButton.text as String
+            Log.i("TAG", "editProfile: "+gender)
+            changeUserProfile(name, email, dob, gender)
         }
         dialog.setCanceledOnTouchOutside(true)
         dialog.show()
@@ -362,14 +412,14 @@ class UserProfile : AppCompatActivity() {
     private fun changeUserProfile(name: String, email: String, dob: String, gender: String?) {
         val body = gender?.let {
             RequestBodies.UserProfile(
-                name,email,dob, gender
+                name, email, dob, gender
             )
 
 
         }
         tokenManager?.let { it1 ->
             if (body != null) {
-                viewModel.getUserProfileDetails(it1,body)
+                viewModel.getUserProfileDetails(it1, body)
             }
         }
 

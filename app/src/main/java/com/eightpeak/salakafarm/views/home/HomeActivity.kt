@@ -1,6 +1,12 @@
 package com.eightpeak.salakafarm.views.home
 
 import android.Manifest
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +28,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import android.widget.Toast
 
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 
 import androidx.core.app.ActivityCompat
 
@@ -34,17 +41,26 @@ import androidx.core.location.LocationManagerCompat.getCurrentLocation
 
 import android.location.Geocoder
 import android.location.Location
+import android.os.Build
 import android.os.Handler
 
 import android.os.Looper
 import android.util.Log
+import android.window.SplashScreen
+import androidx.annotation.RequiresApi
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.app.NotificationCompat
 import androidx.fragment.app.FragmentManager
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.eightpeak.salakafarm.App
+import com.eightpeak.salakafarm.database.NotificationDetails
 import com.eightpeak.salakafarm.database.UserPrefManager
+import com.eightpeak.salakafarm.utils.subutils.successCompareSnack
 import com.eightpeak.salakafarm.views.home.ui.home.BottomNavigationBehavior
 import com.eightpeak.salakafarm.views.home.ui.home.HomeFragment
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.installations.FirebaseInstallations
 import com.google.firebase.ktx.Firebase
 import java.lang.Exception
@@ -85,6 +101,7 @@ GoogleApiClient.OnConnectionFailedListener
             .addApi(LocationServices.API)
             .build()
         PushNotificationService()
+        initialNotification()
         val navController = findNavController(R.id.nav_host_fragment_activity_home)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -275,9 +292,9 @@ GoogleApiClient.OnConnectionFailedListener
     }
 
     fun PushNotificationService() {
-        FirebaseMessaging.getInstance().subscribeToTopic("salaka")
+        FirebaseMessaging.getInstance().subscribeToTopic("customer")
             .addOnSuccessListener {
-                Toast.makeText(applicationContext, "Success", Toast.LENGTH_LONG).show()
+//                Toast.makeText(applicationContext, "Success", Toast.LENGTH_LONG).show()
             }
         FirebaseInstallations.getInstance().id.addOnCompleteListener { task: Task<String?> ->
             if (task.isSuccessful) {
@@ -285,10 +302,34 @@ GoogleApiClient.OnConnectionFailedListener
                 if (token != null) {
                     Log.i("token ---->>", token)
                 }
-
-                // store the token in shared preferences
-//                PrefUtils.getInstance(applicationContext).setValue(PrefKeys.FCM_TOKEN, token)
+            //                PrefUtils.getInstance(applicationContext).setValue(PrefKeys.FCM_TOKEN, token)
             }
+        }
+    }
+
+
+    private fun initialNotification() {
+        LocalBroadcastManager.getInstance(this@HomeActivity).registerReceiver(mMessageReceiver,
+            IntentFilter("notification-message")
+        )
+    }
+    var mMessageReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent) {
+            val title = intent.getStringExtra("title")
+            val message = intent.getStringExtra("message")
+            val imageUrl = intent.getStringExtra("imageUrl")
+            Log.i("TAG", "onReceive: $title $message $imageUrl")
+            val logRecorded =
+                title?.let {
+                    if (message != null) {
+                        if (imageUrl != null) {
+                            NotificationDetails(0,
+                                it, message, imageUrl,"fffff")
+                        }
+                    }
+                }
+
+
         }
     }
 }

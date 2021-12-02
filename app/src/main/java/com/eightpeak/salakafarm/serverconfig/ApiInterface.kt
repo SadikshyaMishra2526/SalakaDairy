@@ -35,8 +35,10 @@ import com.eightpeak.salakafarm.views.order.orderview.orderhistory.OrderHistoryD
 import com.eightpeak.salakafarm.views.order.orderview.orderhistory.OrderHistoryModel
 import com.eightpeak.salakafarm.views.order.orderview.viewordercheckoutdetails.CheckOutModel
 import com.eightpeak.salakafarm.views.pages.PageDetailsModel
+import com.eightpeak.salakafarm.views.pages.videos.YoutubeVideoModel
 import com.eightpeak.salakafarm.views.register.RegisterResponse
 import com.eightpeak.salakafarm.views.search.SearchModel
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -183,7 +185,9 @@ interface ApiInterface {
 
 
     @POST(EndPoints.UPDATE_CART_PRODUCTS)
-    suspend fun updateCart(@Query("id")id:String,@Query("new_qty")new_qty:String): Response<ServerResponse>
+    suspend fun updateCart(@Query("id")id:String,
+                           @Query("new_qty")new_qty:String)
+    : Response<ServerResponse>
 
 
     @POST(EndPoints.ADD_COMPLAIN)
@@ -193,4 +197,14 @@ interface ApiInterface {
     @POST(EndPoints.ADD_ORDER)
     suspend fun addOrder(@Body body:RequestBodies.AddOrder): Response<ServerResponse>
 
+    @POST(EndPoints.ADD_ADDRESS)
+    suspend fun addNewAddress(@Body body:RequestBodies.AddAddress): Response<ServerResponse>
+
+    @POST(EndPoints.DELETE_ADDRESS)
+    suspend fun deleteAddress(@Field("id") addressId:String ): Response<ServerResponse>
+
+
+
+    @GET("search?key=AIzaSyBFfGX8c8zWp6O8spofADuDlJP_96BOc2M&channelId=UCIx6fxkutSyo-I6KxsSV8zg&part=snippet,id&order=date&maxResults=20")
+    fun getVideoList(): Call<YoutubeVideoModel?>?
 }

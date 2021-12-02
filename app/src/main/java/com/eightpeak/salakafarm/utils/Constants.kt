@@ -9,6 +9,7 @@ class Constants {
          val MERCHANT_ID = "JB0BBQ4aD0UqIThFJwAKBgAXEUkEGQUBBAwdOgABHD4DChwUAB0R"
          val MERCHANT_SECRET_KEY = "BhwIWQQADhIYSxILExMcAgFXFhcOBwAKBgAXEQ=="
 
+        var BASE_URL_VIDEO = "https://www.googleapis.com/youtube/v3/"
 
 
         const val SECRET_KEY = "PWXA2PwqJqufvAaP0OIhogwbhPZCxoaFsK4V7GaCs0="

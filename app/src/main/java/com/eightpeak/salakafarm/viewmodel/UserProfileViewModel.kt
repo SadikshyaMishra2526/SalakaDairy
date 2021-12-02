@@ -212,4 +212,98 @@ private val appRepository: AppRepository
         }
         return Resource.Error(response.message())
     }
+
+
+
+
+//    add new address
+val addNewAddress: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
+
+    public fun addNewAddressDetails(token:TokenManager,body: RequestBodies.AddAddress) = viewModelScope.launch {
+        addNewAddress(token,body)
+    }
+
+    private suspend fun addNewAddress(token: TokenManager , body: RequestBodies.AddAddress) {
+        addNewAddress.postValue(Resource.Loading())
+        try {
+            if (Utils.hasInternetConnection(getApplication<Application>())) {
+                val response = appRepository.addNewAddress(token,body)
+                addNewAddress.postValue(handleAddNewAddressDetailsResponse(response))
+            } else {
+                addNewAddress.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+            }
+        } catch (t: Throwable) {
+            when (t) {
+                is IOException -> addNewAddress.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.network_failure
+                        )
+                    )
+                )
+                else -> addNewAddress.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.conversion_error
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun handleAddNewAddressDetailsResponse(response: Response<ServerResponse>): Resource<ServerResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+
+//    delete existing address
+val deleteAddress: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
+
+    public fun deleteAddressDetails(token:TokenManager,addressId:String) = viewModelScope.launch {
+        deleteAddress(token,addressId)
+    }
+
+    private suspend fun deleteAddress(token: TokenManager , addressId:String) {
+        deleteAddress.postValue(Resource.Loading())
+        try {
+            if (Utils.hasInternetConnection(getApplication<Application>())) {
+                val response = appRepository.deleteAddress(token,addressId)
+                deleteAddress.postValue(handleDeleteAddressResponse(response))
+            } else {
+                deleteAddress.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+            }
+        } catch (t: Throwable) {
+            when (t) {
+                is IOException -> deleteAddress.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.network_failure
+                        )
+                    )
+                )
+                else -> deleteAddress.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.conversion_error
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun handleDeleteAddressResponse(response: Response<ServerResponse>): Resource<ServerResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
 }

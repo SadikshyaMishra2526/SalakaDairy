@@ -76,6 +76,10 @@ class EndPoints {
         const val ADD_COMPLAIN = "api/store_complain"
         const val ADD_ORDER = "api/create_order"
 
+        const val DELETE_ADDRESS = "api/delete_address"
+
+        const val ADD_ADDRESS = "api/add_new_address"
+
 
     }
 }
