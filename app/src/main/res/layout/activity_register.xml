@@ -163,6 +163,7 @@
             android:id="@+id/address_first"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -176,9 +177,9 @@
                 android:layout_alignParentEnd="true"
                 android:gravity="center"
                 android:hint="@string/address_1"
-                android:text="Gothatar"
                 android:inputType="textEmailAddress"
-                android:maxLines="1" />
+                android:maxLines="1"
+                android:text="Gothatar" />
 
             <ImageView
                 android:id="@+id/address_first_img"
@@ -194,6 +195,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/address_first">
 
@@ -204,9 +206,9 @@
                 android:layout_alignParentEnd="true"
                 android:gravity="center"
                 android:hint="@string/address_2"
-                android:text="Biratnagar"
                 android:inputType="textEmailAddress"
-                android:maxLines="1" />
+                android:maxLines="1"
+                android:text="Biratnagar" />
 
             <ImageView
                 android:id="@+id/address_second_img"

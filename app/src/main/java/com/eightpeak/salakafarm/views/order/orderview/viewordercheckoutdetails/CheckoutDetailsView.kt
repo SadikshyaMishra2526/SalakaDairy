@@ -30,6 +30,7 @@ import com.esewa.android.sdk.payment.ESewaPayment
 import com.esewa.android.sdk.payment.ESewaPaymentActivity
 import com.google.android.material.snackbar.Snackbar
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
+import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdActivity
 import com.eightpeak.salakafarm.views.order.orderview.confirmOrder.ConfirmOrderActivity
 import kotlinx.android.synthetic.main.fragment_add_to_cart.*
 import kotlinx.android.synthetic.main.fragment_home_slider.*
@@ -163,7 +164,11 @@ class CheckoutDetailsView : AppCompatActivity() {
             val itemSelected = itemView.findViewById<ImageView>(R.id.item_selected)
             quantityView.text =  cartItem[i].qty.toString()
 
-
+            productName.setOnClickListener {
+                val intent = Intent(this@CheckoutDetailsView, ProductByIdActivity::class.java)
+                intent.putExtra(Constants.PRODUCT_ID, cartItem[i].product_id.toString())
+                startActivity(intent)
+            }
             increaseQuantity.setOnClickListener {
                 quantity= cartItem[i].qty
                 quantity += 1
@@ -178,14 +183,11 @@ class CheckoutDetailsView : AppCompatActivity() {
                     updateCart(cartItem[i].id.toString(),quantity.toString())
                 }
             }
-            var isClicked=true
-            itemSelected.setOnClickListener {
+             itemSelected.setOnClickListener {
                 tokenManager?.let { it1 -> viewModel.deleteCartById(it1,cartItem[i].id.toString()) }
                 observeData()
             }
             categorySKU.text = cartItem[i].products_with_description.sku
-//            productName.text = cartItem[i].products_with_description.descriptions[0].name
-//            productPrice.text = cartItem[i].products_with_description.price.toString()
             productThumbnail.load(EndPoints.BASE_URL + cartItem[i].products_with_description.image)
             priceTotal += cartItem[i].total_price
 

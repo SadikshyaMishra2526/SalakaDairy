@@ -49,8 +49,7 @@ class OrderHistoryDetails : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        userPrefManager = UserPrefManager(requireContext())
+         userPrefManager = UserPrefManager(requireContext())
         _binding = FragmentOrderHistoryDetailsBinding.inflate(inflater, container, false)
         val root: View = binding.root
         tokenManager = TokenManager.getInstance(
@@ -70,10 +69,9 @@ class OrderHistoryDetails : Fragment() {
         val repository = AppRepository()
         val factory = ViewModelProviderFactory(requireActivity().application, repository)
         viewModel = ViewModelProvider(this, factory).get(OrderViewModel::class.java)
-         val intent=Intent()
-        val orderId = intent.getStringExtra("order_id")
+        val orderId = requireArguments().getString("order_id")
         Log.i("TAG", "setupViewModel: "+orderId)
-        getOrderHistoryDetails("4")
+        getOrderHistoryDetails(orderId)
     }
 
 

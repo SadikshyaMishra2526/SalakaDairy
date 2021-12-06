@@ -1,5 +1,6 @@
 package com.eightpeak.salakafarm.views.addtocart.addtocartfragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -25,6 +26,7 @@ import kotlinx.android.synthetic.main.fragment_add_to_cart.*
 
 import android.view.*
 import android.widget.*
+import com.eightpeak.salakafarm.views.order.orderview.viewordercheckoutdetails.CheckoutDetailsView
 
 
 class ViewCartFragment : Fragment() {
@@ -50,8 +52,10 @@ class ViewCartFragment : Fragment() {
             )
         )
          init()
-        binding.returnHome.setOnClickListener {
 
+        binding.headerLayout.text=getString(R.string.cart)
+        binding.proceedWithCheckout.setOnClickListener {
+            startActivity(Intent(requireContext(), CheckoutDetailsView::class.java))
         }
         return binding.addToCart
     }
@@ -63,9 +67,7 @@ class ViewCartFragment : Fragment() {
         binding.productRecyclerView.isFocusable = false
         binding.productRecyclerView.adapter = productAdapter
         setupViewModel()
-
     }
-
 
     private fun setupViewModel() {
         val repository = AppRepository()
@@ -85,11 +87,6 @@ class ViewCartFragment : Fragment() {
                     response.data?.let { picsResponse ->
                         Log.i("TAG", "getPictures: $picsResponse")
                         getSelectedProducts(picsResponse)
-//                        binding.shimmerLayout.stopShimmer()
-//                        binding.shimmerLayout.visibility = View.GONE
-//
-//                        categoriesAdapter.differ.submitList(picsResponse.data)
-//                        binding.binding..adapter = categoriesAdapter
                     }
                 }
 
@@ -122,9 +119,9 @@ class ViewCartFragment : Fragment() {
             val increaseQuantity = itemView.findViewById<ImageButton>(R.id.increase_quantity)
             val decreaseQuantity = itemView.findViewById<ImageButton>(R.id.decrease_quantity)
             val quantityView = itemView.findViewById<TextView>(R.id.product_quantity)
+            val itemSelected = itemView.findViewById<ImageView>(R.id.item_selected)
             quantity=cartResponse[i].qty
 
-            binding.headerLayout.text="Shopping Cart"
             increaseQuantity.setOnClickListener { quantity=1
                 quantityView.text=quantity.toString()}
             decreaseQuantity.setOnClickListener { if(quantity>1){
@@ -132,6 +129,11 @@ class ViewCartFragment : Fragment() {
                 quantityView.text=quantity.toString()
             }
             }
+            itemSelected.setOnClickListener {
+                tokenManager?.let { it1 -> viewModel.deleteCartItemById(it1,cartResponse[i].id.toString()) }
+                observeData()
+            }
+
             categorySKU.text = cartResponse[i].products_with_description.sku
             productName.text = cartResponse[i].products_with_description.descriptions[0].name
             productPrice.text = cartResponse[i].products_with_description.price.toString()
@@ -140,6 +142,33 @@ class ViewCartFragment : Fragment() {
             binding.viewCartList.addView(itemView)
         }
     }
+
+    private fun observeData() {
+        viewModel.deleteCartItem.observe(requireActivity(), Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+
+                    response.data?.let { picsResponse ->
+//                        finish()
+//                        startActivity(intent)
+                    }
+                }
+
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let { message ->
+                        binding.addToCart.errorSnack(message, Snackbar.LENGTH_LONG)
+                    }
+                }
+
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+            }
+        })
+    }
+    
     private fun getRandomProducts() {
         viewModel.getRandomListResponseView()
 
@@ -175,53 +204,6 @@ class ViewCartFragment : Fragment() {
         )
         productAdapter.differ.submitList(data)
         binding.productRecyclerView.adapter = productAdapter
-//        binding.productRecyclerView.setOnTouchListener(object : OnTouchListener {
-//            var initialY = 0f
-//            var finalY = 0f
-//            var isScrollingUp = false
-//            override fun onTouch(v: View, event: MotionEvent): Boolean {
-//                val action = MotionEventCompat.getActionMasked(event)
-//                when (action) {
-//                    MotionEvent.ACTION_DOWN -> {
-//                        initialY = event.y
-//                        finalY = event.y
-//                        if (initialY < finalY) {
-//                            Log.d("TAG", "Scrolling up")
-//                            isScrollingUp = true
-//                        } else if (initialY > finalY) {
-//                            Log.d("TAG", "Scrolling down")
-//                            isScrollingUp = false
-//                        }
-//                    }
-//                    MotionEvent.ACTION_UP -> {
-//                        finalY = event.y
-//                        if (initialY < finalY) {
-//                            Log.d("TAG HERE", "Scrolling up")
-//                            isScrollingUp = true
-//                        } else if (initialY > finalY) {
-//                            Log.d("TAG HERE", "Scrolling down")
-//                            isScrollingUp = false
-//                        }
-//                    }
-//                    else -> {
-//                    }
-//                }
-//                if (isScrollingUp) {
-//                    Log.i("TAG", "onTouch: UPPPPPPPPPPPPPPPPPPP")
-//                    // do animation for scrolling up
-//                    params.gravity = Gravity.END
-//                    binding.proceedWithCheckout.layoutParams = params
-//                } else {
-//                    Log.i("TAG", "onTouch: DOWNNNNNNNNNNNNNNNNN")
-//
-////                    params.setMargins(100, 100, 100, 10)
-////                    binding.proceedWithCheckout.layoutParams = params
-//
-//                    // do animation for scrolling down
-//                }
-//                return false // has to be false, or it will freeze the listView
-//            }
-//        })
      }
 
 

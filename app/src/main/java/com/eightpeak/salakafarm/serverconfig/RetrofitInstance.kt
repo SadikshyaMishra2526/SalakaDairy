@@ -3,6 +3,7 @@ package com.eightpeak.salakafarm.serverconfig
 import com.eightpeak.salakafarm.serverconfig.network.CustomAuthenticator
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.EndPoints
+import com.facebook.stetho.okhttp3.StethoInterceptor
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -19,6 +20,7 @@ class RetrofitInstance {
 
         private fun buildClient(): OkHttpClient {
             val builder:  OkHttpClient.Builder = OkHttpClient.Builder()
+                .addNetworkInterceptor(StethoInterceptor())
                 .addInterceptor(object : Interceptor {
                     @Throws(IOException::class)
                     override fun intercept(chain: Interceptor.Chain): Response {

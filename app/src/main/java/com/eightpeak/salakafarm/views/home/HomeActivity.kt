@@ -1,8 +1,11 @@
 package com.eightpeak.salakafarm.views.home
 
+import android.view.Window
+import android.widget.ImageView
+import coil.api.load
+import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
 import android.Manifest
-import android.app.NotificationManager
-import android.app.PendingIntent
+import android.app.Dialog
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -15,20 +18,18 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.databinding.ActivityHomeBinding
+import androidx.lifecycle.Observer
 
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
-import kotlin.system.exitProcess
 import com.google.android.gms.location.LocationServices
 
 
-import com.google.android.gms.maps.SupportMapFragment
 import android.widget.Toast
 
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 
 import androidx.core.app.ActivityCompat
 
@@ -36,33 +37,29 @@ import androidx.core.content.ContextCompat
 import android.location.Address
 import com.google.android.gms.maps.model.LatLng
 
-import androidx.core.location.LocationManagerCompat.getCurrentLocation
-
 
 import android.location.Geocoder
 import android.location.Location
-import android.os.Build
 import android.os.Handler
 
 import android.os.Looper
 import android.util.Log
-import android.window.SplashScreen
-import androidx.annotation.RequiresApi
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.app.NotificationCompat
-import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.eightpeak.salakafarm.App
 import com.eightpeak.salakafarm.database.NotificationDetails
 import com.eightpeak.salakafarm.database.UserPrefManager
-import com.eightpeak.salakafarm.utils.subutils.successCompareSnack
+import com.eightpeak.salakafarm.repository.AppRepository
+import com.eightpeak.salakafarm.serverconfig.network.TokenManager
+import com.eightpeak.salakafarm.utils.Constants
+import com.eightpeak.salakafarm.utils.subutils.Resource
+import com.eightpeak.salakafarm.utils.subutils.errorSnack
+import com.eightpeak.salakafarm.viewmodel.GetResponseViewModel
+import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.home.ui.home.BottomNavigationBehavior
-import com.eightpeak.salakafarm.views.home.ui.home.HomeFragment
-import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.installations.FirebaseInstallations
-import com.google.firebase.ktx.Firebase
 import java.lang.Exception
 import java.util.*
 import com.google.firebase.messaging.FirebaseMessaging
@@ -75,14 +72,21 @@ class HomeActivity : AppCompatActivity() , OnMapReadyCallback,
 GoogleApiClient.ConnectionCallbacks,
 GoogleApiClient.OnConnectionFailedListener
 {
-
     private lateinit var binding: ActivityHomeBinding
-
     private val MULTIPLE_PERMISSION_REQUEST_CODE = 4
     private var longitude = 0.0
     private var latitude = 0.0
     private lateinit var googleApiClient: GoogleApiClient
+    var dialog: Dialog? = null
+    private var tokenManager: TokenManager? = null
+    override fun onDestroy() {
+        super.onDestroy()
+        if (dialog != null && dialog!!.isShowing) {
+            dialog!!.dismiss()
+        }
+    }
 
+    private lateinit var viewModel: GetResponseViewModel
     lateinit var userPrefManager: UserPrefManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -117,7 +121,37 @@ GoogleApiClient.OnConnectionFailedListener
         layoutParams.behavior = BottomNavigationBehavior()
 
         checkPermissionsState()
+        setupViewModel()
+    }
+    private fun setupViewModel() {
+        val repository = AppRepository()
+        val factory = ViewModelProviderFactory(application, repository)
+        viewModel = ViewModelProvider(this, factory).get(GetResponseViewModel::class.java)
+        getPopUp()
+    }
 
+    private fun getPopUp() {
+        tokenManager = TokenManager.getInstance(
+            getSharedPreferences(
+                Constants.TOKEN_PREF,
+                MODE_PRIVATE
+            )
+        )
+        tokenManager?.let { it1 -> viewModel.getPopUpBanner(it1) }
+
+        viewModel.getPopUp.observe(this, Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    response.data?.popup?.let { popupMessage(it.image) }
+                }
+
+                is Resource.Error -> {
+                    response.message?.let { message ->
+                        binding.container.errorSnack(message, Snackbar.LENGTH_LONG)
+                    }
+                }
+            }
+        })
     }
 
 //    override fun onBackPressed() {
@@ -332,4 +366,27 @@ GoogleApiClient.OnConnectionFailedListener
 
         }
     }
+
+    fun popupMessage(banner:String) {
+        if (!isFinishing()) {
+
+            dialog = Dialog(this)
+
+            dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog?.setCancelable(true)
+            dialog?.setContentView(R.layout.popup_ads)
+        val ads_img: ImageView = dialog!!.findViewById(R.id.ads_img)
+        ads_img.load(BASE_URL+banner)
+        val close_popup: ImageView? = dialog?.findViewById(R.id.close_popup)
+//        myEdit.putBoolean("popup", false)
+//        myEdit.apply()
+            close_popup?.setOnClickListener {
+                //            myEdit.putBoolean("popup", false)
+                //            myEdit.apply()
+                dialog!!.dismiss()
+            }
+        dialog?.show()
+        }
+    }
+
 }

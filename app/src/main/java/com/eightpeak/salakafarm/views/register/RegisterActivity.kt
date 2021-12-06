@@ -43,8 +43,8 @@ class RegisterActivity : AppCompatActivity() {
         val last_name = binding.etLastName.text.toString()
         val email = binding.etEmailAddress.text.toString()
         val password = binding.etPassword.text.toString()
-        val address1 = binding.etAddress1.text.toString()
-        val address2 = binding.etAddress2.text.toString()
+//        val address1 = binding.etAddress1.text.toString()
+//        val address2 = binding.etAddress2.text.toString()
         val contact = binding.contactDetails.text.toString()
 
         if (email.isNotEmpty() && password.isNotEmpty()) {
@@ -53,8 +53,8 @@ class RegisterActivity : AppCompatActivity() {
                 last_name,
                 email,
                 password,
-                address1,
-                address2,
+//                address1,
+//                address2,
                 "NP",
                 contact
             )

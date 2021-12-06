@@ -24,10 +24,12 @@ import com.eightpeak.salakafarm.views.home.HomeActivity
 import com.eightpeak.salakafarm.views.register.RegisterActivity
 import com.google.android.material.snackbar.Snackbar
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
+import com.google.android.gms.tasks.Task
+import com.google.firebase.installations.FirebaseInstallations
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.activity_login.*
 class LoginActivity : AppCompatActivity() {
     lateinit var loginViewModel: LoginViewModel
-    lateinit var userProfileViewModel: SliderViewModel
     private lateinit var binding: ActivityLoginBinding
     lateinit var userPrefManager: UserPrefManager
     private var tokenManager: TokenManager? = null
@@ -44,10 +46,7 @@ class LoginActivity : AppCompatActivity() {
             val mainActivity = Intent(this@LoginActivity, RegisterActivity::class.java)
             startActivity(mainActivity)
         }
-        binding.forgetPassword.setOnClickListener {
-//            val mainActivity = Intent(this@LoginActivity, ForgotPassword::class.java)
-//            startActivity(mainActivity)
-        }
+
         init()
     }
 
@@ -55,7 +54,6 @@ class LoginActivity : AppCompatActivity() {
         val repository = AppRepository()
         val factory = ViewModelProviderFactory(application, repository)
         loginViewModel = ViewModelProvider(this, factory).get(LoginViewModel::class.java)
-        userProfileViewModel= ViewModelProvider(this, factory).get(SliderViewModel::class.java)
         changeStatusBarColor()
     }
 
@@ -66,7 +64,8 @@ class LoginActivity : AppCompatActivity() {
             val body = RequestBodies.LoginBody(
                 email,
                 password,
-                "1"
+                "1",
+                getFCMToken()
             )
 
             loginViewModel.loginUser(body)
@@ -155,4 +154,19 @@ class LoginActivity : AppCompatActivity() {
     private fun showProgressBar() {
         progress.visibility = View.VISIBLE
     }
+    fun getFCMToken() :String{
+      var tokenReceived:String=""
+        FirebaseInstallations.getInstance().id.addOnCompleteListener { task: Task<String?> ->
+            if (task.isSuccessful) {
+                val token = task.result
+                if (token != null) {
+                    tokenReceived=token
+                    Log.i("token ---->>", token)
+                }
+                //                PrefUtils.getInstance(applicationContext).setValue(PrefKeys.FCM_TOKEN, token)
+            }
+        }
+        return tokenReceived
+    }
+
 }

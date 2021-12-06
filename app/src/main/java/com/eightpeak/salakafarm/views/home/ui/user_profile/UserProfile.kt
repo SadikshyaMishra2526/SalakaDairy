@@ -22,7 +22,6 @@ import android.widget.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.eightpeak.salakafarm.App
-import com.eightpeak.salakafarm.databinding.ActivityUserProfileBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.RequestBodies
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
@@ -48,9 +47,10 @@ import android.widget.Toast
 
 import android.widget.RadioButton
 import android.widget.RadioGroup
-
-
-
+import com.eightpeak.salakafarm.databinding.ActivityUserProfileBinding
+import com.eightpeak.salakafarm.views.home.address.AddressModification
+import com.eightpeak.salakafarm.views.order.orderview.confirmOrder.OrderTracking
+import com.eightpeak.salakafarm.views.order.orderview.orderhistory.OrderHistoryDetails
 
 
 class UserProfile : AppCompatActivity() {
@@ -81,10 +81,10 @@ class UserProfile : AppCompatActivity() {
                 Constants.TOKEN_PREF,
                 MODE_PRIVATE
             )
-        );
+        )
         binding = ActivityUserProfileBinding.inflate(layoutInflater)
-        binding.headerLayout.headerName.text = getString(R.string.user_profile)
-        binding.headerLayout.btBackpressed.setOnClickListener { finish() }
+        binding.headerName.text = getString(R.string.user_profile)
+        binding.btBackpressed.setOnClickListener { finish() }
 
         setContentView(binding.root)
         getStatusColor()
@@ -149,7 +149,12 @@ class UserProfile : AppCompatActivity() {
             startActivity(intent)
 
         }
+         binding.addAddresses.setOnClickListener {
+             val intent = Intent(this@UserProfile, AddressModification::class.java)
+//              intent.putExtra(Constants.ORDER_STATUS, orderHistory.orderlist[i].status.toString())
+             startActivity(intent)
 
+         }
         binding.editAddress.setOnClickListener {
             dialog!!.show()
         }
@@ -191,11 +196,11 @@ class UserProfile : AppCompatActivity() {
     }
 
     private fun viewAddress() {
+         var addressListModel: List<String> =
+             userPrefManager.addressList.split("\n") as List<String>
+        Log.i("TAG", "viewAddress: "+addressListModel.size)
 
-        var addressListModel: MutableList<List<String>> =
-            listOf(userPrefManager.addressList.split("\n")) as MutableList<List<String>>
-
-        for (i in addressListModel.indices) {
+        for (i in addressListModel) {
             val itemView: View =
                 LayoutInflater.from(this)
                     .inflate(R.layout.address_list_item, binding.viewAddressList, false)
@@ -203,7 +208,7 @@ class UserProfile : AppCompatActivity() {
             val addressListItem = itemView.findViewById<TextView>(R.id.addressListItem)
             val addressListItemEdit = itemView.findViewById<ImageView>(R.id.edit_address)
             val addressListItemDelete = itemView.findViewById<ImageView>(R.id.delete_address)
-            addressListItem.text = i.toString()
+            addressListItem.text = i
 
             addressListItemEdit.visibility = View.GONE
             addressListItemDelete.visibility = View.GONE
@@ -214,7 +219,6 @@ class UserProfile : AppCompatActivity() {
 
     private fun viewAddressList(addressListModel: AddressListModel) {
         if (addressListModel.address_list.isNotEmpty()) {
-            binding.viewAddressList.removeAllViews()
 
             dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog?.setCancelable(true)
@@ -233,7 +237,7 @@ class UserProfile : AppCompatActivity() {
                 addressListItemEdit.setOnClickListener {
 
                 }
-
+                Log.i("TAG", "viewAddressList: "+i.id.toString())
                 addressListItemDelete.setOnClickListener {
                     tokenManager?.let { it1 ->
                         viewModel.deleteAddressDetails(
@@ -259,7 +263,7 @@ class UserProfile : AppCompatActivity() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let {
-
+                        Log.i("TAG", "getDeleteResponse: "+response)
                     }
                 }
 
@@ -393,9 +397,8 @@ class UserProfile : AppCompatActivity() {
 
         btnSummit.setOnClickListener {
 
-            val radioGroup = findViewById<View>(R.id.customer_gender) as RadioGroup
-            val radioButtonID = radioGroup.checkedRadioButtonId
-            val radioButton = radioGroup.findViewById<View>(radioButtonID) as RadioButton
+             val radioButtonID = userGender.checkedRadioButtonId
+            val radioButton = dialog.findViewById<View>(radioButtonID) as RadioButton
 
 
             val name = firstName.text.toString()
@@ -403,7 +406,7 @@ class UserProfile : AppCompatActivity() {
             val dob = userDoB.text.toString()
             val gender =radioButton.text as String
             Log.i("TAG", "editProfile: "+gender)
-            changeUserProfile(name, email, dob, gender)
+            changeUserProfile(name, email, dob, "gender")
         }
         dialog.setCanceledOnTouchOutside(true)
         dialog.show()
@@ -428,6 +431,8 @@ class UserProfile : AppCompatActivity() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
+                        getUserDetails()
+                        Log.i("TAG", "changeUserProfile: "+response.data)
                     }
                 }
 
@@ -444,6 +449,49 @@ class UserProfile : AppCompatActivity() {
                 }
             }
         })
+    }
+    private fun getUserDetails() {
+        var addressListString =""
+        tokenManager?.let { viewModel.userDetailsUser(it) }
+        viewModel.userDetailsResponse.observe(this, Observer { event ->
+            event.getContentIfNotHandled()?.let { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        response.data?.let { loginResponse ->
+                            Log.i("TAG", "loginResponse i m here: $loginResponse")
+                            userPrefManager.firstName=loginResponse.first_name
+                            userPrefManager.lastName=loginResponse.last_name
+                            userPrefManager.contactNo= loginResponse.phone.toString()
+                            userPrefManager.email=loginResponse.email
+                            userPrefManager.userAddress1=loginResponse.address1
+                            userPrefManager.userAddress2=loginResponse.address2
+                            userPrefManager.userCountry=loginResponse.country
+                            addressListString =addressListString+
+                                    loginResponse.address1 + " " + loginResponse.address2+ " Nepal" + "\n"
+
+                            userPrefManager.addressList = addressListString
+
+                            val mainActivity = Intent(this@UserProfile, HomeActivity::class.java)
+                            startActivity(mainActivity)
+                            finish()
+                        }
+                    }
+
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        response.message?.let { message ->
+                            binding.progress.errorSnack(message, Snackbar.LENGTH_LONG)
+                        }
+                    }
+
+                    is Resource.Loading -> {
+                        showProgressBar()
+                    }
+                }
+            }
+        })
+
     }
 
     private fun hideProgressBar() {

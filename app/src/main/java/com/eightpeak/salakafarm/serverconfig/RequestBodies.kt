@@ -8,7 +8,8 @@ object RequestBodies {
     data class LoginBody(
         val email: String,
         val password: String,
-        val remember_me: String
+        val remember_me: String,
+        val fcm_token: String
     )
 
     data class RegisterBody(
@@ -16,8 +17,8 @@ object RequestBodies {
         val last_name: String,
         val email: String,
         val password: String,
-        val address1: String,
-        val address2: String,
+//        val address1: String,
+//        val address2: String,
         val country: String,
         val phone: String
     )
@@ -89,11 +90,15 @@ object RequestBodies {
     )
 
     data class AddAddress(
-        val oid: String,
-        val refId: String,
-        val amt: String,
-        val shipping: String,
-        val address_id: String,
+        val first_name: String,
+        val last_name: String,
+        val postcode: String,
+        val address1: String,
+        val address2: String,
+        val address3: String,
+        val phone: String,
+        val lat: String,
+        val lng: String
     )
 
 }

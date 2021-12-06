@@ -19,6 +19,7 @@ class Constants {
         const val PRODUCT_ID = "product_id"
         const val CATEGORIES_ID = "categories_id"
         const val ORDER_STATUS = "order_status"
+        const val ORDER_ID = "order_id"
         const val DEFAULT = "not_found"
 
         val NO_LOGIN = null

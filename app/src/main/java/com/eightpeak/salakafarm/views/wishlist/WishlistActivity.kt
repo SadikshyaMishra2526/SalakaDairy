@@ -2,6 +2,7 @@ package com.eightpeak.salakafarm.views.wishlist
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,6 +30,7 @@ import com.eightpeak.salakafarm.views.home.products.ProductAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.utils.subutils.successAddToCartSnack
+import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdActivity
 
 class WishlistActivity : AppCompatActivity() {
     private lateinit var viewModel: GetResponseViewModel
@@ -132,6 +134,12 @@ class WishlistActivity : AppCompatActivity() {
                 productPrice.text = wishlist[i].products_with_description.price.toString()
                 productThumbnail.load(EndPoints.BASE_URL + wishlist[i].products_with_description.image)
 
+
+                productName.setOnClickListener {
+                    val intent = Intent(this@WishlistActivity, ProductByIdActivity::class.java)
+                    intent.putExtra(Constants.PRODUCT_ID, wishlist[i].product_id.toString())
+                    startActivity(intent)
+                }
                 if(wishlist[i].products_with_description.stock>0){
                     outOfStock.visibility=View.GONE
                 }else{
@@ -161,7 +169,7 @@ class WishlistActivity : AppCompatActivity() {
 
 
                 addToCart.setOnClickListener {
-                    tokenManager?.let { it1 -> viewModel.addToCartView(it1,wishlist[i].id.toString(),"1","") }
+                    tokenManager?.let { it1 -> viewModel.addToCart(it1,wishlist[i].product_id.toString(),"1","") }
                     getCartResponse()
                 }
                 binding.viewCartList.addView(itemView)

@@ -37,7 +37,7 @@
     <string name="categories">Categories</string>
     <string name="see_all">See All</string>
 
-    <string name="payment_status"><font color='#5FA95F' size="10">Payment Status111</font></string>
+    <string name="payment_status"><font color='#5FA95F' size="10">Payment Status</font></string>
     <string name="order_status"><font color='#5FA95F' size="10">Order Status</font></string>
     <string name="shipping_status"><font color='#5FA95F' size="10">Shipping Status </font></string>
     <string name="order_at"><font color='#5FA95F' size="10">Order At</font> </string>
@@ -50,7 +50,7 @@
     <string name="search_here">Search Here</string>
     <string name="popular_products">Popular Products</string>
     <string name="messages">Messages</string>
-    <string name="cart">Cart</string>
+    <string name="cart"> Cart</string>
     <string name="settings">Settings</string>
     <string name="about_us">About Us</string>
     <string name="branches">Branches</string>

@@ -1,5 +1,6 @@
 package com.eightpeak.salakafarm.views.home.ui.notifications
 
+import android.app.Notification
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.databinding.FragmentNotificationsBinding
 
 class NotificationsFragment : Fragment() {
@@ -31,11 +33,7 @@ class NotificationsFragment : Fragment() {
         _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-//        val textView: TextView = binding.textNotifications
-//            notificationsViewModel.text.observe(viewLifecycleOwner, Observer {
-//                Log.i(TAG, "onCreateView: $it")
-//            textView.text = it
-//        })
+
         return root
     }
 

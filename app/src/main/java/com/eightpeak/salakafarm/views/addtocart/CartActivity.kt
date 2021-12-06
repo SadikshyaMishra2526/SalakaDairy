@@ -31,6 +31,7 @@ import com.eightpeak.salakafarm.views.home.products.Data
 import com.eightpeak.salakafarm.views.home.products.ProductAdapter
 import com.eightpeak.salakafarm.views.order.orderview.viewordercheckoutdetails.CheckoutDetailsView
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
+import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdActivity
 import kotlinx.android.synthetic.main.fragment_add_to_cart.*
 import kotlinx.android.synthetic.main.product_item.view.*
 
@@ -175,7 +176,11 @@ class CartActivity : AppCompatActivity() {
                 }else{
                     outOfStock.visibility=View.VISIBLE
                 }
-
+                productName.setOnClickListener {
+                    val intent = Intent(this@CartActivity, ProductByIdActivity::class.java)
+                    intent.putExtra(Constants.PRODUCT_ID, cartResponse[i].product_id.toString())
+                    startActivity(intent)
+                }
 
                 binding.deleteCartItems.setOnClickListener {
                     val builder = AlertDialog.Builder(this)

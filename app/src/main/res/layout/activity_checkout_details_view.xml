@@ -142,9 +142,9 @@
                     android:layout_height="wrap_content">
                     <TextView
                         android:id="@+id/customer_delivery"
-                        android:drawableStart="@drawable/ic_baseline_drive_eta_24"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        app:drawableStartCompat="@drawable/ic_baseline_drive_eta_24" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -152,10 +152,26 @@
                     android:layout_height="wrap_content">
                     <TextView
                         android:id="@+id/customer_address"
-                        android:drawableStart="@drawable/ic_baseline_location_on_24"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        app:drawableStartCompat="@drawable/ic_baseline_location_on_24" />
                 </LinearLayout>
+                <TextView
+                    android:padding="@dimen/_5sdp"
+                    android:textSize="@dimen/_8sdp"
+                    android:id="@+id/delivery_earlier"
+                    android:text="Eariest Delivery by 2 PM"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:drawableStartCompat="@drawable/ic_baseline_location_on_24" />
+                <TextView
+                    android:textSize="@dimen/_9sdp"
+                    android:padding="@dimen/_5sdp"
+                    android:text="Quick and Fast delivery at your door step..."
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:drawableStartCompat="@drawable/ic_baseline_location_on_24" />
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
@@ -194,6 +210,7 @@
             android:background="@color/tab_indicator_gray"/>
         <androidx.cardview.widget.CardView
             android:layout_margin="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_60sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout

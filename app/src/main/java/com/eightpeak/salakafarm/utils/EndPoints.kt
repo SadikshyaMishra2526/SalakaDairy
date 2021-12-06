@@ -81,5 +81,8 @@ class EndPoints {
         const val ADD_ADDRESS = "api/add_new_address"
 
 
+        const val POP_UP = "api/get_popup"
+
+
     }
 }

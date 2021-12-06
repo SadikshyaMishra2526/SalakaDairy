@@ -139,4 +139,8 @@ class AppRepository {
     suspend fun deleteAddress(tokenManager: TokenManager,addressId:String) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).deleteAddress(addressId)
 
+
+    suspend fun getPopUp(tokenManager: TokenManager) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).getPopUp()
+
 }

@@ -44,7 +44,7 @@ class OrderHistory : AppCompatActivity() {
         binding = FragmentOrderHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.headerTitle.text = "Order History"
-
+        binding.returnHome.setOnClickListener { finish() }
         tokenManager = TokenManager.getInstance(
             getSharedPreferences(
                 Constants.TOKEN_PREF,
@@ -122,7 +122,6 @@ class OrderHistory : AppCompatActivity() {
 
             if(orderHistory.orderlist[i].status == 1){
                 orderStatus.text="New"
-
                 orderStatus.setTextColor(getColor(R.color.blue))
             }else if(orderHistory.orderlist[i].status == 2){
                 orderStatus.text="Processing"
@@ -143,24 +142,26 @@ class OrderHistory : AppCompatActivity() {
             }
 
             val created: String = createdAt.substring(0, createdAt.length.coerceAtMost(10))
+            productCreated.text=created
 
             orderTracking.setOnClickListener {
                 val intent = Intent(this@OrderHistory,OrderTracking::class.java)
+                Log.i("TAG", "populateHistoryView: "+ orderHistory.orderlist[i].status.toString())
+                intent.putExtra(Constants.ORDER_ID, orderHistory.orderlist[i].id.toString())
                 intent.putExtra(Constants.ORDER_STATUS, orderHistory.orderlist[i].status.toString())
                 startActivity(intent)
             }
 
 
-            productCreated.text=created
-            val bundle = Bundle()
-            bundle.putString("order_id", orderHistory.orderlist[i].id.toString())
             orderHistoryDetails.setOnClickListener {
-                 val fragment:Fragment=OrderHistoryDetails()
+                val bundle = Bundle()
+                bundle.putString("order_id", orderHistory.orderlist[i].id.toString())
+                val fragobj = OrderHistoryDetails()
+                fragobj.arguments = bundle
                 val fm = supportFragmentManager
                 val tr = fm.beginTransaction()
-                fragment.arguments = bundle
                 Log.i("TAG", "populateHistoryView: "+ orderHistory.orderlist[i].id.toString())
-                tr.add(R.id.order_history, fragment)
+                tr.add(R.id.order_history, fragobj)
                 tr.commitAllowingStateLoss()
             }
                 binding.orderHistoryList.addView(itemView)
@@ -168,6 +169,19 @@ class OrderHistory : AppCompatActivity() {
 
     }
 
+    override fun onBackPressed() {
+        val fm: android.app.FragmentManager? = fragmentManager
+        if (fm != null) {
+            if (fm.getBackStackEntryCount() > 0) {
+                Log.i("MainActivity", "popping backstack")
+                fm.popBackStack()
+            } else {
+                Log.i("MainActivity", "nothing on backstack, calling super")
+                super.onBackPressed()
+            }
+        }
+
+    }
     private fun hideProgressBar() {
         binding.progress.visibility = View.GONE
     }

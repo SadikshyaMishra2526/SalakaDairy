@@ -15,6 +15,7 @@ import com.eightpeak.salakafarm.views.home.products.ServerResponse
 import com.eightpeak.salakafarm.views.addtocart.addtocartfragment.CartResponse
 import com.eightpeak.salakafarm.views.home.products.Data
 import com.eightpeak.salakafarm.views.pages.PageDetailsModel
+import com.eightpeak.salakafarm.views.popup.PopUpModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
@@ -118,9 +119,9 @@ class GetResponseViewModel (
 
 //    add to cart
 
-    val addToCart: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
 
-    fun addToCartView(tokenManager: TokenManager, productId:String,qty:String,options:String) = viewModelScope.launch {
+    val addToCart: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
+    fun addToCart(tokenManager: TokenManager, productId:String,qty:String,options:String) = viewModelScope.launch {
         addToCartById(tokenManager,productId,qty,options)
     }
 
@@ -130,11 +131,13 @@ class GetResponseViewModel (
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
                 val response = appRepository.addToCart(tokenManager,productId,qty,options)
+                Log.i("TAG", "fetchPics: $response")
                 addToCart.postValue(handleAddToCartResponse(response))
             } else {
                 addToCart.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
             }
         } catch (t: Throwable) {
+            Log.i("TAG", "fetchPics: "+t.localizedMessage)
             when (t) {
                 is IOException -> addToCart.postValue(
                     Resource.Error(
@@ -163,7 +166,9 @@ class GetResponseViewModel (
         return Resource.Error(response.message())
     }
 
-//    delete wishlist
+
+
+    //    delete wishlist
 val deleteWishlistById: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
 
     fun deleteWishlistById(tokenManager: TokenManager, productId:String) = viewModelScope.launch {
@@ -176,13 +181,12 @@ val deleteWishlistById: MutableLiveData<Resource<ServerResponse>> = MutableLiveD
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
                 val response = appRepository.deleteWishListItem(tokenManager,productId)
-                Log.i("TAG", "fetchPics: $response")
+//                Log.i("TAG", "fetchPics: $response")
                 deleteWishlistById.postValue(handledeleteWishlistByIdResponse(response))
             } else {
                 deleteWishlistById.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
             }
         } catch (t: Throwable) {
-            Log.i("TAG", "fetchPics: "+t.localizedMessage)
             when (t) {
                 is IOException -> deleteWishlistById.postValue(
                     Resource.Error(
@@ -203,6 +207,8 @@ val deleteWishlistById: MutableLiveData<Resource<ServerResponse>> = MutableLiveD
     }
 
     private fun handledeleteWishlistByIdResponse(response: Response<ServerResponse>): Resource<ServerResponse> {
+        Log.i("TAG", "fetchPics: "+response)
+
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)
@@ -552,6 +558,54 @@ val deleteWishlistById: MutableLiveData<Resource<ServerResponse>> = MutableLiveD
     }
 
     private fun handledeleteCartItemResponse(response: Response<ServerResponse>): Resource<ServerResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+
+//    get popup view
+val getPopUp: MutableLiveData<Resource<PopUpModel>> = MutableLiveData()
+
+    fun getPopUpBanner(tokenManager: TokenManager) = viewModelScope.launch {
+        getPopUP(tokenManager)
+    }
+
+
+    private suspend fun getPopUP(tokenManager: TokenManager) {
+        getPopUp.postValue(Resource.Loading())
+        try {
+            if (Utils.hasInternetConnection(getApplication<Application>())) {
+                val response = appRepository.getPopUp(tokenManager)
+                Log.i("TAG", "fetchPics: $response")
+                getPopUp.postValue(handleGetPopUpResponse(response))
+            } else {
+                getPopUp.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+            }
+        } catch (t: Throwable) {
+            when (t) {
+                is IOException -> getPopUp.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.network_failure
+                        )
+                    )
+                )
+                else -> getPopUp.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.conversion_error
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun handleGetPopUpResponse(response: Response<PopUpModel>): Resource<PopUpModel> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)

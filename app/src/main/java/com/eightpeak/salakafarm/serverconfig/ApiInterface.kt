@@ -36,6 +36,7 @@ import com.eightpeak.salakafarm.views.order.orderview.orderhistory.OrderHistoryM
 import com.eightpeak.salakafarm.views.order.orderview.viewordercheckoutdetails.CheckOutModel
 import com.eightpeak.salakafarm.views.pages.PageDetailsModel
 import com.eightpeak.salakafarm.views.pages.videos.YoutubeVideoModel
+import com.eightpeak.salakafarm.views.popup.PopUpModel
 import com.eightpeak.salakafarm.views.register.RegisterResponse
 import com.eightpeak.salakafarm.views.search.SearchModel
 import retrofit2.Call
@@ -184,6 +185,10 @@ interface ApiInterface {
     suspend fun getRandomList(): Response<List<Data>>
 
 
+    @GET(EndPoints.POP_UP)
+    suspend fun getPopUp(): Response<PopUpModel>
+
+
     @POST(EndPoints.UPDATE_CART_PRODUCTS)
     suspend fun updateCart(@Query("id")id:String,
                            @Query("new_qty")new_qty:String)
@@ -200,6 +205,8 @@ interface ApiInterface {
     @POST(EndPoints.ADD_ADDRESS)
     suspend fun addNewAddress(@Body body:RequestBodies.AddAddress): Response<ServerResponse>
 
+
+    @FormUrlEncoded
     @POST(EndPoints.DELETE_ADDRESS)
     suspend fun deleteAddress(@Field("id") addressId:String ): Response<ServerResponse>
 

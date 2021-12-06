@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider
 import coil.api.load
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
-import com.eightpeak.salakafarm.databinding.ActivityCheckoutDetailsViewBinding
 import com.eightpeak.salakafarm.databinding.ActivityConfirmOrderBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.RequestBodies
@@ -54,9 +53,7 @@ class ConfirmOrderActivity : AppCompatActivity() {
         )
         userPrefManager = UserPrefManager(this)
         binding = ActivityConfirmOrderBinding.inflate(layoutInflater)
-        binding.returnHome.setOnClickListener {
-            finish()
-        }
+
         setupViewModel()
         setContentView(binding.root)
 
@@ -163,8 +160,6 @@ class ConfirmOrderActivity : AppCompatActivity() {
     }
 
     private fun addCartDetails(cartItem: List<CartItem>) {
-//        cart_list
-
         for (i in cartItem.indices) {
             val itemView: View =
                 LayoutInflater.from(this)
