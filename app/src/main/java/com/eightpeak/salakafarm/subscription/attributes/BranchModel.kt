@@ -14,6 +14,10 @@ data class Branches (
     @SerializedName("latitude") val latitude : Double,
     @SerializedName("longitude") val longitude : Double,
     @SerializedName("capacity") val capacity : Int,
+    @SerializedName("account_number") val account_number : String,
+    @SerializedName("qrcode") val qrcode : String,
+    @SerializedName("user_id") val user_id : Int,
+    @SerializedName("branch_status") val branch_status : Int,
     @SerializedName("created_at") val created_at : String,
     @SerializedName("updated_at") val updated_at : String
 )

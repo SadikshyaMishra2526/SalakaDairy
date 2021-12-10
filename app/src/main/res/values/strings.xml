@@ -108,4 +108,7 @@
     <string name="track_your_order">Track Your Order</string>
     <string name="deliver_to">Deliver To :</string>
     <string name="select_subscription_item">Select Subscription Item</string>
+    <string name="selected_branch">Selected Branch</string>
+    <string name="main_branch">Main Branch</string>
+    <string name="partner_branch">Partner Branch</string>
 </resources>

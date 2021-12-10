@@ -140,7 +140,7 @@ interface ApiInterface {
 
     @FormUrlEncoded
     @POST(EndPoints.GET_SUB_PACKAGE)
-    suspend fun getSubscriptionPackage(@Field("sub_item_id") sub_item_id: Int): Response<SubscriptionPackageModel>
+    suspend fun getSubscriptionPackage(@Field("branch_id") branch_id: Int): Response<SubscriptionPackageModel>
 
     @GET(EndPoints.GET_BRANCHES)
     suspend fun getBranches(): Response<BranchModel>

@@ -39,6 +39,8 @@ public class UserPrefManager {
 
     private static final String ADDRESS_LIST= "address_list";
 
+    private static final String FCM= "fcm";
+
 
     public UserPrefManager(Context context) {
         this.mContext = context;
@@ -182,6 +184,24 @@ public class UserPrefManager {
     }
 
 
+    public  void setFCMToken(String fcmToken) {
+        userPrefEditor.putString(FCM, fcmToken);
+        userPrefEditor.commit();
+    }
+
+    public String getFCMToken() {
+        return userPref.getString(FCM, DEFAULT);
+    }
+
+
+    public  void setPopupBoolean(Boolean fcmToken) {
+        userPrefEditor.putBoolean(FCM, fcmToken);
+        userPrefEditor.commit();
+    }
+
+    public Boolean getPopupBoolean() {
+        return userPref.getBoolean(FCM, false);
+    }
 
     public void clearData() {
         userPrefEditor = userPref.edit();

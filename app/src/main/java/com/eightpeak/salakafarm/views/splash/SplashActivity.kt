@@ -38,7 +38,7 @@ class SplashActivity :AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
          userPrefManager= UserPrefManager(this)
-
+          userPrefManager.popupBoolean=true
         if (!Utils.hasInternetSplashConnection(this@SplashActivity)){
             setContentView(R.layout.no_internet_connection)
             var refresh=findViewById<Button>(R.id.refresh)

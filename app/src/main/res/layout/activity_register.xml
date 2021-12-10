@@ -62,8 +62,9 @@
             <ImageView
                 android:id="@+id/first_name_img"
                 style="@style/editLeftIcon"
-                android:src="@drawable/email"
-                android:contentDescription="@string/email"/>
+android:layout_marginStart="@dimen/_30sdp"
+                android:contentDescription="@string/email"
+                android:src="@drawable/username" />
 
         </RelativeLayout>
         <RelativeLayout
@@ -91,7 +92,7 @@
                 android:id="@+id/last_name_img"
                 style="@style/editLeftIcon"
                 android:contentDescription="@string/last_name"
-                android:src="@drawable/email" />
+                android:src="@drawable/email_add" />
 
         </RelativeLayout>
         <RelativeLayout
@@ -119,7 +120,7 @@
                 android:id="@+id/email_img"
                 style="@style/editLeftIcon"
                 android:contentDescription="@string/email"
-                android:src="@drawable/email" />
+                android:src="@drawable/email_add" />
 
         </RelativeLayout>
         <RelativeLayout
@@ -152,8 +153,7 @@
             <ImageView
                 android:id="@+id/password_img"
                 style="@style/editLeftIcon"
-                android:layout_marginTop="-1dp"
-                android:src="@drawable/email"
+                android:src="@drawable/password"
                 android:contentDescription="@string/email" />
 
         </RelativeLayout>
@@ -185,7 +185,7 @@
                 android:id="@+id/address_first_img"
                 style="@style/editLeftIcon"
                 android:contentDescription="@string/address_1"
-                android:src="@drawable/email" />
+                android:src="@drawable/email_add" />
 
         </RelativeLayout>
 
@@ -213,7 +213,7 @@
             <ImageView
                 android:id="@+id/address_second_img"
                 style="@style/editLeftIcon"
-                android:src="@drawable/email"
+                android:src="@drawable/email_add"
                 android:contentDescription="@string/address_2"/>
         </RelativeLayout>
 
@@ -242,7 +242,7 @@
                 android:id="@+id/addressEt"
                 style="@style/editLeftIcon"
                 android:contentDescription="@string/address"
-                android:src="@drawable/email" />
+                android:src="@drawable/email_add" />
 
         </RelativeLayout>
 

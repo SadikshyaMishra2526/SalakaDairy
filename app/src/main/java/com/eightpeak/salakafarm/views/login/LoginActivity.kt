@@ -24,6 +24,7 @@ import com.eightpeak.salakafarm.views.home.HomeActivity
 import com.eightpeak.salakafarm.views.register.RegisterActivity
 import com.google.android.material.snackbar.Snackbar
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.installations.FirebaseInstallations
 import com.google.firebase.messaging.FirebaseMessaging
@@ -46,7 +47,7 @@ class LoginActivity : AppCompatActivity() {
             val mainActivity = Intent(this@LoginActivity, RegisterActivity::class.java)
             startActivity(mainActivity)
         }
-
+        getFCMToken()
         init()
     }
 
@@ -65,7 +66,7 @@ class LoginActivity : AppCompatActivity() {
                 email,
                 password,
                 "1",
-                getFCMToken()
+              userPrefManager.fcmToken
             )
 
             loginViewModel.loginUser(body)
@@ -154,19 +155,22 @@ class LoginActivity : AppCompatActivity() {
     private fun showProgressBar() {
         progress.visibility = View.VISIBLE
     }
-    fun getFCMToken() :String{
-      var tokenReceived:String=""
-        FirebaseInstallations.getInstance().id.addOnCompleteListener { task: Task<String?> ->
-            if (task.isSuccessful) {
-                val token = task.result
-                if (token != null) {
-                    tokenReceived=token
-                    Log.i("token ---->>", token)
-                }
-                //                PrefUtils.getInstance(applicationContext).setValue(PrefKeys.FCM_TOKEN, token)
+    private fun getFCMToken() {
+        val token =""
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("TAG", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
             }
-        }
-        return tokenReceived
+
+            // Get new FCM registration token
+            val token = task.result.toString()
+            userPrefManager.fcmToken = token
+            Log.i("TAG", "getFCMToken: $token")
+
+        })
+
     }
 
 }

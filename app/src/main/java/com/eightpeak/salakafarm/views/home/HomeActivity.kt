@@ -142,8 +142,12 @@ GoogleApiClient.OnConnectionFailedListener
         viewModel.getPopUp.observe(this, Observer { response ->
             when (response) {
                 is Resource.Success -> {
-                    response.data?.popup?.let { popupMessage(it.image) }
-                }
+
+                    val status = userPrefManager.popupBoolean
+                    if (status) {
+                        response.data?.popup?.let { popupMessage(it.image) }
+                    }
+                  }
 
                 is Resource.Error -> {
                     response.message?.let { message ->
@@ -368,10 +372,8 @@ GoogleApiClient.OnConnectionFailedListener
     }
 
     fun popupMessage(banner:String) {
-        if (!isFinishing()) {
-
+        if (!isFinishing) {
             dialog = Dialog(this)
-
             dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog?.setCancelable(true)
             dialog?.setContentView(R.layout.popup_ads)
@@ -380,9 +382,9 @@ GoogleApiClient.OnConnectionFailedListener
         val close_popup: ImageView? = dialog?.findViewById(R.id.close_popup)
 //        myEdit.putBoolean("popup", false)
 //        myEdit.apply()
+            userPrefManager.popupBoolean = false
             close_popup?.setOnClickListener {
-                //            myEdit.putBoolean("popup", false)
-                //            myEdit.apply()
+                userPrefManager.popupBoolean = false
                 dialog!!.dismiss()
             }
         dialog?.show()

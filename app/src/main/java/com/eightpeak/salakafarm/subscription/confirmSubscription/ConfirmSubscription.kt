@@ -28,6 +28,7 @@ import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.RequestBodies
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.subscription.attributes.Sub_item
+import com.eightpeak.salakafarm.subscription.attributes.Sub_packages
 import com.eightpeak.salakafarm.subscription.attributes.SubscriptionItemModel
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.EndPoints
@@ -39,7 +40,6 @@ import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.addtocart.CartActivity
 import com.esewa.android.sdk.payment.ESewaConfiguration
 import com.esewa.android.sdk.payment.ESewaPayment
-import com.esewa.android.sdk.payment.ESewaPaymentActivity
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
@@ -134,7 +134,7 @@ class ConfirmSubscription : AppCompatActivity() {
                     hideProgressBar()
 
                     response.data?.let {
-                        displayPackageList(response.data.sub_item)
+                        displayPackageList(response.data.sub_packages)
 
                     }
                 }
@@ -154,7 +154,7 @@ class ConfirmSubscription : AppCompatActivity() {
 
     }
 
-    private fun displayPackageList(subItem: List<Sub_item>) {
+    private fun displayPackageList(subItem: List<Sub_packages>) {
         binding.layoutSubPackage.removeAllViews()
 
         for (i in subItem.indices) {
@@ -169,9 +169,9 @@ class ConfirmSubscription : AppCompatActivity() {
             val subPackageDiscount = itemView.findViewById<TextView>(R.id.tv_Subscription_Discount)
 
             subPackageTitle.text = subItem[i].name
-            subPackagePrice.text = getString(R.string.rs) + " " + subItem[i].total_price.toString()
+            subPackagePrice.text = getString(R.string.rs) + " " + subItem[i].unit_price.toString()
             subPackageDays.text = subItem[i].number_of_days.toString() + " days"
-            subPackageDiscount.text = subItem[i].discount_price.toString()+"%"
+            subPackageDiscount.text = subItem[i].discount_price_per_unit.toString()+"%"
             selectSubPackage.setOnClickListener {
                 userPrefManager.packageSelected = i
                 selectSubPackage.setBackgroundColor(getColor(R.color.sub_color))

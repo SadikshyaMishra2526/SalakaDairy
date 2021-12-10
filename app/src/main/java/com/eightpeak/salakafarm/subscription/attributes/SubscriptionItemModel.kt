@@ -19,12 +19,12 @@ data class SubItem (
 	@SerializedName("descriptions") val descriptions : List<Descriptions>
 )
 
-data class Descriptions (
-
-	@SerializedName("sub_item_id") val sub_item_id : Int,
-	@SerializedName("lang") val lang : String,
-	@SerializedName("title") val title : String,
-	@SerializedName("keyword") val keywordword : String,
-	@SerializedName("description") val description : String,
-	@SerializedName("content") val content : String
-)
+//data class Descriptions (
+//
+//	@SerializedName("sub_item_id") val sub_item_id : Int,
+//	@SerializedName("lang") val lang : String,
+//	@SerializedName("title") val title : String,
+//	@SerializedName("keyword") val keywordword : String,
+//	@SerializedName("description") val description : String,
+//	@SerializedName("content") val content : String
+//)

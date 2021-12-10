@@ -90,5 +90,7 @@
     <string name="complete">पूर्ण</string>
     <string name="track_your_order">तपाईंको अर्डर ट्र्याक</string>
     <string name="deliver_to">डेलिभर ठेगाना:</string>
+    <string name="selected_branch">Selected Branch</string>
+    <string name="main_branch">Main Branch</string>
 
 </resources>

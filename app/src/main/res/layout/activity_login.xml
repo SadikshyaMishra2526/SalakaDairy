@@ -57,7 +57,7 @@
         <ImageView
             android:id="@+id/email_img"
             style="@style/editLeftIcon"
-            android:src="@drawable/email" />
+            android:src="@drawable/email_add" />
 
     </RelativeLayout>
 
@@ -94,7 +94,7 @@
             android:id="@+id/password_img"
             style="@style/editLeftIcon"
             android:layout_marginTop="-1dp"
-            android:src="@drawable/email" />
+            android:src="@drawable/password" />
 
     </RelativeLayout>
 

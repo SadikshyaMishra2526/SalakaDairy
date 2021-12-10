@@ -25,19 +25,25 @@
             android:layout_margin="@dimen/_10sdp"
             android:text="Quatarly Subscription" />
 
+
+        <ImageView
+            android:id="@+id/sub_item_thumbnail"
+            android:layout_gravity="center"
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:src="@drawable/milk_cartoon" />
+
         <View
             android:layout_width="wrap_content"
             android:layout_height="3dp"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:background="@color/sub_color" />
-
-        <ImageView
-            android:layout_gravity="center"
-            android:layout_width="@dimen/_20sdp"
-            android:layout_height="@dimen/_20sdp"
-            android:src="@drawable/milk_cartoon" />
-
+ <TextView
+     android:layout_gravity="center"
+     android:id="@+id/sub_item_selected"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"/>
         <TextView
             android:layout_gravity="center"
             android:id="@+id/tv_Subscription_Price"

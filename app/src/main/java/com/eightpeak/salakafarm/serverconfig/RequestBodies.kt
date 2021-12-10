@@ -90,9 +90,9 @@ object RequestBodies {
     )
 
     data class AddAddress(
-        val first_name: String,
-        val last_name: String,
-        val postcode: String,
+//        val first_name: String,
+//        val last_name: String,
+//        val postcode: String,
         val address1: String,
         val address2: String,
         val address3: String,
