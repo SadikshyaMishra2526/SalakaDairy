@@ -52,7 +52,7 @@
             android:layout_alignParentEnd="true"
             android:gravity="center"
             android:hint="@string/address_1"
-            android:inputType="textEmailAddress"
+            android:inputType="textCapSentences"
             android:maxLines="1" />
 
         <ImageView
@@ -77,8 +77,8 @@
             android:layout_alignStart="@+id/address2Icon"
             android:layout_alignParentEnd="true"
             android:gravity="center"
-            android:hint="@string/address_1"
-            android:inputType="textEmailAddress"
+            android:hint="@string/address_2"
+            android:inputType="textCapSentences"
             android:maxLines="1" />
 
         <ImageView
@@ -104,8 +104,8 @@
             android:layout_alignStart="@+id/address3Icon"
             android:layout_alignParentEnd="true"
             android:gravity="center"
-            android:hint="@string/address_2"
-            android:inputType="textEmailAddress"
+            android:hint="@string/address_3"
+            android:inputType="textCapSentences"
             android:maxLines="1" />
 
         <ImageView
@@ -166,11 +166,10 @@
         app:layout_constraintTop_toBottomOf="@+id/info" />
 
     <Button
-        android:id="@+id/sign_up"
+        android:id="@+id/add_Address"
         style="@style/loginButton"
         android:layout_margin="@dimen/_10sdp"
         android:gravity="center"
-        android:onClick="onAddAddressClicked"
         android:text="Add Address"
         android:textColor="@color/white"
         android:textSize="@dimen/_12sdp"

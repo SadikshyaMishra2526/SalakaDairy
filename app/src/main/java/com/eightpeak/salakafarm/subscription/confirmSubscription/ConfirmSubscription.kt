@@ -8,31 +8,18 @@ import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import coil.api.load
 import androidx.lifecycle.Observer
 
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
-import com.eightpeak.salakafarm.databinding.ActivityConfirmOrderBinding
 import com.eightpeak.salakafarm.databinding.ActivityConfirmSubscriptionBinding
-import com.eightpeak.salakafarm.databinding.ActivitySubscriptionBinding
-import com.eightpeak.salakafarm.mapfunctions.MapsFragment
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.RequestBodies
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
-import com.eightpeak.salakafarm.subscription.attributes.Sub_item
-import com.eightpeak.salakafarm.subscription.attributes.Sub_packages
-import com.eightpeak.salakafarm.subscription.attributes.SubscriptionItemModel
 import com.eightpeak.salakafarm.utils.Constants
-import com.eightpeak.salakafarm.utils.EndPoints
-import com.eightpeak.salakafarm.utils.GeneralUtils
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.viewmodel.SubscriptionViewModel
@@ -40,6 +27,7 @@ import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.addtocart.CartActivity
 import com.esewa.android.sdk.payment.ESewaConfiguration
 import com.esewa.android.sdk.payment.ESewaPayment
+import com.esewa.android.sdk.payment.ESewaPaymentActivity
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
@@ -47,14 +35,36 @@ class ConfirmSubscription : AppCompatActivity() {
     private lateinit var binding: ActivityConfirmSubscriptionBinding
     private lateinit var viewModel: SubscriptionViewModel
     private var _binding: ActivityConfirmSubscriptionBinding? = null
-    var dateSelected: Calendar = Calendar.getInstance()
 
     lateinit var userPrefManager: UserPrefManager
     private var tokenManager: TokenManager? = null
-    private var datePickerDialog: DatePickerDialog? = null
+
+
+
+    private val CONFIG_ENVIRONMENT: String = ESewaConfiguration.ENVIRONMENT_TEST
+    private val REQUEST_CODE_PAYMENT = 1
+    private var eSewaConfiguration: ESewaConfiguration? = null
+
+    private lateinit var selectedBranchId:String
+    private lateinit var selectedAddressId:String
+    private lateinit var selectedSubscribedTotalAmount:String
+    private lateinit var selectedSubscribedDiscount:String
+    private lateinit var selectedSubscribedPrice:String
+    private lateinit var selectedUnitPerDay:String
+    private lateinit var selectedStartingDate:String
+    private lateinit var selectedDeliveryPeroid:String
+    private lateinit var selectedSubPackageId:String
+    private lateinit var selectedTotalQuantity:String
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        eSewaConfiguration = ESewaConfiguration()
+            .clientId(Constants.MERCHANT_ID)
+            .secretKey(Constants.MERCHANT_SECRET_KEY)
+            .environment(CONFIG_ENVIRONMENT)
+
 
         tokenManager = TokenManager.getInstance(
             getSharedPreferences(
@@ -65,7 +75,7 @@ class ConfirmSubscription : AppCompatActivity() {
         binding = ActivityConfirmSubscriptionBinding.inflate(layoutInflater)
         userPrefManager= UserPrefManager(this)
 
-        binding.headerTitle.text = "Add Your Subscription Plan"
+        binding.headerTitle.text = "Confirm your Subscription"
         binding.returnHome.setOnClickListener {
             finish()
         }
@@ -74,192 +84,91 @@ class ConfirmSubscription : AppCompatActivity() {
             startActivity(mainActivity)
             finish()
         }
+         var intent=intent
+        selectedBranchId= intent.getStringExtra("selectedBranchId").toString()
+        selectedAddressId=  intent.getStringExtra("selectedAddressId").toString()
+        selectedSubscribedTotalAmount=intent.getStringExtra("selectedSubscribedTotalAmount").toString()
+        selectedSubscribedDiscount=intent.getStringExtra("selectedSubscribedDiscount").toString()
+        selectedSubscribedPrice=intent.getStringExtra("selectedSubscribedPrice").toString()
+        selectedUnitPerDay=intent.getStringExtra("selectedUnitPerDay").toString()
+        selectedStartingDate=intent.getStringExtra("selectedStartingDate").toString()
+        selectedDeliveryPeroid=intent.getStringExtra("selectedDeliveryPeroid").toString()
+        selectedSubPackageId= intent.getStringExtra("selectedSubPackageId").toString()
+        selectedTotalQuantity=intent.getStringExtra("selectedTotalQuantity").toString()
+
+
+        val body=RequestBodies.AddSubscription(selectedBranchId,selectedAddressId,selectedSubscribedTotalAmount,selectedSubscribedDiscount,selectedSubscribedPrice,selectedUnitPerDay,selectedStartingDate,selectedDeliveryPeroid,selectedSubPackageId,selectedTotalQuantity)
+
+        Log.i("TAG", "onCreate: $body")
+
+      binding.proceedWithSubscription.setOnClickListener {
+          tokenManager?.let { it1 -> viewModel.addSubscription(it1,body) }
+          viewModel.addSubscription.observe(this, Observer { response ->
+              when (response) {
+                  is Resource.Success -> {
+                      hideProgressBar()
+                      response.data?.let { picsResponse ->
+//                          makePayment("100")
+
+                      }
+                  }
+
+                  is Resource.Error -> {
+                      hideProgressBar()
+                      response.message?.let { message ->
+                          binding.addSubscriptionLayout.errorSnack(message, Snackbar.LENGTH_LONG)
+                      }
+                  }
+                  is Resource.Loading -> {
+                      showProgressBar()
+                  }
+              }
+          })
+      }
+
+
+
+
         setupViewModel()
-
-
-        binding.chooseSubscriptionDate.setOnClickListener {
-            val newCalendar = dateSelected
-            val dateFormat: java.text.DateFormat? = DateFormat.getDateFormat(applicationContext)
-            datePickerDialog = DatePickerDialog(
-                this,
-                { view, year, monthOfYear, dayOfMonth ->
-                    dateSelected[year, monthOfYear, dayOfMonth, 0] = 0
-                    binding.chooseSubscriptionDate.text = dateFormat?.format(dateSelected.time)
-                },
-                newCalendar[Calendar.YEAR],
-                newCalendar[Calendar.MONTH],
-                newCalendar[Calendar.DAY_OF_MONTH]
-            )
-            datePickerDialog!!.show()
-            Log.i("TAG", "onCreate: " + dateSelected.time)
-
-        }
-
-        binding.proceedWithSubscription.setOnClickListener {
-            val  body=RequestBodies.AddSubscription("1","1","1","2021-10-12","1")
-            tokenManager?.let { it1 -> viewModel.addSubscription(it1, body) }
-        }
         setContentView(binding.root)
 
     }
+    private fun makePayment(amount: String) {
+        val eSewaPayment = ESewaPayment(
+            amount,
+            "someProductName",
+            "someUniqueId_" + System.nanoTime(),
+            "https://somecallbackurl.com"
+        )
+        val intent = Intent(this@ConfirmSubscription, ESewaPaymentActivity::class.java)
+        intent.putExtra(ESewaConfiguration.ESEWA_CONFIGURATION, eSewaConfiguration)
+        intent.putExtra(ESewaPayment.ESEWA_PAYMENT, eSewaPayment)
+        startActivityForResult(
+            intent,
+            REQUEST_CODE_PAYMENT
+        )
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_PAYMENT) {
+            if (resultCode == RESULT_OK) {
+                val s = data?.getStringExtra(ESewaPayment.EXTRA_RESULT_MESSAGE)
+                Log.i("Proof of Payment", s!!)
+                startActivity(Intent(this@ConfirmSubscription, ConfirmSubscription::class.java))
 
-
+                Toast.makeText(this, "SUCCESSFUL PAYMENT", Toast.LENGTH_SHORT).show()
+            } else if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(this, "Canceled By User", Toast.LENGTH_SHORT).show()
+            } else if (resultCode == ESewaPayment.RESULT_EXTRAS_INVALID) {
+                val s = data?.getStringExtra(ESewaPayment.EXTRA_RESULT_MESSAGE)
+                Log.i("Proof of Payment", s!!)
+            }
+        }
+    }
     private fun setupViewModel() {
         val repository = AppRepository()
         val factory = ViewModelProviderFactory(application, repository)
         viewModel = ViewModelProvider(this, factory).get(SubscriptionViewModel::class.java)
-        getSubscriptionItemList()
-        setUpBranchesView()
-    }
-
-    private fun setUpBranchesView() {
-        val fm: FragmentManager = supportFragmentManager
-        var fragment = fm.findFragmentByTag("myFragmentTag")
-        if (fragment == null) {
-            val ft: FragmentTransaction = fm.beginTransaction()
-            fragment = MapsFragment()
-            ft.add(R.id.branchesList, fragment, "myFragmentTag")
-            ft.commit()
-        }
-
-    }
-
-    private fun getSubscriptionPackageList(s: Int) {
-
-        tokenManager?.let { it1 -> viewModel.getSubPackageList(it1, s) }
-
-        viewModel.subPackageList.observe(this, Observer { response ->
-            when (response) {
-                is Resource.Success -> {
-                    hideProgressBar()
-
-                    response.data?.let {
-                        displayPackageList(response.data.sub_packages)
-
-                    }
-                }
-
-                is Resource.Error -> {
-                    hideProgressBar()
-                    response.message?.let { message ->
-                        binding.addSubscriptionLayout.errorSnack(message, Snackbar.LENGTH_LONG)
-                    }
-                }
-
-                is Resource.Loading -> {
-                    showProgressBar()
-                }
-            }
-        })
-
-    }
-
-    private fun displayPackageList(subItem: List<Sub_packages>) {
-        binding.layoutSubPackage.removeAllViews()
-
-        for (i in subItem.indices) {
-            val itemView: View =
-                LayoutInflater.from(this)
-                    .inflate(R.layout.layout_sub_package_item, binding.layoutSubPackage, false)
-
-            val subPackageTitle = itemView.findViewById<TextView>(R.id.tv_Subscription_Name)
-            val subPackagePrice = itemView.findViewById<TextView>(R.id.tv_Subscription_Price)
-            val subPackageDays = itemView.findViewById<TextView>(R.id.tv_Subscription_Days)
-            val selectSubPackage = itemView.findViewById<CardView>(R.id.select_sub_package)
-            val subPackageDiscount = itemView.findViewById<TextView>(R.id.tv_Subscription_Discount)
-
-            subPackageTitle.text = subItem[i].name
-            subPackagePrice.text = getString(R.string.rs) + " " + subItem[i].unit_price.toString()
-            subPackageDays.text = subItem[i].number_of_days.toString() + " days"
-            subPackageDiscount.text = subItem[i].discount_price_per_unit.toString()+"%"
-            selectSubPackage.setOnClickListener {
-                userPrefManager.packageSelected = i
-                selectSubPackage.setBackgroundColor(getColor(R.color.sub_color))
-
-            }
-
-
-//            if(i==userPrefManager.packageSelected){
-//                selectSubPackage.setBackgroundColor(getColor(R.color.sub_color))
-//            }else{
-//                selectSubPackage.setBackgroundColor(getColor(R.color.white))
-//            }
-
-            binding.layoutSubPackage.addView(itemView)
-        }
-    }
-
-    private fun getSubscriptionItemList() {
-
-        binding.layoutSubItem.removeAllViews()
-        tokenManager?.let { it1 -> viewModel.getSubItemList(it1) }
-
-        viewModel.subItemList.observe(this, Observer { response ->
-            when (response) {
-                is Resource.Success -> {
-                    hideProgressBar()
-
-                    response.data?.let {
-                        Log.i("TAG", "getSubscriptionItemList: i m here")
-                        displaySubItemList(response.data)
-                    }
-                }
-
-                is Resource.Error -> {
-                    hideProgressBar()
-                    response.message?.let { message ->
-                        binding.addSubscriptionLayout.errorSnack(message, Snackbar.LENGTH_LONG)
-                    }
-                }
-
-                is Resource.Loading -> {
-                    showProgressBar()
-                }
-            }
-        })
-    }
-
-    private fun displaySubItemList(data: SubscriptionItemModel) {
-        for (i in data.sub_item.indices) {
-            val itemView: View =
-                LayoutInflater.from(this)
-                    .inflate(R.layout.sub_items, binding.layoutSubItem, false)
-            val subItemTitle = itemView.findViewById<TextView>(R.id.sub_item_title)
-            val subItemPrice = itemView.findViewById<TextView>(R.id.sub_item_price)
-            val subItemThumbnail = itemView.findViewById<ImageView>(R.id.sub_item_thumbnail)
-            val subItemDescription = itemView.findViewById<TextView>(R.id.sub_item_description)
-            val subItemView = itemView.findViewById<CardView>(R.id.sub_item_view)
-
-            subItemView.setOnClickListener {
-                userPrefManager.subSelected = i
-                getSubscriptionPackageList(data.sub_item[i].descriptions[0].sub_item_id)
-                binding.subItemSelected.text="Select Subscription Item :- "+data.sub_item[i].descriptions[0].title
-                binding.subItemSlide.visibility= View.GONE
-                binding.subPackageView.visibility= View.VISIBLE
-                binding.proceedSubscription.visibility= View.VISIBLE
-            }
-
-            if(i==userPrefManager.subSelected){
-                subItemView.setBackgroundColor(ContextCompat.getColor(this, R.color.sub_color))
-            }else{
-                subItemView.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
-
-            }
-            if (data.sub_item.isNotEmpty()) {
-                if(userPrefManager.language.equals("ne")){
-                    subItemTitle.text = data.sub_item[i].descriptions[1].title
-                    subItemDescription.text = data.sub_item[i].descriptions[1].description
-                    subItemPrice.text =getString(R.string.rs)+ GeneralUtils.getUnicodeNumber(data.sub_item[i].price.toString())+" per litre"
-                }else{
-                    subItemTitle.text = data.sub_item[i].descriptions[0].title
-                    subItemDescription.text = data.sub_item[i].descriptions[0].description
-                    subItemPrice.text = getString(R.string.rs)+data.sub_item[i].price.toString()+" per litre"
-                }
-            }
-            subItemThumbnail.load(EndPoints.BASE_URL + data.sub_item[i].image)
-            binding.layoutSubItem.addView(itemView)
-        }
-
     }
 
 

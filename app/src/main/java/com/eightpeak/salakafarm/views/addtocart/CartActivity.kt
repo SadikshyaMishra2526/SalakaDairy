@@ -31,6 +31,7 @@ import com.eightpeak.salakafarm.views.home.products.Data
 import com.eightpeak.salakafarm.views.home.products.ProductAdapter
 import com.eightpeak.salakafarm.views.order.orderview.viewordercheckoutdetails.CheckoutDetailsView
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
+import com.eightpeak.salakafarm.views.home.HomeActivity
 import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdActivity
 import kotlinx.android.synthetic.main.fragment_add_to_cart.*
 import kotlinx.android.synthetic.main.product_item.view.*
@@ -70,6 +71,9 @@ class CartActivity : AppCompatActivity() {
         binding.returnHome.setOnClickListener {
             finish()
         }
+        binding.continueShoppingEmpty.setOnClickListener {
+            startActivity(Intent(this@CartActivity, HomeActivity::class.java))
+            finish()  }
         init()
         setupViewModel()
     }

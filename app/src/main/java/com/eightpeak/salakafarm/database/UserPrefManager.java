@@ -41,6 +41,8 @@ public class UserPrefManager {
 
     private static final String FCM= "fcm";
 
+    private static final String POPUP= "popup";
+
 
     public UserPrefManager(Context context) {
         this.mContext = context;
@@ -195,12 +197,12 @@ public class UserPrefManager {
 
 
     public  void setPopupBoolean(Boolean fcmToken) {
-        userPrefEditor.putBoolean(FCM, fcmToken);
+        userPrefEditor.putBoolean(POPUP, fcmToken);
         userPrefEditor.commit();
     }
 
     public Boolean getPopupBoolean() {
-        return userPref.getBoolean(FCM, false);
+        return userPref.getBoolean(POPUP, false);
     }
 
     public void clearData() {

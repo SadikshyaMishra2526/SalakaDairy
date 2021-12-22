@@ -99,7 +99,41 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/ifEmpty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:padding="@dimen/_10sdp"
+                    app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/scrollView">
+                    <ImageView
+                        android:src="@drawable/cart_empty"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:contentDescription="TODO" />
+                    <TextView
+                        android:text="There are no items in Cart"
+                        android:layout_width="wrap_content"
+                        android:textStyle="bold"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_height="wrap_content"/>
+                    <Button
+                        android:id="@+id/continue_shopping_empty"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:text="Continue"
+                        android:padding="@dimen/_5sdp"
+                        android:textSize="13sp"
+                        android:background="@color/tab_indicator_gray"
+                        android:textColor="@color/white"
+                        android:layout_width="@dimen/_100sdp"
+                        android:layout_height="@dimen/_30sdp"/>
 
+                </LinearLayout>
                 <LinearLayout
                     android:id="@+id/view_cart_list"
                     android:layout_width="match_parent"

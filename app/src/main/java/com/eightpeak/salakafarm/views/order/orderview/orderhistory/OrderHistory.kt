@@ -24,6 +24,7 @@ import com.eightpeak.salakafarm.views.home.products.Data
 import com.eightpeak.salakafarm.views.home.products.ProductAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
+import com.eightpeak.salakafarm.views.home.HomeActivity
 import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdActivity
 import com.eightpeak.salakafarm.views.order.orderview.confirmOrder.OrderTracking
 import kotlinx.android.synthetic.main.fragment_add_to_cart.*
@@ -45,6 +46,10 @@ class OrderHistory : AppCompatActivity() {
         setContentView(binding.root)
         binding.headerTitle.text = "Order History"
         binding.returnHome.setOnClickListener { finish() }
+        binding.continueShoppingEmpty.setOnClickListener {
+            startActivity(Intent(this@OrderHistory, HomeActivity::class.java))
+            finish()
+        }
         tokenManager = TokenManager.getInstance(
             getSharedPreferences(
                 Constants.TOKEN_PREF,

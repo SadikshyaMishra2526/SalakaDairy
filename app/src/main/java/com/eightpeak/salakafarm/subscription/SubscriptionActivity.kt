@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.eightpeak.salakafarm.views.addtocart.CartActivity
 import android.app.DatePickerDialog
-import android.graphics.Color
 import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,8 +14,6 @@ import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import java.util.*
 import androidx.lifecycle.ViewModelProvider
 import com.eightpeak.salakafarm.repository.AppRepository
@@ -34,16 +31,15 @@ import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
 import androidx.core.content.ContextCompat
 import com.eightpeak.salakafarm.database.UserPrefManager
-import com.eightpeak.salakafarm.databinding.ActivitySubscriptionBinding
 import com.eightpeak.salakafarm.subscription.attributes.Branches
 import com.eightpeak.salakafarm.subscription.attributes.Sub_packages
-import com.eightpeak.salakafarm.subscription.confirmSubscription.ConfirmSubscription
 import com.eightpeak.salakafarm.utils.GeneralUtils
+import android.content.DialogInterface
+import com.eightpeak.salakafarm.databinding.ActivitySubscriptionBinding
+import com.eightpeak.salakafarm.serverconfig.RequestBodies
+import com.eightpeak.salakafarm.utils.subutils.addAddressSnack
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
-import com.esewa.android.sdk.payment.ESewaConfiguration
-import com.esewa.android.sdk.payment.ESewaPayment
-import com.esewa.android.sdk.payment.ESewaPaymentActivity
-
+import com.eightpeak.salakafarm.views.addresslist.Address_list
 
 class SubscriptionActivity : AppCompatActivity() {
 
@@ -55,20 +51,25 @@ class SubscriptionActivity : AppCompatActivity() {
     lateinit var userPrefManager: UserPrefManager
     private var tokenManager: TokenManager? = null
     private var datePickerDialog: DatePickerDialog? = null
+    private var  addressList: List<Address_list>? = null
 
-    private val CONFIG_ENVIRONMENT: String = ESewaConfiguration.ENVIRONMENT_TEST
-    private val REQUEST_CODE_PAYMENT = 1
-    private var eSewaConfiguration: ESewaConfiguration? = null
+
+    private lateinit var selectedBranchId:String
+    private lateinit var selectedAddressId:String
+    private lateinit var selectedSubscribedTotalAmount:String
+    private lateinit var selectedSubscribedDiscount:String
+    private lateinit var selectedSubscribedPrice:String
+    private lateinit var selectedUnitPerDay:String
+    private lateinit var selectedStartingDate:String
+    private lateinit var selectedDeliveryPeroid:String
+    private lateinit var selectedSubPackageId:String
+    private lateinit var selectedTotalQuantity:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
 
 
-        eSewaConfiguration = ESewaConfiguration()
-            .clientId(Constants.MERCHANT_ID)
-            .secretKey(Constants.MERCHANT_SECRET_KEY)
-            .environment(CONFIG_ENVIRONMENT)
 
         tokenManager = TokenManager.getInstance(
             getSharedPreferences(
@@ -99,6 +100,7 @@ class SubscriptionActivity : AppCompatActivity() {
                 { view, year, monthOfYear, dayOfMonth ->
                     dateSelected[year, monthOfYear, dayOfMonth, 0] = 0
                     binding.chooseSubscriptionDate.text = dateFormat?.format(dateSelected.time)
+                    selectedStartingDate= dateFormat?.format(dateSelected.time).toString()
                 },
                 newCalendar[Calendar.YEAR],
                 newCalendar[Calendar.MONTH],
@@ -108,8 +110,11 @@ class SubscriptionActivity : AppCompatActivity() {
             Log.i("TAG", "onCreate: " + dateSelected.time)
 
         }
+           binding.customerDelivery.text=userPrefManager.firstName+" "+userPrefManager.lastName
+        selectedUnitPerDay=binding.unitPerDay.toString()
 
         setContentView(binding.root)
+
 
     }
 
@@ -118,25 +123,43 @@ class SubscriptionActivity : AppCompatActivity() {
         val repository = AppRepository()
         val factory = ViewModelProviderFactory(application, repository)
         viewModel = ViewModelProvider(this, factory).get(SubscriptionViewModel::class.java)
-        getSubscriptionItemList()
-        setUpBranchesView()
         getAddressList()
     }
 
-
-
     private fun getAddressList() {
-        var addressListModel: List<String> =
-            userPrefManager.addressList.split("\n") as List<String>
-        Log.i("TAG", "viewAddress: "+addressListModel.size)
-        binding.customerAddress.text=addressListModel[0]
-        binding.customerDelivery.text=userPrefManager.firstName+" "+userPrefManager.lastName
+        tokenManager?.let { it1 -> viewModel.getUserAddressList(it1) }
+        var addressListString = ""
+        viewModel.userAddressList.observe(this, Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let { picsResponse ->
+                        if(picsResponse.address_list.isNotEmpty()){
+                            addressList=picsResponse.address_list
+                          showAddressList(picsResponse.address_list)
+                        }else{
+                            binding.addSubscriptionLayout.addAddressSnack(this@SubscriptionActivity,"Address List Empty,Please add your address", Snackbar.LENGTH_LONG)
+                            }
+                    }
+                }
 
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let { message ->
+                        binding.addSubscriptionLayout.errorSnack(message, Snackbar.LENGTH_LONG)
+                    }
+                }
+
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+            }
+        })
     }
 
 
 
-    private fun setUpBranchesView() {
+    private fun setUpBranchesView(customerLat: Double, customerLng: Double) {
 //        getBranchesList
         tokenManager?.let { it1 -> viewModel.getBranchesList(it1) }
 
@@ -146,7 +169,7 @@ class SubscriptionActivity : AppCompatActivity() {
                     hideProgressBar()
 
                     response.data?.let {
-                        displayBranchList(response.data.branches)
+                        displayBranchList(response.data.branches,customerLat,customerLng)
                     }
                 }
                 is Resource.Error -> {
@@ -163,7 +186,11 @@ class SubscriptionActivity : AppCompatActivity() {
         })
     }
 
-    private fun displayBranchList(branches: List<Branches>) {
+    private fun displayBranchList(
+        branches: List<Branches>,
+        customerLat: Double,
+        customerLng: Double
+    ) {
         binding.getBranchesList.removeAllViews()
 
         for (i in branches.indices) {
@@ -182,8 +209,8 @@ class SubscriptionActivity : AppCompatActivity() {
             branchLocation.text = branches[i].address
             branchContact.text = branches[i].contact
             branchCard.setOnClickListener {
-                binding.branchSelected.text = getString(R.string.selected_branch) + branches[i].name
-
+                binding.branchSelected.text = getString(R.string.selected_branch)+":-" + branches[i].name
+                 selectedBranchId= branches[i].id.toString()
                 getSubscriptionPackageList(branches[i].id)
                 binding.layoutSubItem.visibility=View.GONE
                 binding.getBranchesList.visibility = View.GONE
@@ -192,20 +219,37 @@ class SubscriptionActivity : AppCompatActivity() {
                 binding.paymentLayout.visibility = View.VISIBLE
                 binding.proceedSubscription.visibility = View.VISIBLE
             }
+
+                 var distance: Float = GeneralUtils.calculateDistance(
+                     customerLat,
+                     customerLng,
+                     branches[i].latitude,
+                     branches[i].longitude
+                 )
+                 Log.i("TAG", "displayBranchList: "+distance+"   "+   customerLat+"   "+
+                     customerLng+"   "+
+                     branches[i].latitude+"   "+
+                     branches[i].longitude)
+
             if(branches[i].branch_status == 0){
                 branchType.text=getString(R.string.main_branch)
                 branchesType="0"
-                binding.proceedWithCheckout.setOnClickListener {
-                    makePayment("100")
-                }
+
             }else{
                 branchesType="1"
                 branchType.text=getString(R.string.partner_branch)
-                binding.proceedWithCheckout.setOnClickListener {
-                    val mainActivity = Intent(this@SubscriptionActivity, ConfirmSubscription::class.java)
-                    startActivity(mainActivity)
-                }
+
             }
+
+//            val selectedId: Int = binding.paymentMethod.checkedRadioButtonId
+//
+//            val radioButton = findViewById<View>(selectedId) as RadioButton
+//
+//            Toast.makeText(
+//                this@SubscriptionActivity,
+//                radioButton.text, Toast.LENGTH_SHORT
+//            ).show()
+
             binding.getBranchesList.addView(itemView)
         }
     }
@@ -242,37 +286,76 @@ class SubscriptionActivity : AppCompatActivity() {
 
     private fun displayPackageList(subItem: List<Sub_packages>) {
         binding.layoutSubPackage.removeAllViews()
+        binding.changeLocation.setOnClickListener {
+            addressList?.let { it1 ->
+                showAddressList(it1) }
+        }
         Log.i("TAG", "displayPackageList: $subItem")
-        for (i in subItem.indices) {
-            val itemView: View =
-                LayoutInflater.from(this)
-                    .inflate(R.layout.layout_sub_package_item, binding.layoutSubPackage, false)
+        if(subItem.isNotEmpty()){
+            for (i in subItem.indices) {
+                val itemView: View =
+                    LayoutInflater.from(this)
+                        .inflate(R.layout.layout_sub_package_item, binding.layoutSubPackage, false)
 
-            val subPackageTitle = itemView.findViewById<TextView>(R.id.tv_Subscription_Name)
-            val subPackagePrice = itemView.findViewById<TextView>(R.id.tv_Subscription_Price)
-            val subPackageDays = itemView.findViewById<TextView>(R.id.tv_Subscription_Days)
-            val selectSubPackage = itemView.findViewById<CardView>(R.id.select_sub_package)
-            val subPackageDiscount = itemView.findViewById<TextView>(R.id.tv_Subscription_Discount)
-            val subItemThumbnail = itemView.findViewById<ImageView>(R.id.sub_item_thumbnail)
+                val subPackageTitle = itemView.findViewById<TextView>(R.id.tv_Subscription_Name)
+                val subPackagePrice = itemView.findViewById<TextView>(R.id.tv_Subscription_Price)
+                val subPackageDays = itemView.findViewById<TextView>(R.id.tv_Subscription_Days)
+                val selectSubPackage = itemView.findViewById<CardView>(R.id.select_sub_package)
+                val subPackageDiscount = itemView.findViewById<TextView>(R.id.tv_Subscription_Discount)
+                val subItemThumbnail = itemView.findViewById<ImageView>(R.id.sub_item_thumbnail)
 
-            val subItemSelected = itemView.findViewById<TextView>(R.id.sub_item_selected)
+                subPackageTitle.text = subItem[i].name
+                subPackagePrice.text = getString(R.string.rs) + " " + subItem[i].unit_price.toString()
+                subPackageDays.text = subItem[i].number_of_days.toString() + " days"
+                subPackageDiscount.text ="Dis. Range:- "+ subItem[i].range.toString()+ " ("+subItem[i].discount_price_per_unit.toString() + "%"+")"
+                subItemThumbnail.load(BASE_URL+subItem[i].sub_item.image.toString() )
+                selectSubPackage.setOnClickListener {
+                Toast.makeText(this@SubscriptionActivity,"cccccccccccccccccccccccccc",Toast.LENGTH_SHORT)
+                    userPrefManager.packageSelected = subItem[i].sub_item_id
+                    selectedSubPackageId=subItem[i].id.toString()
+                    if(binding.unitPerDay.text.isNotEmpty()){
+                        val quantity=Integer.parseInt(binding.unitPerDay.text.toString())
+                        if(quantity in 2..4){
+                           val totalValue: Int =quantity*subItem[i].unit_price
+                            val discounted: Int =totalValue-(totalValue*(subItem[i].discount_price_per_unit/100))
+                            Log.i("TAG", "displayPackageList: "+totalValue+" "+discounted)
+                            selectedSubscribedTotalAmount= discounted.toString()
+                            selectedSubscribedDiscount=subItem[i].discount_price_per_unit.toString()
+                            selectedSubscribedPrice=subItem[i].unit_price.toString()
+                        }else{
+                            val totalValue: Int =quantity*subItem[i].unit_price
+                            val discounted: Int=0
+                            selectedSubscribedTotalAmount= subItem[i].unit_price.toString()
+                            selectedSubscribedDiscount=subItem[i].discount_price_per_unit.toString()
+                            selectedSubscribedPrice=subItem[i].unit_price.toString()
 
-            subItemThumbnail.load(BASE_URL + subItem[i].sub_item.image)
-            subPackageTitle.text = subItem[i].name
-            subPackagePrice.text = getString(R.string.rs) + " " + subItem[i].unit_price.toString()
-            subPackageDays.text = subItem[i].number_of_days.toString() + " days"
-            subPackageDiscount.text = subItem[i].discount_price_per_unit.toString() + "%"
-            selectSubPackage.setOnClickListener {
-                userPrefManager.packageSelected = i
+                            Log.i("TAG", "displayPackageList: "+totalValue+" "+discounted)
+
+                        }
+                    }
+                    binding.proceedWithCheckout.setOnClickListener {
+//            val intent = Intent(this, ConfirmSubscription::class.java)
+//            intent.putExtra("selectedBranchId",selectedBranchId)
+//            intent.putExtra("selectedAddressId",selectedAddressId)
+//            intent.putExtra("selectedSubscribedTotalAmount",selectedSubscribedTotalAmount)
+//            intent.putExtra("selectedSubscribedDiscount",selectedSubscribedDiscount)
+//            intent.putExtra("selectedSubscribedPrice",selectedSubscribedPrice)
+//            intent.putExtra("selectedUnitPerDay",selectedUnitPerDay)
+//            intent.putExtra("selectedStartingDate",selectedStartingDate)
+//            intent.putExtra("selectedDeliveryPeriod",selectedDeliveryPeroid)
+//            intent.putExtra("selectedSubPackageId",selectedSubPackageId)
+//            intent.putExtra("selectedTotalQuantity",selectedTotalQuantity)
+//            startActivity(intent)
+//            finish()
+                        val body= RequestBodies.AddSubscription(selectedBranchId,selectedAddressId,selectedSubscribedTotalAmount,selectedSubscribedDiscount,selectedSubscribedPrice,selectedUnitPerDay,selectedStartingDate,selectedDeliveryPeroid,selectedSubPackageId,selectedTotalQuantity)
+
+                        Log.i("TAG", "onCreate: $body")
+                    }
+                }
+                binding.layoutSubPackage.addView(itemView)
             }
-
-            if (userPrefManager.language.equals("ne")) {
-                subItemSelected.text =subItem[i].sub_item.descriptions[1].title
-            } else {
-                subItemSelected.text = subItem[i].sub_item.descriptions[0].title
-            }
-
-            binding.layoutSubPackage.addView(itemView)
+        }else{
+            binding.addSubscriptionLayout.errorSnack("This branch doesn't have subscription option..please choose another...", Snackbar.LENGTH_LONG)
         }
     }
 
@@ -364,38 +447,60 @@ class SubscriptionActivity : AppCompatActivity() {
         //Preventing Click during loading
     }
 
-    private fun makePayment(amount: String) {
-        val eSewaPayment = ESewaPayment(
-            amount,
-            "someProductName",
-            "someUniqueId_" + System.nanoTime(),
-            "https://somecallbackurl.com"
-        )
-        val intent = Intent(this@SubscriptionActivity, ESewaPaymentActivity::class.java)
-        intent.putExtra(ESewaConfiguration.ESEWA_CONFIGURATION, eSewaConfiguration)
-        intent.putExtra(ESewaPayment.ESEWA_PAYMENT, eSewaPayment)
-        startActivityForResult(
-            intent,
-            REQUEST_CODE_PAYMENT
-        )
-    }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_PAYMENT) {
-            if (resultCode == RESULT_OK) {
-                val s = data?.getStringExtra(ESewaPayment.EXTRA_RESULT_MESSAGE)
-                Log.i("Proof of Payment", s!!)
-                startActivity(Intent(this@SubscriptionActivity, ConfirmSubscription::class.java))
+    private fun showAddressList(addressList: List<Address_list>) {
+        if (addressList.size==1) {
+            val customerLat : Double = 27.699972326072345
+            val customerLng : Double = 85.36797715904281
+            selectedAddressId=addressList[0].id.toString()
+            getSubscriptionItemList()
+            setUpBranchesView(customerLat,customerLng)
 
-                Toast.makeText(this, "SUCCESSFUL PAYMENT", Toast.LENGTH_SHORT).show()
-            } else if (resultCode == RESULT_CANCELED) {
-                Toast.makeText(this, "Canceled By User", Toast.LENGTH_SHORT).show()
-            } else if (resultCode == ESewaPayment.RESULT_EXTRAS_INVALID) {
-                val s = data?.getStringExtra(ESewaPayment.EXTRA_RESULT_MESSAGE)
-                Log.i("Proof of Payment", s!!)
+        }else{
+
+        val builder: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(this)
+        builder.setTitle("Selected Delivery Location")
+        val addressId = arrayOfNulls<String>(addressList.size)
+        val names = arrayOfNulls<String>(addressList.size)
+        val checkedItems = BooleanArray(addressList.size)
+        val latList = BooleanArray(addressList.size)
+        val lngList = BooleanArray(addressList.size)
+
+            var i = 0
+            for (key in addressList) {
+                addressId[i]=key.id.toString()
+
+//                latList[i]=key.lat.toString()
+//                lngList[i]=key.lng.toString()
+
+                names[i] = key.address1+", "+key.address2+", "+"\n"+key.phone
+                checkedItems[i] = false
+                i += 1
             }
+            builder.setMultiChoiceItems(names, checkedItems
+            ) { _, which, isChecked ->
+                checkedItems[which] = isChecked
+            }
+            builder.setPositiveButton("OK",
+                DialogInterface.OnClickListener { _, _ ->
+                    for (i in checkedItems.indices) {
+                        if (checkedItems[i]) {
+                           binding.customerLocation.text=names[i]
+                            val customerLat : Double = 27.699972326072345
+                            val customerLng : Double = 85.36797715904281
+                            selectedAddressId= addressId[i].toString()
+                            getSubscriptionItemList()
+                            setUpBranchesView(customerLat,customerLng)
+                        }
+                    }
+                })
+            builder.setNegativeButton("Cancel", null)
+
+            // create and show the alert dialog
+            val dialog: android.app.AlertDialog? = builder.create()
+            dialog?.show()
         }
     }
+
 
 }

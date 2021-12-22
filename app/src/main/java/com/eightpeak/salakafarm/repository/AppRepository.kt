@@ -143,4 +143,8 @@ class AppRepository {
     suspend fun getPopUp(tokenManager: TokenManager) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).getPopUp()
 
+
+    suspend fun getEmpLatLng(tokenManager: TokenManager,body: RequestBodies.EmpLatlng) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).getEmployeeLatLng(body)
+
 }

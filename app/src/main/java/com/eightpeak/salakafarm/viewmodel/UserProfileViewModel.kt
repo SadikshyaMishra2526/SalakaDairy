@@ -36,11 +36,13 @@ private val appRepository: AppRepository
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
                 val response = appRepository.getAddressList(token)
+                Log.i("TAG", "fetchUserAddress: "+response)
                 userAddressList.postValue(handleAddressResponse(response))
             } else {
                 userAddressList.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
             }
         } catch (t: Throwable) {
+            Log.i("TAG", "fetchUserAddress: "+t.localizedMessage)
             when (t) {
                 is IOException -> userAddressList.postValue(
                     Resource.Error(
@@ -59,7 +61,6 @@ private val appRepository: AppRepository
             }
         }
     }
-
     private fun handleAddressResponse(response: Response<AddressListModel>): Resource<AddressListModel> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
@@ -134,6 +135,7 @@ private val appRepository: AppRepository
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
                 val response = appRepository.updateAddressList(token,body)
+                Log.i("TAG", "fetchAddressDetails: "+response)
                 updateAddressDetails.postValue(handleUpdateAddressResponse(response))
             } else {
                 updateAddressDetails.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
@@ -231,6 +233,7 @@ private val appRepository: AppRepository
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
                 val response = appRepository.addNewAddress(token,body)
+                Log.i("TAG", "addNewAddress: +"+response)
                 addNewAddress.postValue(handleAddNewAddressDetailsResponse(response))
             } else {
                 addNewAddress.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))

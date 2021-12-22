@@ -17,7 +17,7 @@ data class UserProfileModel (
 	@SerializedName("address3") val address3 : String,
 	@SerializedName("company") val company : String,
 	@SerializedName("country") val country : String,
-	@SerializedName("phone") val phone : Int,
+	@SerializedName("phone") val phone : String,
 	@SerializedName("store_id") val store_id : Int,
 	@SerializedName("status") val status : Int,
 	@SerializedName("group") val group : Int,

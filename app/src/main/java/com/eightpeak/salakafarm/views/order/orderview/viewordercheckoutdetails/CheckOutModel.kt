@@ -44,7 +44,7 @@ data class AddressList (
     @SerializedName("address2") val address2 : String,
     @SerializedName("address3") val address3 : String,
     @SerializedName("country") val country : String,
-    @SerializedName("phone") val phone : Int
+    @SerializedName("phone") val phone : String
 )
 
 
@@ -69,7 +69,7 @@ data class ShippingAddress (
     @SerializedName("postcode") val postcode : String,
     @SerializedName("company") val company : String,
     @SerializedName("country") val country : String,
-    @SerializedName("phone") val phone : Int,
+    @SerializedName("phone") val phone : String,
     @SerializedName("comment") val comment : String
 )
 

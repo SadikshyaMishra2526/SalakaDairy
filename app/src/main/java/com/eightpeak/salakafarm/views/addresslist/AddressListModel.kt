@@ -20,5 +20,5 @@ data class Address_list (
     @SerializedName("address2") val address2 : String,
     @SerializedName("address3") val address3 : String,
     @SerializedName("country") val country : String,
-    @SerializedName("phone") val phone : Int
+    @SerializedName("phone") val phone : String
 )

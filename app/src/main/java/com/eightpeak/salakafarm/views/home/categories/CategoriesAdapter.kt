@@ -9,13 +9,16 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
+import com.eightpeak.salakafarm.App
 import com.eightpeak.salakafarm.R
+import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
 import com.eightpeak.salakafarm.views.home.categories.categoriesbyid.CategoriesByIdActivity
 import kotlinx.android.synthetic.main.categories_item.view.*
 
 class CategoriesAdapter : RecyclerView.Adapter<CategoriesAdapter.CategoriesViewHolder>() {
+    lateinit var userPrefManager: UserPrefManager
 
     inner class CategoriesViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
 
@@ -45,10 +48,17 @@ class CategoriesAdapter : RecyclerView.Adapter<CategoriesAdapter.CategoriesViewH
 
     override fun onBindViewHolder(holder: CategoriesViewHolder, position: Int) {
         val categoriesItem = differ.currentList[position]
+        var userPrefManager = UserPrefManager(App.getContext())
+
+
         holder.itemView.apply {
 
             categories_thumbnail.load(BASE_URL+categoriesItem.image)
-            categories_name.text = categoriesItem.descriptions[0].title
+            if (userPrefManager.language.equals("ne")) {
+                categories_name.text = categoriesItem.descriptions[1].title
+            }else{
+                categories_name.text = categoriesItem.descriptions[0].title
+            }
             categories_by_id.setOnClickListener {
                 val intent = Intent(context, CategoriesByIdActivity::class.java)
                 intent.putExtra(Constants.CATEGORIES_ID,categoriesItem.id.toString())

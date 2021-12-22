@@ -10,8 +10,11 @@ import android.widget.Toast
 import androidx.annotation.IntegerRes
 import androidx.core.content.ContextCompat
 import com.eightpeak.salakafarm.R
+import com.eightpeak.salakafarm.databinding.AddNewAddressBinding
+import com.eightpeak.salakafarm.serverconfig.RequestBodies
 import com.eightpeak.salakafarm.views.addtocart.CartActivity
 import com.eightpeak.salakafarm.views.comparelist.CompareListActivity
+import com.eightpeak.salakafarm.views.home.address.AddressModification
 import com.eightpeak.salakafarm.views.wishlist.WishlistActivity
 import com.google.android.material.snackbar.Snackbar
 
@@ -80,6 +83,23 @@ fun View.successAddToCartSnack(
         }
     snackbar.setActionTextColor(Color.parseColor("#FFFFFF"))
     snackbar.view.setBackgroundColor(ContextCompat.getColor(context, R.color.main_color))
+    snackbar.show()
+
+
+}fun View.addAddressSnack(
+    context: Context,
+    message: String,
+    length: Int = Snackbar.LENGTH_LONG
+) {
+    val snackbar = Snackbar
+        .make(this, message, length)
+        .setAction(context.getString(R.string.add_address)) {
+            val intent = Intent(context, AddressModification::class.java)
+            context.startActivity(intent)
+
+        }
+    snackbar.setActionTextColor(Color.parseColor("#FFFFFF"))
+    snackbar.view.setBackgroundColor(Color.parseColor("#C62828"))
     snackbar.show()
 }
 fun View.successCompareSnack(

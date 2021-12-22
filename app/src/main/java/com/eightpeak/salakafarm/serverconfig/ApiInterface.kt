@@ -212,6 +212,15 @@ interface ApiInterface {
 
 
 
+    @POST(EndPoints.GET_EMPLOYEE_LATLNG)
+    suspend fun getEmployeeLatLng(@Body body:RequestBodies.EmpLatlng ): Response<ServerResponse>
+
+
+
     @GET("search?key=AIzaSyBFfGX8c8zWp6O8spofADuDlJP_96BOc2M&channelId=UCIx6fxkutSyo-I6KxsSV8zg&part=snippet,id&order=date&maxResults=20")
     fun getVideoList(): Call<YoutubeVideoModel?>?
+
+
+
+
 }

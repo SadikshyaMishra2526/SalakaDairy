@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.repository.AppRepository
+import com.eightpeak.salakafarm.serverconfig.RequestBodies
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.Utils
@@ -221,9 +222,9 @@ private fun handleOrderHistoryDetails(response: Response<OrderHistoryDetailsMode
         return Resource.Error(response.message())
     }
 
+
+
     val wishlist: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
-
-
 
     fun addtowishlist(tokenManager: TokenManager, productId:String) = viewModelScope.launch {
         wishlistByView(tokenManager,productId)
@@ -271,5 +272,56 @@ private fun handleOrderHistoryDetails(response: Response<OrderHistoryDetailsMode
         }
         return Resource.Error(response.message())
     }
+
+
+    val empLatLng: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
+
+    fun empLatLng(tokenManager: TokenManager, body:RequestBodies.EmpLatlng) = viewModelScope.launch {
+        empLatLngByView(tokenManager,body)
+    }
+
+
+    private suspend fun empLatLngByView(tokenManager: TokenManager,  body:RequestBodies.EmpLatlng) {
+        empLatLng.postValue(Resource.Loading())
+        try {
+            if (Utils.hasInternetConnection(getApplication<Application>())) {
+                val response = appRepository.getEmpLatLng(tokenManager,body)
+                Log.i("TAG", "fetchPics: $response")
+                empLatLng.postValue(handleEmpLatLngResponse(response))
+            } else {
+                empLatLng.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+            }
+        } catch (t: Throwable) {
+
+            when (t) {
+                is IOException -> empLatLng.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.network_failure
+                        )
+                    )
+                )
+                else -> empLatLng.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.conversion_error
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun handleEmpLatLngResponse(response: Response<ServerResponse>): Resource<ServerResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }else{
+            Log.i("TAG", "handleWishListResponse:$response ")
+        }
+        return Resource.Error(response.message())
+    }
+
 
 }

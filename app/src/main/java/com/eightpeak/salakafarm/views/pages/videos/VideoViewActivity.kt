@@ -35,6 +35,7 @@ import okhttp3.Request
 import android.content.Intent
 import android.net.Uri
 import androidx.cardview.widget.CardView
+import kotlinx.android.synthetic.main.activity_login.*
 
 
 class VideoViewActivity : AppCompatActivity() {
@@ -50,6 +51,7 @@ class VideoViewActivity : AppCompatActivity() {
 //        retrofit.
       }
     private fun getVideoLink() {
+        showProgressBar()
           val interceptor: Interceptor = object : Interceptor {
             @Throws(IOException::class)
             override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
@@ -82,6 +84,7 @@ class VideoViewActivity : AppCompatActivity() {
                 call: Call<YoutubeVideoModel?>,
                 response: Response<YoutubeVideoModel?>
             ) {
+                hideProgressBar()
                 if (response.isSuccessful()) {
                     Log.i("TAG", "onResponse: 1")
                     if (response.body() != null) {
@@ -93,6 +96,7 @@ class VideoViewActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<YoutubeVideoModel?>, t: Throwable) {
                 Log.i("TAG", "onResponse: 3")
+                hideProgressBar()
 
             }
 
@@ -119,7 +123,7 @@ class VideoViewActivity : AppCompatActivity() {
                     itemView.findViewById<TextView>(com.eightpeak.salakafarm.R.id.video_date)
               val videoUploadedCard =
                     itemView.findViewById<CardView>(com.eightpeak.salakafarm.R.id.video_cart)
-           if(!body.items[i].snippet.publishTime.equals("2020-06-28T11:21:30Z")){
+           if(body.items[i].snippet.publishTime != "2020-06-28T11:21:30Z"){
                var date=body.items[i].snippet.publishTime
                videoName.text=body.items[i].snippet.title
                videoUploadedDate.text=date.substring(0,  10)
@@ -139,5 +143,13 @@ class VideoViewActivity : AppCompatActivity() {
                 }
             }
             }
+    }
+
+    private fun hideProgressBar() {
+        progress.visibility = View.GONE
+    }
+
+    private fun showProgressBar() {
+        progress.visibility = View.VISIBLE
     }
 }

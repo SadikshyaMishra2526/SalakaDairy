@@ -187,7 +187,7 @@ class SubscriptionViewModel (
 
 
 //    add to subscription
-private val addSubscription: MutableLiveData<Resource<SubscriptionResponse>> = MutableLiveData()
+val addSubscription: MutableLiveData<Resource<SubscriptionResponse>> = MutableLiveData()
 
     fun addSubscription(tokenManager: TokenManager, body: RequestBodies.AddSubscription) = viewModelScope.launch {
         addSubscriptionResponse(tokenManager,body)
@@ -241,50 +241,50 @@ private val addSubscription: MutableLiveData<Resource<SubscriptionResponse>> = M
 
 
 
-//    val userAddressList: MutableLiveData<Resource<AddressListModel>> = MutableLiveData()
-//
-//    fun getUserAddressList(token:TokenManager) = viewModelScope.launch {
-//        fetchUserAddress(token)
-//    }
-//
-//
-//    private suspend fun fetchUserAddress(token: TokenManager) {
-//        userAddressList.postValue(Resource.Loading())
-//        try {
-//            if (Utils.hasInternetConnection(getApplication<Application>())) {
-//                val response = appRepository.getAddressList(token)
-//                userAddressList.postValue(handleAddressResponse(response))
-//            } else {
-//                userAddressList.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
-//            }
-//        } catch (t: Throwable) {
-//            when (t) {
-//                is IOException -> userAddressList.postValue(
-//                    Resource.Error(
-//                        getApplication<Application>().getString(
-//                            R.string.network_failure
-//                        )
-//                    )
-//                )
-//                else -> userAddressList.postValue(
-//                    Resource.Error(
-//                        getApplication<Application>().getString(
-//                            R.string.conversion_error
-//                        )
-//                    )
-//                )
-//            }
-//        }
-//    }
-//
-//    private fun handleAddressResponse(response: Response<AddressListModel>): Resource<AddressListModel> {
-//        if (response.isSuccessful) {
-//            response.body()?.let { resultResponse ->
-//                return Resource.Success(resultResponse)
-//            }
-//        }
-//        return Resource.Error(response.message())
-//    }
+    val userAddressList: MutableLiveData<Resource<AddressListModel>> = MutableLiveData()
+
+    fun getUserAddressList(token:TokenManager) = viewModelScope.launch {
+        fetchUserAddress(token)
+    }
+
+
+    private suspend fun fetchUserAddress(token: TokenManager) {
+        userAddressList.postValue(Resource.Loading())
+        try {
+            if (Utils.hasInternetConnection(getApplication<Application>())) {
+                val response = appRepository.getAddressList(token)
+                userAddressList.postValue(handleAddressResponse(response))
+            } else {
+                userAddressList.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+            }
+        } catch (t: Throwable) {
+            when (t) {
+                is IOException -> userAddressList.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.network_failure
+                        )
+                    )
+                )
+                else -> userAddressList.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.conversion_error
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun handleAddressResponse(response: Response<AddressListModel>): Resource<AddressListModel> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
 }
 
 

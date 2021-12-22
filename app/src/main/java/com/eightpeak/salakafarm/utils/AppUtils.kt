@@ -33,7 +33,7 @@ import java.lang.Exception
 import java.util.*
 import java.util.regex.Pattern
 
-class AppUtils {
+public class AppUtils {
     fun getResizedBitmap(image: Bitmap, maxSize: Int): Bitmap? {
         var width = image.width
         var height = image.height
@@ -48,49 +48,6 @@ class AppUtils {
         return Bitmap.createScaledBitmap(image, width, height, true)
     }
 
-//    fun addWishlistSnackBar(context: Context, view: View, message: String?, action: String?) {
-//        val snackbar_updated1 = Snackbar.make(view, message!!, Snackbar.LENGTH_INDEFINITE)
-//        snackbar_updated1.setAction(
-//            action
-//        ) { context.startActivity(Intent(context, WishListActivity::class.java)) }
-//        /** Snackbar message and action TextViews are placed inside a LinearLayout
-//         */
-//        val snackBarLayout1 = snackbar_updated1.view as SnackbarLayout
-//        for (i in 0 until snackBarLayout1.childCount) {
-//            val parent = snackBarLayout1.getChildAt(i)
-//            if (parent is LinearLayout) {
-//                parent.rotation = 180f
-//                break
-//            }
-//        }
-//        snackbar_updated1.setTextColor(Color.WHITE)
-//        snackbar_updated1.setBackgroundTint(Color.BLACK)
-//        snackbar_updated1.setActionTextColor(Color.parseColor("#008000"))
-//        snackbar_updated1.show()
-//        view.postDelayed({ snackbar_updated1.dismiss() }, 2000)
-//    }
-
-//    fun addCartSnackBar(context: Context, view: View, message: String?, action: String?) {
-//        val snackbar_updated1 = Snackbar.make(view, message!!, Snackbar.LENGTH_INDEFINITE)
-//        snackbar_updated1.setAction(
-//            action
-//        ) { context.startActivity(Intent(context, CartActivity::class.java)) }
-//        /** Snackbar message and action TextViews are placed inside a LinearLayout
-//         */
-//        val snackBarLayout1 = snackbar_updated1.view as SnackbarLayout
-//        for (i in 0 until snackBarLayout1.childCount) {
-//            val parent = snackBarLayout1.getChildAt(i)
-//            if (parent is LinearLayout) {
-//                parent.rotation = 180f
-//                break
-//            }
-//        }
-//        snackbar_updated1.setTextColor(Color.WHITE)
-//        snackbar_updated1.setBackgroundTint(Color.BLACK)
-//        snackbar_updated1.setActionTextColor(Color.parseColor("#008000"))
-//        snackbar_updated1.show()
-//        view.postDelayed({ snackbar_updated1.dismiss() }, 2000)
-//    }
 
 //   override static fun isValidEmailId(email: String?): Boolean {
 //        return Pattern.compile(
@@ -125,24 +82,7 @@ class AppUtils {
 //        return apiError
 //    }
 
-    fun calculateDistance(
-        startLat: Double?,
-        startLng: Double?,
-        endLat: Double?,
-        endLng: Double?
-    ): Float {
-        val distance: Float
-        val startingLocation = Location("starting point")
-        startingLocation.latitude = (startLat)!!
-        startingLocation.longitude = (startLng)!!
 
-        //Get the target location
-        val endingLocation = Location("ending point")
-        endingLocation.latitude = (endLat)!!
-        endingLocation.longitude = (endLng)!!
-        distance = startingLocation.distanceTo(endingLocation)
-        return distance
-    }
 
     fun freezeUi(activity: Activity, showProgress: Boolean) {
         if (showProgress) {
@@ -155,28 +95,6 @@ class AppUtils {
         }
     }
 
-//    public static boolean isDebug() {
-//        return BuildConfig.BUILD_TYPE.equals("debug");
-//    }
-
-    //    public static boolean isDebug() {
-    //        return BuildConfig.BUILD_TYPE.equals("debug");
-    //    }
-    fun showToast(context: Context?, message: String?) {
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
-    }
-
-    fun showSnackBar(view: View?, message: String?) {
-        Snackbar.make((view)!!, (message)!!, Snackbar.LENGTH_LONG).show()
-    }
-
-
-
-    //    public static boolean isNetworkAvailable() {
-    //        ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-    //        NetworkInfo netInfo = Objects.requireNonNull(cm).getActiveNetworkInfo();
-    //        return netInfo != null && netInfo.isConnectedOrConnecting();
-    //    }
     fun setError(editText: EditText) {
         editText.error = "Field required"
         editText.requestFocus()

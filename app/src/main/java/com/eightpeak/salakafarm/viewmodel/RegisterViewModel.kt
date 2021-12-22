@@ -30,11 +30,12 @@ class RegisterViewModel (
     }
 
     private suspend fun register(body: RequestBodies.RegisterBody) {
+        Log.e("TAG", "register: $body")
         _registerResponse.postValue(Event(Resource.Loading()))
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
                 val response = appRepository.registerUser(body)
-                Log.i("TAG", "register: "+appRepository.registerUser(body))
+                Log.i("TAG", "register: "+response.body())
                 _registerResponse.postValue(handleRegisterResponse(response))
             } else {
                 _registerResponse.postValue(
@@ -44,6 +45,7 @@ class RegisterViewModel (
                 )
             }
         } catch (t: Throwable) {
+            Log.i("TAG", "register: "+t.localizedMessage)
             when (t) {
                 is IOException -> {
                     _registerResponse.postValue(

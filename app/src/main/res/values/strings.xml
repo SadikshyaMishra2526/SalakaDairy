@@ -23,6 +23,7 @@
     <string name="last_name"><font color='#FFFFFF' size="13">Last Name</font></string>
     <string name="address_1"><font color='#FFFFFF' size="13">Address 1</font></string>
     <string name="address_2"><font color='#FFFFFF' size="13">Address 2</font></string>
+    <string name="address_3"><font color='#FFFFFF' size="13">Address 3</font></string>
     <string name="contact"><font color='#FFFFFF' size="13">Contact</font></string>
     <string name="imagecontent">ImageContent</string>
     <string name="next">Next</string>
@@ -111,4 +112,6 @@
     <string name="selected_branch">Selected Branch</string>
     <string name="main_branch">Main Branch</string>
     <string name="partner_branch">Partner Branch</string>
+
+    <string name="add_address">Add Address</string>
 </resources>

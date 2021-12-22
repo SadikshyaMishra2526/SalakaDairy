@@ -22,8 +22,7 @@
             android:layout_gravity="center"
             android:textSize="@dimen/_12sdp"
             android:textStyle="bold"
-            android:layout_margin="@dimen/_10sdp"
-            android:text="Quatarly Subscription" />
+            android:layout_margin="@dimen/_10sdp"/>
 
 
         <ImageView
@@ -65,7 +64,8 @@
             android:layout_gravity="center"
             android:id="@+id/tv_Subscription_Discount"
             android:layout_width="wrap_content"
+            android:textSize="@dimen/_8sdp"
             android:layout_height="wrap_content"
-            android:textColor="#FF0000"/>
+            android:textColor="#00BCD4"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

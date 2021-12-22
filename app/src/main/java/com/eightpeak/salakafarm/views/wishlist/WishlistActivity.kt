@@ -30,6 +30,7 @@ import com.eightpeak.salakafarm.views.home.products.ProductAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.utils.subutils.successAddToCartSnack
+import com.eightpeak.salakafarm.views.home.HomeActivity
 import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdActivity
 
 class WishlistActivity : AppCompatActivity() {
@@ -54,7 +55,9 @@ class WishlistActivity : AppCompatActivity() {
                 MODE_PRIVATE
             )
         )
-
+         binding.continueShoppingEmpty.setOnClickListener {
+             startActivity(Intent(this@WishlistActivity, HomeActivity::class.java))
+             finish()  }
         binding.btBackpressed.setOnClickListener { finish() }
         init()
         setupViewModel()

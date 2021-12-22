@@ -100,7 +100,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
                                                 BitmapDescriptorFactory.HUE_ORANGE
                                             )
                                         )
-                                        .title("Salaka Shop Outlets")
+                                        .title("Salaka Farm's Branches")
                                 )
                                 mark.setTag(i)
 //                                markerList.add(mark)

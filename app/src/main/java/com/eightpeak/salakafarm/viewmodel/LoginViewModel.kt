@@ -14,6 +14,7 @@ import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.subutils.Event
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.Utils
+import com.eightpeak.salakafarm.views.addresslist.AddressListModel
 import com.eightpeak.salakafarm.views.login.LoginResponse
 import com.eightpeak.salakafarm.views.register.RegisterResponse
 import kotlinx.coroutines.launch
@@ -133,6 +134,54 @@ class LoginViewModel(
         return Event(Resource.Error(response.message()))
     }
 
+
+
+    val userAddressList: MutableLiveData<Resource<AddressListModel>> = MutableLiveData()
+
+    fun getUserAddressList(token:TokenManager) = viewModelScope.launch {
+        fetchUserAddress(token)
+    }
+
+
+    private suspend fun fetchUserAddress(token: TokenManager) {
+        userAddressList.postValue(Resource.Loading())
+        try {
+            if (Utils.hasInternetConnection(getApplication<Application>())) {
+                val response = appRepository.getAddressList(token)
+                Log.i("TAG", "fetchUserAddress: "+response)
+                userAddressList.postValue(handleAddressResponse(response))
+            } else {
+                userAddressList.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+            }
+        } catch (t: Throwable) {
+            Log.i("TAG", "fetchUserAddress: "+t.localizedMessage)
+            when (t) {
+                is IOException -> userAddressList.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.network_failure
+                        )
+                    )
+                )
+                else -> userAddressList.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.conversion_error
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun handleAddressResponse(response: Response<AddressListModel>): Resource<AddressListModel> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
 
 
 

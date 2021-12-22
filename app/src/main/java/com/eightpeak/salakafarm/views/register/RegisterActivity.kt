@@ -53,8 +53,6 @@ class RegisterActivity : AppCompatActivity() {
                 last_name,
                 email,
                 password,
-//                address1,
-//                address2,
                 "NP",
                 contact
             )

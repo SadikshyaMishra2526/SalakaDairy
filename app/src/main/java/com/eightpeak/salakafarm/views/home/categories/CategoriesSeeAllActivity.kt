@@ -93,11 +93,6 @@ class CategoriesSeeAllActivity : AppCompatActivity() {
                         Log.i("TAG", "getPictures: " + picsResponse.data.size)
                         getSelectedCategoryProducts(picsResponse)
                         categoriesModel=picsResponse
-//                        binding.shimmerLayout.stopShimmer()
-//                        binding.shimmerLayout.visibility = View.GONE
-//
-//                        categoriesAdapter.differ.submitList(picsResponse.data)
-//                        binding.categoriesRecyclerView.adapter = categoriesAdapter
                     }
                 }
 

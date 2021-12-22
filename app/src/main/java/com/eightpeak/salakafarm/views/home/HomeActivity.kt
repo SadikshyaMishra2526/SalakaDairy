@@ -143,10 +143,11 @@ GoogleApiClient.OnConnectionFailedListener
             when (response) {
                 is Resource.Success -> {
 
-                    val status = userPrefManager.popupBoolean
-                    if (status) {
-                        response.data?.popup?.let { popupMessage(it.image) }
-                    }
+//                    val status :Boolean= userPrefManager.popupBoolean
+                    Log.i("TAG", "getPopUp: "+userPrefManager.popupBoolean)
+//                    if (status) {
+//                        response.data?.popup?.let { popupMessage(it.image) }
+//                    }
                   }
 
                 is Resource.Error -> {
@@ -379,12 +380,10 @@ GoogleApiClient.OnConnectionFailedListener
             dialog?.setContentView(R.layout.popup_ads)
         val ads_img: ImageView = dialog!!.findViewById(R.id.ads_img)
         ads_img.load(BASE_URL+banner)
-        val close_popup: ImageView? = dialog?.findViewById(R.id.close_popup)
-//        myEdit.putBoolean("popup", false)
-//        myEdit.apply()
-            userPrefManager.popupBoolean = false
-            close_popup?.setOnClickListener {
-                userPrefManager.popupBoolean = false
+        val closePopup: ImageView? = dialog?.findViewById(R.id.close_popup)
+            userPrefManager.setPopupBoolean(false)
+            closePopup?.setOnClickListener {
+                userPrefManager.setPopupBoolean(false)
                 dialog!!.dismiss()
             }
         dialog?.show()

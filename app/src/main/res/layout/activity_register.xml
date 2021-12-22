@@ -316,10 +316,10 @@ android:layout_marginStart="@dimen/_30sdp"
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayout5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_marginBottom="30dp"
             android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -329,17 +329,26 @@ android:layout_marginStart="@dimen/_30sdp"
                 android:id="@+id/fb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_facebook"
-                android:contentDescription="@string/imagecontent"/>
+                android:contentDescription="@string/imagecontent"
+                app:srcCompat="@drawable/ic_facebook" />
 
             <ImageView
                 android:id="@+id/google"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                app:srcCompat="@drawable/ic_google_plus"
-                android:contentDescription="@string/imagecontent"/>
+                android:contentDescription="@string/imagecontent"
+                app:srcCompat="@drawable/ic_google_plus" />
+
         </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
         <ProgressBar
             android:id="@+id/progress"
             android:layout_width="wrap_content"

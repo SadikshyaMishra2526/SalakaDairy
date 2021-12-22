@@ -26,6 +26,7 @@ import kotlinx.android.synthetic.main.fragment_add_to_cart.*
 
 import android.view.*
 import android.widget.*
+import com.eightpeak.salakafarm.views.home.HomeActivity
 import com.eightpeak.salakafarm.views.order.orderview.viewordercheckoutdetails.CheckoutDetailsView
 
 
@@ -57,6 +58,9 @@ class ViewCartFragment : Fragment() {
         binding.proceedWithCheckout.setOnClickListener {
             startActivity(Intent(requireContext(), CheckoutDetailsView::class.java))
         }
+        binding.continueShoppingEmpty.setOnClickListener {
+            startActivity(Intent(requireContext(), HomeActivity::class.java))
+             }
         return binding.addToCart
     }
     private fun init() {
@@ -93,7 +97,8 @@ class ViewCartFragment : Fragment() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                      binding.addToCart.errorSnack(message, Snackbar.LENGTH_LONG)
+                        Toast.makeText(requireContext(),message,Toast.LENGTH_SHORT)
+//                      binding.addToCart.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 
                 }
@@ -107,40 +112,46 @@ class ViewCartFragment : Fragment() {
 
     private fun getSelectedProducts(cartResponse: List<CartResponse>) {
         binding.viewCartList.removeAllViews()
-        for (i in cartResponse.indices) {
-            val itemView: View =
-                LayoutInflater.from(requireContext())
-                    .inflate(R.layout.cart_item, binding.viewCartList, false)
+        if(cartResponse.isNotEmpty()){
+            binding.ifEmpty.visibility=View.GONE
+            for (i in cartResponse.indices) {
+                val itemView: View =
+                    LayoutInflater.from(requireContext())
+                        .inflate(R.layout.cart_item, binding.viewCartList, false)
 
-            val categorySKU = itemView.findViewById<TextView>(R.id.product_sku)
-            val productThumbnail = itemView.findViewById<ImageView>(R.id.product_thumbnail)
-            val productName = itemView.findViewById<TextView>(R.id.product_name)
-            val productPrice = itemView.findViewById<TextView>(R.id.product_price)
-            val increaseQuantity = itemView.findViewById<ImageButton>(R.id.increase_quantity)
-            val decreaseQuantity = itemView.findViewById<ImageButton>(R.id.decrease_quantity)
-            val quantityView = itemView.findViewById<TextView>(R.id.product_quantity)
-            val itemSelected = itemView.findViewById<ImageView>(R.id.item_selected)
-            quantity=cartResponse[i].qty
+                val categorySKU = itemView.findViewById<TextView>(R.id.product_sku)
+                val productThumbnail = itemView.findViewById<ImageView>(R.id.product_thumbnail)
+                val productName = itemView.findViewById<TextView>(R.id.product_name)
+                val productPrice = itemView.findViewById<TextView>(R.id.product_price)
+                val increaseQuantity = itemView.findViewById<ImageButton>(R.id.increase_quantity)
+                val decreaseQuantity = itemView.findViewById<ImageButton>(R.id.decrease_quantity)
+                val quantityView = itemView.findViewById<TextView>(R.id.product_quantity)
+                val itemSelected = itemView.findViewById<ImageView>(R.id.item_selected)
+                quantity=cartResponse[i].qty
 
-            increaseQuantity.setOnClickListener { quantity=1
-                quantityView.text=quantity.toString()}
-            decreaseQuantity.setOnClickListener { if(quantity>1){
-                quantity -= 1
-                quantityView.text=quantity.toString()
-            }
-            }
-            itemSelected.setOnClickListener {
-                tokenManager?.let { it1 -> viewModel.deleteCartItemById(it1,cartResponse[i].id.toString()) }
-                observeData()
-            }
+                increaseQuantity.setOnClickListener { quantity=1
+                    quantityView.text=quantity.toString()}
+                decreaseQuantity.setOnClickListener { if(quantity>1){
+                    quantity -= 1
+                    quantityView.text=quantity.toString()
+                }
+                }
+                itemSelected.setOnClickListener {
+                    tokenManager?.let { it1 -> viewModel.deleteCartItemById(it1,cartResponse[i].id.toString()) }
+                    observeData()
+                }
 
-            categorySKU.text = cartResponse[i].products_with_description.sku
-            productName.text = cartResponse[i].products_with_description.descriptions[0].name
-            productPrice.text = cartResponse[i].products_with_description.price.toString()
-            quantityView.text = cartResponse[i].qty.toString()
-            productThumbnail.load(EndPoints.BASE_URL + cartResponse[i].products_with_description.image)
-            binding.viewCartList.addView(itemView)
+                categorySKU.text = cartResponse[i].products_with_description.sku
+                productName.text = cartResponse[i].products_with_description.descriptions[0].name
+                productPrice.text = cartResponse[i].products_with_description.price.toString()
+                quantityView.text = cartResponse[i].qty.toString()
+                productThumbnail.load(EndPoints.BASE_URL + cartResponse[i].products_with_description.image)
+                binding.viewCartList.addView(itemView)
+            }
+        }else{
+            binding.ifEmpty.visibility=View.VISIBLE
         }
+
     }
 
     private fun observeData() {

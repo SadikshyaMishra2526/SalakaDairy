@@ -78,6 +78,7 @@ class LoginActivity : AppCompatActivity() {
                             response.data?.let { loginResponse ->
                                  tokenManager?.saveToken(loginResponse.access_token)
                                 getUserDetails()
+                                getUserAddress()
 
                             }
                         }
@@ -98,6 +99,38 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    private fun getUserAddress() {
+        tokenManager?.let { loginViewModel.getUserAddressList(it) }
+        loginViewModel.userAddressList.observe(this, Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let { picsResponse ->
+                    if(picsResponse.address_list.isNotEmpty()){
+                        var addressListString:String =""
+                          for (i in picsResponse.address_list.indices) {
+                            addressListString =addressListString+
+                                    picsResponse.address_list[i].address1 + " " + picsResponse.address_list[i].address2 + " Nepal" + "\n"
+                        }
+                        userPrefManager.addressList = addressListString
+                      }
+                    }
+                }
+
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let { message ->
+                        binding.loginView.errorSnack(message, Snackbar.LENGTH_LONG)
+                    }
+                }
+
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+            }
+        })
+    }
+
     private fun getUserDetails() {
         var addressListString =""
         tokenManager?.let { loginViewModel.userDetailsUser(it) }
@@ -112,13 +145,6 @@ class LoginActivity : AppCompatActivity() {
                                  userPrefManager.lastName=loginResponse.last_name
                                  userPrefManager.contactNo= loginResponse.phone.toString()
                                  userPrefManager.email=loginResponse.email
-                                 userPrefManager.userAddress1=loginResponse.address1
-                                 userPrefManager.userAddress2=loginResponse.address2
-                                 userPrefManager.userCountry=loginResponse.country
-                                addressListString =addressListString+
-                                         loginResponse.address1 + " " + loginResponse.address2+ " Nepal" + "\n"
-
-                                userPrefManager.addressList = addressListString
 
                                 val mainActivity = Intent(this@LoginActivity, HomeActivity::class.java)
                                 startActivity(mainActivity)

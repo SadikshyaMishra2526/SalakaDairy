@@ -21,7 +21,11 @@ object RequestBodies {
 //        val address2: String,
         val country: String,
         val phone: String
-    )
+    ) {
+        override fun toString(): String {
+            return "RegisterBody(first_name='$first_name', last_name='$last_name', email='$email', password='$password', country='$country', phone='$phone')"
+        }
+    }
 
     data class TokenBody(
         val grant_type: String,
@@ -34,7 +38,7 @@ object RequestBodies {
     data class CategoriesByIDBody(
         val id: String,
 
-    )
+        )
 
     data class AddToCart(
         val product_id: String,
@@ -47,12 +51,17 @@ object RequestBodies {
     )
 
 
-      data class AddSubscription(
-        val sub_item_id: String,
-        val sub_package_id: String,
-        val delivery_peroid: String,
-        val starting_date: String,
+    data class AddSubscription(
         val branch_id: String,
+        val address_id: String,
+        val subscribed_total_amount: String,
+        val subscribed_discount: String,
+        val subscribed_price: String,
+        val unit_per_day: String,
+        val starting_date: String,
+        val delivery_peroid: String,
+        val sub_package_id: String,
+        val total_quantity: String
     )
 
 
@@ -62,6 +71,7 @@ object RequestBodies {
         val sex: String,
         val birthday: String
     )
+
     data class UpdateAddressList(
         val first_name: String,
         val last_name: String,
@@ -75,13 +85,14 @@ object RequestBodies {
         val old_password: String,
         val new_password: String,
     )
- data class AddComplain(
+
+    data class AddComplain(
         val title: String,
         val description: String,
     )
 
 
- data class AddOrder(
+    data class AddOrder(
         val oid: String,
         val refId: String,
         val amt: String,
@@ -89,10 +100,12 @@ object RequestBodies {
         val address_id: String,
     )
 
+    data class EmpLatlng(
+        val id: String,
+        val type: String
+    )
+
     data class AddAddress(
-//        val first_name: String,
-//        val last_name: String,
-//        val postcode: String,
         val address1: String,
         val address2: String,
         val address3: String,
@@ -100,6 +113,7 @@ object RequestBodies {
         val lat: String,
         val lng: String
     )
+
 
 }
 

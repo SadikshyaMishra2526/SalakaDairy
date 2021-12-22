@@ -39,18 +39,15 @@ import java.util.*
 
 import com.eightpeak.salakafarm.views.addresslist.AddressListModel
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
-import javax.crypto.Cipher.SECRET_KEY
 
-import com.eightpeak.salakafarm.utils.GeneralUtils
 import java.lang.Exception
 import android.widget.Toast
 
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import com.eightpeak.salakafarm.databinding.ActivityUserProfileBinding
+import com.eightpeak.salakafarm.utils.subutils.addAddressSnack
 import com.eightpeak.salakafarm.views.home.address.AddressModification
-import com.eightpeak.salakafarm.views.order.orderview.confirmOrder.OrderTracking
-import com.eightpeak.salakafarm.views.order.orderview.orderhistory.OrderHistoryDetails
 
 
 class UserProfile : AppCompatActivity() {
@@ -122,7 +119,6 @@ class UserProfile : AppCompatActivity() {
 
         binding.viewWishlist.setOnClickListener {
             startActivity(Intent(this@UserProfile, WishlistActivity::class.java))
-            finish()
         }
 
         binding.compareList.setOnClickListener {
@@ -172,19 +168,22 @@ class UserProfile : AppCompatActivity() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
-                        viewAddressList(picsResponse)
-                        for (i in picsResponse.address_list.indices) {
-                            addressListString =addressListString+
-                                picsResponse.address_list[i].address1 + " " + picsResponse.address_list[i].address2 + " Nepal" + "\n"
+                        if(picsResponse.address_list.isNotEmpty()){
+                            viewAddressList(picsResponse)
+                            for (i in picsResponse.address_list.indices) {
+                                addressListString =addressListString+
+                                        picsResponse.address_list[i].address1 + " " + picsResponse.address_list[i].address2 + " Nepal" + "\n"
+                            }
+                            userPrefManager.addressList = addressListString
                         }
-                        userPrefManager.addressList = addressListString
+
                     }
                 }
 
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        binding.productViewIdLayout.errorSnack(message, Snackbar.LENGTH_LONG)
+                        binding.userProfileView.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
                 }
 
@@ -196,25 +195,29 @@ class UserProfile : AppCompatActivity() {
     }
 
     private fun viewAddress() {
-         var addressListModel: List<String> =
-             userPrefManager.addressList.split("\n") as List<String>
-        Log.i("TAG", "viewAddress: "+addressListModel.size)
+        if(userPrefManager.addressList!=null){
+            binding.addAddressTv.visibility=View.GONE
+            var addressListModel: List<String> =
+                userPrefManager.addressList.split("\n") as List<String>
+            Log.i("TAG", "viewAddress: "+addressListModel.size)
 
-        for (i in addressListModel) {
-            val itemView: View =
-                LayoutInflater.from(this)
-                    .inflate(R.layout.address_list_item, binding.viewAddressList, false)
+            for (i in addressListModel) {
+                val itemView: View =
+                    LayoutInflater.from(this)
+                        .inflate(R.layout.address_list_item, binding.viewAddressList, false)
 
-            val addressListItem = itemView.findViewById<TextView>(R.id.addressListItem)
-            val addressListItemEdit = itemView.findViewById<ImageView>(R.id.edit_address)
-            val addressListItemDelete = itemView.findViewById<ImageView>(R.id.delete_address)
-            addressListItem.text = i
+                val addressListItem = itemView.findViewById<TextView>(R.id.addressListItem)
+                val addressListItemEdit = itemView.findViewById<ImageView>(R.id.edit_address)
+                val addressListItemDelete = itemView.findViewById<ImageView>(R.id.delete_address)
+                addressListItem.text = i
 
-            addressListItemEdit.visibility = View.GONE
-            addressListItemDelete.visibility = View.GONE
-            binding.viewAddressList.addView(itemView)
+                addressListItemEdit.visibility = View.GONE
+                addressListItemDelete.visibility = View.GONE
+                binding.viewAddressList.addView(itemView)
+            }
+        }else{
+            binding.addAddressTv.visibility=View.VISIBLE
         }
-
     }
 
     private fun viewAddressList(addressListModel: AddressListModel) {
@@ -253,6 +256,8 @@ class UserProfile : AppCompatActivity() {
 
             dialog?.setCanceledOnTouchOutside(true)
 
+        }else{
+            binding.userProfileView.addAddressSnack(this@UserProfile,"Address List Empty,Please add your address", Snackbar.LENGTH_LONG)
         }
     }
 
@@ -263,6 +268,11 @@ class UserProfile : AppCompatActivity() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let {
+//                        finish();
+//                        overridePendingTransition( 0, 0)
+//                        startActivity(intent);
+//                        overridePendingTransition( 0, 0)
+                        dialog?.show()
                         Log.i("TAG", "getDeleteResponse: "+response)
                     }
                 }
@@ -271,7 +281,7 @@ class UserProfile : AppCompatActivity() {
                     hideProgressBar()
                     response.message?.let { message ->
 
-                        binding.productViewIdLayout.errorSnack(message, Snackbar.LENGTH_LONG)
+                        binding.userProfileView.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 
                 }
@@ -349,7 +359,7 @@ class UserProfile : AppCompatActivity() {
                     hideProgressBar()
                     response.message?.let { message ->
                         dialog.dismiss()
-                        binding.productViewIdLayout.errorSnack(message, Snackbar.LENGTH_LONG)
+                        binding.userProfileView.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 
                 }
@@ -406,13 +416,19 @@ class UserProfile : AppCompatActivity() {
             val dob = userDoB.text.toString()
             val gender =radioButton.text as String
             Log.i("TAG", "editProfile: "+gender)
-            changeUserProfile(name, email, dob, "gender")
+            changeUserProfile(name, email, dob, "gender",dialog)
         }
         dialog.setCanceledOnTouchOutside(true)
         dialog.show()
     }
 
-    private fun changeUserProfile(name: String, email: String, dob: String, gender: String?) {
+    private fun changeUserProfile(
+        name: String,
+        email: String,
+        dob: String,
+        gender: String?,
+        dialog: Dialog
+    ) {
         val body = gender?.let {
             RequestBodies.UserProfile(
                 name, email, dob, gender
@@ -431,6 +447,7 @@ class UserProfile : AppCompatActivity() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
+                        dialog.dismiss()
                         getUserDetails()
                         Log.i("TAG", "changeUserProfile: "+response.data)
                     }
@@ -439,7 +456,8 @@ class UserProfile : AppCompatActivity() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        binding.productViewIdLayout.errorSnack(message, Snackbar.LENGTH_LONG)
+                        dialog.dismiss()
+                        binding.userProfileView.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 
                 }
@@ -464,15 +482,7 @@ class UserProfile : AppCompatActivity() {
                             userPrefManager.lastName=loginResponse.last_name
                             userPrefManager.contactNo= loginResponse.phone.toString()
                             userPrefManager.email=loginResponse.email
-                            userPrefManager.userAddress1=loginResponse.address1
-                            userPrefManager.userAddress2=loginResponse.address2
-                            userPrefManager.userCountry=loginResponse.country
-                            addressListString =addressListString+
-                                    loginResponse.address1 + " " + loginResponse.address2+ " Nepal" + "\n"
-
-                            userPrefManager.addressList = addressListString
-
-                            val mainActivity = Intent(this@UserProfile, HomeActivity::class.java)
+                            val mainActivity = Intent(this@UserProfile, UserProfile::class.java)
                             startActivity(mainActivity)
                             finish()
                         }

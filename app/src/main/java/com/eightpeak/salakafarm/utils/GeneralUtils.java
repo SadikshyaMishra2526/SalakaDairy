@@ -1,8 +1,10 @@
 package com.eightpeak.salakafarm.utils;
 
+import android.location.Location;
 import android.util.Base64;
 
 public class GeneralUtils {
+
     public static String getUnicodeNumber(String number) {
         String unicodeChar = "";
         for (int i = 0; i < number.length(); i++) {
@@ -35,6 +37,22 @@ public class GeneralUtils {
         }
 
         return unicodeChar;
+    }
+    public static float calculateDistance(Double startLat, Double startLng, Double endLat, Double endLng) {
+        float distance;
+        Location startingLocation = new Location("starting point");
+        startingLocation.setLatitude(startLat);
+        startingLocation.setLongitude(startLng);
+
+        //Get the target location
+        Location endingLocation = new Location("ending point");
+        endingLocation.setLatitude(endLat);
+        endingLocation.setLongitude(endLng);
+
+        distance = startingLocation.distanceTo(endingLocation);
+
+
+        return distance;
     }
 
 //    public static byte[] decoderfun(String enval) {

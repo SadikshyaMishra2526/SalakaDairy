@@ -52,28 +52,26 @@
             android:layout_gravity="center"
             android:layout_height="@dimen/_20sdp"/>
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
 
-        <ScrollView
+        <HorizontalScrollView
             android:layout_width="wrap_content"
             android:scrollbars="none"
             android:layout_height="wrap_content">
             <LinearLayout
                 android:id="@+id/categories_list_view"
                 android:layout_width="wrap_content"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:layout_height="wrap_content" />
-        </ScrollView>
+        </HorizontalScrollView>
 
-
-
+<View
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_5ssp"
+    android:background="@color/sub_color"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/categories_list_by_id_recycler_view"
             android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
             android:layout_height="wrap_content" />
         <ImageView
             android:id="@+id/categories_not_found"
@@ -89,7 +87,6 @@
 
 
     </LinearLayout>
-</LinearLayout>
     <ProgressBar
         android:id="@+id/progress"
         android:layout_width="wrap_content"

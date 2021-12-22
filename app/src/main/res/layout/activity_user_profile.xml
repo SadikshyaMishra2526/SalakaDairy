@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/product_view_id_layout"
+    android:id="@+id/user_profile_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/btn_gradient_style"
@@ -146,6 +146,12 @@
         android:layout_width="@dimen/_20sdp"
         android:layout_margin="@dimen/_5sdp"
         android:layout_height="@dimen/_20sdp"/>
+    <TextView
+        android:id="@+id/add_address_tv"
+        android:text="Add Your Address "
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
     <LinearLayout
         android:id="@+id/viewAddressList"
         android:layout_width="wrap_content"
