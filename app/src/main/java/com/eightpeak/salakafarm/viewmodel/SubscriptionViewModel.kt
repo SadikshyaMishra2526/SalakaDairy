@@ -239,14 +239,11 @@ val addSubscription: MutableLiveData<Resource<SubscriptionResponse>> = MutableLi
     }
 
 
-
-
     val userAddressList: MutableLiveData<Resource<AddressListModel>> = MutableLiveData()
 
     fun getUserAddressList(token:TokenManager) = viewModelScope.launch {
         fetchUserAddress(token)
     }
-
 
     private suspend fun fetchUserAddress(token: TokenManager) {
         userAddressList.postValue(Resource.Loading())

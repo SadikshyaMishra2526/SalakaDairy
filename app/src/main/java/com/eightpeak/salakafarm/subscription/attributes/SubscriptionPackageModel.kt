@@ -30,7 +30,8 @@ data class Sub_packages (
     @SerializedName("created_at") val created_at : String,
     @SerializedName("updated_at") val updated_at : String,
     @SerializedName("unit_price") val unit_price : Int,
-    @SerializedName("sub_item") val sub_item : Sub_item
+    @SerializedName("sub_item") val sub_item : Sub_item,
+    var isSelected : Boolean
 )
 
 data class Descriptions (

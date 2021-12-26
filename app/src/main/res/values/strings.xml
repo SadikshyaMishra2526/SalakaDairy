@@ -114,4 +114,14 @@
     <string name="partner_branch">Partner Branch</string>
 
     <string name="add_address">Add Address</string>
+    <string name="litre">Litre</string>
+    <string name="subscription_schedule_and_quantity">Subscription Schedule and Quantity</string>
+    <string name="evening_shift">Evening Shift</string>
+    <string name="discount">Discount</string>
+    <string name="morning_shift">Morning Shift</string>
+    <string name="both_shift">Both Shift</string>
+    <string name="by_bank_account">By Bank Account</string>
+    <string name="by_qr">By QR</string>
+    <string name="by_esewa">By ESewa</string>
+    <string name="cash_on_delivery">Cash on Delivery</string>
 </resources>

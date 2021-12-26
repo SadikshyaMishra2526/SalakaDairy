@@ -35,11 +35,15 @@ import com.eightpeak.salakafarm.subscription.attributes.Branches
 import com.eightpeak.salakafarm.subscription.attributes.Sub_packages
 import com.eightpeak.salakafarm.utils.GeneralUtils
 import android.content.DialogInterface
-import com.eightpeak.salakafarm.databinding.ActivitySubscriptionBinding
-import com.eightpeak.salakafarm.serverconfig.RequestBodies
+import android.opengl.Visibility
 import com.eightpeak.salakafarm.utils.subutils.addAddressSnack
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.views.addresslist.Address_list
+
+import android.widget.RadioButton
+import com.eightpeak.salakafarm.databinding.ActivitySubscriptionBinding
+import com.eightpeak.salakafarm.subscription.confirmSubscription.ConfirmSubscription
+
 
 class SubscriptionActivity : AppCompatActivity() {
 
@@ -47,29 +51,32 @@ class SubscriptionActivity : AppCompatActivity() {
     private lateinit var viewModel: SubscriptionViewModel
     private var _binding: ActivitySubscriptionBinding? = null
     var dateSelected: Calendar = Calendar.getInstance()
-     private lateinit var branchesType:String
+    private lateinit var branchesType: String
     lateinit var userPrefManager: UserPrefManager
     private var tokenManager: TokenManager? = null
     private var datePickerDialog: DatePickerDialog? = null
-    private var  addressList: List<Address_list>? = null
+    private var addressList: List<Address_list>? = null
 
 
-    private lateinit var selectedBranchId:String
-    private lateinit var selectedAddressId:String
-    private lateinit var selectedSubscribedTotalAmount:String
-    private lateinit var selectedSubscribedDiscount:String
-    private lateinit var selectedSubscribedPrice:String
-    private lateinit var selectedUnitPerDay:String
-    private lateinit var selectedStartingDate:String
-    private lateinit var selectedDeliveryPeroid:String
-    private lateinit var selectedSubPackageId:String
-    private lateinit var selectedTotalQuantity:String
+    private lateinit var selectedBranchId: String
+    private lateinit var selectedAddressId: String
+    private lateinit var selectedSubscribedTotalAmount: String
+    private lateinit var selectedSubscribedDiscount: String
+    private lateinit var selectedSubscribedPrice: String
+    private lateinit var selectedUnitPerDay: String
+    private lateinit var selectedStartingDate: String
+    private lateinit var selectedDeliveryPeroid: String
+    private lateinit var selectedSubPackageId: String
+    private lateinit var selectedTotalQuantity: String
 
+    private lateinit var selectedPaymentMethod: String
+    private lateinit var selectedSubscriptionName: String
+    private lateinit var selectedAddressName: String
+
+    private lateinit  var deliveryPeriodRadio:RadioButton
+    private lateinit  var paymentOptionRadio:RadioButton
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
-
 
         tokenManager = TokenManager.getInstance(
             getSharedPreferences(
@@ -92,6 +99,8 @@ class SubscriptionActivity : AppCompatActivity() {
         setupViewModel()
 
 
+
+
         binding.chooseSubscriptionDate.setOnClickListener {
             val newCalendar = dateSelected
             val dateFormat: java.text.DateFormat? = DateFormat.getDateFormat(applicationContext)
@@ -100,7 +109,7 @@ class SubscriptionActivity : AppCompatActivity() {
                 { view, year, monthOfYear, dayOfMonth ->
                     dateSelected[year, monthOfYear, dayOfMonth, 0] = 0
                     binding.chooseSubscriptionDate.text = dateFormat?.format(dateSelected.time)
-                    selectedStartingDate= dateFormat?.format(dateSelected.time).toString()
+                    selectedStartingDate = dateFormat?.format(dateSelected.time).toString()
                 },
                 newCalendar[Calendar.YEAR],
                 newCalendar[Calendar.MONTH],
@@ -110,8 +119,42 @@ class SubscriptionActivity : AppCompatActivity() {
             Log.i("TAG", "onCreate: " + dateSelected.time)
 
         }
-           binding.customerDelivery.text=userPrefManager.firstName+" "+userPrefManager.lastName
-        selectedUnitPerDay=binding.unitPerDay.toString()
+        binding.customerDelivery.text = userPrefManager.firstName + " " + userPrefManager.lastName
+        selectedUnitPerDay = binding.unitPerDay.text.toString()
+
+
+
+        binding.proceedWithCheckout.setOnClickListener {
+
+            val deliveryPeriodId: Int = binding.deliveryPeriod.checkedRadioButtonId
+            val paymentMethodId: Int = binding.paymentMethod.checkedRadioButtonId
+
+            deliveryPeriodRadio = findViewById<View>(deliveryPeriodId) as RadioButton
+            paymentOptionRadio = findViewById<View>(paymentMethodId) as RadioButton
+
+            selectedDeliveryPeroid=deliveryPeriodRadio.text.toString()
+            selectedPaymentMethod=paymentOptionRadio.text.toString()
+            Log.i("TAG", "onCreate: |$selectedPaymentMethod $selectedDeliveryPeroid " +
+                    "$selectedSubscribedDiscount $selectedBranchId $selectedAddressId $selectedSubscribedTotalAmount " +
+                    "$selectedSubscribedPrice $selectedUnitPerDay $selectedStartingDate  $selectedSubPackageId $selectedTotalQuantity"  )
+
+            val intent = Intent(this@SubscriptionActivity, ConfirmSubscription::class.java)
+            intent.putExtra("selectedBranchId",selectedBranchId)
+            intent.putExtra("selectedAddressId",selectedAddressId)
+            intent.putExtra("selectedSubscribedTotalAmount",selectedSubscribedTotalAmount)
+            intent.putExtra("selectedSubscribedDiscount",selectedSubscribedDiscount)
+            intent.putExtra("selectedSubscribedPrice",selectedSubscribedPrice)
+            intent.putExtra("selectedUnitPerDay",binding.unitPerDay.text.toString())
+            intent.putExtra("selectedStartingDate",selectedStartingDate)
+            intent.putExtra("selectedDeliveryPeroid",selectedDeliveryPeroid)
+            intent.putExtra("selectedSubPackageId",selectedSubPackageId)
+            intent.putExtra("selectedTotalQuantity",selectedTotalQuantity)
+            intent.putExtra("selectedSubscriptionName",selectedSubscriptionName)
+            intent.putExtra("selectedTotalQuantity",selectedTotalQuantity)
+            intent.putExtra("selectedAddressName",selectedAddressName)
+            intent.putExtra("selectedPaymentMethod",selectedPaymentMethod)
+            startActivity(intent)
+        }
 
         setContentView(binding.root)
 
@@ -134,12 +177,16 @@ class SubscriptionActivity : AppCompatActivity() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
-                        if(picsResponse.address_list.isNotEmpty()){
-                            addressList=picsResponse.address_list
-                          showAddressList(picsResponse.address_list)
-                        }else{
-                            binding.addSubscriptionLayout.addAddressSnack(this@SubscriptionActivity,"Address List Empty,Please add your address", Snackbar.LENGTH_LONG)
-                            }
+                        if (picsResponse.address_list.isNotEmpty()) {
+                            addressList = picsResponse.address_list
+                            showAddressList(picsResponse.address_list)
+                        } else {
+                            binding.addSubscriptionLayout.addAddressSnack(
+                                this@SubscriptionActivity,
+                                "Address List Empty,Please add your address",
+                                Snackbar.LENGTH_LONG
+                            )
+                        }
                     }
                 }
 
@@ -158,7 +205,6 @@ class SubscriptionActivity : AppCompatActivity() {
     }
 
 
-
     private fun setUpBranchesView(customerLat: Double, customerLng: Double) {
 //        getBranchesList
         tokenManager?.let { it1 -> viewModel.getBranchesList(it1) }
@@ -169,7 +215,7 @@ class SubscriptionActivity : AppCompatActivity() {
                     hideProgressBar()
 
                     response.data?.let {
-                        displayBranchList(response.data.branches,customerLat,customerLng)
+                        displayBranchList(response.data.branches, customerLat, customerLng)
                     }
                 }
                 is Resource.Error -> {
@@ -204,15 +250,19 @@ class SubscriptionActivity : AppCompatActivity() {
             val branchCard = itemView.findViewById<CardView>(R.id.branch_cart)
             val branchType = itemView.findViewById<TextView>(R.id.branch_type)
             val milk_cartoon = itemView.findViewById<RadioGroup>(R.id.milk_cartoon)
-            milk_cartoon.visibility=View.GONE
+            milk_cartoon.visibility = View.GONE
             branchName.text = branches[i].name
             branchLocation.text = branches[i].address
             branchContact.text = branches[i].contact
             branchCard.setOnClickListener {
-                binding.branchSelected.text = getString(R.string.selected_branch)+":-" + branches[i].name
-                 selectedBranchId= branches[i].id.toString()
+                binding.branchSelected.text = branches[i].name
+                selectedBranchId = branches[i].id.toString()
+                userPrefManager.bankCountNo=branches[i].account_number
+                userPrefManager.qrPath=branches[i].qrcode
+
+                userPrefManager.accountName=branches[i].name
                 getSubscriptionPackageList(branches[i].id)
-                binding.layoutSubItem.visibility=View.GONE
+                binding.layoutSubItem.visibility = View.GONE
                 binding.getBranchesList.visibility = View.GONE
                 binding.subPackageView.visibility = View.VISIBLE
                 binding.deliverToLayout.visibility = View.VISIBLE
@@ -220,24 +270,26 @@ class SubscriptionActivity : AppCompatActivity() {
                 binding.proceedSubscription.visibility = View.VISIBLE
             }
 
-                 var distance: Float = GeneralUtils.calculateDistance(
-                     customerLat,
-                     customerLng,
-                     branches[i].latitude,
-                     branches[i].longitude
-                 )
-                 Log.i("TAG", "displayBranchList: "+distance+"   "+   customerLat+"   "+
-                     customerLng+"   "+
-                     branches[i].latitude+"   "+
-                     branches[i].longitude)
+            var distance: Float = GeneralUtils.calculateDistance(
+                customerLat,
+                customerLng,
+                branches[i].latitude,
+                branches[i].longitude
+            )
+            Log.i(
+                "TAG", "displayBranchList: " + distance + "   " + customerLat + "   " +
+                        customerLng + "   " +
+                        branches[i].latitude + "   " +
+                        branches[i].longitude
+            )
 
-            if(branches[i].branch_status == 0){
-                branchType.text=getString(R.string.main_branch)
-                branchesType="0"
+            if (branches[i].branch_status == 0) {
+                branchType.text = getString(R.string.main_branch)
+                branchesType = "0"
 
-            }else{
-                branchesType="1"
-                branchType.text=getString(R.string.partner_branch)
+            } else {
+                branchesType = "1"
+                branchType.text = getString(R.string.partner_branch)
 
             }
 
@@ -285,14 +337,18 @@ class SubscriptionActivity : AppCompatActivity() {
     }
 
     private fun displayPackageList(subItem: List<Sub_packages>) {
+
+
         binding.layoutSubPackage.removeAllViews()
         binding.changeLocation.setOnClickListener {
             addressList?.let { it1 ->
-                showAddressList(it1) }
+                showAddressList(it1)
+            }
         }
         Log.i("TAG", "displayPackageList: $subItem")
-        if(subItem.isNotEmpty()){
+        if (subItem.isNotEmpty()) {
             for (i in subItem.indices) {
+                var mLastView: View? = null
                 val itemView: View =
                     LayoutInflater.from(this)
                         .inflate(R.layout.layout_sub_package_item, binding.layoutSubPackage, false)
@@ -301,62 +357,68 @@ class SubscriptionActivity : AppCompatActivity() {
                 val subPackagePrice = itemView.findViewById<TextView>(R.id.tv_Subscription_Price)
                 val subPackageDays = itemView.findViewById<TextView>(R.id.tv_Subscription_Days)
                 val selectSubPackage = itemView.findViewById<CardView>(R.id.select_sub_package)
-                val subPackageDiscount = itemView.findViewById<TextView>(R.id.tv_Subscription_Discount)
+                val subPackageDiscount =
+                    itemView.findViewById<TextView>(R.id.tv_Subscription_Discount)
                 val subItemThumbnail = itemView.findViewById<ImageView>(R.id.sub_item_thumbnail)
 
+                val tvSubscriptionTotalPrice =
+                    itemView.findViewById<TextView>(R.id.tv_Subscription_total_price)
+                val totalPrice = subItem[i].unit_price * subItem[i].number_of_days
+                tvSubscriptionTotalPrice.text = getString(R.string.rs) + totalPrice.toString()
                 subPackageTitle.text = subItem[i].name
-                subPackagePrice.text = getString(R.string.rs) + " " + subItem[i].unit_price.toString()
+                subPackagePrice.text =
+                    getString(R.string.rs) + " " + subItem[i].unit_price.toString()
                 subPackageDays.text = subItem[i].number_of_days.toString() + " days"
-                subPackageDiscount.text ="Dis. Range:- "+ subItem[i].range.toString()+ " ("+subItem[i].discount_price_per_unit.toString() + "%"+")"
-                subItemThumbnail.load(BASE_URL+subItem[i].sub_item.image.toString() )
+                subPackageDiscount.text =
+                    "Dis. Range:- " + subItem[i].range.toString() + " (" + subItem[i].discount_price_per_unit.toString() + "%" + ")"
+                subItemThumbnail.load(BASE_URL + subItem[i].sub_item.image.toString())
                 selectSubPackage.setOnClickListener {
-                Toast.makeText(this@SubscriptionActivity,"cccccccccccccccccccccccccc",Toast.LENGTH_SHORT)
-                    userPrefManager.packageSelected = subItem[i].sub_item_id
-                    selectedSubPackageId=subItem[i].id.toString()
-                    if(binding.unitPerDay.text.isNotEmpty()){
-                        val quantity=Integer.parseInt(binding.unitPerDay.text.toString())
-                        if(quantity in 2..4){
-                           val totalValue: Int =quantity*subItem[i].unit_price
-                            val discounted: Int =totalValue-(totalValue*(subItem[i].discount_price_per_unit/100))
-                            Log.i("TAG", "displayPackageList: "+totalValue+" "+discounted)
-                            selectedSubscribedTotalAmount= discounted.toString()
-                            selectedSubscribedDiscount=subItem[i].discount_price_per_unit.toString()
-                            selectedSubscribedPrice=subItem[i].unit_price.toString()
-                        }else{
-                            val totalValue: Int =quantity*subItem[i].unit_price
-                            val discounted: Int=0
-                            selectedSubscribedTotalAmount= subItem[i].unit_price.toString()
-                            selectedSubscribedDiscount=subItem[i].discount_price_per_unit.toString()
-                            selectedSubscribedPrice=subItem[i].unit_price.toString()
-
-                            Log.i("TAG", "displayPackageList: "+totalValue+" "+discounted)
-
-                        }
-                    }
-                    binding.proceedWithCheckout.setOnClickListener {
-//            val intent = Intent(this, ConfirmSubscription::class.java)
-//            intent.putExtra("selectedBranchId",selectedBranchId)
-//            intent.putExtra("selectedAddressId",selectedAddressId)
-//            intent.putExtra("selectedSubscribedTotalAmount",selectedSubscribedTotalAmount)
-//            intent.putExtra("selectedSubscribedDiscount",selectedSubscribedDiscount)
-//            intent.putExtra("selectedSubscribedPrice",selectedSubscribedPrice)
-//            intent.putExtra("selectedUnitPerDay",selectedUnitPerDay)
-//            intent.putExtra("selectedStartingDate",selectedStartingDate)
-//            intent.putExtra("selectedDeliveryPeriod",selectedDeliveryPeroid)
-//            intent.putExtra("selectedSubPackageId",selectedSubPackageId)
-//            intent.putExtra("selectedTotalQuantity",selectedTotalQuantity)
-//            startActivity(intent)
-//            finish()
-                        val body= RequestBodies.AddSubscription(selectedBranchId,selectedAddressId,selectedSubscribedTotalAmount,selectedSubscribedDiscount,selectedSubscribedPrice,selectedUnitPerDay,selectedStartingDate,selectedDeliveryPeroid,selectedSubPackageId,selectedTotalQuantity)
-
-                        Log.i("TAG", "onCreate: $body")
-                    }
+                    displaySelectedDetails(subItem[i])
+                    subItem[i].isSelected = true
+                    binding.selectCardView.visibility = View.VISIBLE
+                    selectedSubPackageId= subItem[i].id.toString()
+                    selectedSubscriptionName=subItem[i].name
                 }
                 binding.layoutSubPackage.addView(itemView)
             }
-        }else{
-            binding.addSubscriptionLayout.errorSnack("This branch doesn't have subscription option..please choose another...", Snackbar.LENGTH_LONG)
+        } else {
+            binding.addSubscriptionLayout.errorSnack(
+                "This branch doesn't have subscription option..please choose another...",
+                Snackbar.LENGTH_LONG
+            )
         }
+    }
+
+    private fun displaySelectedDetails(subPackages: Sub_packages) {
+        var totalPrice = subPackages.unit_price * subPackages.number_of_days
+        binding.selectedPackage.text = subPackages.name
+        if (binding.unitPerDay.text.toString().isNotEmpty()) {
+            selectedTotalQuantity=binding.unitPerDay.text.toString()
+            selectedSubscribedTotalAmount=totalPrice.toString()
+            binding.totalPackageCost.text = getString(R.string.rs) + totalPrice.toString()
+            val unitPerDay = Integer.valueOf(binding.unitPerDay.text.toString())
+            val str: String = subPackages.range;
+            val arrOfStr: List<String> = str.split("-")
+            for (range in arrOfStr) println(",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,$range")
+            if (unitPerDay >= Integer.valueOf(arrOfStr[0])) {
+                selectedSubscribedDiscount=((totalPrice * subPackages.discount_price_per_unit) / 100).toString()
+                totalPrice -= (totalPrice * subPackages.discount_price_per_unit) / 100
+                selectedSubscribedPrice=totalPrice.toString()
+                binding.totalCostWithDiscount.text = getString(R.string.rs) + totalPrice.toString()
+                binding.packageDiscount.text = subPackages.discount_price_per_unit.toString() + " %"
+            } else {
+                binding.packageDiscount.text = "0 %"
+
+                binding.totalCostWithDiscount.text = getString(R.string.rs) + totalPrice.toString()
+            }
+        } else {
+            binding.addSubscriptionLayout.errorSnack(
+                "Please add quantity first...",
+                Snackbar.LENGTH_LONG
+            )
+
+        }
+
     }
 
     private fun getSubscriptionItemList() {
@@ -399,12 +461,12 @@ class SubscriptionActivity : AppCompatActivity() {
             val subItemDescription = itemView.findViewById<TextView>(R.id.sub_item_description)
             val subItemView = itemView.findViewById<CardView>(R.id.sub_item_view)
             binding.subItemSelected.text =
-                "Selected Subscription Item :- " + data.sub_item[i].descriptions[0].title
+                data.sub_item[i].descriptions[0].title
 
             subItemView.setOnClickListener {
                 userPrefManager.subSelected = i
                 getSubscriptionPackageList(data.sub_item[i].descriptions[0].sub_item_id)
-                 binding.subItemSlide.visibility = View.GONE
+                binding.subItemSlide.visibility = View.GONE
                 binding.subPackageView.visibility = View.VISIBLE
                 binding.proceedSubscription.visibility = View.VISIBLE
             }
@@ -449,35 +511,36 @@ class SubscriptionActivity : AppCompatActivity() {
 
 
     private fun showAddressList(addressList: List<Address_list>) {
-        if (addressList.size==1) {
-            val customerLat : Double = 27.699972326072345
-            val customerLng : Double = 85.36797715904281
-            selectedAddressId=addressList[0].id.toString()
+        if (addressList.size == 1) {
+            val customerLat: Double = 27.699972326072345
+            val customerLng: Double = 85.36797715904281
+            selectedAddressId = addressList[0].id.toString()
             getSubscriptionItemList()
-            setUpBranchesView(customerLat,customerLng)
+            setUpBranchesView(customerLat, customerLng)
 
-        }else{
+        } else {
 
-        val builder: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(this)
-        builder.setTitle("Selected Delivery Location")
-        val addressId = arrayOfNulls<String>(addressList.size)
-        val names = arrayOfNulls<String>(addressList.size)
-        val checkedItems = BooleanArray(addressList.size)
-        val latList = BooleanArray(addressList.size)
-        val lngList = BooleanArray(addressList.size)
+            val builder: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(this)
+            builder.setTitle("Selected Delivery Location")
+            val addressId = arrayOfNulls<String>(addressList.size)
+            val names = arrayOfNulls<String>(addressList.size)
+            val checkedItems = BooleanArray(addressList.size)
+            val latList = BooleanArray(addressList.size)
+            val lngList = BooleanArray(addressList.size)
 
             var i = 0
             for (key in addressList) {
-                addressId[i]=key.id.toString()
+                addressId[i] = key.id.toString()
 
 //                latList[i]=key.lat.toString()
 //                lngList[i]=key.lng.toString()
 
-                names[i] = key.address1+", "+key.address2+", "+"\n"+key.phone
+                names[i] = key.address1 + ", " + key.address2 + ", " + "\n" + key.phone
                 checkedItems[i] = false
                 i += 1
             }
-            builder.setMultiChoiceItems(names, checkedItems
+            builder.setMultiChoiceItems(
+                names, checkedItems
             ) { _, which, isChecked ->
                 checkedItems[which] = isChecked
             }
@@ -485,12 +548,13 @@ class SubscriptionActivity : AppCompatActivity() {
                 DialogInterface.OnClickListener { _, _ ->
                     for (i in checkedItems.indices) {
                         if (checkedItems[i]) {
-                           binding.customerLocation.text=names[i]
-                            val customerLat : Double = 27.699972326072345
-                            val customerLng : Double = 85.36797715904281
-                            selectedAddressId= addressId[i].toString()
+                            binding.customerLocation.text = names[i]
+                            val customerLat: Double = 27.699972326072345
+                            val customerLng: Double = 85.36797715904281
+                            selectedAddressId = addressId[i].toString()
+                            selectedAddressName=names[i].toString()
                             getSubscriptionItemList()
-                            setUpBranchesView(customerLat,customerLng)
+                            setUpBranchesView(customerLat, customerLng)
                         }
                     }
                 })

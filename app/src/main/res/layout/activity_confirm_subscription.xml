@@ -9,6 +9,7 @@
 
 
     <LinearLayout
+        android:id="@+id/linearLayout6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -32,11 +33,6 @@
                 android:layout_marginStart="@dimen/_10sdp"
                 android:src="@drawable/ic_baseline_arrow_back_24" />
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
             <TextView
                 android:id="@+id/header_title"
                 android:layout_width="wrap_content"
@@ -51,249 +47,440 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="1" />
-
-            <ImageButton
-                android:id="@+id/go_to_cart"
-                android:layout_width="@dimen/_35sdp"
-                android:layout_height="@dimen/_35sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:background="@color/white"
-                android:src="@drawable/ic_baseline_shopping_cart_24" />
         </LinearLayout>
 
-        <androidx.cardview.widget.CardView
+    </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout6">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="@dimen/_10sdp">
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
+                app:cardCornerRadius="@dimen/_5sdp">
+
+                <LinearLayout
+                    android:padding="@dimen/_5sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Customer Details"
+                        android:textColor="@color/spanish_green" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="wrap_content"
+                            android:text="Customer Name"
+                            android:textColor="@color/sub_color"
+                            android:textSize="@dimen/_9sdp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=":-"
+                            android:layout_marginEnd="@dimen/_3sdp"/>
+
+                        <TextView
+                            android:id="@+id/customer_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="wrap_content"
+                            android:text="Customer Email"
+                            android:textColor="@color/sub_color"
+                            android:textSize="@dimen/_9sdp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=":-"
+                            android:layout_marginEnd="@dimen/_3sdp"/>
+
+                        <TextView
+                            android:id="@+id/customer_email"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="wrap_content"
+                            android:text="Customer Address"
+                            android:textColor="@color/sub_color"
+                            android:textSize="@dimen/_9sdp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=":-"
+                            android:layout_marginEnd="@dimen/_3sdp"/>
+
+                        <TextView
+                            android:id="@+id/customer_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
+                app:cardCornerRadius="@dimen/_5sdp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_5sdp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Subscription Details" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="wrap_content"
+                            android:text="Package Item Name"
+                            android:textColor="@color/sub_color"
+                            android:textSize="@dimen/_9sdp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=":-"
+                            android:layout_marginEnd="@dimen/_3sdp"/>
+
+                        <TextView
+                            android:id="@+id/package_item"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="wrap_content"
+                            android:text="Package Name"
+                            android:textColor="@color/sub_color"
+                            android:textSize="@dimen/_9sdp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=":-"
+                            android:layout_marginEnd="@dimen/_3sdp"/>
+
+                        <TextView
+                            android:id="@+id/package_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="wrap_content"
+                            android:text=" Total Quantity Required"
+                            android:textColor="@color/sub_color"
+                            android:textSize="@dimen/_9sdp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=":-"
+                            android:layout_marginEnd="@dimen/_3sdp"/>
+
+                        <TextView
+                            android:id="@+id/total_quantity_required"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                           />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="wrap_content"
+                            android:text="Package Total Cost"
+                            android:textColor="@color/sub_color"
+                            android:textSize="@dimen/_9sdp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=":-"
+                            android:layout_marginEnd="@dimen/_3sdp"/>
+
+                        <TextView
+                            android:id="@+id/package_total_cost"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="wrap_content"
+                            android:text="Total Discount Received"
+                            android:textColor="@color/sub_color"
+                            android:textSize="@dimen/_9sdp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=":-"
+                            android:layout_marginEnd="@dimen/_3sdp"/>
+
+                        <TextView
+                            android:id="@+id/total_discount_received"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                          />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="wrap_content"
+                            android:text="Overall Cost"
+                            android:textSize="@dimen/_9sdp"
+                            android:textStyle="bold"
+                            android:textColor="@color/sub_color" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" :- "/>
+                        <TextView
+                            android:id="@+id/total_price_after_discount_received"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_margin="@dimen/_5sdp"
+                app:cardCornerRadius="@dimen/_5sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:padding="@dimen/_5sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Payment Method Chosen" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="wrap_content"
+                            android:text="Payment Method"
+                            android:textSize="@dimen/_9sdp"
+                            android:textStyle="bold"
+                            android:textColor="@color/sub_color" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" :- "/>
+                        <TextView
+                            android:id="@+id/payment_method"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                         />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="wrap_content"
+                            android:text="Payment To"
+                            android:textSize="@dimen/_9sdp"
+                            android:textStyle="bold"
+                            android:textColor="@color/sub_color" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" :- "/>
+                        <TextView
+                            android:id="@+id/payment_to"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="wrap_content"
+                            android:text="Account Number"
+                            android:textSize="@dimen/_9sdp"
+                            android:textStyle="bold"
+                            android:textColor="@color/sub_color" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" :- "/>
+                        <TextView
+                            android:id="@+id/payment_account"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/_9sdp"
+                            android:textStyle="bold"
+                            android:textColor="@color/sub_color" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="wrap_content"
+                            android:text="Account QR"
+                            android:textSize="@dimen/_9sdp"
+                            android:textStyle="bold"
+                            android:textColor="@color/sub_color" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" :- "/>
+
+
+                        <ImageView
+                            android:id="@+id/payment_qr"
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="@dimen/_70sdp" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_gravity="end">
 
-                <TextView
-                    android:id="@+id/sub_item_selected"
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:visibility="gone"
+                    android:id="@+id/pay_by_esewa"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/select_subscription_item"
-                    android:textSize="@dimen/_15sdp" />
+                    android:layout_height="@dimen/_30sdp"
+                    android:background="@color/sub_color"
+                    android:text="Pay With ESEWA" />
 
-                <HorizontalScrollView
-                    android:id="@+id/sub_item_slide"
+                <Button
+                    android:visibility="gone"
+                    android:id="@+id/proceed_with_payment"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:id="@+id/layout_sub_item"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:scrollbars="vertical" />
-                </HorizontalScrollView>
+                    android:layout_height="@dimen/_40sdp"
+                    android:text="Proceed with Payment" />
             </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <LinearLayout
-            android:id="@+id/sub_package_view"
-            android:layout_width="match_parent"
-            android:visibility="gone"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_5sdp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Select Package" />
-
-                    <HorizontalScrollView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start">
-
-                        <LinearLayout
-                            android:id="@+id/layout_sub_package"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="@dimen/_150sdp"
-                            android:orientation="horizontal" />
-                    </HorizontalScrollView>
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_5sdp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_5sdp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Delivery Title" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <RadioGroup
-                            android:id="@+id/delivery_period"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <RadioButton
-                                android:id="@+id/morning_shift"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Morning Shift" />
-
-                            <RadioButton
-                                android:id="@+id/evening_shift"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Evening Shift" />
-
-                            <RadioButton
-                                android:id="@+id/both_shift"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Both Shift" />
-                        </RadioGroup>
-
-                    </LinearLayout>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_5sdp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Choose Starting Date :- " />
-
-                    <Button
-                        android:id="@+id/choose_subscription_date"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Choose" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_200sdp">
-
-                <FrameLayout
-                    android:id="@+id/branchesList"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/add_subscription"
-                    app:layout_constraintVertical_bias="0.0" />
-
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Add Your Voucher" />
-
-                    <EditText
-                        android:layout_width="@dimen/_100sdp"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/edit_view" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-
         </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/proceed_subscription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/total_cost"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Total Cost"
-                android:textColor="@color/sub_color" />
-
-            <TextView
-                android:id="@+id/discount_cost"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Discount Price"
-                android:textColor="@color/red" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <Button
-            android:id="@+id/proceed_with_subscription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_gravity="bottom|end"
-            android:layout_marginBottom="4dp"
-            android:text="Proceed With Subscription" />
-
-    </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
     <ProgressBar
         android:id="@+id/progress"

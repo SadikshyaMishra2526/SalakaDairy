@@ -92,5 +92,7 @@
     <string name="deliver_to">डेलिभर ठेगाना:</string>
     <string name="selected_branch">Selected Branch</string>
     <string name="main_branch">Main Branch</string>
+    <string name="by_bank_account">By Bank Account</string>
+    <string name="by_qr">By QR</string>
 
 </resources>

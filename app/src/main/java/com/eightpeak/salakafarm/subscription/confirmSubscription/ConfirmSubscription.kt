@@ -20,6 +20,7 @@ import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.RequestBodies
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
+import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.viewmodel.SubscriptionViewModel
@@ -53,8 +54,15 @@ class ConfirmSubscription : AppCompatActivity() {
     private lateinit var selectedUnitPerDay:String
     private lateinit var selectedStartingDate:String
     private lateinit var selectedDeliveryPeroid:String
+    private lateinit var selectedDeliveryPeroidResponse:String
     private lateinit var selectedSubPackageId:String
     private lateinit var selectedTotalQuantity:String
+
+
+    private lateinit var selectedPaymentMethod: String
+    private lateinit var selectedPaymentMethodResponse: String
+    private lateinit var selectedSubscriptionName: String
+    private lateinit var selectedAddressName: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,12 +87,8 @@ class ConfirmSubscription : AppCompatActivity() {
         binding.returnHome.setOnClickListener {
             finish()
         }
-        binding.goToCart.setOnClickListener {
-            val mainActivity = Intent(this, CartActivity::class.java)
-            startActivity(mainActivity)
-            finish()
-        }
-         var intent=intent
+
+
         selectedBranchId= intent.getStringExtra("selectedBranchId").toString()
         selectedAddressId=  intent.getStringExtra("selectedAddressId").toString()
         selectedSubscribedTotalAmount=intent.getStringExtra("selectedSubscribedTotalAmount").toString()
@@ -95,36 +99,90 @@ class ConfirmSubscription : AppCompatActivity() {
         selectedDeliveryPeroid=intent.getStringExtra("selectedDeliveryPeroid").toString()
         selectedSubPackageId= intent.getStringExtra("selectedSubPackageId").toString()
         selectedTotalQuantity=intent.getStringExtra("selectedTotalQuantity").toString()
+        selectedSubscriptionName=intent.getStringExtra("selectedSubscriptionName").toString()
+        selectedAddressName=intent.getStringExtra("selectedAddressName").toString()
+        selectedPaymentMethod=intent.getStringExtra("selectedPaymentMethod").toString()
+
+        if(selectedDeliveryPeroid == getString(R.string.morning_shift)){
+            selectedDeliveryPeroidResponse="0"
+        }else if(selectedDeliveryPeroid == getString(R.string.evening_shift)){
+            selectedDeliveryPeroidResponse="1"
+        }else if(selectedDeliveryPeroid == getString(R.string.both_shift)){
+            selectedDeliveryPeroidResponse="2"
+        }
 
 
-        val body=RequestBodies.AddSubscription(selectedBranchId,selectedAddressId,selectedSubscribedTotalAmount,selectedSubscribedDiscount,selectedSubscribedPrice,selectedUnitPerDay,selectedStartingDate,selectedDeliveryPeroid,selectedSubPackageId,selectedTotalQuantity)
 
-        Log.i("TAG", "onCreate: $body")
+        Log.i("TAG", "onCreate: |$selectedAddressName $selectedDeliveryPeroid " +
+                "$selectedSubscribedDiscount $selectedBranchId $selectedAddressId $selectedSubscribedTotalAmount " +
+                "$selectedSubscribedPrice $selectedUnitPerDay $selectedStartingDate  $selectedSubPackageId $selectedTotalQuantity"  )
 
-      binding.proceedWithSubscription.setOnClickListener {
-          tokenManager?.let { it1 -> viewModel.addSubscription(it1,body) }
-          viewModel.addSubscription.observe(this, Observer { response ->
-              when (response) {
-                  is Resource.Success -> {
-                      hideProgressBar()
-                      response.data?.let { picsResponse ->
-//                          makePayment("100")
 
-                      }
-                  }
+        val body=RequestBodies.AddSubscription(selectedBranchId,selectedAddressId,selectedSubscribedTotalAmount,selectedSubscribedDiscount,selectedSubscribedPrice,selectedUnitPerDay,selectedStartingDate,selectedDeliveryPeroidResponse,selectedSubPackageId,selectedTotalQuantity)
 
-                  is Resource.Error -> {
-                      hideProgressBar()
-                      response.message?.let { message ->
-                          binding.addSubscriptionLayout.errorSnack(message, Snackbar.LENGTH_LONG)
-                      }
-                  }
-                  is Resource.Loading -> {
-                      showProgressBar()
-                  }
-              }
-          })
-      }
+        Log.i("TAG", "onCreate: $selectedUnitPerDay $body")
+            binding.customerName.text=userPrefManager.firstName+" "+userPrefManager.lastName
+            binding.customerAddress.text=selectedAddressName
+            binding.customerEmail.text=userPrefManager.email
+            binding.packageName.text=selectedSubscriptionName
+
+            binding.packageTotalCost.text=getString(R.string.rs)+ selectedSubscribedTotalAmount
+             binding.totalQuantityRequired.text= selectedUnitPerDay+ "litre"
+            binding.totalDiscountReceived.text=getString(R.string.rs)+selectedSubscribedDiscount
+            binding.totalPriceAfterDiscountReceived.text=getString(R.string.rs)+selectedSubscribedPrice
+
+            binding.paymentMethod.text=selectedPaymentMethod
+  binding.paymentTo.text=userPrefManager.accountName
+
+  binding.paymentAccount.text=userPrefManager.bankCountNo
+
+  binding.paymentQr.load(BASE_URL+userPrefManager.qrPath)
+
+
+
+
+        if(selectedPaymentMethod == getString(R.string.by_bank_account)){
+            binding.paymentAccount.visibility=View.VISIBLE
+            binding.paymentTo.visibility=View.VISIBLE
+        }else if(selectedPaymentMethod == getString(R.string.by_qr)){
+            binding.paymentAccount.visibility=View.VISIBLE
+            binding.paymentTo.visibility=View.VISIBLE
+            binding.paymentQr.visibility=View.VISIBLE
+        }else if(selectedPaymentMethod == getString(R.string.by_esewa)){
+            binding.payByEsewa.visibility=View.VISIBLE
+            binding.proceedWithPayment.visibility=View.GONE
+        }else if(selectedPaymentMethod == getString(R.string.cash_on_delivery)){
+            binding.payByEsewa.visibility=View.GONE
+        }
+
+
+
+
+
+
+//      binding.proceedWithSubscription.setOnClickListener {
+//          tokenManager?.let { it1 -> viewModel.addSubscription(it1,body) }
+//          viewModel.addSubscription.observe(this, Observer { response ->
+//              when (response) {
+//                  is Resource.Success -> {
+//                      hideProgressBar()
+//                      response.data?.let {
+//
+//                      }
+//                  }
+//
+//                  is Resource.Error -> {
+//                      hideProgressBar()
+//                      response.message?.let { message ->
+//                          binding.addSubscriptionLayout.errorSnack(message, Snackbar.LENGTH_LONG)
+//                      }
+//                  }
+//                  is Resource.Loading -> {
+//                      showProgressBar()
+//                  }
+//              }
+//          })
+//      }
 
 
 

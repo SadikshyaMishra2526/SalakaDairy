@@ -331,7 +331,8 @@ GoogleApiClient.OnConnectionFailedListener
     }
 
     fun PushNotificationService() {
-        FirebaseMessaging.getInstance().subscribeToTopic("customer")
+        FirebaseMessaging.getInstance().subscribeToTopic("customers")
+        FirebaseMessaging.getInstance().subscribeToTopic("all")
             .addOnSuccessListener {
 //                Toast.makeText(applicationContext, "Success", Toast.LENGTH_LONG).show()
             }

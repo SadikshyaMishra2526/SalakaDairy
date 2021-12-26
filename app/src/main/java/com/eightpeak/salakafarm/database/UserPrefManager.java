@@ -41,6 +41,10 @@ public class UserPrefManager {
 
     private static final String FCM= "fcm";
 
+    private static final String BANK_DETAILS= "bank_details";
+    private static final String QR_PHOTO= "qr_photo";
+    private static final String ACCOUNT_NAME= "account_name";
+
     private static final String POPUP= "popup";
 
 
@@ -193,6 +197,34 @@ public class UserPrefManager {
 
     public String getFCMToken() {
         return userPref.getString(FCM, DEFAULT);
+    }
+
+
+    public  void setBankCountNo(String bankCountNo) {
+        userPrefEditor.putString(BANK_DETAILS, bankCountNo);
+        userPrefEditor.commit();
+    }
+
+    public String getBankCountNo() {
+        return userPref.getString(BANK_DETAILS, DEFAULT);
+    }
+
+    public  void setQRPath(String qrPath) {
+        userPrefEditor.putString(QR_PHOTO, qrPath);
+        userPrefEditor.commit();
+    }
+
+    public String getQRPath() {
+        return userPref.getString(QR_PHOTO, DEFAULT);
+    }
+
+  public  void setAccountName(String qrPath) {
+        userPrefEditor.putString(ACCOUNT_NAME, qrPath);
+        userPrefEditor.commit();
+    }
+
+    public String getAccountName() {
+        return userPref.getString(ACCOUNT_NAME, DEFAULT);
     }
 
 
