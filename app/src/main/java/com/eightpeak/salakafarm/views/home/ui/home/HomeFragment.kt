@@ -21,6 +21,8 @@ import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.databinding.FragmentHomeBinding
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.subscription.SubscriptionActivity
+import com.eightpeak.salakafarm.subscription.displaysubscription.DisplaySubscription
+import com.eightpeak.salakafarm.subscription.displaysubscription.SubscriptionDetails
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.Constants.Companion.DEFAULT
 import com.eightpeak.salakafarm.utils.Constants.Companion.NO_LOGIN
@@ -89,8 +91,14 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
         }
 
         binding.subscriptionLayout.setOnClickListener {
-            val mainActivity = Intent(context, SubscriptionActivity::class.java)
-            startActivity(mainActivity)
+            if(userPrefManager.subscriptionStatus){
+                val mainActivity = Intent(context, SubscriptionDetails::class.java)
+                startActivity(mainActivity)
+            }else{
+                val mainActivity = Intent(context, SubscriptionActivity::class.java)
+                startActivity(mainActivity)
+            }
+
         }
 
         //Initializing googleApiClient

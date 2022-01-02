@@ -1,100 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="@dimen/_2sdp"
-    app:cardCornerRadius="@dimen/_5sdp">
-
-    <LinearLayout
+<androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/_10sdp">
+        android:layout_margin="@dimen/_2sdp"
+        app:cardCornerRadius="@dimen/_5sdp">
 
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:elevation="@dimen/_5sdp"
-            app:cardCornerRadius="@dimen/_5sdp">
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/product_thumbnail"
-                    android:layout_width="@dimen/_60sdp"
-                    android:layout_height="@dimen/_70sdp"
-                    android:layout_gravity="center"
-                    android:scaleType="fitXY" />
-                <ImageView
-                    android:id="@+id/out_of_stock"
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_height="@dimen/_40sdp"
-                    android:adjustViewBounds="true"
-                    android:visibility="gone"
-                    android:src="@drawable/stock" />
-            </RelativeLayout>
-
-        </androidx.cardview.widget.CardView>
         <LinearLayout
-            android:layout_marginStart="@dimen/_5sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:padding="@dimen/_10sdp">
 
-            <TextView
-                android:id="@+id/product_name_wishlist"
-                android:textStyle="bold"
-                android:textSize="@dimen/_12sdp"
-                android:textColor="@color/sub_color"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
 
-            <TextView
-                android:id="@+id/product_sku"
+            <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
-                android:textStyle="italic"
-                android:textColor="@color/tab_indicator_gray"
-                android:layout_height="wrap_content" />
-
-
-            <TextView
-                android:id="@+id/product_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/delete_wishlist_item"
-                    android:layout_width="@dimen/_15sdp"
-                    android:layout_height="@dimen/_15sdp"
-                    android:layout_marginStart="@dimen/_5sdp"
-                    android:layout_gravity="center"
-                    android:contentDescription="@string/todo"
-                    android:src="@drawable/delete" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <Button
-                    android:id="@+id/add_to_cart"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:elevation="@dimen/_5sdp"
+                app:cardCornerRadius="@dimen/_5sdp">
+                <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_40sdp"
-                    android:layout_gravity="end|bottom"
-                    android:contentDescription="@string/todo"
-                    android:drawableLeft="@drawable/ic_baseline_shopping_cart_24"
-                    android:text="@string/add"
-                    android:textSize="@dimen/_9sdp" />
+                    android:layout_height="wrap_content">
 
+                    <ImageView
+                        android:id="@+id/product_thumbnail"
+                        android:layout_width="@dimen/_60sdp"
+                        android:layout_height="@dimen/_70sdp"
+                        android:layout_gravity="center"
+                        android:scaleType="fitXY" />
+                    <ImageView
+                        android:id="@+id/out_of_stock"
+                        android:layout_width="@dimen/_50sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:adjustViewBounds="true"
+                        android:visibility="gone"
+                        android:src="@drawable/stock" />
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+            <LinearLayout
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/product_name_wishlist"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/_12sdp"
+                    android:textColor="@color/sub_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/product_sku"
+                    android:layout_width="wrap_content"
+                    android:textStyle="italic"
+                    android:textColor="@color/tab_indicator_gray"
+                    android:layout_height="wrap_content" />
+
+
+                <TextView
+                    android:id="@+id/product_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/delete_wishlist_item"
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/todo"
+                        android:src="@drawable/delete" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <Button
+                        android:id="@+id/add_to_cart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_gravity="end|bottom"
+                        android:contentDescription="@string/todo"
+                        android:drawableLeft="@drawable/ic_baseline_shopping_cart_24"
+                        android:text="@string/add"
+                        android:textSize="@dimen/_9sdp" />
+
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>

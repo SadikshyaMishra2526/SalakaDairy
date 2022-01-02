@@ -7,6 +7,7 @@ import com.eightpeak.salakafarm.subscription.attributes.BranchModel
 import com.eightpeak.salakafarm.subscription.attributes.SubscriptionItemModel
 import com.eightpeak.salakafarm.subscription.attributes.SubscriptionPackageModel
 import com.eightpeak.salakafarm.subscription.attributes.SubscriptionResponse
+import com.eightpeak.salakafarm.subscription.displaysubscription.DisplaySubscriptionModel
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.COMPARE_LIST_DETAILS
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.DELETE_CART
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.DELETE_CART_ITEM
@@ -221,6 +222,8 @@ interface ApiInterface {
     fun getVideoList(): Call<YoutubeVideoModel?>?
 
 
+    @GET(EndPoints.GET_SUBSCRIPTION_DISPLAY)
+    suspend fun getCustomerSubscription(): Response<DisplaySubscriptionModel>
 
 
 }

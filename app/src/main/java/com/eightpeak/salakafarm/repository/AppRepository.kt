@@ -147,4 +147,7 @@ class AppRepository {
     suspend fun getEmpLatLng(tokenManager: TokenManager,body: RequestBodies.EmpLatlng) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).getEmployeeLatLng(body)
 
+    suspend fun getCustomerSubscription(tokenManager: TokenManager) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).getCustomerSubscription()
+
 }

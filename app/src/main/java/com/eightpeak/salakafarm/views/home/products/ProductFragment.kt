@@ -150,7 +150,7 @@ class ProductFragment : Fragment() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        binding.productRecyclerView.errorSnack(message, Snackbar.LENGTH_LONG)
+                        binding.categoriesLayout.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 
                 }

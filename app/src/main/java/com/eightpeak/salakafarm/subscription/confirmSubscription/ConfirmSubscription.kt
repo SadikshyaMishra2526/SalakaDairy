@@ -41,22 +41,21 @@ class ConfirmSubscription : AppCompatActivity() {
     private var tokenManager: TokenManager? = null
 
 
-
     private val CONFIG_ENVIRONMENT: String = ESewaConfiguration.ENVIRONMENT_TEST
     private val REQUEST_CODE_PAYMENT = 1
     private var eSewaConfiguration: ESewaConfiguration? = null
 
-    private lateinit var selectedBranchId:String
-    private lateinit var selectedAddressId:String
-    private lateinit var selectedSubscribedTotalAmount:String
-    private lateinit var selectedSubscribedDiscount:String
-    private lateinit var selectedSubscribedPrice:String
-    private lateinit var selectedUnitPerDay:String
-    private lateinit var selectedStartingDate:String
-    private lateinit var selectedDeliveryPeroid:String
-    private lateinit var selectedDeliveryPeroidResponse:String
-    private lateinit var selectedSubPackageId:String
-    private lateinit var selectedTotalQuantity:String
+    private lateinit var selectedBranchId: String
+    private lateinit var selectedAddressId: String
+    private lateinit var selectedSubscribedTotalAmount: String
+    private lateinit var selectedSubscribedDiscount: String
+    private lateinit var selectedSubscribedPrice: String
+    private lateinit var selectedUnitPerDay: String
+    private lateinit var selectedStartingDate: String
+    private lateinit var selectedDeliveryPeroid: String
+    private lateinit var selectedDeliveryPeroidResponse: String
+    private lateinit var selectedSubPackageId: String
+    private lateinit var selectedTotalQuantity: String
 
 
     private lateinit var selectedPaymentMethod: String
@@ -81,7 +80,7 @@ class ConfirmSubscription : AppCompatActivity() {
             )
         )
         binding = ActivityConfirmSubscriptionBinding.inflate(layoutInflater)
-        userPrefManager= UserPrefManager(this)
+        userPrefManager = UserPrefManager(this)
 
         binding.headerTitle.text = "Confirm your Subscription"
         binding.returnHome.setOnClickListener {
@@ -89,108 +88,118 @@ class ConfirmSubscription : AppCompatActivity() {
         }
 
 
-        selectedBranchId= intent.getStringExtra("selectedBranchId").toString()
-        selectedAddressId=  intent.getStringExtra("selectedAddressId").toString()
-        selectedSubscribedTotalAmount=intent.getStringExtra("selectedSubscribedTotalAmount").toString()
-        selectedSubscribedDiscount=intent.getStringExtra("selectedSubscribedDiscount").toString()
-        selectedSubscribedPrice=intent.getStringExtra("selectedSubscribedPrice").toString()
-        selectedUnitPerDay=intent.getStringExtra("selectedUnitPerDay").toString()
-        selectedStartingDate=intent.getStringExtra("selectedStartingDate").toString()
-        selectedDeliveryPeroid=intent.getStringExtra("selectedDeliveryPeroid").toString()
-        selectedSubPackageId= intent.getStringExtra("selectedSubPackageId").toString()
-        selectedTotalQuantity=intent.getStringExtra("selectedTotalQuantity").toString()
-        selectedSubscriptionName=intent.getStringExtra("selectedSubscriptionName").toString()
-        selectedAddressName=intent.getStringExtra("selectedAddressName").toString()
-        selectedPaymentMethod=intent.getStringExtra("selectedPaymentMethod").toString()
+        selectedBranchId = intent.getStringExtra("selectedBranchId").toString()
+        selectedAddressId = intent.getStringExtra("selectedAddressId").toString()
+        selectedSubscribedTotalAmount =
+            intent.getStringExtra("selectedSubscribedTotalAmount").toString()
+        selectedSubscribedDiscount = intent.getStringExtra("selectedSubscribedDiscount").toString()
+        selectedSubscribedPrice = intent.getStringExtra("selectedSubscribedPrice").toString()
+        selectedUnitPerDay = intent.getStringExtra("selectedUnitPerDay").toString()
+        selectedStartingDate = intent.getStringExtra("selectedStartingDate").toString()
+        selectedDeliveryPeroid = intent.getStringExtra("selectedDeliveryPeroid").toString()
+        selectedSubPackageId = intent.getStringExtra("selectedSubPackageId").toString()
+        selectedTotalQuantity = intent.getStringExtra("selectedTotalQuantity").toString()
+        selectedSubscriptionName = intent.getStringExtra("selectedSubscriptionName").toString()
+        selectedAddressName = intent.getStringExtra("selectedAddressName").toString()
+        selectedPaymentMethod = intent.getStringExtra("selectedPaymentMethod").toString()
 
-        if(selectedDeliveryPeroid == getString(R.string.morning_shift)){
-            selectedDeliveryPeroidResponse="0"
-        }else if(selectedDeliveryPeroid == getString(R.string.evening_shift)){
-            selectedDeliveryPeroidResponse="1"
-        }else if(selectedDeliveryPeroid == getString(R.string.both_shift)){
-            selectedDeliveryPeroidResponse="2"
+        if (selectedDeliveryPeroid == getString(R.string.morning_shift)) {
+            selectedDeliveryPeroidResponse = "0"
+        } else if (selectedDeliveryPeroid == getString(R.string.evening_shift)) {
+            selectedDeliveryPeroidResponse = "1"
+        } else if (selectedDeliveryPeroid == getString(R.string.both_shift)) {
+            selectedDeliveryPeroidResponse = "2"
         }
 
 
 
-        Log.i("TAG", "onCreate: |$selectedAddressName $selectedDeliveryPeroid " +
-                "$selectedSubscribedDiscount $selectedBranchId $selectedAddressId $selectedSubscribedTotalAmount " +
-                "$selectedSubscribedPrice $selectedUnitPerDay $selectedStartingDate  $selectedSubPackageId $selectedTotalQuantity"  )
+        Log.i(
+            "TAG", "onCreate: |$selectedAddressName $selectedDeliveryPeroid " +
+                    "$selectedSubscribedDiscount $selectedBranchId $selectedAddressId $selectedSubscribedTotalAmount " +
+                    "$selectedSubscribedPrice $selectedUnitPerDay $selectedStartingDate  $selectedSubPackageId $selectedTotalQuantity"
+        )
 
 
-        val body=RequestBodies.AddSubscription(selectedBranchId,selectedAddressId,selectedSubscribedTotalAmount,selectedSubscribedDiscount,selectedSubscribedPrice,selectedUnitPerDay,selectedStartingDate,selectedDeliveryPeroidResponse,selectedSubPackageId,selectedTotalQuantity)
+        val body = RequestBodies.AddSubscription(
+            selectedBranchId,
+            selectedAddressId,
+            selectedSubscribedTotalAmount,
+            selectedSubscribedDiscount,
+            selectedSubscribedPrice,
+            selectedUnitPerDay,
+            selectedStartingDate,
+            selectedDeliveryPeroidResponse,
+            selectedSubPackageId,
+            selectedTotalQuantity
+        )
 
         Log.i("TAG", "onCreate: $selectedUnitPerDay $body")
-            binding.customerName.text=userPrefManager.firstName+" "+userPrefManager.lastName
-            binding.customerAddress.text=selectedAddressName
-            binding.customerEmail.text=userPrefManager.email
-            binding.packageName.text=selectedSubscriptionName
+        binding.customerName.text = userPrefManager.firstName + " " + userPrefManager.lastName
+        binding.customerAddress.text = selectedAddressName
+        binding.customerEmail.text = userPrefManager.email
+        binding.packageName.text = selectedSubscriptionName
 
-            binding.packageTotalCost.text=getString(R.string.rs)+ selectedSubscribedTotalAmount
-             binding.totalQuantityRequired.text= selectedUnitPerDay+ "litre"
-            binding.totalDiscountReceived.text=getString(R.string.rs)+selectedSubscribedDiscount
-            binding.totalPriceAfterDiscountReceived.text=getString(R.string.rs)+selectedSubscribedPrice
+        binding.packageTotalCost.text = getString(R.string.rs) + selectedSubscribedTotalAmount
+        binding.totalQuantityRequired.text = selectedUnitPerDay + "litre"
+        binding.totalDiscountReceived.text = getString(R.string.rs) + selectedSubscribedDiscount
+        binding.totalPriceAfterDiscountReceived.text =
+            getString(R.string.rs) + selectedSubscribedPrice
 
-            binding.paymentMethod.text=selectedPaymentMethod
-  binding.paymentTo.text=userPrefManager.accountName
+        binding.paymentMethod.text = selectedPaymentMethod
+        binding.paymentTo.text = userPrefManager.accountName
 
-  binding.paymentAccount.text=userPrefManager.bankCountNo
+        binding.paymentAccount.text = userPrefManager.bankCountNo
 
-  binding.paymentQr.load(BASE_URL+userPrefManager.qrPath)
-
-
+        binding.paymentQr.load(BASE_URL + userPrefManager.qrPath)
 
 
-        if(selectedPaymentMethod == getString(R.string.by_bank_account)){
-            binding.paymentAccount.visibility=View.VISIBLE
-            binding.paymentTo.visibility=View.VISIBLE
-        }else if(selectedPaymentMethod == getString(R.string.by_qr)){
-            binding.paymentAccount.visibility=View.VISIBLE
-            binding.paymentTo.visibility=View.VISIBLE
-            binding.paymentQr.visibility=View.VISIBLE
-        }else if(selectedPaymentMethod == getString(R.string.by_esewa)){
-            binding.payByEsewa.visibility=View.VISIBLE
-            binding.proceedWithPayment.visibility=View.GONE
-        }else if(selectedPaymentMethod == getString(R.string.cash_on_delivery)){
-            binding.payByEsewa.visibility=View.GONE
+
+
+        if (selectedPaymentMethod == getString(R.string.by_bank_account)) {
+            binding.paymentAccount.visibility = View.VISIBLE
+            binding.paymentTo.visibility = View.VISIBLE
+        } else if (selectedPaymentMethod == getString(R.string.by_qr)) {
+            binding.paymentAccount.visibility = View.VISIBLE
+            binding.paymentTo.visibility = View.VISIBLE
+            binding.paymentQr.visibility = View.VISIBLE
+        } else if (selectedPaymentMethod == getString(R.string.by_esewa)) {
+            binding.payByEsewa.visibility = View.VISIBLE
+            binding.proceedWithPayment.visibility = View.GONE
+        } else if (selectedPaymentMethod == getString(R.string.cash_on_delivery)) {
+            binding.payByEsewa.visibility = View.GONE
         }
 
 
+      binding.proceedWithPayment.setOnClickListener {
+          tokenManager?.let { it1 -> viewModel.addSubscription(it1,body) }
+          viewModel.addSubscription.observe(this, Observer { response ->
+              when (response) {
+                  is Resource.Success -> {
+                      hideProgressBar()
+                      response.data?.let {
+                          userPrefManager.subscriptionStatus = true
+                      }
+                  }
 
-
-
-
-//      binding.proceedWithSubscription.setOnClickListener {
-//          tokenManager?.let { it1 -> viewModel.addSubscription(it1,body) }
-//          viewModel.addSubscription.observe(this, Observer { response ->
-//              when (response) {
-//                  is Resource.Success -> {
-//                      hideProgressBar()
-//                      response.data?.let {
-//
-//                      }
-//                  }
-//
-//                  is Resource.Error -> {
-//                      hideProgressBar()
-//                      response.message?.let { message ->
-//                          binding.addSubscriptionLayout.errorSnack(message, Snackbar.LENGTH_LONG)
-//                      }
-//                  }
-//                  is Resource.Loading -> {
-//                      showProgressBar()
-//                  }
-//              }
-//          })
-//      }
-
-
+                  is Resource.Error -> {
+                      hideProgressBar()
+                      response.message?.let { message ->
+                          binding.addSubscriptionLayout.errorSnack(message, Snackbar.LENGTH_LONG)
+                      }
+                  }
+                  is Resource.Loading -> {
+                      showProgressBar()
+                  }
+              }
+          })
+      }
 
 
         setupViewModel()
         setContentView(binding.root)
 
     }
+
     private fun makePayment(amount: String) {
         val eSewaPayment = ESewaPayment(
             amount,
@@ -206,6 +215,7 @@ class ConfirmSubscription : AppCompatActivity() {
             REQUEST_CODE_PAYMENT
         )
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_PAYMENT) {
@@ -223,6 +233,7 @@ class ConfirmSubscription : AppCompatActivity() {
             }
         }
     }
+
     private fun setupViewModel() {
         val repository = AppRepository()
         val factory = ViewModelProviderFactory(application, repository)

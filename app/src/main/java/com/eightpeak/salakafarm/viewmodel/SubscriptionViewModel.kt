@@ -13,6 +13,7 @@ import com.eightpeak.salakafarm.subscription.attributes.BranchModel
 import com.eightpeak.salakafarm.subscription.attributes.SubscriptionItemModel
 import com.eightpeak.salakafarm.subscription.attributes.SubscriptionPackageModel
 import com.eightpeak.salakafarm.subscription.attributes.SubscriptionResponse
+import com.eightpeak.salakafarm.subscription.displaysubscription.DisplaySubscriptionModel
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.Utils
 import com.eightpeak.salakafarm.views.addresslist.AddressListModel
@@ -275,6 +276,54 @@ val addSubscription: MutableLiveData<Resource<SubscriptionResponse>> = MutableLi
     }
 
     private fun handleAddressResponse(response: Response<AddressListModel>): Resource<AddressListModel> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+
+
+    val getCustomerSubscription: MutableLiveData<Resource<DisplaySubscriptionModel>> = MutableLiveData()
+
+    fun fetchCustomerSubscription(token:TokenManager) = viewModelScope.launch {
+        fetchSubscription(token)
+    }
+
+    private suspend fun fetchSubscription(token: TokenManager) {
+        getCustomerSubscription.postValue(Resource.Loading())
+        try {
+            if (Utils.hasInternetConnection(getApplication<Application>())) {
+                val response = appRepository.getCustomerSubscription(token)
+                Log.i("TAG", "fetchSubscription: "+response.body()!!.subscriptions)
+                getCustomerSubscription.postValue(handleCustomerSubscription(response))
+            } else {
+                getCustomerSubscription.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+            }
+        } catch (t: Throwable) {
+            Log.i("TAG", "fetchSubscription: "+t.localizedMessage)
+            when (t) {
+                is IOException -> getCustomerSubscription.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.network_failure
+                        )
+                    )
+                )
+                else -> getCustomerSubscription.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.conversion_error
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun handleCustomerSubscription(response: Response<DisplaySubscriptionModel>): Resource<DisplaySubscriptionModel> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)

@@ -46,6 +46,7 @@ public class UserPrefManager {
     private static final String ACCOUNT_NAME= "account_name";
 
     private static final String POPUP= "popup";
+    private static final String SUBSCRIPTION= "subscription";
 
 
     public UserPrefManager(Context context) {
@@ -235,6 +236,16 @@ public class UserPrefManager {
 
     public Boolean getPopupBoolean() {
         return userPref.getBoolean(POPUP, false);
+    }
+
+
+    public  void setSubscriptionStatus(Boolean fcmToken) {
+        userPrefEditor.putBoolean(SUBSCRIPTION, fcmToken);
+        userPrefEditor.commit();
+    }
+
+    public Boolean getSubscriptionStatus() {
+        return userPref.getBoolean(SUBSCRIPTION, true);
     }
 
     public void clearData() {

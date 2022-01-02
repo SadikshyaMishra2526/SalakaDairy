@@ -58,23 +58,23 @@ class SubscriptionActivity : AppCompatActivity() {
     private var addressList: List<Address_list>? = null
 
 
-    private lateinit var selectedBranchId: String
-    private lateinit var selectedAddressId: String
-    private lateinit var selectedSubscribedTotalAmount: String
-    private lateinit var selectedSubscribedDiscount: String
-    private lateinit var selectedSubscribedPrice: String
-    private lateinit var selectedUnitPerDay: String
-    private lateinit var selectedStartingDate: String
-    private lateinit var selectedDeliveryPeroid: String
-    private lateinit var selectedSubPackageId: String
-    private lateinit var selectedTotalQuantity: String
+    private  var selectedBranchId: String=""
+    private  var selectedAddressId: String=""
+    private  var selectedSubscribedTotalAmount: String=""
+    private  var selectedSubscribedDiscount: String=""
+    private  var selectedSubscribedPrice: String=""
+    private  var selectedUnitPerDay: String=""
+    private  var selectedStartingDate: String=""
+    private  var selectedDeliveryPeroid: String=""
+    private  var selectedSubPackageId: String=""
+    private  var selectedTotalQuantity: String=""
 
-    private lateinit var selectedPaymentMethod: String
-    private lateinit var selectedSubscriptionName: String
-    private lateinit var selectedAddressName: String
+    private  var selectedPaymentMethod: String=""
+    private  var selectedSubscriptionName: String=""
+    private  var selectedAddressName: String=""
 
-    private lateinit  var deliveryPeriodRadio:RadioButton
-    private lateinit  var paymentOptionRadio:RadioButton
+    private  lateinit var deliveryPeriodRadio:RadioButton
+    private  lateinit var paymentOptionRadio:RadioButton
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -138,6 +138,7 @@ class SubscriptionActivity : AppCompatActivity() {
                     "$selectedSubscribedDiscount $selectedBranchId $selectedAddressId $selectedSubscribedTotalAmount " +
                     "$selectedSubscribedPrice $selectedUnitPerDay $selectedStartingDate  $selectedSubPackageId $selectedTotalQuantity"  )
 
+//            if(selectedDeliveryPeroid!=null)
             val intent = Intent(this@SubscriptionActivity, ConfirmSubscription::class.java)
             intent.putExtra("selectedBranchId",selectedBranchId)
             intent.putExtra("selectedAddressId",selectedAddressId)
@@ -372,13 +373,25 @@ class SubscriptionActivity : AppCompatActivity() {
                 subPackageDiscount.text =
                     "Dis. Range:- " + subItem[i].range.toString() + " (" + subItem[i].discount_price_per_unit.toString() + "%" + ")"
                 subItemThumbnail.load(BASE_URL + subItem[i].sub_item.image.toString())
+
+                if(subItem[i].isSelected){
+                    selectSubPackage.setCardBackgroundColor(getColor(R.color.sub_color))
+                }else{
+                    selectSubPackage.setCardBackgroundColor(getColor(R.color.white))
+                }
                 selectSubPackage.setOnClickListener {
                     displaySelectedDetails(subItem[i])
                     subItem[i].isSelected = true
+                    selectSubPackage.setCardBackgroundColor(getColor(R.color.sub_color))
+
                     binding.selectCardView.visibility = View.VISIBLE
                     selectedSubPackageId= subItem[i].id.toString()
                     selectedSubscriptionName=subItem[i].name
                 }
+                Log.i("TAG", "displayPackageList: "+   subItem[i].isSelected)
+
+
+
                 binding.layoutSubPackage.addView(itemView)
             }
         } else {
