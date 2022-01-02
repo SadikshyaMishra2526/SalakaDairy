@@ -7,7 +7,10 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -41,6 +44,8 @@ import com.smarteist.autoimageslider.SliderAnimations
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
 
 import com.smarteist.autoimageslider.IndicatorView.draw.controller.DrawController.ClickListener
+import kotlinx.android.synthetic.main.product_item.view.*
+import kotlin.math.roundToInt
 
 
 class ProductByIdActivity : AppCompatActivity() {
@@ -93,9 +98,9 @@ class ProductByIdActivity : AppCompatActivity() {
     }
 
     private fun getPictures() {
-        val product_id = intent.getStringExtra(PRODUCT_ID)
-          if (product_id != null) {
-            viewModel.getProductById(product_id)
+        val productId = intent.getStringExtra(PRODUCT_ID)
+          if (productId != null) {
+            viewModel.getProductById(productId)
         }
         viewModel.productDetailsById.observe(this, Observer { response ->
             when (response) {
@@ -106,6 +111,34 @@ class ProductByIdActivity : AppCompatActivity() {
                         if(picsResponse.productRelation.isNotEmpty())
                         relatedProductAdapter.differ.submitList(picsResponse.productRelation)
                         binding.relatedProductRecycler.adapter = relatedProductAdapter
+                        getRating()
+                    }
+                }
+
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let { message ->
+                        product_view_id_layout.errorSnack(message, Snackbar.LENGTH_LONG)
+                    }
+                }
+
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+            }
+        })
+    }
+    private fun getRating() {
+        val productId = intent.getStringExtra(PRODUCT_ID)
+        if (productId != null) {
+            viewModel.productRating(productId)
+        }
+        viewModel.productRating.observe(this, Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let { picsResponse ->
+                      plotRating(picsResponse)
                     }
                 }
 
@@ -123,6 +156,53 @@ class ProductByIdActivity : AppCompatActivity() {
         })
     }
 
+    private fun plotRating(ratingResponse: ProductRatingModel) {
+
+        if(ratingResponse.ratings.data.isNotEmpty()) {
+             val data: List<Data> =ratingResponse.ratings.data
+            for (i in data.indices) {
+                val itemView: View =
+                    LayoutInflater.from(this)
+                        .inflate(R.layout.rating_view_item, binding.ratingView, false)
+                val commentedAt = itemView.findViewById<TextView>(R.id.commented_at)
+                val commentedBy = itemView.findViewById<TextView>(R.id.commented_by)
+                val comment = itemView.findViewById<TextView>(R.id.comment)
+
+                val rating1 = itemView.findViewById<ImageView>(R.id.rating_1)
+                val rating2 = itemView.findViewById<ImageView>(R.id.rating_2)
+                val rating3 = itemView.findViewById<ImageView>(R.id.rating_3)
+                val rating4 = itemView.findViewById<ImageView>(R.id.rating_4)
+                val rating5 = itemView.findViewById<ImageView>(R.id.rating_5)
+                commentedAt.text = data[i].created_at
+                commentedBy.text =(data[i].customer_id.toString())
+                comment.text =(data[i].comment)
+                val rating:Int= data[i].rating
+                if(rating==1){
+                    rating1.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+                }else if(rating==2){
+                    rating1.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+                    rating2.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+                }else if(rating==3){
+                    rating1.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+                    rating2.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+                    rating3.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+                }else if(rating==4){
+                    rating1.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+                    rating2.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+                    rating3.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+                    rating4.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+                }else if(rating==5){
+                    rating1.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+                    rating2.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+                    rating3.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+                    rating4.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+                    rating5.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+                }
+                binding.ratingView.addView(itemView)
+            }
+        }
+
+    }
 
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -170,14 +250,6 @@ class ProductByIdActivity : AppCompatActivity() {
                 }
             }
         }
-
-
-
-
-
-
-
-
 
 
         product_details_sku.text = productDetailsByIdResponse.sku
@@ -254,6 +326,29 @@ class ProductByIdActivity : AppCompatActivity() {
 
         }
 
+        val rating:Int= productDetailsByIdResponse.average_rating.roundToInt()
+        rated_by.text = "("+productDetailsByIdResponse.no_of_rating+") "
+        if(rating==1){
+            binding.rating1.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+        }else if(rating==2){
+           binding.rating1.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+           binding.rating2.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+        }else if(rating==3){
+           binding.rating1.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+           binding.rating2.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+           binding.rating3.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+        }else if(rating==4){
+           binding.rating1.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+           binding.rating2.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+           binding.rating3.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+           binding.rating4.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+        }else if(rating==5){
+           binding.rating1.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+           binding.rating2.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+           binding.rating3.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+           binding.rating4.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+           binding.rating5.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+        }
 
     }
 

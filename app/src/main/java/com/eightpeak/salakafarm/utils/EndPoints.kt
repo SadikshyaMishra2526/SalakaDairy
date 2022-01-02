@@ -51,6 +51,8 @@ class EndPoints {
         const val GET_SUB_ITEM = "api/get_sub_item"
         const val GET_BRANCHES = "api/get_branch"
         const val GET_SUBSCRIPTION_DISPLAY = "api/get_customer_subscription"
+        const val POST_RATE = "api/rate"
+        const val GET_RATE = "api/get_product_rating"
         //address
         const val GET_ADDRESS = "api/get_address_list"
 

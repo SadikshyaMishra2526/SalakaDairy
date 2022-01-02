@@ -133,14 +133,11 @@ class ConfirmSubscription : AppCompatActivity() {
             selectedTotalQuantity
         )
 
-        Log.i("TAG", "onCreate: $selectedUnitPerDay $body")
-        binding.customerName.text = userPrefManager.firstName + " " + userPrefManager.lastName
         binding.customerAddress.text = selectedAddressName
-        binding.customerEmail.text = userPrefManager.email
         binding.packageName.text = selectedSubscriptionName
 
         binding.packageTotalCost.text = getString(R.string.rs) + selectedSubscribedTotalAmount
-        binding.totalQuantityRequired.text = selectedUnitPerDay + "litre"
+        binding.totalQuantityRequired.text = selectedUnitPerDay + " litre"
         binding.totalDiscountReceived.text = getString(R.string.rs) + selectedSubscribedDiscount
         binding.totalPriceAfterDiscountReceived.text =
             getString(R.string.rs) + selectedSubscribedPrice
@@ -148,25 +145,27 @@ class ConfirmSubscription : AppCompatActivity() {
         binding.paymentMethod.text = selectedPaymentMethod
         binding.paymentTo.text = userPrefManager.accountName
 
-        binding.paymentAccount.text = userPrefManager.bankCountNo
+
 
         binding.paymentQr.load(BASE_URL + userPrefManager.qrPath)
 
+        binding.holderName.text=userPrefManager.accountHolderName
 
+        binding.bankName.text=userPrefManager.bankName
+        binding.accountNumber.text=userPrefManager.bankAccountNo
 
-
+        Log.i("TAG", "onCreate: "+selectedPaymentMethod)
         if (selectedPaymentMethod == getString(R.string.by_bank_account)) {
-            binding.paymentAccount.visibility = View.VISIBLE
-            binding.paymentTo.visibility = View.VISIBLE
+           binding.bankLayout.visibility=View.VISIBLE
+            binding.proceedWithPayment.visibility=View.VISIBLE
         } else if (selectedPaymentMethod == getString(R.string.by_qr)) {
-            binding.paymentAccount.visibility = View.VISIBLE
-            binding.paymentTo.visibility = View.VISIBLE
-            binding.paymentQr.visibility = View.VISIBLE
+            binding.qrLayout.visibility=View.VISIBLE
+
+            binding.proceedWithPayment.visibility=View.VISIBLE
         } else if (selectedPaymentMethod == getString(R.string.by_esewa)) {
-            binding.payByEsewa.visibility = View.VISIBLE
-            binding.proceedWithPayment.visibility = View.GONE
+         binding.payByEsewa.visibility=View.VISIBLE
         } else if (selectedPaymentMethod == getString(R.string.cash_on_delivery)) {
-            binding.payByEsewa.visibility = View.GONE
+            binding.proceedWithPayment.visibility=View.VISIBLE
         }
 
 
@@ -178,6 +177,9 @@ class ConfirmSubscription : AppCompatActivity() {
                       hideProgressBar()
                       response.data?.let {
                           userPrefManager.subscriptionStatus = true
+
+
+
                       }
                   }
 

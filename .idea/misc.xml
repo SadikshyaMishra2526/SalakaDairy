@@ -3,6 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/RamLaxman/SalakaDairy/app/src/main/res/drawable/boarder.xml" value="0.3769230769230769" />
+        <entry key="..\:/RamLaxman/SalakaDairy/app/src/main/res/drawable/ic_baseline_star_border_24.xml" value="0.3769230769230769" />
+        <entry key="..\:/RamLaxman/SalakaDairy/app/src/main/res/drawable/ic_baseline_star_half_24.xml" value="0.3769230769230769" />
+        <entry key="..\:/RamLaxman/SalakaDairy/app/src/main/res/drawable/ic_baseline_star_rate_24.xml" value="0.3769230769230769" />
+        <entry key="..\:/RamLaxman/SalakaDairy/app/src/main/res/layout/activity_confirm_order.xml" value="0.36666666666666664" />
+        <entry key="..\:/RamLaxman/SalakaDairy/app/src/main/res/layout/activity_confirm_subscription.xml" value="0.36666666666666664" />
+        <entry key="..\:/RamLaxman/SalakaDairy/app/src/main/res/layout/display_subscription_details.xml" value="0.36666666666666664" />
+        <entry key="..\:/RamLaxman/SalakaDairy/app/src/main/res/layout/display_subscription_details_item.xml" value="0.3574074074074074" />
+        <entry key="..\:/RamLaxman/SalakaDairy/app/src/main/res/layout/fragment_product_view_by_id.xml" value="0.3574074074074074" />
+        <entry key="..\:/RamLaxman/SalakaDairy/app/src/main/res/layout/product_item.xml" value="0.3574074074074074" />
+        <entry key="..\:/RamLaxman/SalakaDairy/app/src/main/res/layout/rating_view_item.xml" value="0.36666666666666664" />
         <entry key="..\:/TechnologySalesProjects/SalakaFarm/app/src/main/res/layout/activity_login.xml" value="0.13043478260869565" />
         <entry key="..\:/TechnologySalesProjects/SalakaFarm/app/src/main/res/layout/activity_login2.xml" value="0.18931159420289856" />
         <entry key="..\:/TechnologySalesProjects/SalakaFarm/app/src/main/res/layout/activity_register.xml" value="0.18931159420289856" />

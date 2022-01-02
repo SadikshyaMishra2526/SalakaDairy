@@ -150,4 +150,8 @@ class AppRepository {
     suspend fun getCustomerSubscription(tokenManager: TokenManager) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).getCustomerSubscription()
 
+
+    suspend fun getProductRating(product_id:String) =
+        RetrofitInstance.useApiWithoutToken.getRate(product_id)
+
 }

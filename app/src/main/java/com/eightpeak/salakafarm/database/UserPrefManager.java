@@ -49,6 +49,11 @@ public class UserPrefManager {
     private static final String SUBSCRIPTION= "subscription";
 
 
+    private static final String ACC_HOLDER_NAME= "acc_holder_name";
+
+    private static final String BANK_NAME= "bank_name";
+
+
     public UserPrefManager(Context context) {
         this.mContext = context;
         userPref = mContext.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
@@ -112,35 +117,35 @@ public class UserPrefManager {
         return userPref.getString(USER_CONTACT_NO, DEFAULT);
     }
 
-  public  void setUserCountry(String language) {
-        userPrefEditor.putString(USER_COUNTRY, language);
-        userPrefEditor.commit();
-    }
-
-    public String getUserCountry() {
-        return userPref.getString(USER_COUNTRY, DEFAULT);
-    }
-
-
-
-  public  void setUserAddress1(String language) {
-        userPrefEditor.putString(USER_ADDRESS_1, language);
-        userPrefEditor.commit();
-    }
-
-    public String getUserAddress1() {
-        return userPref.getString(USER_ADDRESS_1, DEFAULT);
-    }
-
-  public  void setUserAddress2(String language) {
-        userPrefEditor.putString(USER_ADDRESS_2, language);
-        userPrefEditor.commit();
-    }
-
-    public String getUserAddress2() {
-        return userPref.getString(USER_ADDRESS_2, DEFAULT);
-    }
-
+//  public  void setUserCountry(String language) {
+//        userPrefEditor.putString(USER_COUNTRY, language);
+//        userPrefEditor.commit();
+//    }
+//
+//    public String getUserCountry() {
+//        return userPref.getString(USER_COUNTRY, DEFAULT);
+//    }
+//
+//
+//
+//  public  void setUserAddress1(String language) {
+//        userPrefEditor.putString(USER_ADDRESS_1, language);
+//        userPrefEditor.commit();
+//    }
+//
+//    public String getUserAddress1() {
+//        return userPref.getString(USER_ADDRESS_1, DEFAULT);
+//    }
+//
+//  public  void setUserAddress2(String language) {
+//        userPrefEditor.putString(USER_ADDRESS_2, language);
+//        userPrefEditor.commit();
+//    }
+//
+//    public String getUserAddress2() {
+//        return userPref.getString(USER_ADDRESS_2, DEFAULT);
+//    }
+//
 
     public  void setSubSelected(Integer subSelected) {
         userPrefEditor.putInt(SELECTED_SUB_ITEM, subSelected);
@@ -201,12 +206,12 @@ public class UserPrefManager {
     }
 
 
-    public  void setBankCountNo(String bankCountNo) {
-        userPrefEditor.putString(BANK_DETAILS, bankCountNo);
+    public  void setBankAccountNo(String bankAccountNo) {
+        userPrefEditor.putString(BANK_DETAILS, bankAccountNo);
         userPrefEditor.commit();
     }
 
-    public String getBankCountNo() {
+    public String getBankAccountNo() {
         return userPref.getString(BANK_DETAILS, DEFAULT);
     }
 
@@ -229,6 +234,32 @@ public class UserPrefManager {
     }
 
 
+
+
+
+    public  void setBankName(String qrPath) {
+        userPrefEditor.putString(BANK_NAME, qrPath);
+        userPrefEditor.commit();
+    }
+
+    public String getBankName() {
+        return userPref.getString(BANK_NAME, DEFAULT);
+    }
+
+
+    public  void setAccountHolderName(String qrPath) {
+        userPrefEditor.putString(ACC_HOLDER_NAME, qrPath);
+        userPrefEditor.commit();
+    }
+
+    public String getAccountHolderName() {
+        return userPref.getString(ACC_HOLDER_NAME, DEFAULT);
+    }
+
+
+
+
+
     public  void setPopupBoolean(Boolean fcmToken) {
         userPrefEditor.putBoolean(POPUP, fcmToken);
         userPrefEditor.commit();
@@ -245,7 +276,7 @@ public class UserPrefManager {
     }
 
     public Boolean getSubscriptionStatus() {
-        return userPref.getBoolean(SUBSCRIPTION, true);
+        return userPref.getBoolean(SUBSCRIPTION, false);
     }
 
     public void clearData() {

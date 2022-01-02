@@ -76,6 +76,8 @@ class LoginActivity : AppCompatActivity() {
                         is Resource.Success -> {
                             hideProgressBar()
                             response.data?.let { loginResponse ->
+
+                                userPrefManager.subscriptionStatus=loginResponse.subscription
                                  tokenManager?.saveToken(loginResponse.access_token)
                                 getUserDetails()
                                 getUserAddress()

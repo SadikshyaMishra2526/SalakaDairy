@@ -7,6 +7,7 @@ class BranchModel (
 )
 
 data class Branches (
+
     @SerializedName("id") val id : Int,
     @SerializedName("name") val name : String,
     @SerializedName("contact") val contact : String,
@@ -19,5 +20,7 @@ data class Branches (
     @SerializedName("user_id") val user_id : Int,
     @SerializedName("branch_status") val branch_status : Int,
     @SerializedName("created_at") val created_at : String,
-    @SerializedName("updated_at") val updated_at : String
+    @SerializedName("updated_at") val updated_at : String,
+    @SerializedName("bank") val bank : String,
+    @SerializedName("account_holder") val account_holder : String
 )

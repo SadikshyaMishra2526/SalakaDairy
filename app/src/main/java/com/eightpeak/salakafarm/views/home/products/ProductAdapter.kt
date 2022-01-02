@@ -23,7 +23,7 @@ import androidx.fragment.app.FragmentActivity
 
 import android.os.Bundle
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-
+import kotlin.math.roundToInt
 
 
 class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductListViewHolder>() {
@@ -59,6 +59,36 @@ class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductListViewHolder
         val categoriesItem = differ.currentList[position]
         holder.itemView.apply {
             product_thumbnail.load(EndPoints.BASE_URL + categoriesItem.image)
+            rated_by.text = "("+categoriesItem.no_of_rating+") "
+
+            val rating:Int= categoriesItem.average_rating.roundToInt()
+
+            if(rating==1){
+                rating_1.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+            }else if(rating==2){
+                rating_1.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+                rating_2.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+            }else if(rating==3){
+                rating_1.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+                rating_2.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+                rating_3.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+            }else if(rating==4){
+                rating_1.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+                rating_2.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+                rating_3.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+                rating_4.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+            }else if(rating==5){
+                rating_1.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+                rating_2.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+                rating_3.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+                rating_4.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+                rating_5.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+
+            }
+
+
+
+
 
             var userPrefManager = UserPrefManager(App.getContext())
                   if(categoriesItem.stock>0){
@@ -128,6 +158,8 @@ class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductListViewHolder
                 LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
 
             }
+
+
         }
 
     }

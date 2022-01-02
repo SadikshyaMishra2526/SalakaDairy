@@ -23,6 +23,7 @@ import com.eightpeak.salakafarm.utils.GeneralUtils
 import com.eightpeak.salakafarm.views.home.products.AddToCartView
 import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdActivity
 import kotlinx.android.synthetic.main.product_item.view.*
+import kotlin.math.roundToInt
 
 class CategoriesByIdAdapter : RecyclerView.Adapter<CategoriesByIdAdapter.CategoriesByIdViewHolder>() {
 
@@ -59,6 +60,35 @@ class CategoriesByIdAdapter : RecyclerView.Adapter<CategoriesByIdAdapter.Categor
 
         holder.itemView.apply {
             product_thumbnail.load(EndPoints.BASE_URL +categoriesItem.image)
+
+            val rating:Int= categoriesItem.average_rating.roundToInt()
+            rated_by.text = "("+categoriesItem.no_of_rating+") "
+            if(rating==1){
+                rating_1.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+            }else if(rating==2){
+                rating_1.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+                rating_2.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+            }else if(rating==3){
+                rating_1.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+                rating_2.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+                rating_3.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+            }else if(rating==4){
+                rating_1.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+                rating_2.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+                rating_3.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+                rating_4.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+            }else if(rating==5){
+                rating_1.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+                rating_2.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+                rating_3.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+                rating_4.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+                rating_5.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+            }
+
+
+
+
+
             if (categoriesItem.descriptions.isNotEmpty()) {
                 if (userPrefManager.language.equals("ne")) {
                     product_name.text = categoriesItem.descriptions[1].name

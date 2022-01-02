@@ -1,14 +1,13 @@
 package com.eightpeak.salakafarm.subscription.displaysubscription
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
-import com.eightpeak.salakafarm.databinding.DisplaySubscriptionDetailsItemBinding
+import com.eightpeak.salakafarm.databinding.DisplaySubscriptionDetailsBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
@@ -19,9 +18,9 @@ import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.google.android.material.snackbar.Snackbar
 
 class SubscriptionDetails : AppCompatActivity() {
-    private lateinit var binding: DisplaySubscriptionDetailsItemBinding
+    private lateinit var binding: DisplaySubscriptionDetailsBinding
     private lateinit var viewModel: SubscriptionViewModel
-    private var _binding: DisplaySubscriptionDetailsItemBinding? = null
+    private var _binding: DisplaySubscriptionDetailsBinding? = null
 
     lateinit var subscriptionAdapter: SubscriptionAdapter
     lateinit var userPrefManager: UserPrefManager
@@ -36,7 +35,7 @@ class SubscriptionDetails : AppCompatActivity() {
                 MODE_PRIVATE
             )
         )
-        binding = DisplaySubscriptionDetailsItemBinding.inflate(layoutInflater)
+        binding = DisplaySubscriptionDetailsBinding.inflate(layoutInflater)
         userPrefManager = UserPrefManager(this)
         setupViewModel()
     }
@@ -76,63 +75,18 @@ class SubscriptionDetails : AppCompatActivity() {
     }
 
     private fun displaySubscriptionDetails(subscriptionDetails: DisplaySubscriptionModel) {
-        val subscription: List<Subscriptions> = subscriptionDetails.subscriptions
-        binding.subscriberName.text = userPrefManager.firstName + " " + userPrefManager.lastName
-        binding.subscriberPackageName.text = subscription[0].sub_package_id.toString()
-        binding.subscriptionRemaining.text = subscription[0].remaining_quantity.toString()
-        binding.subscriptionTotal.text =  subscription[0].subscribed_total_amount.toString()
-        binding.unitPerDay.text = subscription[0].unit_per_day.toString()
-        binding.deliveryTime.text ="Morning"
-        binding.subscriberBranch.text =subscription[0].branch_id.toString()
-//                subscriptionExpire.text =subscription[0].expired_at.toString()
-        binding.subscriptionAddress.text = subscription[0].address_id.toString()
-//
-//            for (i in subscription) {
-//                val itemView: View =
-//                    LayoutInflater.from(this)
-//                        .inflate(
-//                            R.layout.display_subscription_details_item,
-//                            binding.getSubscriptionList,
-//                            false
-//                        )
-
-//                val subscriberName = itemView.findViewById<TextView>(R.id.subscriber_name)
-//                val subscriberPackageName =
-//                    itemView.findViewById<TextView>(R.id.subscriber_package_name)
-//                val subscriptionRemaining =
-//                    itemView.findViewById<TextView>(R.id.subscription_remaining)
-//                val subscriptionTotal = itemView.findViewById<TextView>(R.id.subscription_total)
-//                val deliveryTime = itemView.findViewById<TextView>(R.id.delivery_time)
-//                val unitPerDay = itemView.findViewById<TextView>(R.id.unit_per_day)
-//                val subscriberBranch = itemView.findViewById<TextView>(R.id.subscriber_branch)
-//                val subscriptionExpire = itemView.findViewById<TextView>(R.id.subscription_expire)
-//                val subscriptionAddress = itemView.findViewById<TextView>(R.id.subscription_address)
-//                val displaySubscriptionDates =
-//                    itemView.findViewById<RecyclerView>(R.id.display_subscription_dates)
-//Toast.makeText(this@DisplaySubscription,i.sub_package_id.toString(),Toast.LENGTH_SHORT).show()
-//                subscriberName.text = userPrefManager.firstName + " " + userPrefManager.lastName
-//                subscriberPackageName.text = i.sub_package_id.toString()
-//                subscriptionRemaining.text = i.remaining_quantity.toString()
-//                subscriptionTotal.text =  i.subscribed_total_amount.toString()
-//                unitPerDay.text = i.unit_per_day.toString()
-//                deliveryTime.text ="Morning"
-//                subscriberBranch.text =i.branch_id.toString()
-////                subscriptionExpire.text =i.expired_at.toString()
-//                subscriptionAddress.text = i.address_id.toString()
-//
-//
-//
-//                subscriptionAdapter = SubscriptionAdapter()
-//                layoutManager = GridLayoutManager(this, 2)
-//                displaySubscriptionDates.layoutManager = layoutManager
-//                displaySubscriptionDates.setHasFixedSize(true)
-//                displaySubscriptionDates.isFocusable = false
-//                displaySubscriptionDates.adapter = subscriptionAdapter
-//
-//                binding.getSubscriptionList.addView(itemView)
-
+        val subscription = subscriptionDetails.subscriptions
+//        binding.subscriberName.text = userPrefManager.firstName + " " + userPrefManager.lastName
+////        binding.subscriberPackageName.text =subscription.sub_package.name.toString()
+//        binding.subscriptionRemaining.text =subscription.remaining_quantity.toString()
+//        binding.subscriptionTotal.text = subscription.subscribed_total_amount.toString()
+//        binding.unitPerDay.text =subscription.unit_per_day.toString()
+//        binding.deliveryTime.text ="Morning"
+//        binding.subscriberBranch.text =subscription.branch.name
+//        binding.subscriptionAddress.text =subscription.address.address1
 
     }
+
     private fun hideProgressBar() {
 //        binding.progress.visibility = View.GONE
     }

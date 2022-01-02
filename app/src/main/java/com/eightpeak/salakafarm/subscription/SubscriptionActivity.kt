@@ -1,48 +1,44 @@
 package com.eightpeak.salakafarm.subscription
 
+import android.app.DatePickerDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import com.eightpeak.salakafarm.views.addtocart.CartActivity
-import android.app.DatePickerDialog
 import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
+import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-import java.util.*
-import androidx.lifecycle.ViewModelProvider
-import com.eightpeak.salakafarm.repository.AppRepository
-import com.eightpeak.salakafarm.utils.subutils.Resource
-import com.eightpeak.salakafarm.viewmodel.SubscriptionViewModel
-import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
-import com.google.android.material.snackbar.Snackbar
-
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import coil.api.load
 import com.eightpeak.salakafarm.R
-import com.eightpeak.salakafarm.serverconfig.network.TokenManager
-import com.eightpeak.salakafarm.subscription.attributes.SubscriptionItemModel
-import com.eightpeak.salakafarm.utils.Constants
-import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
-import androidx.core.content.ContextCompat
 import com.eightpeak.salakafarm.database.UserPrefManager
+import com.eightpeak.salakafarm.databinding.ActivitySubscriptionBinding
+import com.eightpeak.salakafarm.repository.AppRepository
+import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.subscription.attributes.Branches
 import com.eightpeak.salakafarm.subscription.attributes.Sub_packages
+import com.eightpeak.salakafarm.subscription.attributes.SubscriptionItemModel
+import com.eightpeak.salakafarm.subscription.confirmSubscription.ConfirmSubscription
+import com.eightpeak.salakafarm.utils.Constants
+import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
 import com.eightpeak.salakafarm.utils.GeneralUtils
-import android.content.DialogInterface
-import android.opengl.Visibility
+import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.addAddressSnack
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
+import com.eightpeak.salakafarm.viewmodel.SubscriptionViewModel
+import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.addresslist.Address_list
-
-import android.widget.RadioButton
-import com.eightpeak.salakafarm.databinding.ActivitySubscriptionBinding
-import com.eightpeak.salakafarm.subscription.confirmSubscription.ConfirmSubscription
+import com.eightpeak.salakafarm.views.addtocart.CartActivity
+import com.google.android.material.snackbar.Snackbar
+import java.util.*
 
 
 class SubscriptionActivity : AppCompatActivity() {
@@ -58,23 +54,23 @@ class SubscriptionActivity : AppCompatActivity() {
     private var addressList: List<Address_list>? = null
 
 
-    private  var selectedBranchId: String=""
-    private  var selectedAddressId: String=""
-    private  var selectedSubscribedTotalAmount: String=""
-    private  var selectedSubscribedDiscount: String=""
-    private  var selectedSubscribedPrice: String=""
-    private  var selectedUnitPerDay: String=""
-    private  var selectedStartingDate: String=""
-    private  var selectedDeliveryPeroid: String=""
-    private  var selectedSubPackageId: String=""
-    private  var selectedTotalQuantity: String=""
+    private lateinit var selectedBranchId: String
+    private lateinit var selectedAddressId: String
+    private lateinit var selectedSubscribedTotalAmount: String
+    private lateinit var selectedSubscribedDiscount: String
+    private lateinit var selectedSubscribedPrice: String
+    private lateinit var selectedUnitPerDay: String
+    private lateinit var selectedStartingDate: String
+    private lateinit var selectedDeliveryPeroid: String
+    private lateinit var selectedSubPackageId: String
+    private lateinit var selectedTotalQuantity: String
 
-    private  var selectedPaymentMethod: String=""
-    private  var selectedSubscriptionName: String=""
-    private  var selectedAddressName: String=""
+    private lateinit var selectedPaymentMethod: String
+    private lateinit var selectedSubscriptionName: String
+    private lateinit var selectedAddressName: String
 
-    private  lateinit var deliveryPeriodRadio:RadioButton
-    private  lateinit var paymentOptionRadio:RadioButton
+    private lateinit var deliveryPeriodRadio: RadioButton
+    private lateinit var paymentOptionRadio: RadioButton
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -132,29 +128,32 @@ class SubscriptionActivity : AppCompatActivity() {
             deliveryPeriodRadio = findViewById<View>(deliveryPeriodId) as RadioButton
             paymentOptionRadio = findViewById<View>(paymentMethodId) as RadioButton
 
-            selectedDeliveryPeroid=deliveryPeriodRadio.text.toString()
-            selectedPaymentMethod=paymentOptionRadio.text.toString()
-            Log.i("TAG", "onCreate: |$selectedPaymentMethod $selectedDeliveryPeroid " +
-                    "$selectedSubscribedDiscount $selectedBranchId $selectedAddressId $selectedSubscribedTotalAmount " +
-                    "$selectedSubscribedPrice $selectedUnitPerDay $selectedStartingDate  $selectedSubPackageId $selectedTotalQuantity"  )
+            selectedDeliveryPeroid = deliveryPeriodRadio.text.toString()
+            selectedPaymentMethod = paymentOptionRadio.text.toString()
+            Log.i(
+                "TAG", "onCreate: |$selectedPaymentMethod $selectedDeliveryPeroid " +
+                        "$selectedSubscribedDiscount $selectedBranchId $selectedAddressId $selectedSubscribedTotalAmount " +
+                        "$selectedSubscribedPrice $selectedUnitPerDay $selectedStartingDate  $selectedSubPackageId $selectedTotalQuantity"
+            )
 
-//            if(selectedDeliveryPeroid!=null)
-            val intent = Intent(this@SubscriptionActivity, ConfirmSubscription::class.java)
-            intent.putExtra("selectedBranchId",selectedBranchId)
-            intent.putExtra("selectedAddressId",selectedAddressId)
-            intent.putExtra("selectedSubscribedTotalAmount",selectedSubscribedTotalAmount)
-            intent.putExtra("selectedSubscribedDiscount",selectedSubscribedDiscount)
-            intent.putExtra("selectedSubscribedPrice",selectedSubscribedPrice)
-            intent.putExtra("selectedUnitPerDay",binding.unitPerDay.text.toString())
-            intent.putExtra("selectedStartingDate",selectedStartingDate)
-            intent.putExtra("selectedDeliveryPeroid",selectedDeliveryPeroid)
-            intent.putExtra("selectedSubPackageId",selectedSubPackageId)
-            intent.putExtra("selectedTotalQuantity",selectedTotalQuantity)
-            intent.putExtra("selectedSubscriptionName",selectedSubscriptionName)
-            intent.putExtra("selectedTotalQuantity",selectedTotalQuantity)
-            intent.putExtra("selectedAddressName",selectedAddressName)
-            intent.putExtra("selectedPaymentMethod",selectedPaymentMethod)
-            startActivity(intent)
+
+            if (!validateSubscription()) {
+                val intent = Intent(this@SubscriptionActivity, ConfirmSubscription::class.java)
+                intent.putExtra("selectedBranchId", selectedBranchId)
+                intent.putExtra("selectedAddressId", selectedAddressId)
+                intent.putExtra("selectedSubscribedTotalAmount", selectedSubscribedTotalAmount)
+                intent.putExtra("selectedSubscribedDiscount", selectedSubscribedDiscount)
+                intent.putExtra("selectedSubscribedPrice", selectedSubscribedPrice)
+                intent.putExtra("selectedUnitPerDay", binding.unitPerDay.text.toString())
+                intent.putExtra("selectedStartingDate", selectedStartingDate)
+                intent.putExtra("selectedDeliveryPeroid", selectedDeliveryPeroid)
+                intent.putExtra("selectedSubPackageId", selectedSubPackageId)
+                intent.putExtra("selectedTotalQuantity", selectedTotalQuantity)
+                intent.putExtra("selectedSubscriptionName", selectedSubscriptionName)
+                intent.putExtra("selectedAddressName", selectedAddressName)
+                intent.putExtra("selectedPaymentMethod", selectedPaymentMethod)
+                startActivity(intent)
+            }
         }
 
         setContentView(binding.root)
@@ -162,6 +161,58 @@ class SubscriptionActivity : AppCompatActivity() {
 
     }
 
+    private fun validateSubscription(): Boolean {
+        var validate = false
+        if (selectedBranchId.isEmpty()) {
+            binding.addSubscriptionLayout.errorSnack("Please select branch", Snackbar.LENGTH_LONG)
+            validate = true
+        }
+        if (selectedAddressId.isEmpty()) {
+            binding.addSubscriptionLayout.errorSnack("Please select branch", Snackbar.LENGTH_LONG)
+            validate = true
+        }
+        if (selectedSubscribedTotalAmount.isEmpty()) {
+            binding.addSubscriptionLayout.errorSnack("Please select branch", Snackbar.LENGTH_LONG)
+            validate = true
+        }
+        if (selectedSubscribedDiscount.isEmpty()) {
+            binding.addSubscriptionLayout.errorSnack("Please select branch", Snackbar.LENGTH_LONG)
+            validate = true
+        }
+        if (selectedSubscribedPrice.isEmpty()) {
+            binding.addSubscriptionLayout.errorSnack("Please select branch", Snackbar.LENGTH_LONG)
+            validate = true
+        }
+        if ( binding.unitPerDay.text.toString().isEmpty()) {
+            binding.addSubscriptionLayout.errorSnack("Please select branch", Snackbar.LENGTH_LONG)
+            validate = true
+        }
+        if (selectedStartingDate.isEmpty()) {
+            binding.addSubscriptionLayout.errorSnack("Please select branch", Snackbar.LENGTH_LONG)
+            validate = true
+        }
+        if (selectedDeliveryPeroid.isEmpty()) {
+            binding.addSubscriptionLayout.errorSnack("Please select branch", Snackbar.LENGTH_LONG)
+            validate = true
+        }
+        if (selectedSubPackageId.isEmpty()) {
+            binding.addSubscriptionLayout.errorSnack("Please select branch", Snackbar.LENGTH_LONG)
+            validate = true
+        }
+        if (selectedTotalQuantity.isEmpty()) {
+            binding.addSubscriptionLayout.errorSnack("Please select branch", Snackbar.LENGTH_LONG)
+            validate = true
+        }
+        if (selectedSubscriptionName.isEmpty()) {
+            binding.addSubscriptionLayout.errorSnack("Please select branch", Snackbar.LENGTH_LONG)
+            validate = true
+        }
+        if (selectedPaymentMethod.isEmpty()) {
+            binding.addSubscriptionLayout.errorSnack("Please select branch", Snackbar.LENGTH_LONG)
+            validate = true
+        }
+        return validate
+    }
 
     private fun setupViewModel() {
         val repository = AppRepository()
@@ -258,10 +309,17 @@ class SubscriptionActivity : AppCompatActivity() {
             branchCard.setOnClickListener {
                 binding.branchSelected.text = branches[i].name
                 selectedBranchId = branches[i].id.toString()
-                userPrefManager.bankCountNo=branches[i].account_number
-                userPrefManager.qrPath=branches[i].qrcode
 
-                userPrefManager.accountName=branches[i].name
+
+                userPrefManager.bankAccountNo = branches[i].account_number
+                userPrefManager.qrPath = branches[i].qrcode
+                userPrefManager.accountName = branches[i].name
+                userPrefManager.accountHolderName = branches[i].account_holder
+                userPrefManager.bankName = branches[i].bank
+
+
+
+
                 getSubscriptionPackageList(branches[i].id)
                 binding.layoutSubItem.visibility = View.GONE
                 binding.getBranchesList.visibility = View.GONE
@@ -374,9 +432,9 @@ class SubscriptionActivity : AppCompatActivity() {
                     "Dis. Range:- " + subItem[i].range.toString() + " (" + subItem[i].discount_price_per_unit.toString() + "%" + ")"
                 subItemThumbnail.load(BASE_URL + subItem[i].sub_item.image.toString())
 
-                if(subItem[i].isSelected){
+                if (subItem[i].isSelected) {
                     selectSubPackage.setCardBackgroundColor(getColor(R.color.sub_color))
-                }else{
+                } else {
                     selectSubPackage.setCardBackgroundColor(getColor(R.color.white))
                 }
                 selectSubPackage.setOnClickListener {
@@ -385,10 +443,10 @@ class SubscriptionActivity : AppCompatActivity() {
                     selectSubPackage.setCardBackgroundColor(getColor(R.color.sub_color))
 
                     binding.selectCardView.visibility = View.VISIBLE
-                    selectedSubPackageId= subItem[i].id.toString()
-                    selectedSubscriptionName=subItem[i].name
+                    selectedSubPackageId = subItem[i].id.toString()
+                    selectedSubscriptionName = subItem[i].name
                 }
-                Log.i("TAG", "displayPackageList: "+   subItem[i].isSelected)
+                Log.i("TAG", "displayPackageList: " + subItem[i].isSelected)
 
 
 
@@ -406,17 +464,18 @@ class SubscriptionActivity : AppCompatActivity() {
         var totalPrice = subPackages.unit_price * subPackages.number_of_days
         binding.selectedPackage.text = subPackages.name
         if (binding.unitPerDay.text.toString().isNotEmpty()) {
-            selectedTotalQuantity=binding.unitPerDay.text.toString()
-            selectedSubscribedTotalAmount=totalPrice.toString()
+            selectedTotalQuantity = binding.unitPerDay.text.toString()
+            selectedSubscribedTotalAmount = totalPrice.toString()
             binding.totalPackageCost.text = getString(R.string.rs) + totalPrice.toString()
             val unitPerDay = Integer.valueOf(binding.unitPerDay.text.toString())
             val str: String = subPackages.range;
             val arrOfStr: List<String> = str.split("-")
             for (range in arrOfStr) println(",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,$range")
             if (unitPerDay >= Integer.valueOf(arrOfStr[0])) {
-                selectedSubscribedDiscount=((totalPrice * subPackages.discount_price_per_unit) / 100).toString()
+                selectedSubscribedDiscount =
+                    ((totalPrice * subPackages.discount_price_per_unit) / 100).toString()
                 totalPrice -= (totalPrice * subPackages.discount_price_per_unit) / 100
-                selectedSubscribedPrice=totalPrice.toString()
+                selectedSubscribedPrice = totalPrice.toString()
                 binding.totalCostWithDiscount.text = getString(R.string.rs) + totalPrice.toString()
                 binding.packageDiscount.text = subPackages.discount_price_per_unit.toString() + " %"
             } else {
@@ -565,7 +624,7 @@ class SubscriptionActivity : AppCompatActivity() {
                             val customerLat: Double = 27.699972326072345
                             val customerLng: Double = 85.36797715904281
                             selectedAddressId = addressId[i].toString()
-                            selectedAddressName=names[i].toString()
+                            selectedAddressName = names[i].toString()
                             getSubscriptionItemList()
                             setUpBranchesView(customerLat, customerLng)
                         }

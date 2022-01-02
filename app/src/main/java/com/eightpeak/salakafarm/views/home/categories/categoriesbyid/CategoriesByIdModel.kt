@@ -50,7 +50,9 @@ data class Products_with_description (
     @SerializedName("created_at") val created_at : String,
     @SerializedName("updated_at") val updated_at : String,
     @SerializedName("pivot") val pivot : Pivot,
-    @SerializedName("descriptions") val descriptions : List<Descriptions>
+    @SerializedName("descriptions") val descriptions : List<Descriptions>,
+    @SerializedName("average_rating") val average_rating: Float,
+@SerializedName("no_of_rating") val no_of_rating: String
 )
 
 data class Descriptions (

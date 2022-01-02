@@ -86,8 +86,8 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/_15sdp"
-        android:layout_marginRight="@dimen/_15sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
         android:backgroundTint="@color/white"
         app:cardCornerRadius="@dimen/_10sdp"
         app:layout_constraintTop_toBottomOf="@+id/products_details_title">
@@ -195,13 +195,63 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/product_image_layout" />
+                <LinearLayout
 
+                    android:id="@+id/rating_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@+id/product_details_sku">
+
+                    <ImageView
+                        android:id="@+id/rating_1"
+                        android:layout_width="@dimen/_13sdp"
+                        android:layout_height="@dimen/_13sdp"
+                        android:src="@drawable/ic_baseline_star_border_24" />
+
+                    <ImageView
+                        android:id="@+id/rating_2"
+                        android:layout_width="@dimen/_13sdp"
+                        android:layout_height="@dimen/_13sdp"
+                        android:src="@drawable/ic_baseline_star_border_24" />
+
+                    <ImageView
+                        android:id="@+id/rating_3"
+                        android:layout_width="@dimen/_13sdp"
+                        android:layout_height="@dimen/_13sdp"
+                        android:src="@drawable/ic_baseline_star_border_24" />
+
+                    <ImageView
+                        android:id="@+id/rating_4"
+                        android:layout_width="@dimen/_13sdp"
+                        android:layout_height="@dimen/_13sdp"
+                        android:src="@drawable/ic_baseline_star_border_24" />
+
+                    <ImageView
+                        android:id="@+id/rating_5"
+                        android:layout_width="@dimen/_13sdp"
+                        android:layout_height="@dimen/_13sdp"
+                        android:src="@drawable/ic_baseline_star_border_24" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:textSize="@dimen/_10sdp"
+                        android:id="@+id/rated_by"
+                        android:drawableLeft="@drawable/ic_baseline_person_24"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
                 <LinearLayout
                     android:id="@+id/price_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_5sdp"
-                    app:layout_constraintTop_toBottomOf="@+id/product_details_sku">
+                    app:layout_constraintTop_toBottomOf="@+id/rating_layout">
 
                     <TextView
                         android:id="@+id/product_price"
@@ -241,6 +291,27 @@
                         android:drawableLeft="@drawable/ic_baseline_shopping_cart_24"
                         />
                 </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/rating_view_layout"
+                    android:layout_width="match_parent"
+                    android:layout_margin="@dimen/_10sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/price_layout"
+                      android:orientation="vertical"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Rating and Review"
+                        android:textColor="@color/sub_color"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/_9sdp"
+                        android:layout_height="wrap_content"/>
+                    <LinearLayout
+                        android:id="@+id/rating_view"
+                        android:background="@color/tab_indicator_gray"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
 
                 <View
                     android:id="@+id/view_divider"
@@ -249,7 +320,7 @@
                     android:background="@color/tab_indicator_gray"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/price_layout" />
+                    app:layout_constraintTop_toBottomOf="@+id/rating_view_layout" />
 
                 <TextView
                     android:id="@+id/product_content"

@@ -21,7 +21,6 @@ import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.databinding.FragmentHomeBinding
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.subscription.SubscriptionActivity
-import com.eightpeak.salakafarm.subscription.displaysubscription.DisplaySubscription
 import com.eightpeak.salakafarm.subscription.displaysubscription.SubscriptionDetails
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.Constants.Companion.DEFAULT

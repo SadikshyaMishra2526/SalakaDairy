@@ -13,6 +13,7 @@ import com.eightpeak.salakafarm.utils.subutils.Utils
 import com.eightpeak.salakafarm.views.home.products.ProductModel
 import com.eightpeak.salakafarm.views.home.products.ServerResponse
 import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdModel
+import com.eightpeak.salakafarm.views.home.products.productbyid.ProductRatingModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
@@ -21,16 +22,10 @@ class ProductByIdViewModel (
     app: Application,
     private val appRepository: AppRepository) : AndroidViewModel(app) {
 
-
-
     val productDetailsById: MutableLiveData<Resource<ProductByIdModel>> = MutableLiveData()
-
-
-
     fun getProductById(id:String) = viewModelScope.launch {
         getProductDetailsById(id)
     }
-
 
     private suspend fun getProductDetailsById(id:String) {
         productDetailsById.postValue(Resource.Loading())
@@ -177,6 +172,56 @@ class ProductByIdViewModel (
 
 
 
+
+//get product rating
+//    add to wishlist
+
+    val productRating: MutableLiveData<Resource<ProductRatingModel>> = MutableLiveData()
+
+    fun productRating( productId:String) = viewModelScope.launch {
+        productRatingByView(productId)
+    }
+
+
+    private suspend fun productRatingByView( productId:String) {
+        productRating.postValue(Resource.Loading())
+        try {
+            if (Utils.hasInternetConnection(getApplication<Application>())) {
+                val response = appRepository.getProductRating(productId)
+                Log.i("TAG", "fetchPics: $response")
+                productRating.postValue(handleProductRatingResponse(response))
+            } else {
+                productRating.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+            }
+        } catch (t: Throwable) {
+            Log.i("TAG", "fetchPics: "+t.localizedMessage)
+            when (t) {
+                is IOException -> productRating.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.network_failure
+                        )
+                    )
+                )
+                else -> productRating.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.conversion_error
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun handleProductRatingResponse(response: Response<ProductRatingModel>): Resource<ProductRatingModel> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
 
 
 

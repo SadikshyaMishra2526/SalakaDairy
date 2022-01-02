@@ -31,6 +31,7 @@ import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdModel
 import com.eightpeak.salakafarm.views.home.slider.SliderModel
 import com.eightpeak.salakafarm.views.addtocart.addtocartfragment.CartResponse
 import com.eightpeak.salakafarm.views.home.products.Data
+import com.eightpeak.salakafarm.views.home.products.productbyid.ProductRatingModel
 import com.eightpeak.salakafarm.views.login.LoginResponse
 import com.eightpeak.salakafarm.views.order.orderview.orderhistory.OrderHistoryDetailsModel
 import com.eightpeak.salakafarm.views.order.orderview.orderhistory.OrderHistoryModel
@@ -225,5 +226,13 @@ interface ApiInterface {
     @GET(EndPoints.GET_SUBSCRIPTION_DISPLAY)
     suspend fun getCustomerSubscription(): Response<DisplaySubscriptionModel>
 
+
+
+    @POST(EndPoints.POST_RATE)
+    suspend fun postRate(): Response<DisplaySubscriptionModel>
+
+    @FormUrlEncoded
+    @POST(EndPoints.GET_RATE)
+    suspend fun getRate(@Field("product_id") addressId:String ): Response<ProductRatingModel>
 
 }

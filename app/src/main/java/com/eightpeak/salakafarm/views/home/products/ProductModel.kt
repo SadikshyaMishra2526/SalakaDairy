@@ -31,6 +31,8 @@ data class Data (
 	@SerializedName("image") val image : String,
 	@SerializedName("brand_id") val brand_id : Int,
 	@SerializedName("supplier_id") val supplier_id : Int,
+	@SerializedName("average_rating") val average_rating : Float,
+	@SerializedName("no_of_rating") val no_of_rating : String,
 	@SerializedName("price") val price : Int,
 	@SerializedName("cost") val cost : Int,
 	@SerializedName("stock") val stock : Int,
