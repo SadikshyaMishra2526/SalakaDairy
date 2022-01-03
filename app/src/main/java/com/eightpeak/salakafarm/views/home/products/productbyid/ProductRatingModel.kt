@@ -23,6 +23,10 @@ data class Ratings (
     @SerializedName("total") val total : Int
 )
 
+data class Customer (
+    @SerializedName("first_name") val first_name : String,
+    @SerializedName("name") val name : String,
+)
 data class Links (
 
     @SerializedName("url") val url : String,
@@ -31,7 +35,7 @@ data class Links (
 )
 
 data class Data (
-
+    @SerializedName("customer") val customer :Customer,
     @SerializedName("id") val id : Int,
     @SerializedName("rating") val rating : Int,
     @SerializedName("comment") val comment : String,

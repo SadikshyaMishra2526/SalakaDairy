@@ -93,11 +93,11 @@ class CategoriesByIdAdapter : RecyclerView.Adapter<CategoriesByIdAdapter.Categor
                 if (userPrefManager.language.equals("ne")) {
                     product_name.text = categoriesItem.descriptions[1].name
 
-                    if(!categoriesItem.cost.equals("0")){
+                    if(!categoriesItem.promotion_price.price_promotion.equals("0")){
                         product_price_discount.text= GeneralUtils.getUnicodeNumber(categoriesItem.price.toString())
                         product_price_discount.paintFlags = product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                         product_price.text =
-                            context.getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(categoriesItem.cost.toString())
+                            context.getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(categoriesItem.promotion_price.price_promotion.toString())
                     }else{
                         product_price.text =
                             context.getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(categoriesItem.price.toString())
@@ -106,11 +106,11 @@ class CategoriesByIdAdapter : RecyclerView.Adapter<CategoriesByIdAdapter.Categor
                 } else {
                     product_name.text = categoriesItem.descriptions[0].name
 
-                    if(!categoriesItem.cost.equals("0")){
+                    if(!categoriesItem.promotion_price.price_promotion.equals("0")){
                         product_price_discount.text=categoriesItem.price.toString()
                         product_price_discount.paintFlags = product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                         product_price.text =
-                            context.getString(R.string.rs) + categoriesItem.cost.toString()
+                            context.getString(R.string.rs) + categoriesItem.promotion_price.price_promotion.toString()
                     }else{
                         product_price.text =
                             context.getString(R.string.rs) + categoriesItem.price.toString()

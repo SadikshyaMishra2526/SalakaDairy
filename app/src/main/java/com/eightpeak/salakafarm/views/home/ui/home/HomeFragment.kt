@@ -13,17 +13,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.databinding.FragmentHomeBinding
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.subscription.SubscriptionActivity
-import com.eightpeak.salakafarm.subscription.displaysubscription.SubscriptionDetails
+import com.eightpeak.salakafarm.subscription.displaysubscription.DisplaySubscriptionDetails
 import com.eightpeak.salakafarm.utils.Constants
-import com.eightpeak.salakafarm.utils.Constants.Companion.DEFAULT
 import com.eightpeak.salakafarm.utils.Constants.Companion.NO_LOGIN
 import com.eightpeak.salakafarm.views.home.categories.CategoriesFragment
 import com.eightpeak.salakafarm.views.home.products.ProductFragment
@@ -91,7 +88,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
 
         binding.subscriptionLayout.setOnClickListener {
             if(userPrefManager.subscriptionStatus){
-                val mainActivity = Intent(context, SubscriptionDetails::class.java)
+                val mainActivity = Intent(context, DisplaySubscriptionDetails::class.java)
                 startActivity(mainActivity)
             }else{
                 val mainActivity = Intent(context, SubscriptionActivity::class.java)

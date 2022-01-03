@@ -23,8 +23,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SalakaFarm">
         <activity
-            android:name=".subscription.displaysubscription.SubscriptionDetails"
+            android:name=".subscription.displaysubscription.DisplaySubscriptionDetails"
             android:exported="true" />
+
         <activity
             android:name=".views.pages.videos.VideoViewActivity"
             android:exported="true" />

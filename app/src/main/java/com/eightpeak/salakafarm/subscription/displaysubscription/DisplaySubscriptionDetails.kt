@@ -1,13 +1,13 @@
 package com.eightpeak.salakafarm.subscription.displaysubscription
 
-import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.util.Log
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
 import com.eightpeak.salakafarm.database.UserPrefManager
-import com.eightpeak.salakafarm.databinding.DisplaySubscriptionDetailsBinding
+import com.eightpeak.salakafarm.databinding.ActivityDisplaySubscriptionDetailsBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
@@ -17,16 +17,12 @@ import com.eightpeak.salakafarm.viewmodel.SubscriptionViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.google.android.material.snackbar.Snackbar
 
-class SubscriptionDetails : AppCompatActivity() {
-    private lateinit var binding: DisplaySubscriptionDetailsBinding
+class DisplaySubscriptionDetails : AppCompatActivity() {
+    private lateinit var binding: ActivityDisplaySubscriptionDetailsBinding
     private lateinit var viewModel: SubscriptionViewModel
-    private var _binding: DisplaySubscriptionDetailsBinding? = null
-
-    lateinit var subscriptionAdapter: SubscriptionAdapter
     lateinit var userPrefManager: UserPrefManager
     private var tokenManager: TokenManager? = null
 
-    private var layoutManager: GridLayoutManager? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         tokenManager = TokenManager.getInstance(
@@ -35,11 +31,14 @@ class SubscriptionDetails : AppCompatActivity() {
                 MODE_PRIVATE
             )
         )
-        binding = DisplaySubscriptionDetailsBinding.inflate(layoutInflater)
+        binding = ActivityDisplaySubscriptionDetailsBinding.inflate(layoutInflater)
+        binding.headerTitle.text="Track your subscription"
+        binding.returnHome.setOnClickListener { finish() }
         userPrefManager = UserPrefManager(this)
         setupViewModel()
-    }
 
+        setContentView(binding.root)
+    }
     private fun setupViewModel() {
         val repository = AppRepository()
         val factory = ViewModelProviderFactory(application, repository)
@@ -76,6 +75,7 @@ class SubscriptionDetails : AppCompatActivity() {
 
     private fun displaySubscriptionDetails(subscriptionDetails: DisplaySubscriptionModel) {
         val subscription = subscriptionDetails.subscriptions
+        Log.i("TAG", "displaySubscriptionDetails: $subscriptionDetails")
 //        binding.subscriberName.text = userPrefManager.firstName + " " + userPrefManager.lastName
 ////        binding.subscriberPackageName.text =subscription.sub_package.name.toString()
 //        binding.subscriptionRemaining.text =subscription.remaining_quantity.toString()

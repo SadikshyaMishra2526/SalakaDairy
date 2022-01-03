@@ -64,7 +64,8 @@ class ProductByIdActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = FragmentProductViewByIdBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        tokenManager = TokenManager.getInstance(getSharedPreferences(Constants.TOKEN_PREF, MODE_PRIVATE))
+        tokenManager =
+            TokenManager.getInstance(getSharedPreferences(Constants.TOKEN_PREF, MODE_PRIVATE))
         userPrefManager = UserPrefManager(this)
 
         init()
@@ -99,7 +100,7 @@ class ProductByIdActivity : AppCompatActivity() {
 
     private fun getPictures() {
         val productId = intent.getStringExtra(PRODUCT_ID)
-          if (productId != null) {
+        if (productId != null) {
             viewModel.getProductById(productId)
         }
         viewModel.productDetailsById.observe(this, Observer { response ->
@@ -108,8 +109,8 @@ class ProductByIdActivity : AppCompatActivity() {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
                         setProductsDetails(picsResponse)
-                        if(picsResponse.productRelation.isNotEmpty())
-                        relatedProductAdapter.differ.submitList(picsResponse.productRelation)
+                        if (picsResponse.productRelation.isNotEmpty())
+                            relatedProductAdapter.differ.submitList(picsResponse.productRelation)
                         binding.relatedProductRecycler.adapter = relatedProductAdapter
                         getRating()
                     }
@@ -128,6 +129,7 @@ class ProductByIdActivity : AppCompatActivity() {
             }
         })
     }
+
     private fun getRating() {
         val productId = intent.getStringExtra(PRODUCT_ID)
         if (productId != null) {
@@ -138,7 +140,7 @@ class ProductByIdActivity : AppCompatActivity() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
-                      plotRating(picsResponse)
+                        plotRating(picsResponse)
                     }
                 }
 
@@ -158,8 +160,8 @@ class ProductByIdActivity : AppCompatActivity() {
 
     private fun plotRating(ratingResponse: ProductRatingModel) {
 
-        if(ratingResponse.ratings.data.isNotEmpty()) {
-             val data: List<Data> =ratingResponse.ratings.data
+        if (ratingResponse.ratings.data.isNotEmpty()) {
+            val data: List<Data> = ratingResponse.ratings.data
             for (i in data.indices) {
                 val itemView: View =
                     LayoutInflater.from(this)
@@ -174,24 +176,24 @@ class ProductByIdActivity : AppCompatActivity() {
                 val rating4 = itemView.findViewById<ImageView>(R.id.rating_4)
                 val rating5 = itemView.findViewById<ImageView>(R.id.rating_5)
                 commentedAt.text = data[i].created_at
-                commentedBy.text =(data[i].customer_id.toString())
-                comment.text =(data[i].comment)
-                val rating:Int= data[i].rating
-                if(rating==1){
+                commentedBy.text = data[i].customer.name
+                comment.text = (data[i].comment)
+                val rating: Int = data[i].rating
+                if (rating == 1) {
                     rating1.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
-                }else if(rating==2){
+                } else if (rating == 2) {
                     rating1.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
                     rating2.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
-                }else if(rating==3){
+                } else if (rating == 3) {
                     rating1.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
                     rating2.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
                     rating3.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
-                }else if(rating==4){
+                } else if (rating == 4) {
                     rating1.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
                     rating2.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
                     rating3.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
                     rating4.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
-                }else if(rating==5){
+                } else if (rating == 5) {
                     rating1.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
                     rating2.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
                     rating3.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
@@ -207,10 +209,14 @@ class ProductByIdActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.N)
     private fun setProductsDetails(productDetailsByIdResponse: ProductByIdModel) {
-        if(productDetailsByIdResponse.stock>0){
-            binding.outOfStock.visibility=View.GONE
-        }else{
-            binding.outOfStock.visibility=View.VISIBLE
+        Log.i(
+            "TAG",
+            "setProductsDetails: " + productDetailsByIdResponse.promotion_price.price_promotion.toString()
+        )
+        if (productDetailsByIdResponse.stock > 0) {
+            binding.outOfStock.visibility = View.GONE
+        } else {
+            binding.outOfStock.visibility = View.VISIBLE
         }
         product_price.text = productDetailsByIdResponse.price.toString()
         if (productDetailsByIdResponse.descriptions.isNotEmpty()) {
@@ -221,15 +227,7 @@ class ProductByIdActivity : AppCompatActivity() {
                         productDetailsByIdResponse.descriptions[1].content,
                         Html.FROM_HTML_MODE_COMPACT
                     )
-                if(!productDetailsByIdResponse.cost.equals("0")){
-                    product_price_discount.text= GeneralUtils.getUnicodeNumber(productDetailsByIdResponse.price.toString())
-                    product_price_discount.paintFlags = product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                    product_price.text =
-                      getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(productDetailsByIdResponse.cost.toString())
-                }else{
-                    product_price.text =
-                        getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(productDetailsByIdResponse.price.toString())
-                }
+
 
             } else {
                 product_details_name.text = productDetailsByIdResponse.descriptions[0].name
@@ -238,16 +236,36 @@ class ProductByIdActivity : AppCompatActivity() {
                         productDetailsByIdResponse.descriptions[0].content,
                         Html.FROM_HTML_MODE_COMPACT
                     )
+            }
+        }
 
-                if(!productDetailsByIdResponse.cost.equals("0")){
-                    product_price_discount.text=productDetailsByIdResponse.price.toString()
-                    product_price_discount.paintFlags = product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                    product_price.text =
-                        getString(R.string.rs) + productDetailsByIdResponse.cost.toString()
-                }else{
-                    product_price.text =
-                        getString(R.string.rs) + productDetailsByIdResponse.price.toString()
-                }
+        Log.i(
+            "TAG",
+            "setProductsDetails: " + productDetailsByIdResponse.promotion_price.price_promotion
+        )
+        if (!productDetailsByIdResponse.promotion_price.price_promotion.equals("0")) {
+            if (userPrefManager?.language.equals("ne")) {
+                product_price_discount.text =
+                    GeneralUtils.getUnicodeNumber(productDetailsByIdResponse.price.toString())
+                product_price_discount.paintFlags =
+                    product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                product_price.text =
+                    getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(productDetailsByIdResponse.promotion_price.price_promotion.toString())
+            } else {
+                product_price_discount.text = productDetailsByIdResponse.price.toString()
+                product_price_discount.paintFlags =
+                    product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                product_price.text =
+                    getString(R.string.rs) + " " + productDetailsByIdResponse.promotion_price.price_promotion.toString()
+
+            }
+        } else {
+            if (userPrefManager?.language.equals("ne")) {
+                product_price.text =
+                    getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(productDetailsByIdResponse.price.toString())
+            } else {
+                product_price.text =
+                    getString(R.string.rs) + " " + productDetailsByIdResponse.price.toString()
             }
         }
 
@@ -270,13 +288,17 @@ class ProductByIdActivity : AppCompatActivity() {
 
         binding.productAddToWishlist.setOnClickListener {
             val productId = productDetailsByIdResponse.id.toString()
-            tokenManager?.let { it1 -> viewModel.addTowishlist(it1,productId) }
+            tokenManager?.let { it1 -> viewModel.addTowishlist(it1, productId) }
             viewModel.wishlist.observe(this, Observer { response ->
                 when (response) {
                     is Resource.Success -> {
                         hideProgressBar()
                         response.data?.let {
-                            binding.productViewIdLayout.successWishListSnack(this,getString(R.string.add_to_wishlist),Snackbar.LENGTH_LONG)
+                            binding.productViewIdLayout.successWishListSnack(
+                                this,
+                                getString(R.string.add_to_wishlist),
+                                Snackbar.LENGTH_LONG
+                            )
                         }
                     }
 
@@ -300,14 +322,18 @@ class ProductByIdActivity : AppCompatActivity() {
 
             val product_id = intent.getStringExtra(PRODUCT_ID)
             if (product_id != null) {
-                tokenManager?.let { it1 -> viewModel.addToCart(it1,product_id,"1","") }
+                tokenManager?.let { it1 -> viewModel.addToCart(it1, product_id, "1", "") }
             }
             viewModel.addToCart.observe(this, Observer { response ->
                 when (response) {
                     is Resource.Success -> {
                         hideProgressBar()
                         response.data?.let {
-                            binding.productViewIdLayout.successAddToCartSnack(this,getString(R.string.add_to_cart),Snackbar.LENGTH_LONG)
+                            binding.productViewIdLayout.successAddToCartSnack(
+                                this,
+                                getString(R.string.add_to_cart),
+                                Snackbar.LENGTH_LONG
+                            )
                         }
                     }
 
@@ -326,28 +352,28 @@ class ProductByIdActivity : AppCompatActivity() {
 
         }
 
-        val rating:Int= productDetailsByIdResponse.average_rating.roundToInt()
-        rated_by.text = "("+productDetailsByIdResponse.no_of_rating+") "
-        if(rating==1){
+        val rating: Int = productDetailsByIdResponse.average_rating.roundToInt()
+        rated_by.text = "(" + productDetailsByIdResponse.no_of_rating + ") "
+        if (rating == 1) {
             binding.rating1.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
-        }else if(rating==2){
-           binding.rating1.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
-           binding.rating2.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
-        }else if(rating==3){
-           binding.rating1.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
-           binding.rating2.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
-           binding.rating3.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
-        }else if(rating==4){
-           binding.rating1.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
-           binding.rating2.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
-           binding.rating3.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
-           binding.rating4.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
-        }else if(rating==5){
-           binding.rating1.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
-           binding.rating2.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
-           binding.rating3.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
-           binding.rating4.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
-           binding.rating5.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+        } else if (rating == 2) {
+            binding.rating1.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+            binding.rating2.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+        } else if (rating == 3) {
+            binding.rating1.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+            binding.rating2.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+            binding.rating3.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+        } else if (rating == 4) {
+            binding.rating1.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+            binding.rating2.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+            binding.rating3.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+            binding.rating4.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+        } else if (rating == 5) {
+            binding.rating1.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+            binding.rating2.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+            binding.rating3.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+            binding.rating4.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
+            binding.rating5.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
         }
 
     }

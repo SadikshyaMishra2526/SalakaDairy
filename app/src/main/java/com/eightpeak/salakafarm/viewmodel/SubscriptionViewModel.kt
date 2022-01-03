@@ -297,7 +297,7 @@ val addSubscription: MutableLiveData<Resource<SubscriptionResponse>> = MutableLi
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
                 val response = appRepository.getCustomerSubscription(token)
-                Log.i("TAG", "fetchSubscription: "+response.body()!!.subscriptions)
+                Log.i("TAG", "fetchSubscription: "+response)
                 getCustomerSubscription.postValue(handleCustomerSubscription(response))
             } else {
                 getCustomerSubscription.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
