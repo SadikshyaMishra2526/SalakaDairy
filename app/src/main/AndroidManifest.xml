@@ -113,7 +113,6 @@
         <activity
             android:name=".views.home.address.AddressModification"
             android:theme="@style/Theme.SalakaFarm" />
-        <activity android:name=".subscription.displaysubscription.DisplaySubscription" />
 
         <service
             android:name=".views.home.ui.notifications.PushNotificationService"

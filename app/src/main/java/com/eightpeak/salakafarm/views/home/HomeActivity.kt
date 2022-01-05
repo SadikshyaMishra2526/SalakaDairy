@@ -104,12 +104,10 @@ GoogleApiClient.OnConnectionFailedListener
             .addOnConnectionFailedListener(this)
             .addApi(LocationServices.API)
             .build()
-        PushNotificationService()
+        pushNotificationService()
         initialNotification()
         val navController = findNavController(R.id.nav_host_fragment_activity_home)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(
+          val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home, R.id.navigation_message, R.id.navigation_cart,R.id.navigation_setting
             )
@@ -139,7 +137,7 @@ GoogleApiClient.OnConnectionFailedListener
         )
         tokenManager?.let { it1 -> viewModel.getPopUpBanner(it1) }
 
-        viewModel.getPopUp.observe(this, Observer { response ->
+        viewModel.getPopUp.observe(this, { response ->
             when (response) {
                 is Resource.Success -> {
 
@@ -262,7 +260,7 @@ GoogleApiClient.OnConnectionFailedListener
         super.onRequestPermissionsResult(requestCode, permissions!!, grantResults)
         when (requestCode) {
             MULTIPLE_PERMISSION_REQUEST_CODE -> {
-                if (grantResults.size > 0) {
+                if (grantResults.isNotEmpty()) {
                     var somePermissionWasDenied = false
                     for (result in grantResults) {
                         if (result == PackageManager.PERMISSION_DENIED) {
@@ -324,13 +322,14 @@ GoogleApiClient.OnConnectionFailedListener
                 fm.popBackStack()
             } else {
                 Log.i("MainActivity", "nothing on backstack, calling super")
+                finish()
                 super.onBackPressed()
             }
         }
 
     }
 
-    fun PushNotificationService() {
+    private fun pushNotificationService() {
         FirebaseMessaging.getInstance().subscribeToTopic("customers")
         FirebaseMessaging.getInstance().subscribeToTopic("all")
             .addOnSuccessListener {
@@ -382,9 +381,9 @@ GoogleApiClient.OnConnectionFailedListener
         val ads_img: ImageView = dialog!!.findViewById(R.id.ads_img)
         ads_img.load(BASE_URL+banner)
         val closePopup: ImageView? = dialog?.findViewById(R.id.close_popup)
-            userPrefManager.setPopupBoolean(false)
+            userPrefManager.popupBoolean = false
             closePopup?.setOnClickListener {
-                userPrefManager.setPopupBoolean(false)
+                userPrefManager.popupBoolean = false
                 dialog!!.dismiss()
             }
         dialog?.show()

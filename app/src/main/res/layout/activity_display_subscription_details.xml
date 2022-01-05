@@ -2,11 +2,12 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout"
+    android:id="@+id/subscription_details"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/subscriptionView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
@@ -56,6 +57,60 @@
             android:layout_margin="@dimen/_5sdp"
             android:orientation="vertical"
             android:padding="@dimen/_5sdp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_10sdp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Subscription Started"
+                        android:textSize="@dimen/_8sdp" />
+
+                    <TextView
+                        android:id="@+id/subscription_started"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="2022/01/01"
+                        android:textSize="@dimen/_10sdp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Subscription Expires at"
+                        android:textSize="@dimen/_8sdp" />
+
+                    <TextView
+                        android:id="@+id/subscription_expire"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="2022/01/01"
+                        android:textColor="@color/error_red"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
 
 
             <androidx.cardview.widget.CardView
@@ -209,72 +264,22 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_10sdp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="Subscription Started"
-                        android:textSize="@dimen/_8sdp" />
-
-                    <TextView
-                        android:id="@+id/subscription_started"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="2022/01/01"
-                        android:textSize="@dimen/_10sdp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="Subscription Expires at"
-                        android:textSize="@dimen/_8sdp" />
-
-                    <TextView
-                        android:id="@+id/subscription_expire"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="2022/01/01"
-                        android:textColor="@color/error_red"
-                        android:textStyle="bold" />
-                </LinearLayout>
-            </LinearLayout>
 
             <LinearLayout
+                android:padding="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"/>
+
                 <TextView
+                    android:id="@+id/today_date"
+                    android:textColor="@color/blue"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/_14sdp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Baisak" />
+                    android:text="2022/01/03" />
 
                 <View
                     android:layout_width="0dp"
@@ -282,24 +287,14 @@
                     android:layout_weight="1" />
 
                 <TextView
+                    android:textStyle="bold"
+                    android:textColor="@color/blue"
+                    android:id="@+id/today_day"
+                    android:textSize="@dimen/_14sdp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Baisak" />
+                    android:text="Monday" />
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Baisak" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView

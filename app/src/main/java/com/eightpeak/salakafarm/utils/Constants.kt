@@ -21,6 +21,9 @@ class Constants {
         const val ORDER_STATUS = "order_status"
         const val ORDER_ID = "order_id"
         const val DEFAULT = "not_found"
+        const val TYPE = "type"
+        const val SUBSCRIPTION = "subscription"
+        const val ORDER = "order"
 
         val NO_LOGIN = null
     }

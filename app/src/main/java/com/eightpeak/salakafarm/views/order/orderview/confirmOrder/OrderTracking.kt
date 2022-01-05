@@ -36,8 +36,7 @@ class OrderTracking : AppCompatActivity() {
 
 
     private val NEW_HEX_CODE_LISTENER_INTERVAL: Long = 10000
-    lateinit var productAdapter: ProductAdapter
-    private var layoutManager: GridLayoutManager? = null
+
     private var tokenManager: TokenManager? = null
     private var orderStatus: String? = null
     private var orderId: String? = null
@@ -180,7 +179,6 @@ class OrderTracking : AppCompatActivity() {
 
 
     fun onProgressClick(view: View) {
-        //Preventing Click during loading
     }
 
     override fun onDestroy() {

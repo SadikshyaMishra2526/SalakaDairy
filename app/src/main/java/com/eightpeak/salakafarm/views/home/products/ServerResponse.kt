@@ -9,7 +9,8 @@ data class ServerResponse (
     @SerializedName("qty") val qty : Int,
     @SerializedName("options") val options : String,
     @SerializedName("created_at") val created_at : String,
-    @SerializedName("updated_at") val updated_at : String
+    @SerializedName("updated_at") val updated_at : String,
+    @SerializedName("latlng") val latlng : String
 
     ) {
     override fun toString(): String {
