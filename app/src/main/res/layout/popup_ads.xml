@@ -20,7 +20,7 @@
             android:id="@+id/close_popup"
             android:layout_width="@dimen/_30sdp"
             android:layout_alignParentRight="true"
-            android:src="@drawable/ic_baseline_close_24"
+            android:src="@drawable/close"
             android:background="@drawable/circle_background"
             android:layout_margin="@dimen/_10sdp"
             android:layout_height="@dimen/_30sdp"/>

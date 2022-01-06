@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.databinding.ActivityRegisterBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.RequestBodies
@@ -35,8 +38,14 @@ class RegisterActivity : AppCompatActivity() {
         val repository = AppRepository()
         val factory = ViewModelProviderFactory(application, repository)
         registerViewModel = ViewModelProvider(this, factory).get(RegisterViewModel::class.java)
+        changeStatusBarColor()
     }
 
+    private fun changeStatusBarColor() {
+        val window: Window = window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = resources.getColor(R.color.main_color)
+    }
 
     fun onRegisterClick(view: View) {
         val first_name = binding.etFirstName.text.toString()

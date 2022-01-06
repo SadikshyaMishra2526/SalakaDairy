@@ -24,7 +24,7 @@
 
     <fragment
         android:id="@+id/navigation_message"
-        android:name="com.eightpeak.salakafarm.views.home.ui.notifications.NotificationsFragment"
+        android:name="com.eightpeak.salakafarm.database.notifications.NotificationsFragment"
         android:label="@string/messages"
         tools:layout="@layout/fragment_notifications" >
         <action

@@ -17,7 +17,6 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.eightpeak.salakafarm.R
-import com.eightpeak.salakafarm.databinding.ActivityHomeBinding
 import androidx.lifecycle.Observer
 
 import com.google.android.gms.common.ConnectionResult
@@ -49,6 +48,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.eightpeak.salakafarm.database.NotificationDetails
 import com.eightpeak.salakafarm.database.UserPrefManager
+import com.eightpeak.salakafarm.databinding.ActivityHomeBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
@@ -141,11 +141,11 @@ GoogleApiClient.OnConnectionFailedListener
             when (response) {
                 is Resource.Success -> {
 
-//                    val status :Boolean= userPrefManager.popupBoolean
+                    val status :Boolean= userPrefManager.popupBoolean
                     Log.i("TAG", "getPopUp: "+userPrefManager.popupBoolean)
-//                    if (status) {
-//                        response.data?.popup?.let { popupMessage(it.image) }
-//                    }
+                    if (status) {
+                        response.data?.popup?.let { popupMessage(it.image) }
+                    }
                   }
 
                 is Resource.Error -> {

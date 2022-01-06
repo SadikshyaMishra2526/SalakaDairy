@@ -23,6 +23,7 @@ import android.content.Intent
 
 import android.content.BroadcastReceiver
 import android.content.Context
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.eightpeak.salakafarm.App
 import com.eightpeak.salakafarm.R
@@ -150,7 +151,8 @@ class ProductFragment : Fragment() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        binding.categoriesLayout.errorSnack(message, Snackbar.LENGTH_LONG)
+                        Toast.makeText(requireContext(),message,Toast.LENGTH_SHORT).show()
+//                        binding.categoriesLayout.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 
                 }
