@@ -82,6 +82,7 @@ class EndPoints {
 
         const val ADD_ADDRESS = "api/add_new_address"
         const val  GET_EMPLOYEE_LATLNG= "api/get_employee_latlng"
+        const val  ADD_ALTERATION= "api/sub_alter"
 
 
         const val POP_UP = "api/get_popup"

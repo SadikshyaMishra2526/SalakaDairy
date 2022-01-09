@@ -1,5 +1,6 @@
 package com.eightpeak.salakafarm.serverconfig
 
+import DisplaySubscriptionModel
 import UserProfileModel
 import com.eightpeak.salakafarm.utils.EndPoints
 import com.eightpeak.salakafarm.serverconfig.network.AccessToken
@@ -7,7 +8,7 @@ import com.eightpeak.salakafarm.subscription.attributes.BranchModel
 import com.eightpeak.salakafarm.subscription.attributes.SubscriptionItemModel
 import com.eightpeak.salakafarm.subscription.attributes.SubscriptionPackageModel
 import com.eightpeak.salakafarm.subscription.attributes.SubscriptionResponse
-import com.eightpeak.salakafarm.subscription.displaysubscription.DisplaySubscriptionModel
+import com.eightpeak.salakafarm.subscription.displaysubscription.EmployeeTrackDetails
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.COMPARE_LIST_DETAILS
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.DELETE_CART
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.DELETE_CART_ITEM
@@ -215,7 +216,10 @@ interface ApiInterface {
 
 
     @POST(EndPoints.GET_EMPLOYEE_LATLNG)
-    suspend fun getEmployeeLatLng(@Body body:RequestBodies.EmpLatlng ): Response<ServerResponse>
+    suspend fun getEmployeeLatLng(@Body body:RequestBodies.EmpLatlng ): Response<EmployeeTrackDetails>
+
+    @POST(EndPoints.ADD_ALTERATION)
+    suspend fun subscriptionAlteration(@Body body:RequestBodies.AddAlteration ): Response<ServerResponse>
 
 
 

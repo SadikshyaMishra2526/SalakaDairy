@@ -151,8 +151,7 @@ class ProductFragment : Fragment() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        Toast.makeText(requireContext(),message,Toast.LENGTH_SHORT).show()
-//                        binding.categoriesLayout.errorSnack(message, Snackbar.LENGTH_LONG)
+                        binding.categoriesLayout.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 
                 }

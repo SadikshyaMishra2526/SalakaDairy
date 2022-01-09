@@ -9,6 +9,7 @@ import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.RequestBodies
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
+import com.eightpeak.salakafarm.subscription.displaysubscription.EmployeeTrackDetails
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.Utils
 import com.eightpeak.salakafarm.views.home.products.Data
@@ -274,7 +275,7 @@ private fun handleOrderHistoryDetails(response: Response<OrderHistoryDetailsMode
     }
 
 
-    val empLatLng: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
+    val empLatLng: MutableLiveData<Resource<EmployeeTrackDetails>> = MutableLiveData()
 
     fun empLatLng(tokenManager: TokenManager, body:RequestBodies.EmpLatlng) = viewModelScope.launch {
         empLatLngByView(tokenManager,body)
@@ -312,7 +313,7 @@ private fun handleOrderHistoryDetails(response: Response<OrderHistoryDetailsMode
         }
     }
 
-    private fun handleEmpLatLngResponse(response: Response<ServerResponse>): Resource<ServerResponse> {
+    private fun handleEmpLatLngResponse(response: Response<EmployeeTrackDetails>): Resource<EmployeeTrackDetails> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)

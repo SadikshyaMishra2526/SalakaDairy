@@ -70,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:text="Proceed"
+            android:text="@string/proceed"
             android:textColor="@color/main_color"
             android:textSize="@dimen/_13sdp"
             android:textStyle="bold"

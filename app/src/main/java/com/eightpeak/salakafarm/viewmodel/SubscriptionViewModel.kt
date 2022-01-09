@@ -1,5 +1,6 @@
 package com.eightpeak.salakafarm.viewmodel
 
+import DisplaySubscriptionModel
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
@@ -13,10 +14,10 @@ import com.eightpeak.salakafarm.subscription.attributes.BranchModel
 import com.eightpeak.salakafarm.subscription.attributes.SubscriptionItemModel
 import com.eightpeak.salakafarm.subscription.attributes.SubscriptionPackageModel
 import com.eightpeak.salakafarm.subscription.attributes.SubscriptionResponse
-import com.eightpeak.salakafarm.subscription.displaysubscription.DisplaySubscriptionModel
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.Utils
 import com.eightpeak.salakafarm.views.addresslist.AddressListModel
+import com.eightpeak.salakafarm.views.home.products.ServerResponse
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
@@ -298,7 +299,7 @@ val addSubscription: MutableLiveData<Resource<SubscriptionResponse>> = MutableLi
             if (Utils.hasInternetConnection(getApplication<Application>())) {
                 val response = appRepository.getCustomerSubscription(token)
                 Log.i("TAG", "fetchSubscription: $response")
-//                getCustomerSubscription.postValue(handleCustomerSubscription(response))
+                getCustomerSubscription.postValue(handleCustomerSubscription(response))
             } else {
                 getCustomerSubscription.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
             }
@@ -324,6 +325,53 @@ val addSubscription: MutableLiveData<Resource<SubscriptionResponse>> = MutableLi
     }
 
     private fun handleCustomerSubscription(response: Response<DisplaySubscriptionModel>): Resource<DisplaySubscriptionModel> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+
+    val addAlterationSubscription: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
+
+    fun addAlterationSubscription(token:TokenManager,body: RequestBodies.AddAlteration) = viewModelScope.launch {
+        changeAlterSubscription(token,body)
+    }
+
+    private suspend fun changeAlterSubscription(token: TokenManager,body: RequestBodies.AddAlteration) {
+        addAlterationSubscription.postValue(Resource.Loading())
+        try {
+            if (Utils.hasInternetConnection(getApplication<Application>())) {
+                val response = appRepository.subscriptionAlteration(token,body)
+                Log.i("TAG", "fetchSubscription: $response")
+                addAlterationSubscription.postValue(handleAlterationSubscription(response))
+            } else {
+                addAlterationSubscription.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+            }
+        } catch (t: Throwable) {
+            Log.i("TAG", "fetchSubscription: "+t.localizedMessage)
+            when (t) {
+                is IOException -> addAlterationSubscription.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.network_failure
+                        )
+                    )
+                )
+                else -> addAlterationSubscription.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.conversion_error
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun handleAlterationSubscription(response: Response<ServerResponse>): Resource<ServerResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)

@@ -2,47 +2,47 @@
 <resources>
     <string name="app_name">Salaka Farm</string>
     <string name="title_activity_login">LoginActivity</string>
-    <string name="sign_in">Sign In</string>
-    <string name="email"><font color='#FFFFFF' size="13">Email</font></string>
+    <string name="sign_in">साइन इन</string>
+    <string name="email"><font color='#FFFFFF' size="13">इमेल</font></string>
     <string name="password"><font color='#FFFFFF' size="13">\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020 \u0020\u0020 Password</font></string>
-    <string name="address">Address</string>
-    <string name="register">Registration</string>
-    <string name="terms_conditions">I have read and agree to the <font color='#23a1d1' size="13">Terms &amp; Conditions</font></string>
-    <string name="privacy_policy">I have read and agree to the<font color='#23a1d1' size="13">\u0020 Privacy Policy</font></string>
+    <string name="address">ठेगाना</string>
+    <string name="register">ग्राहक दर्ता</string>
+    <string name="terms_conditions">मैले <font color='#23a1d1' size="13">नियम र सर्तहरू  </font> पढेको छु र सहमत छु</string>
+    <string name="privacy_policy">मैले <font color='#23a1d1' size="13">गोपनीयता नीति \u0020 </font>पढेको छु र सहमत छु</string>
 
-    <string name="use_other_methods">Use Other Methods</string>
-    <string name="forgot_password">Forgot Password</string>
-    <string name="remember_me">Remember Me</string>
-    <string name="new_user_register_now">New User? Register Now</string>
-    <string name="enter_your_mobile_number">Enter your mobile number</string>
-    <string name="send_otp">Send OTP</string>
-    <string name="verify_otp">Verify OTP</string>
-    <string name="otp_is_resent_in_10_sec">OTP is resent in 10 sec</string>
+    <string name="use_other_methods">अन्य विधिहरू प्रयोग </string>
+    <string name="forgot_password">पासवर्ड भुल्नु भयो</string>
+    <string name="remember_me">मलाई सम्झनुहोस्</string>
+    <string name="new_user_register_now">नयाँ प्रयोगकर्ता? अहिले नै दर्ता गर्नुहोस</string>
+    <string name="enter_your_mobile_number">आफ्नो मोबाइल नम्बर प्रविष्ट गर्नु</string>
+    <string name="send_otp">OTP पठाउनु</string>
+    <string name="verify_otp">OTP प्रमाणित गर्नु</string>
+    <string name="otp_is_resent_in_10_sec">OTP १० सेकेन्डमा पुनः पठाइन्छ</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_home">घर</string>
 
 
-    <string name="first_name"><font color='#FFFFFF' size="13">First Name</font></string>
-    <string name="last_name"><font color='#FFFFFF' size="13">Second Name</font></string>
-    <string name="address_1"><font color='#FFFFFF' size="13">Address 1</font></string>
-    <string name="address_2"><font color='#FFFFFF' size="13">Address 2</font></string>
-    <string name="contact"><font color='#FFFFFF' size="13">Contact</font></string>
+    <string name="first_name"><font color='#FFFFFF' size="13">पहिलो नाम</font></string>
+    <string name="last_name"><font color='#FFFFFF' size="13">उपनाम</font></string>
+    <string name="address_1"><font color='#FFFFFF' size="13">ठेगाना १</font></string>
+    <string name="address_2"><font color='#FFFFFF' size="13">ठेगाना 2</font></string>
+    <string name="contact"><font color='#FFFFFF' size="13">सम्पर्क गर्नु</font></string>
     <string name="imagecontent">ImageContent</string>
-    <string name="next">Next</string>
+    <string name="next">नेक्स्ट</string>
     <string name="get_started">Get Started</string>
-    <string name="skip">Skip</string>
+    <string name="skip">स्किप </string>
 
-    <string name="no_internet_connection">No internet connection</string>
-    <string name="network_failure">Network Failure</string>
+    <string name="no_internet_connection">इन्टरनेट जडान छैन</string>
+    <string name="network_failure">नेटवर्क विफलता</string>
     <string name="conversion_error">Conversion Error</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="categories">कोटीहरू</string>
+    <string name="categories">कटेगोरिएस</string>
     <string name="see_all">सबै हेर्नुहोस्</string>
 
-    <string name="telephone_n9808608666"><font color='black' size="16">Telephone</font>\n9801234567</string>
-    <string name="opening_times_n7_am_8_pm"><font color='black' size="16"> Opening Times</font>\n7 Am - 8 Pm</string>
-    <string name="company_name">Salaka Organic and Traning Center</string>
+    <string name="telephone_n9808608666"><font color='black' size="16">टेलिफोन</font>\n9801234567</string>
+    <string name="opening_times_n7_am_8_pm"><font color='black' size="16"> खुल्ने समय</font>\n7 Am - 8 Pm</string>
+    <string name="company_name">सलाका अर्गानिक एण्ड ट्रेनिङ सेन्टर</string>
 
     <string name="language_change"><font color='#5FA95F'>भाषा परिवर्तन</font></string>
     <string name="search_here">यहाँ खोज्नुहोस्</string>
@@ -64,24 +64,12 @@
     <string name="rs">रु।</string>
     <string name="add_to_cart">कार्टमा थप्नुहोस्</string>
     <string name="todo">Todo</string>
-    <string name="related_products">Related Products</string>
-    <string name="add_to_wishlist">Successfully added to Wishlist</string>
-    <string name="view_cart">View Cart</string>
-    <string name="add">Add</string>
+    <string name="related_products">सम्बन्धित उत्पादनहरु</string>
+    <string name="add_to_wishlist">इच्छासूचीमा सफलतापूर्वक थपियो</string>
+    <string name="view_cart">कार्ट हेर्नुहोस्</string>
+    <string name="add">थप्नुहोस्</string>
     <string name="logout_msg">के तपाइँ निश्चित हुनुहुन्छ कि तपाइँ लगआउट गर्न चाहानुहुन्छ?</string>
     <string name="logout">बाहिर निस्कनु</string>
-
-    <string name="cancel">रद्द गर्नुहोस्</string>
-    <string name="change_your_password">Change Your Password</string>
-
-
-    <string name="payment_status"><font color='#5FA95F' size="10">Payment Status</font></string>
-    <string name="order_status"><font color='#5FA95F' size="10">Order Status</font></string>
-    <string name="shipping_status"><font color='#5FA95F' size="10">Shipping Status </font></string>
-    <string name="order_at"><font color='#5FA95F' size="10">Order At</font> </string>
-    <string name="compare_list_empty">Compare List is empty</string>
-    <string name="user_profile">User Profile</string>
-    <string name="total_cost">Total Cost</string>
 
     <string name="shipped">ढुवानी गरियो</string>
     <string name="processed">प्रक्रिया गरिएको</string>
@@ -90,9 +78,102 @@
     <string name="complete">पूर्ण</string>
     <string name="track_your_order">तपाईंको अर्डर ट्र्याक</string>
     <string name="deliver_to">डेलिभर ठेगाना:</string>
-    <string name="selected_branch">Selected Branch</string>
-    <string name="main_branch">Main Branch</string>
-    <string name="by_bank_account">By Bank Account</string>
-    <string name="by_qr">By QR</string>
+    <string name="cancel">रद्द गर्नुहोस्</string>
+    <string name="change_your_password">आफ्नो पासवर्ड परिवर्तन गर्नुहोस्</string>
+
+
+    <string name="contact_no">संपर्क नम्बर.:</string>
+    <string name="gender">लिङ्ग:</string>
+    <string name="payment_status">भुक्तानी स्थिति</string>
+    <string name="order_status">अर्डर स्थिति</string>
+    <string name="shipping_status">ढुवानी स्थिति </string>
+    <string name="order_at">अर्डर गर्नुहोस् </string>
+    <string name="compare_list_empty">तुलना सूची खाली छ</string>
+    <string name="user_profile">प्रयोगकर्ता प्रोफाइल</string>
+    <string name="total_cost">कुल खर्च</string>
+
+    <string name="selected_branch">चयन गरिएको शाखा</string>
+    <string name="main_branch">मुख्य शाखा</string>
+    <string name="by_bank_account">बैंक खाता द्वारा</string>
+    <string name="by_qr">QR द्वारा</string>
+    <string name="new_status">नयाँ</string>
+    <string name="processing_status">प्रशोधन गर्दै</string>
+    <string name="complete_status">पूरा भयो</string>
+    <string name="failed_status">असफल</string>
+    <string name="order_history">अर्डर इतिहास</string>
+    <string name="female">महिला</string>
+    <string name="delivery_on_its_way">तपाईंको डेलिभरी आफ्नै तरिका हो ...</string>
+    <string name="contact_employee">सम्पर्क कर्मचारी :-</string>
+    <string name="there_is_no_order_in_the_basket">टोकरीमा अर्डर छैन</string>
+    <string name="continue_button">कोन्टिनुए </string>
+    <string name="sn">स्न.</string>
+    <string name="product_id">उत्पादन आईडी</string>
+    <string name="address_details">ठेगाना विवरण</string>
+    <string name="edit_profile">प्रोफाइल सम्पादन गर</string>
+    <string name="change_password">पासवर्ड परिवर्तन</string>
+    <string name="wishlist">इच्छा सुची</string>
+    <string name="compare_list">तुलना सूची</string>
+    <string name="cart_list">कार्ट सूची</string>
+
+    <string name="previous">अघिल्लो</string>
+    <string name="view_wishlist">इच्छा सूची हेर्नुहोस्</string>
+    <string name="search">खोज्नुहोस्</string>
+
+    <string name="just_for_you">जस्ट फोर यू </string>
+    <string name="delete">डिलिट </string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="title_activity_maps_fragment">MapsFragment</string>
+    <string name="my_compare_list">मेरो तुलना सूची</string>
+    <string name="in_stock">स्टक मा</string>
+    <string name="out_of_stock">स्टक बाहिर</string>
+    <string name="product_image">उत्पादन छवि</string>
+    <string name="product_name">उत्पादनको नाम</string>
+    <string name="price">मूल्य</string>
+    <string name="brand">ब्रान्ड</string>
+    <string name="availability">उपलब्धता</string>
+    <string name="shopping_cart">तपाईंको किनमेल कार्ट</string>
+    <string name="select_subscription_item">सदस्यता वस्तु चयन गर्नुहोस्</string>
+    <string name="partner_branch">साझेदार शाखा</string>
+    <string name="add_address">ठेगाना थप्नुहोस्</string>
+    <string name="litre">लिटर</string>
+    <string name="subscription_schedule_and_quantity">सदस्यता तालिका र मात्रा</string>
+    <string name="evening_shift">साँझको सिफ्ट</string>
+    <string name="discount">छुट</string>
+    <string name="morning_shift">बिहानको सिफ्ट</string>
+    <string name="both_shift">दुबै शिफ्ट</string>
+    <string name="by_esewa">ईसेवा द्वारा</string>
+    <string name="cash_on_delivery">डेलिभरीमा नगद</string>
+    <string name="hold_status">होल्ड </string>
+    <string name="cancelled_status">रद्द गरियो</string>
+    <string name="male">पुरुष</string>
+    <string name="total">कुल</string>
+    <string name="created_at">सिर्जना गरियो</string>
+    <string name="salaka_s_videos">सलाकाका भिडियोहरू</string>
+    <string name="additional_setting">अतिरिक्त सेटिङ</string>
+    <string name="customer_setting">ग्राहक सेटिङ</string>
+    <string name="other_queries">अन्य प्रश्नहरू</string>
+    <string name="proceed">अगाडि बढ्नुहोस्</string>
+    <string name="track_your_subscription">आफ्नो सदस्यता ट्र्याक गर्नुहोस्</string>
+    <string name="employee_s_details">कर्मचारीको विवरण</string>
+    <string name="employee_image">कर्मचारी छवि:-</string>
+    <string name="employee_name">कर्मचारीको नाम:-</string>
+    <string name="employee_s_email">कर्मचारीको इमेल :</string>
+    <string name="subscription_started">सदस्यता सुरु भयो</string>
+    <string name="subscription_expires_at">सदस्यताको म्याद समाप्त हुन्छ</string>
+    <string name="view_history">इतिहास हेर्नुहोस्</string>
+    <string name="delete_subscription">सदस्यता मेटाउनुहोस्</string>
+    <string name="customer_name">ग्राहकको नाम:-</string>
+    <string name="package_name">प्याकेजको नाम :</string>
+    <string name="total_subscribed">कुल सदस्यता :</string>
+    <string name="delivery_time">डेलिभरी समय :</string>
+    <string name="litre_per_day">प्रति दिन लिटर :</string>
+    <string name="delivered_by">द्वारा वितरित :</string>
+    <string name="delivered_to">मा पठाइयो :</string>
+    <string name="payment_by">द्वारा भुक्तानी :</string>
+    <string name="subscription_details">सदस्यता विवरण </string>
+    <string name="alter_subscription">सदस्यता परिवर्तन गर्नु</string>
+    <string name="cancel_today_s_subscription">आजको सदस्यता रद्द गर्नु</string>
+    <string name="add_additional_subscription">थप सदस्यता थप्नुहोस्</string>
+    <string name="deduct_subscription">सदस्यता कटौती गर्नुहोस्</string>
 
 </resources>

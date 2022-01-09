@@ -38,10 +38,10 @@
     <string name="categories">Categories</string>
     <string name="see_all">See All</string>
 
-    <string name="payment_status"><font color='#5FA95F' size="10">Payment Status</font></string>
-    <string name="order_status"><font color='#5FA95F' size="10">Order Status</font></string>
-    <string name="shipping_status"><font color='#5FA95F' size="10">Shipping Status </font></string>
-    <string name="order_at"><font color='#5FA95F' size="10">Order At</font> </string>
+    <string name="payment_status">Payment Status</string>
+    <string name="order_status">Order Status</string>
+    <string name="shipping_status">Shipping Status </string>
+    <string name="order_at">Order At </string>
 
     <string name="telephone_n9808608666"><font color='black' size="16">Telephone</font>\n9801234567</string>
     <string name="opening_times_n7_am_8_pm"><font color='black' size="16"> Opening Times</font>\n7 Am - 8 Pm</string>
@@ -66,30 +66,54 @@
 
     <string name="related_products">Related Products</string>
     <string name="add_to_wishlist">Successfully added to Wishlist</string>
-    <string name="view_wishlist">View WishList</string>
-    <string name="search">Search</string>
     <string name="view_cart">View Cart</string>
     <string name="add">Add</string>
     <string name="logout_msg">Are you sure you want to logout?</string>
     <string name="logout">Logout</string>
+    <string name="change_your_password">Change Your Password</string>
+    <string name="user_profile">User Profile</string>
+    <string name="compare_list_empty">Compare List is empty</string>
+    <string name="total_cost">Total Cost :-</string>
 
+    <string name="selected_branch">Selected Branch</string>
+    <string name="main_branch">Main Branch</string>
+    <string name="shipped">Shipped</string>
+    <string name="processed">Processed</string>
+    <string name="processing">Processing</string>
+    <string name="pending">Pending</string>
+    <string name="complete">Complete</string>
+    <string name="track_your_order">Track Your Order</string>
+    <string name="deliver_to">Deliver To :</string>
+    <string name="by_bank_account">By Bank Account</string>
+    <string name="by_qr">By QR</string>
+    <string name="address_details">Address Details</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="change_password">Change Password</string>
+    <string name="wishlist">WishList</string>
+    <string name="compare_list">Compare List</string>
+    <string name="cart_list">Cart List</string>
     <string name="cancel">Cancel</string>
-    <string name="title_activity_cart">CartActivity</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="previous">Previous</string>
+    <string name="complete_status">Completed</string>
+    <string name="failed_status">Failed</string>
+    <string name="new_status">New</string>
+    <string name="processing_status">Processing</string>
+    <string name="delivery_on_its_way">Your Delivery is own its way...</string>
+    <string name="contact_employee">Contact Employee :-</string>
+    <string name="there_is_no_order_in_the_basket">There is no order in the basket</string>
+    <string name="continue_button">Continue</string>
+    <string name="sn">Sn.</string>
+    <string name="product_id">Product Id</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+      <string name="previous">Previous</string>
+    <string name="view_wishlist">View WishList</string>
+    <string name="search">Search</string>
+
     <string name="just_for_you">Just For You</string>
     <string name="delete">Delete</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="title_activity_maps_fragment">MapsFragment</string>
-    <string name="change_your_password">Change Your Password</string>
-    <string name="user_profile">User Profile</string>
-    <string name="compare_list_empty">Compare List is empty</string>
-    <string name="my_compare_list">My Compare List</string>
+   <string name="my_compare_list">My Compare List</string>
     <string name="in_stock">In Stock</string>
     <string name="out_of_stock">Out of Stock</string>
     <string name="product_image">Product Image</string>
@@ -98,19 +122,8 @@
     <string name="brand">Brand</string>
     <string name="availability">Availability</string>
     <string name="shopping_cart">Your Shopping Cart</string>
-    <string name="total_cost">Total Cost :-</string>
-
-
-    <string name="shipped">Shipped</string>
-    <string name="processed">Processed</string>
-    <string name="processing">Processing</string>
-    <string name="pending">Pending</string>
-    <string name="complete">Complete</string>
-    <string name="track_your_order">Track Your Order</string>
-    <string name="deliver_to">Deliver To :</string>
     <string name="select_subscription_item">Select Subscription Item</string>
-    <string name="selected_branch">Selected Branch</string>
-    <string name="main_branch">Main Branch</string>
+
     <string name="partner_branch">Partner Branch</string>
 
     <string name="add_address">Add Address</string>
@@ -120,10 +133,46 @@
     <string name="discount">Discount</string>
     <string name="morning_shift">Morning Shift</string>
     <string name="both_shift">Both Shift</string>
-    <string name="by_bank_account">By Bank Account</string>
-    <string name="by_qr">By QR</string>
-    <string name="by_esewa">By ESewa</string>
+
+      <string name="by_esewa">By ESewa</string>
     <string name="cash_on_delivery">Cash on Delivery</string>
+    <string name="hold_status">Hold</string>
+    <string name="cancelled_status">Cancelled</string>
+     <string name="order_history">Order History</string>
+    <string name="female">Female</string>
+    <string name="male">Male</string>
+     <string name="total">Total</string>
+    <string name="created_at">Created At</string>
+    <string name="salaka_s_videos">Salaka\'s Videos</string>
+    <string name="additional_setting">Additional Setting</string>
+    <string name="customer_setting">Customer Setting</string>
+    <string name="other_queries">Other Queries</string>
+    <string name="proceed">Proceed</string>
+    <string name="track_your_subscription">Track your subscription</string>
+    <string name="employee_s_details">Employee\'s Details</string>
+    <string name="employee_image">Employee Image:-</string>
+    <string name="employee_name">Employee Name:-</string>
+    <string name="contact_no">Contact No.:</string>
+    <string name="gender">Gender:</string>
+    <string name="employee_s_email">Employee\'s Email :</string>
+    <string name="subscription_started">Subscription Started</string>
+    <string name="subscription_expires_at">Subscription Expires at</string>
+    <string name="view_history">View History</string>
+    <string name="delete_subscription">Cancel Package</string>
+    <string name="customer_name">Customer Name:-</string>
+    <string name="package_name">Package Name :</string>
+    <string name="total_subscribed">Total Subscribed :</string>
+    <string name="delivery_time">Delivery Time :</string>
+    <string name="litre_per_day">Litre per day :</string>
+    <string name="delivered_by">Delivered By :</string>
+    <string name="delivered_to">Delivered To:</string>
+    <string name="payment_by">Payment By:</string>
+    <string name="subscription_details">Subscription Details</string>
+    <string name="alter_subscription">Alter Subscription</string>
+    <string name="deduct_subscription">Deduct Subscription</string>
+    <string name="cancel_today_s_subscription">Cancel Today\'s Subscription</string>
+    <string name="add_additional_subscription">Add additional Subscription</string>
+
 
     <string-array name="nepdays">
         <item>01</item>

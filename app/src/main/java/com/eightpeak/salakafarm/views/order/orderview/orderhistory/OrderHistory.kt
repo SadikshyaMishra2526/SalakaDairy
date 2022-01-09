@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -16,7 +17,12 @@ import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.databinding.FragmentOrderHistoryBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
+import com.eightpeak.salakafarm.subscription.displaysubscription.TrackSubscriptionView
 import com.eightpeak.salakafarm.utils.Constants
+import com.eightpeak.salakafarm.utils.Constants.Companion.ORDER
+import com.eightpeak.salakafarm.utils.Constants.Companion.ORDER_ID
+import com.eightpeak.salakafarm.utils.Constants.Companion.ORDER_STATUS
+import com.eightpeak.salakafarm.utils.Constants.Companion.TYPE
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.OrderViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
@@ -44,12 +50,9 @@ class OrderHistory : AppCompatActivity() {
 
         binding = FragmentOrderHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.headerTitle.text = "Order History"
+        binding.headerTitle.text = getString(R.string.order_history)
         binding.returnHome.setOnClickListener { finish() }
-        binding.continueShoppingEmpty.setOnClickListener {
-            startActivity(Intent(this@OrderHistory, HomeActivity::class.java))
-            finish()
-        }
+
         tokenManager = TokenManager.getInstance(
             getSharedPreferences(
                 Constants.TOKEN_PREF,
@@ -86,7 +89,9 @@ class OrderHistory : AppCompatActivity() {
                             populateHistoryView(picsResponse)
 //
                             binding.ifEmpty.visibility=View.GONE
+                           binding.titles.visibility=View.VISIBLE
                         }else{
+                            binding.titles.visibility=View.GONE
                             binding.ifEmpty.visibility=View.VISIBLE
                         }
                     }
@@ -126,46 +131,48 @@ class OrderHistory : AppCompatActivity() {
 
 
             if(orderHistory.orderlist[i].status == 1){
-                orderStatus.text="New"
+                orderStatus.text=getString(R.string.new_status)
                 orderStatus.setTextColor(getColor(R.color.blue))
             }else if(orderHistory.orderlist[i].status == 2){
-                orderStatus.text="Processing"
+                orderStatus.text=getString(R.string.processing_status)
                 orderStatus.setTextColor(getColor(R.color.green1))
             }else if(orderHistory.orderlist[i].status == 3){
-                orderStatus.text="Hold"
+                orderStatus.text=getString(R.string.hold_status)
             }else if(orderHistory.orderlist[i].status == 4){
-                orderStatus.text="Cancelled"
+                orderStatus.text=getString(R.string.cancelled_status)
                 orderStatus.setTextColor(getColor(R.color.gray_1))
             }else if(orderHistory.orderlist[i].status == 5){
-                orderStatus.text="Completed"
+                orderStatus.text=getString(R.string.complete_status)
                 orderStatus.setTextColor(getColor(R.color.green2))
             }else if(orderHistory.orderlist[i].status == 6){
-                orderStatus.text="Failed"
+                orderStatus.text=getString(R.string.failed_status)
                 orderStatus.setTextColor(getColor(R.color.red))
-
-
             }
 
             val created: String = createdAt.substring(0, createdAt.length.coerceAtMost(10))
             productCreated.text=created
 
             orderTracking.setOnClickListener {
-                val intent = Intent(this@OrderHistory,OrderTracking::class.java)
-                Log.i("TAG", "populateHistoryView: "+ orderHistory.orderlist[i].status.toString())
-                intent.putExtra(Constants.ORDER_ID, orderHistory.orderlist[i].id.toString())
-                intent.putExtra(Constants.ORDER_STATUS, orderHistory.orderlist[i].status.toString())
-                startActivity(intent)
+                val args = Bundle()
+                args.putString(ORDER_ID, orderHistory.orderlist[i].id.toString())
+                args.putString(ORDER_STATUS, orderHistory.orderlist[i].status.toString())
+                args.putString(TYPE,ORDER)
+                val bottomSheet = OrderTracking()
+                bottomSheet.arguments = args
+                bottomSheet.show(
+                    (this@OrderHistory as FragmentActivity).supportFragmentManager,
+                    bottomSheet.tag
+                )
             }
 
 
             orderHistoryDetails.setOnClickListener {
                 val bundle = Bundle()
-                bundle.putString("order_id", orderHistory.orderlist[i].id.toString())
+                bundle.putString(ORDER_ID, orderHistory.orderlist[i].id.toString())
                 val fragobj = OrderHistoryDetails()
                 fragobj.arguments = bundle
                 val fm = supportFragmentManager
                 val tr = fm.beginTransaction()
-                Log.i("TAG", "populateHistoryView: "+ orderHistory.orderlist[i].id.toString())
                 tr.add(R.id.order_history, fragobj)
                 tr.commitAllowingStateLoss()
             }
@@ -177,7 +184,7 @@ class OrderHistory : AppCompatActivity() {
     override fun onBackPressed() {
         val fm: android.app.FragmentManager? = fragmentManager
         if (fm != null) {
-            if (fm.getBackStackEntryCount() > 0) {
+            if (fm.backStackEntryCount > 0) {
                 Log.i("MainActivity", "popping backstack")
                 fm.popBackStack()
             } else {

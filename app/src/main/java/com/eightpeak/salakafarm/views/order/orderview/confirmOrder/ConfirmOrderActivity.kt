@@ -28,9 +28,6 @@ import com.eightpeak.salakafarm.views.order.orderview.orderhistory.OrderHistory
 import com.eightpeak.salakafarm.views.order.orderview.viewordercheckoutdetails.CartItem
 import com.eightpeak.salakafarm.views.order.orderview.viewordercheckoutdetails.DataTotal
 import com.eightpeak.salakafarm.views.order.orderview.viewordercheckoutdetails.ShippingAddress
-import com.esewa.android.sdk.payment.ESewaConfiguration
-import com.esewa.android.sdk.payment.ESewaPayment
-import com.esewa.android.sdk.payment.ESewaPaymentActivity
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
 

@@ -9,6 +9,7 @@
     <LinearLayout
         android:id="@+id/subscriptionView"
         android:layout_width="match_parent"
+
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
         android:orientation="vertical">
@@ -57,10 +58,13 @@
             android:layout_margin="@dimen/_5sdp"
             android:orientation="vertical"
             android:padding="@dimen/_5sdp">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_10sdp">
+                android:layout_margin="@dimen/_5sdp"
+                android:background="@color/sub_color_lighter"
+                android:padding="@dimen/_10sdp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -71,15 +75,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Subscription Started"
-                        android:textSize="@dimen/_8sdp" />
+                        android:text="@string/subscription_started"
+                        android:textColor="@color/sub_color"
+                        android:textSize="@dimen/_10sdp" />
 
                     <TextView
                         android:id="@+id/subscription_started"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="2022/01/01"
                         android:textSize="@dimen/_10sdp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -98,8 +102,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Subscription Expires at"
-                        android:textSize="@dimen/_8sdp" />
+                        android:text="@string/subscription_expires_at"
+                        android:textColor="@color/sub_color"
+                        android:textSize="@dimen/_10sdp" />
 
                     <TextView
                         android:id="@+id/subscription_expire"
@@ -112,7 +117,204 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/sub_color_lighter"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:padding="@dimen/_5sdp">
 
+                <TextView
+                    android:id="@+id/today_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2022/01/03"
+                    android:textColor="@color/teal_200"
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Calender"
+                    android:textColor="@color/main_color"
+                    android:textSize="@dimen/_13sdp"
+                    android:textStyle="bold" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/today_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Monday"
+                    android:textColor="@color/teal_200"
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/display_subscription_dates"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/customer_details"
+                app:layout_constraintVertical_bias="0.0" />
+<androidx.cardview.widget.CardView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/_5sdp"
+    android:layout_gravity="center"
+    android:layout_margin="@dimen/_5sdp"
+    android:elevation="@dimen/_5sdp">
+    <LinearLayout
+        android:padding="@dimen/_5sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include android:id="@+id/alter_subscription_layout"
+                layout="@layout/subscription_date_item" />
+
+            <include android:id="@+id/alter_subscription_layout_one"
+                layout="@layout/subscription_date_item" />
+
+            <include android:id="@+id/alter_subscription_layout_two"
+                layout="@layout/subscription_date_item" />
+
+            <include layout="@layout/subscription_date_item" />
+
+            <include layout="@layout/subscription_date_item" />
+
+            <include layout="@layout/subscription_date_item" />
+
+            <include layout="@layout/subscription_date_item" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include layout="@layout/subscription_date_item" />
+
+            <include layout="@layout/subscription_date_item" />
+
+            <include layout="@layout/subscription_date_item" />
+
+            <include layout="@layout/subscription_date_item" />
+
+            <include layout="@layout/subscription_date_item" />
+
+            <include layout="@layout/subscription_date_item" />
+
+            <include layout="@layout/subscription_date_item" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include layout="@layout/subscription_date_item" />
+
+            <include layout="@layout/subscription_date_item" />
+
+            <include layout="@layout/subscription_date_item" />
+
+            <include layout="@layout/subscription_date_item" />
+
+            <include layout="@layout/subscription_date_item" />
+
+            <include layout="@layout/subscription_date_item" />
+
+            <include layout="@layout/subscription_date_item" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include layout="@layout/subscription_date_item" />
+
+            <include layout="@layout/subscription_date_item" />
+
+            <include layout="@layout/subscription_date_item" />
+
+            <include layout="@layout/subscription_date_item" />
+
+            <include layout="@layout/subscription_date_item" />
+
+            <include layout="@layout/subscription_date_item" />
+
+            <include layout="@layout/subscription_date_item" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="M : Morning"
+                        android:layout_width="wrap_content"
+                        android:textSize="@dimen/_10sdp"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:text="E : Evening"
+                        android:textSize="@dimen/_10sdp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+                <LinearLayout
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:textSize="@dimen/_10sdp"
+                        android:text="Red : Cancelled"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:textSize="@dimen/_10sdp"
+                        android:text="Green : Delivered"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:textSize="@dimen/_10sdp"
+                        android:text="Yellow : In Progress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+            </LinearLayout>
             <androidx.cardview.widget.CardView
                 android:id="@+id/customer_details"
                 android:layout_width="match_parent"
@@ -133,281 +335,262 @@
                     android:orientation="vertical"
                     android:padding="@dimen/_5sdp">
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:padding="@dimen/_5sdp"
+                        android:background="@color/sub_color_lighter"
+                        android:textSize="@dimen/_13sdp"
+                        android:text="@string/subscription_details"
+                        android:textColor="@color/teal_200"
+                        android:textStyle="bold" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="Subscriped By :" />
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="@string/customer_name"
+                            android:textColor="@color/sub_color"
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
+
 
                         <TextView
                             android:id="@+id/subscriber_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:background="@drawable/background_edit_text_bottom"
+                            android:padding="@dimen/_5sdp"
+                            android:selectAllOnFocus="true"
+                            android:textSize="@dimen/_12sdp" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="Subscribed Package Name :" />
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="@string/package_name"
+                            android:textColor="@color/sub_color"
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
+
 
                         <TextView
                             android:id="@+id/subscriber_package_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:background="@drawable/background_edit_text_bottom"
+                            android:padding="@dimen/_5sdp"
+                            android:selectAllOnFocus="true"
+                            android:textSize="@dimen/_12sdp" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="Total Quantity Subscribed :" />
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="@string/total_subscribed"
+                            android:textColor="@color/sub_color"
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
+
 
                         <TextView
                             android:id="@+id/subscription_remaining"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="/" />
-
-                        <TextView
-                            android:id="@+id/subscription_total"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
+                            android:layout_weight="2"
+                            android:background="@drawable/background_edit_text_bottom"
+                            android:padding="@dimen/_5sdp"
+                            android:selectAllOnFocus="true"
+                            android:textSize="@dimen/_12sdp" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="Delivery Time :" />
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="@string/delivery_time"
+                            android:textColor="@color/sub_color"
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
+
 
                         <TextView
                             android:id="@+id/delivery_time"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:background="@drawable/background_edit_text_bottom"
+                            android:padding="@dimen/_5sdp"
+                            android:selectAllOnFocus="true"
+                            android:textSize="@dimen/_12sdp" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="Litre per day :" />
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="@string/litre_per_day"
+                            android:textColor="@color/sub_color"
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
+
 
                         <TextView
                             android:id="@+id/unit_per_day"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="Litre" />
-
+                            android:layout_weight="2"
+                            android:background="@drawable/background_edit_text_bottom"
+                            android:padding="@dimen/_5sdp"
+                            android:selectAllOnFocus="true"
+                            android:textSize="@dimen/_12sdp" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-                        <ImageView
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
-                            android:src="@drawable/branch" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="@string/delivered_by"
+                            android:textColor="@color/sub_color"
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
+
 
                         <TextView
                             android:id="@+id/subscriber_branch"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:background="@drawable/background_edit_text_bottom"
+                            android:padding="@dimen/_5sdp"
+                            android:selectAllOnFocus="true"
+                            android:textSize="@dimen/_12sdp" />
                     </LinearLayout>
-
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-                        <ImageView
-                            android:layout_width="wrap_content"
+                        <TextView
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_baseline_location_on_24" />
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="@string/delivered_to"
+                            android:textColor="@color/sub_color"
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
+
 
                         <TextView
                             android:id="@+id/subscription_address"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:background="@drawable/background_edit_text_bottom"
+                            android:padding="@dimen/_5sdp"
+                            android:selectAllOnFocus="true"
+                            android:textSize="@dimen/_12sdp" />
+                    </LinearLayout>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="@string/payment_by"
+                            android:textColor="@color/sub_color"
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
+
+
+                        <TextView
+                            android:id="@+id/payment_via"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:background="@drawable/background_edit_text_bottom"
+                            android:padding="@dimen/_5sdp"
+                            android:selectAllOnFocus="true"
+                            android:textSize="@dimen/_12sdp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="@string/payment_status"
+                            android:textColor="@color/sub_color"
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
+
+
+                        <TextView
+                            android:id="@+id/payment_status"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:background="@drawable/background_edit_text_bottom"
+                            android:padding="@dimen/_5sdp"
+                            android:selectAllOnFocus="true"
+                            android:textSize="@dimen/_12sdp" />
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-
-
-            <LinearLayout
-                android:padding="@dimen/_5sdp"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_marginEnd="@dimen/_5sdp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/today_date"
-                    android:textColor="@color/blue"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/_14sdp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2022/01/03" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:textStyle="bold"
-                    android:textColor="@color/blue"
-                    android:id="@+id/today_day"
-                    android:textSize="@dimen/_14sdp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Monday" />
-
-            </LinearLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/display_subscription_dates"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/customer_details"
-                app:layout_constraintVertical_bias="0.0" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <include layout="@layout/subscription_date_item" />
-
-                    <include layout="@layout/subscription_date_item" />
-
-                    <include layout="@layout/subscription_date_item" />
-
-                    <include layout="@layout/subscription_date_item" />
-
-                    <include layout="@layout/subscription_date_item" />
-
-                    <include layout="@layout/subscription_date_item" />
-
-                    <include layout="@layout/subscription_date_item" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <include layout="@layout/subscription_date_item" />
-
-                    <include layout="@layout/subscription_date_item" />
-
-                    <include layout="@layout/subscription_date_item" />
-
-                    <include layout="@layout/subscription_date_item" />
-
-                    <include layout="@layout/subscription_date_item" />
-
-                    <include layout="@layout/subscription_date_item" />
-
-                    <include layout="@layout/subscription_date_item" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <include layout="@layout/subscription_date_item" />
-
-                    <include layout="@layout/subscription_date_item" />
-
-                    <include layout="@layout/subscription_date_item" />
-
-                    <include layout="@layout/subscription_date_item" />
-
-                    <include layout="@layout/subscription_date_item" />
-
-                    <include layout="@layout/subscription_date_item" />
-
-                    <include layout="@layout/subscription_date_item" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <include layout="@layout/subscription_date_item" />
-
-                    <include layout="@layout/subscription_date_item" />
-
-                    <include layout="@layout/subscription_date_item" />
-
-                    <include layout="@layout/subscription_date_item" />
-
-                    <include layout="@layout/subscription_date_item" />
-
-                    <include layout="@layout/subscription_date_item" />
-
-                    <include layout="@layout/subscription_date_item" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <include layout="@layout/subscription_date_item" />
-
-                    <include layout="@layout/subscription_date_item" />
-
-                    <include layout="@layout/subscription_date_item" />
-
-                    <include layout="@layout/subscription_date_item" />
-
-                    <include layout="@layout/subscription_date_item" />
-                </LinearLayout>
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -416,8 +599,33 @@
                 <Button
                     android:id="@+id/track_your_order"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_50sdp"
-                    android:text="Track your Order" />
+                    android:layout_height="@dimen/_40sdp"
+                    android:text="@string/track_your_order" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/view_order_history"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:background="@drawable/capsule"
+                    android:text="@string/view_history"
+                    android:textSize="@dimen/_10sdp" />
+
+                <Button
+                    android:id="@+id/cancel_your_order"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:background="@drawable/capsule"
+                    android:text="@string/delete_subscription"
+                    android:textSize="@dimen/_10sdp" />
             </LinearLayout>
 
             <ProgressBar
@@ -431,5 +639,4 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </LinearLayout>
     </LinearLayout>
-
 </ScrollView>

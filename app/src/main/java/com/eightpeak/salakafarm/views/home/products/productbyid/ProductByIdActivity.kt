@@ -2,7 +2,6 @@ package com.eightpeak.salakafarm.views.home.products.productbyid
 
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.Paint
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
@@ -25,11 +24,9 @@ import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.Constants.Companion.PRODUCT_ID
 import com.eightpeak.salakafarm.utils.EndPoints
-import com.eightpeak.salakafarm.utils.GeneralUtils
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.ProductByIdViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
-import com.eightpeak.salakafarm.views.home.HomeActivity
 import com.google.android.material.snackbar.Snackbar
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.utils.subutils.successAddToCartSnack
@@ -44,7 +41,6 @@ import com.smarteist.autoimageslider.SliderAnimations
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
 
 import com.smarteist.autoimageslider.IndicatorView.draw.controller.DrawController.ClickListener
-import kotlinx.android.synthetic.main.product_item.view.*
 import kotlin.math.roundToInt
 
 
@@ -209,10 +205,10 @@ class ProductByIdActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.N)
     private fun setProductsDetails(productDetailsByIdResponse: ProductByIdModel) {
-        Log.i(
-            "TAG",
-            "setProductsDetails: " + productDetailsByIdResponse.promotion_price.price_promotion.toString()
-        )
+//        Log.i(
+//            "TAG",
+//            "setProductsDetails: " + productDetailsByIdResponse.promotion_price.price_promotion.toString()
+//        )
         if (productDetailsByIdResponse.stock > 0) {
             binding.outOfStock.visibility = View.GONE
         } else {
@@ -239,35 +235,35 @@ class ProductByIdActivity : AppCompatActivity() {
             }
         }
 
-        Log.i(
-            "TAG",
-            "setProductsDetails: " + productDetailsByIdResponse.promotion_price.price_promotion
-        )
-        if (!productDetailsByIdResponse.promotion_price.price_promotion.equals("0")) {
-            if (userPrefManager?.language.equals("ne")) {
-                product_price_discount.text =
-                    GeneralUtils.getUnicodeNumber(productDetailsByIdResponse.price.toString())
-                product_price_discount.paintFlags =
-                    product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                product_price.text =
-                    getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(productDetailsByIdResponse.promotion_price.price_promotion.toString())
-            } else {
-                product_price_discount.text = productDetailsByIdResponse.price.toString()
-                product_price_discount.paintFlags =
-                    product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                product_price.text =
-                    getString(R.string.rs) + " " + productDetailsByIdResponse.promotion_price.price_promotion.toString()
-
-            }
-        } else {
-            if (userPrefManager?.language.equals("ne")) {
-                product_price.text =
-                    getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(productDetailsByIdResponse.price.toString())
-            } else {
-                product_price.text =
-                    getString(R.string.rs) + " " + productDetailsByIdResponse.price.toString()
-            }
-        }
+//        Log.i(
+//            "TAG",
+//            "setProductsDetails: " + productDetailsByIdResponse.promotion_price.price_promotion
+//        )
+//        if (!productDetailsByIdResponse.promotion_price.price_promotion.equals("0")) {
+//            if (userPrefManager?.language.equals("ne")) {
+//                product_price_discount.text =
+//                    GeneralUtils.getUnicodeNumber(productDetailsByIdResponse.price.toString())
+//                product_price_discount.paintFlags =
+//                    product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+//                product_price.text =
+//                    getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(productDetailsByIdResponse.promotion_price.price_promotion.toString())
+//            } else {
+//                product_price_discount.text = productDetailsByIdResponse.price.toString()
+//                product_price_discount.paintFlags =
+//                    product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+//                product_price.text =
+//                    getString(R.string.rs) + " " + productDetailsByIdResponse.promotion_price.price_promotion.toString()
+//
+//            }
+//        } else {
+//            if (userPrefManager?.language.equals("ne")) {
+//                product_price.text =
+//                    getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(productDetailsByIdResponse.price.toString())
+//            } else {
+//                product_price.text =
+//                    getString(R.string.rs) + " " + productDetailsByIdResponse.price.toString()
+//            }
+//        }
 
 
         product_details_sku.text = productDetailsByIdResponse.sku

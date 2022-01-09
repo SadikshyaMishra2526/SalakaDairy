@@ -14,13 +14,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.021">
 
-        <ImageView
-            android:id="@+id/return_home"
-            android:layout_width="@dimen/_25sdp"
-            android:layout_height="@dimen/_25sdp"
-            android:layout_gravity="center"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:src="@drawable/ic_baseline_arrow_back_24" />
         <TextView
             android:id="@+id/header"
             android:layout_width="wrap_content"
@@ -335,23 +328,185 @@
             </androidx.cardview.widget.CardView>
 
 
+
             <androidx.cardview.widget.CardView
+                android:visibility="gone"
+                android:id="@+id/customer_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/tab_indicator_gray"
+                android:elevation="@dimen/_10sdp"
+                app:cardCornerRadius="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_2sdp"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_5sdp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Employee's Details"
+                        android:textSize="@dimen/_13sdp"
+                        android:textColor="@color/sub_color"
+                        android:textStyle="bold"
+                        android:padding="@dimen/_5sdp"
+                        android:layout_gravity="center"
+                        android:layout_height="wrap_content"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="Employee Image:-"
+                            android:textColor="@color/sub_color"
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
+
+
+                        <ImageView
+                            android:id="@+id/subscriber_avatar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/_40sdp"
+                            android:layout_weight="2"
+                            android:padding="@dimen/_5sdp"
+                            android:layout_gravity="start"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="Employee Name:-"
+                            android:textColor="@color/sub_color"
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
+
+
+                        <TextView
+                            android:id="@+id/employee_name"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:background="@drawable/background_edit_text_bottom"
+                            android:padding="@dimen/_5sdp"
+                            android:selectAllOnFocus="true"
+                            android:textSize="@dimen/_12sdp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="Contact No.:"
+                            android:textColor="@color/sub_color"
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
+
+
+                        <TextView
+                            android:id="@+id/employee_contact"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:background="@drawable/background_edit_text_bottom"
+                            android:padding="@dimen/_5sdp"
+                            android:selectAllOnFocus="true"
+                            android:textSize="@dimen/_12sdp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="Gender:"
+                            android:textColor="@color/sub_color"
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
+
+
+                        <TextView
+                            android:id="@+id/employee_gender"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:background="@drawable/background_edit_text_bottom"
+                            android:padding="@dimen/_5sdp"
+                            android:selectAllOnFocus="true"
+                            android:textSize="@dimen/_12sdp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="Employee's Email :"
+                            android:textColor="@color/sub_color"
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
+
+
+                        <TextView
+                            android:id="@+id/employee_email"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:background="@drawable/background_edit_text_bottom"
+                            android:padding="@dimen/_5sdp"
+                            android:selectAllOnFocus="true"
+                            android:textSize="@dimen/_12sdp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/map_layout"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_350sdp"
                 android:layout_margin="@dimen/_10sdp"
                 app:cardCornerRadius="@dimen/_10sdp">
 
-                <FrameLayout
-                    android:id="@+id/branchesList"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/add_subscription"
-                    app:layout_constraintVertical_bias="0.0" />
 
+                <fragment
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:context=".subscription.displaysubscription.TrackSubscription" />
 
             </androidx.cardview.widget.CardView>
         </LinearLayout>

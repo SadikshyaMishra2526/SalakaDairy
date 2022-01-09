@@ -66,7 +66,8 @@
               android:id="@+id/ifEmpty"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginTop="30dp"
+              android:layout_marginTop="20dp"
+              android:layout_marginBottom="20dp"
               android:gravity="center"
               android:orientation="vertical"
               android:visibility="gone"
@@ -84,13 +85,13 @@
               <TextView
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:text="There is no order in the basket"
+                  android:text="@string/there_is_no_order_in_the_basket"
                   android:textStyle="bold" />
 
               <Button
                   android:id="@+id/continue_shopping_empty"
                   android:layout_marginTop="@dimen/_5sdp"
-                  android:text="Continue"
+                  android:text="@string/continue_button"
                   android:padding="@dimen/_5sdp"
                   android:textSize="13sp"
                   android:background="@color/tab_indicator_gray"
@@ -101,6 +102,7 @@
           </LinearLayout>
 
           <LinearLayout
+              android:visibility="gone"
               android:id="@+id/titles"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
@@ -113,14 +115,14 @@
                   android:layout_height="wrap_content"
                   android:layout_margin="@dimen/_2sdp"
                   android:textColor="@color/sub_color"
-                  android:text="Sn."
+                  android:text="@string/sn"
                   android:textStyle="bold"
                   android:textSize="@dimen/_11sdp" />
 
 
               <TextView
                   android:textStyle="bold"
-                  android:text="Product Id"
+                  android:text="@string/product_id"
                   android:layout_gravity="center"
                   android:layout_width="@dimen/_70sdp"
                   android:layout_height="wrap_content"
@@ -130,7 +132,7 @@
 
               <TextView
                   android:textStyle="bold"
-                  android:text="Total"
+                  android:text="@string/total"
                   android:layout_gravity="center"
                   android:layout_width="@dimen/_50sdp"
                   android:textColor="@color/sub_color"
@@ -138,7 +140,7 @@
                   android:layout_margin="@dimen/_2sdp" />
               <TextView
                   android:textStyle="bold"
-                  android:text="Created At"
+                  android:text="@string/created_at"
                   android:layout_gravity="center"
                   android:id="@+id/product_created"
                   android:layout_width="@dimen/_60sdp"
@@ -147,7 +149,7 @@
                   android:layout_margin="@dimen/_2sdp" />
               <TextView
                   android:textStyle="bold"
-                  android:text="Order Status"
+                  android:text="@string/order_status"
                   android:layout_gravity="center"
                   android:id="@+id/product_status"
                   android:layout_width="@dimen/_80sdp"

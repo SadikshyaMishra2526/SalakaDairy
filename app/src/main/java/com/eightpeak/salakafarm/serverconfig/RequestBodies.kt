@@ -105,6 +105,13 @@ object RequestBodies {
         val type: String
     )
 
+    data class AddAlteration(
+        val subscription_id: String,
+        val alter_status: String,
+        val qty: String,
+        val alter_for: String,
+    )
+
     data class AddAddress(
         val address1: String,
         val address2: String,

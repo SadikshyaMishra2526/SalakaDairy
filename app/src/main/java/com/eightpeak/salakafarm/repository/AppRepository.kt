@@ -74,7 +74,6 @@ class AppRepository {
         RetrofitInstance.useApiWithAccessToken(tokenManager).getCompareProduct(productId)
 
 
-
     suspend fun getBranchList(tokenManager: TokenManager) =
         RetrofitInstance.useApiWithoutToken.getBranches()
 
@@ -84,59 +83,62 @@ class AppRepository {
     suspend fun getSubscriptionPackage(tokenManager: TokenManager, sub_item_id: Int) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).getSubscriptionPackage(sub_item_id)
 
-    suspend fun addSubscription(tokenManager: TokenManager , body: RequestBodies.AddSubscription) =
+    suspend fun addSubscription(tokenManager: TokenManager, body: RequestBodies.AddSubscription) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).addSubscription(body)
 
 
-  suspend fun getCheckoutDetails(tokenManager: TokenManager) =
+    suspend fun getCheckoutDetails(tokenManager: TokenManager) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).getCheckoutDetails()
 
 
-  suspend fun getAddressList(tokenManager: TokenManager) =
+    suspend fun getAddressList(tokenManager: TokenManager) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).getAddressList()
 
- suspend fun getUserProfile(tokenManager: TokenManager,body: RequestBodies.UserProfile) =
+    suspend fun getUserProfile(tokenManager: TokenManager, body: RequestBodies.UserProfile) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).getUserProfile(body)
 
 
- suspend fun updateAddressList(tokenManager: TokenManager,body: RequestBodies.UpdateAddressList) =
+    suspend fun updateAddressList(
+        tokenManager: TokenManager,
+        body: RequestBodies.UpdateAddressList
+    ) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).updateAddressList(body)
 
- suspend fun updatePassword(tokenManager: TokenManager,body: RequestBodies.UpdatePassword) =
+    suspend fun updatePassword(tokenManager: TokenManager, body: RequestBodies.UpdatePassword) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).updatePassword(body)
 
- suspend fun getOrderList(tokenManager: TokenManager) =
+    suspend fun getOrderList(tokenManager: TokenManager) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).getOrderHistoryList()
 
 
- suspend fun getOrderHistoryDetails(tokenManager: TokenManager,id:String) =
+    suspend fun getOrderHistoryDetails(tokenManager: TokenManager, id: String) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).getOrderHistoryDetails(id)
 
 
- suspend fun getPageDetails(id:String) =
-     RetrofitInstance.useApiWithoutToken.getPageDetails(id)
+    suspend fun getPageDetails(id: String) =
+        RetrofitInstance.useApiWithoutToken.getPageDetails(id)
 
 
- suspend fun getRandomList() =
-     RetrofitInstance.useApiWithoutToken.getRandomList()
+    suspend fun getRandomList() =
+        RetrofitInstance.useApiWithoutToken.getRandomList()
 
 
-    suspend fun updateCart(tokenManager: TokenManager,id: String,qty:String) =
-        RetrofitInstance.useApiWithAccessToken(tokenManager).updateCart(id,qty)
+    suspend fun updateCart(tokenManager: TokenManager, id: String, qty: String) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).updateCart(id, qty)
 
 
-    suspend fun addComplain(tokenManager: TokenManager,body: RequestBodies.AddComplain) =
+    suspend fun addComplain(tokenManager: TokenManager, body: RequestBodies.AddComplain) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).addComplain(body)
 
-    suspend fun addOrder(tokenManager: TokenManager,body: RequestBodies.AddOrder) =
+    suspend fun addOrder(tokenManager: TokenManager, body: RequestBodies.AddOrder) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).addOrder(body)
 
 
-    suspend fun addNewAddress(tokenManager: TokenManager,body: RequestBodies.AddAddress) =
+    suspend fun addNewAddress(tokenManager: TokenManager, body: RequestBodies.AddAddress) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).addNewAddress(body)
 
 
-    suspend fun deleteAddress(tokenManager: TokenManager,addressId:String) =
+    suspend fun deleteAddress(tokenManager: TokenManager, addressId: String) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).deleteAddress(addressId)
 
 
@@ -144,14 +146,18 @@ class AppRepository {
         RetrofitInstance.useApiWithAccessToken(tokenManager).getPopUp()
 
 
-    suspend fun getEmpLatLng(tokenManager: TokenManager,body: RequestBodies.EmpLatlng) =
+    suspend fun getEmpLatLng(tokenManager: TokenManager, body: RequestBodies.EmpLatlng) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).getEmployeeLatLng(body)
 
     suspend fun getCustomerSubscription(tokenManager: TokenManager) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).getCustomerSubscription()
 
 
-    suspend fun getProductRating(product_id:String) =
+    suspend fun subscriptionAlteration(tokenManager: TokenManager, body: RequestBodies.AddAlteration) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).subscriptionAlteration(body)
+
+
+    suspend fun getProductRating(product_id: String) =
         RetrofitInstance.useApiWithoutToken.getRate(product_id)
 
 }

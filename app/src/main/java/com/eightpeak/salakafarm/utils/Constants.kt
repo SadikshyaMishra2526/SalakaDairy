@@ -25,6 +25,12 @@ class Constants {
         const val SUBSCRIPTION = "subscription"
         const val ORDER = "order"
 
+
+        const val SUBSCRIPTION_ID = "subscription_id"
+        const val QUANTITY = "quantity"
+        const val ALTER_DAY = "alter_day"
+
+
         val NO_LOGIN = null
     }
 }

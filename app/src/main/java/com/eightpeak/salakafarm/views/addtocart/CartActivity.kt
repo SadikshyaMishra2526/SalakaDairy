@@ -226,7 +226,7 @@ class CartActivity : AppCompatActivity() {
                     if(userPrefManager.language.equals("ne")){
                         productName.text = cartResponse[i].products_with_description.descriptions[1].name
                         productPrice.text =getString(R.string.rs)+GeneralUtils.getUnicodeNumber( cartResponse[i].final_price.toString())
-                        productTotalPrice.text =getString(R.string.rs)+GeneralUtils.getUnicodeNumber(cartResponse[i].total_price.toString())
+                        productTotalPrice.text =getString(R.string.rs)+ GeneralUtils.getUnicodeNumber(cartResponse[i].total_price.toString())
                     }else{
                         productName.text = cartResponse[i].products_with_description.descriptions[0].name
                         productPrice.text = getString(R.string.rs)+cartResponse[i].final_price.toString()

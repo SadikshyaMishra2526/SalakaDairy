@@ -48,10 +48,10 @@ class AddToCartView : BottomSheetDialogFragment() {
                 AppCompatActivity.MODE_PRIVATE
             )
         )
-
         setupViewModel()
         return root.add_to_cart_view
     }
+
 
     private fun setupViewModel() {
 

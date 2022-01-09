@@ -1,10 +1,11 @@
 package com.eightpeak.salakafarm.subscription.displaysubscription
 
+import DisplaySubscriptionModel
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -13,11 +14,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.databinding.ActivityDisplaySubscriptionDetailsBinding
-import com.eightpeak.salakafarm.mapfunctions.MapsFragment
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
-import com.eightpeak.salakafarm.utils.Constants.Companion.SUBSCRIPTION
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.viewmodel.SubscriptionViewModel
@@ -40,44 +39,21 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
             )
         )
         binding = ActivityDisplaySubscriptionDetailsBinding.inflate(layoutInflater)
-        binding.headerTitle.text="Track your subscription"
+        binding.headerTitle.text = getString(R.string.track_your_subscription)
         binding.returnHome.setOnClickListener { finish() }
         userPrefManager = UserPrefManager(this)
         setupViewModel()
 
         setContentView(binding.root)
     }
+
     private fun setupViewModel() {
         val repository = AppRepository()
         val factory = ViewModelProviderFactory(application, repository)
         viewModel = ViewModelProvider(this, factory).get(SubscriptionViewModel::class.java)
-
-
         getCustomerSubscription()
 
 
-        binding.trackYourOrder.setOnClickListener {
-            val fm: FragmentManager = supportFragmentManager
-            var fragment = fm.findFragmentByTag("myFragmentTag")
-            if (fragment == null) {
-                val ft: FragmentTransaction = fm.beginTransaction()
-                fragment = MapsFragment()
-                ft.add(R.id.subscriptionView, fragment, "myFragmentTag")
-                ft.commit()
-            }
-////            Log.i("TAG", "displaySubscriptionDetails: ")
-//            val args = Bundle()
-//            args.putString(Constants.PRODUCT_ID, "9")
-//            args.putString(Constants.TYPE, SUBSCRIPTION)
-//            val bottomSheet = TrackSubscriptionView()
-//            bottomSheet.arguments = args
-//            bottomSheet.show(
-//                (this as FragmentActivity).supportFragmentManager,
-//                bottomSheet.tag
-//            )
-
-
-        }
     }
 
     private fun getCustomerSubscription() {
@@ -106,19 +82,50 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
     }
 
     private fun displaySubscriptionDetails(subscriptionDetails: DisplaySubscriptionModel) {
-        val subscription = subscriptionDetails.subscriptions
+        val subscription = subscriptionDetails.subscription
         Log.i("TAG", "displaySubscriptionDetails: $subscriptionDetails")
-//        binding.subscriberName.text = userPrefManager.firstName + " " + userPrefManager.lastName
-////        binding.subscriberPackageName.text =subscription.sub_package.name.toString()
-//        binding.subscriptionRemaining.text =subscription.remaining_quantity.toString()
-//        binding.subscriptionTotal.text = subscription.subscribed_total_amount.toString()
-//        binding.unitPerDay.text =subscription.unit_per_day.toString()
-//        binding.deliveryTime.text ="Morning"
-//        binding.subscriberBranch.text =subscription.branch.name
+        binding.subscriberName.text = userPrefManager.firstName + " " + userPrefManager.lastName
+        binding.subscriptionStarted.text = subscriptionDetails.subscription.starting_date
+        binding.subscriptionExpire.text = subscriptionDetails.subscription.expired_at
+        binding.subscriberPackageName.text = subscription.sub_package.name.toString()
+        binding.subscriptionRemaining.text =
+            subscription.remaining_quantity.toString() + "/" + subscription.subscribed_total_amount.toString()
+       binding.paymentStatus.text="Unpaid"
+       binding.paymentVia.text="By Bank"
+
+        binding.unitPerDay.text = subscription.unit_per_day.toString()
+        binding.deliveryTime.text = "Morning"
+        binding.subscriberBranch.text = subscription.branch.name
 //        binding.subscriptionAddress.text =subscription.address.address1
+        binding.alterSubscriptionLayout.subItem.setBackgroundColor(Color.GREEN)
+        binding.alterSubscriptionLayoutOne.subItem.setBackgroundColor(Color.RED)
+        binding.alterSubscriptionLayoutTwo.subItem.setBackgroundColor(Color.YELLOW)
+        binding.alterSubscriptionLayout.alterSubscription.setOnClickListener {
+            val args = Bundle()
+            args.putString(Constants.SUBSCRIPTION_ID, subscriptionDetails.subscription.id.toString())
+            args.putString(Constants.QUANTITY, subscriptionDetails.subscription.unit_per_day.toString())
+            args.putString(Constants.ALTER_DAY, "01/09/2022")
+            val bottomSheet = AddAlterationDisplay()
+            bottomSheet.arguments = args
+            bottomSheet.show(
+                (this@DisplaySubscriptionDetails as FragmentActivity).supportFragmentManager,
+                bottomSheet.tag
+            )
+        }
+        binding.trackYourOrder.setOnClickListener {
+            val args = Bundle()
+            args.putString(Constants.ORDER_ID, subscriptionDetails.subscription.id.toString())
+            args.putString(Constants.TYPE, Constants.SUBSCRIPTION)
+            val bottomSheet = TrackSubscriptionView()
+            bottomSheet.arguments = args
+            bottomSheet.show(
+                (this@DisplaySubscriptionDetails as FragmentActivity).supportFragmentManager,
+                bottomSheet.tag
+            )
+        }
+        binding.cancelYourOrder.setOnClickListener {
 
-
-
+        }
 
     }
 

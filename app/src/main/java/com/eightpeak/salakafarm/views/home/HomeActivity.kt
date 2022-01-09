@@ -46,6 +46,7 @@ import android.util.Log
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.eightpeak.salakafarm.database.NotificationDetails
 import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.databinding.ActivityHomeBinding
@@ -95,8 +96,16 @@ GoogleApiClient.OnConnectionFailedListener
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val navView: BottomNavigationView = binding.navView
-
         userPrefManager= UserPrefManager(this)
+
+        binding.swipeFresh.setOnRefreshListener(OnRefreshListener {
+            Handler().postDelayed({
+               finish()
+                startActivity(intent)
+                binding.swipeFresh.isRefreshing = false
+            }, 1000)
+        })
+
 
         //Initializing googleApiClient
         googleApiClient = GoogleApiClient.Builder(this)

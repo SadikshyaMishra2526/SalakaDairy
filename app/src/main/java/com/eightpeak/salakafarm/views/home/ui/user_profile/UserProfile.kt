@@ -155,7 +155,6 @@ class UserProfile : AppCompatActivity() {
             dialog!!.show()
         }
         init()
-        viewAddress()
         getAddressList()
 
     }
@@ -192,32 +191,6 @@ class UserProfile : AppCompatActivity() {
                 }
             }
         })
-    }
-
-    private fun viewAddress() {
-        if(userPrefManager.addressList!=null){
-            binding.addAddressTv.visibility=View.GONE
-            var addressListModel: List<String> =
-                userPrefManager.addressList.split("\n") as List<String>
-            Log.i("TAG", "viewAddress: "+addressListModel.size)
-
-            for (i in addressListModel) {
-                val itemView: View =
-                    LayoutInflater.from(this)
-                        .inflate(R.layout.address_list_item, binding.viewAddressList, false)
-
-                val addressListItem = itemView.findViewById<TextView>(R.id.addressListItem)
-                val addressListItemEdit = itemView.findViewById<ImageView>(R.id.edit_address)
-                val addressListItemDelete = itemView.findViewById<ImageView>(R.id.delete_address)
-                addressListItem.text = i
-
-                addressListItemEdit.visibility = View.GONE
-                addressListItemDelete.visibility = View.GONE
-                binding.viewAddressList.addView(itemView)
-            }
-        }else{
-            binding.addAddressTv.visibility=View.VISIBLE
-        }
     }
 
     private fun viewAddressList(addressListModel: AddressListModel) {

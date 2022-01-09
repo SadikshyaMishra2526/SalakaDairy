@@ -3,7 +3,6 @@ package com.eightpeak.salakafarm.views.home.products.productbyid
 import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,6 @@ import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.EndPoints
-import com.eightpeak.salakafarm.utils.GeneralUtils
 import com.eightpeak.salakafarm.views.home.products.AddToCartView
 import kotlinx.android.synthetic.main.product_item.view.*
 import kotlin.math.roundToInt
@@ -89,15 +87,15 @@ class RelatedProductAdapter : RecyclerView.Adapter<RelatedProductAdapter.Product
                 if (userPrefManager.language.equals("ne")) {
                     product_name.text = categoriesItem.descriptions[1].name
 
-                    if(!categoriesItem.promotion_price.price_promotion.equals("0")){
-                        product_price_discount.text=GeneralUtils.getUnicodeNumber(categoriesItem.price.toString())
-                        product_price_discount.paintFlags = product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                        product_price.text =
-                            context.getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(categoriesItem.promotion_price.price_promotion.toString())
-                    }else{
-                        product_price.text =
-                            context.getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(categoriesItem.price.toString())
-                    }
+//                    if(!categoriesItem.promotion_price.price_promotion.equals("0")){
+//                        product_price_discount.text=GeneralUtils.getUnicodeNumber(categoriesItem.price.toString())
+//                        product_price_discount.paintFlags = product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+//                        product_price.text =
+//                            context.getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(categoriesItem.promotion_price.price_promotion.toString())
+//                    }else{
+//                        product_price.text =
+//                            context.getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(categoriesItem.price.toString())
+//                    }
 
                 } else {
                     product_name.text = categoriesItem.descriptions[0].name
@@ -105,8 +103,8 @@ class RelatedProductAdapter : RecyclerView.Adapter<RelatedProductAdapter.Product
                     if(!categoriesItem.cost.equals("0")){
                         product_price_discount.text=categoriesItem.price.toString()
                         product_price_discount.paintFlags = product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                        product_price.text =
-                            context.getString(R.string.rs) + categoriesItem.promotion_price.price_promotion.toString()
+//                        product_price.text =
+//                            context.getString(R.string.rs) + categoriesItem.promotion_price.price_promotion.toString()
                     }else{
                         product_price.text =
                             context.getString(R.string.rs) + categoriesItem.price.toString()

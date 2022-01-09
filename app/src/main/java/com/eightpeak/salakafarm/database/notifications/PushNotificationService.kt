@@ -1,4 +1,5 @@
 package com.eightpeak.salakafarm.database.notifications
+import android.app.Notification
 import com.eightpeak.salakafarm.App
 import androidx.annotation.Nullable
 import com.eightpeak.salakafarm.views.home.HomeActivity
@@ -6,8 +7,6 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import android.app.NotificationManager
 
-import android.R
-import android.annotation.SuppressLint
 
 import android.media.RingtoneManager
 
@@ -28,21 +27,17 @@ import org.json.JSONObject
 import android.os.Build.VERSION_CODES
 
 import android.os.Build
-
-
-
-
-
+import com.eightpeak.salakafarm.R
 
 
 const val channel_id="notification_channel"
 const val channel_name="com.eightpeak.salakafarm"
 open class PushNotificationService : FirebaseMessagingService() {
-
+    private val NOTIF_ID = 1234
     private var TAG = "PushNotificationService"
     private var mRemoteViews: RemoteViews? = null
     private lateinit var logViewModel: NotificationViewModel
-
+        private  lateinit var mNotificationManager:NotificationManager
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         // Check if message contains a data payload.
         if (remoteMessage.data.isNotEmpty()) {
@@ -69,58 +64,59 @@ open class PushNotificationService : FirebaseMessagingService() {
             Log.d(TAG, "Message Notification Title: $title")
             Log.d(TAG, "Message Notification Body: $message")
             Log.d(TAG, "Message Notification click_action: $click_action")
-            sendNotification(title, message, click_action)
+//            sendNotification(title, message, click_action)
+            setUpNotification()
         }
     }
 
-//    private open fun setUpNotification() {
-//        mNotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-//
-//        // we need to build a basic notification first, then update it
-//        val intentNotif = Intent(this, MainActivity::class.java)
-//        intentNotif.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-//        val pendIntent =
-//            PendingIntent.getActivity(this, 0, intentNotif, PendingIntent.FLAG_UPDATE_CURRENT)
-//
-//        // notification's layout
-//        mRemoteViews = RemoteViews(packageName, R.layout.custom_notification_small)
-//        // notification's icon
-//        mRemoteViews!!.setImageViewResource(R.id.notif_icon, R.drawable.ic_launcher)
-//        // notification's title
-//        mRemoteViews!!.setTextViewText(R.id.notif_title, resources.getString(R.string.app_name))
-//        // notification's content
+     open fun setUpNotification() {
+        mNotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+
+        // we need to build a basic notification first, then update it
+        val intentNotif = Intent(this, HomeActivity::class.java)
+        intentNotif.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        val pendIntent =
+            PendingIntent.getActivity(this, 0, intentNotif, PendingIntent.FLAG_UPDATE_CURRENT)
+
+        // notification's layout
+        mRemoteViews = RemoteViews(packageName, R.layout.notification_view)
+        // notification's icon
+        mRemoteViews!!.setImageViewResource(R.id.icon, R.mipmap.ic_launcher)
+        // notification's title
+        mRemoteViews!!.setTextViewText(R.id.message, resources.getString(R.string.app_name))
+        // notification's content
 //        mRemoteViews!!.setTextViewText(
 //            R.id.notif_content,
 //            resources.getString(R.string.content_text)
 //        )
-//        mBuilder = NotificationCompat.Builder(this)
+        val mBuilder = NotificationCompat.Builder(this)
 //        val ticker: CharSequence = resources.getString(R.string.ticker_text)
-//        val apiVersion = Build.VERSION.SDK_INT
-//        if (apiVersion < VERSION_CODES.HONEYCOMB) {
-//            mNotification = Notification(R.drawable.ic_launcher, ticker, System.currentTimeMillis())
-//            mNotification.contentView = mRemoteViews
-//            mNotification.contentIntent = pendIntent
-//            mNotification.flags =
-//                mNotification.flags or Notification.FLAG_NO_CLEAR //Do not clear the notification
-//            mNotification.defaults = mNotification.defaults or Notification.DEFAULT_LIGHTS
-//
-//            // starting service with notification in foreground mode
-//            startForeground(NOTIF_ID, mNotification)
-//        } else if (apiVersion >= VERSION_CODES.HONEYCOMB) {
-//            mBuilder.setSmallIcon(R.drawable.ic_launcher)
-//                .setAutoCancel(false)
-//                .setOngoing(true)
-//                .setContentIntent(pendIntent)
-//                .setContent(mRemoteViews)
-//                .setTicker(ticker)
-//
-//            // starting service with notification in foreground mode
-//            startForeground(NOTIF_ID, mBuilder.build())
-//        }
-//    }
+         val ticker="Ticker"
+        val apiVersion = Build.VERSION.SDK_INT
+        if (apiVersion < VERSION_CODES.HONEYCOMB) {
+           val mNotification = Notification(R.drawable.ic_user_icon, ticker, System.currentTimeMillis())
+            mNotification.contentView = mRemoteViews
+            mNotification.contentIntent = pendIntent
+            mNotification.flags =
+                mNotification.flags or Notification.FLAG_NO_CLEAR //Do not clear the notification
+            mNotification.defaults = mNotification.defaults or Notification.DEFAULT_LIGHTS
 
-    // use this method to update the Notification's UI
-//    private open fun updateNotification() {
+            // starting service with notification in foreground mode
+            startForeground(NOTIF_ID, mNotification)
+        } else if (apiVersion >= VERSION_CODES.HONEYCOMB) {
+            mBuilder.setSmallIcon(R.drawable.ic_user_icon)
+                .setAutoCancel(false)
+                .setOngoing(true)
+                .setContentIntent(pendIntent)
+                .setContent(mRemoteViews)
+                .setTicker(ticker)
+
+            // starting service with notification in foreground mode
+            startForeground(NOTIF_ID, mBuilder.build())
+        }
+    }
+
+//     open fun updateNotification() {
 //        val api = Build.VERSION.SDK_INT
 //        // update the icon
 //        mRemoteViews!!.setImageViewResource(R.id.notif_icon, R.drawable.icon_off2)
@@ -147,26 +143,27 @@ open class PushNotificationService : FirebaseMessagingService() {
 
 
    private fun sendNotification(title: String?, messageBody: String?, click_action: String?) {
-       val intent: Intent = Intent(this, SubscriptionActivity::class.java)
+       var intent = Intent(this, SubscriptionActivity::class.java)
        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-//        if (click_action == "SOMEACTIVITY") {
-//            intent = Intent(this, CartActivity::class.java)
-//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-//        } else if (click_action == "MAINACTIVITY") {
-//            intent = Intent(this, HomeActivity::class.java)
-//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-//        } else {
-//            intent = Intent(this, SubscriptionActivity::class.java)
-//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-//        }
+        if (click_action == "SOMEACTIVITY") {
+            intent = Intent(this, CartActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        } else if (click_action == "MAINACTIVITY") {
+            intent = Intent(this, HomeActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        } else {
+            intent = Intent(this, SubscriptionActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        }
         val pendingIntent = PendingIntent.getActivity(
             this, 0 /* Request code */, intent,
             PendingIntent.FLAG_ONE_SHOT
         )
         val defaultSoundUri: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder: NotificationCompat.Builder =NotificationCompat.Builder(this, channel_id)
-            .setSmallIcon(R.drawable.btn_default_small)
+            .setSmallIcon(R.drawable.payment_icon)
             .setContentTitle(title)
+            .setStyle(NotificationCompat.DecoratedCustomViewStyle())
             .setContentText(messageBody)
             .setAutoCancel(true)
             .setVibrate(longArrayOf(1000,1000,1000,1000))
@@ -177,4 +174,6 @@ open class PushNotificationService : FirebaseMessagingService() {
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
     }
+
+
 }

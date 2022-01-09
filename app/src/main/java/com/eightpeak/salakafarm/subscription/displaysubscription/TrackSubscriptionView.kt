@@ -12,12 +12,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import coil.api.load
+import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.databinding.ActivityMapsFragmentBinding
+import com.eightpeak.salakafarm.databinding.LayoutTrackEmpPositionBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.RequestBodies
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
+import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.viewmodel.OrderViewModel
@@ -26,6 +30,7 @@ import com.eightpeak.salakafarm.views.home.products.ServerResponse
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
@@ -34,13 +39,14 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_add_to_cart_view.view.*
 
-class TrackSubscriptionView : Fragment(),OnMapReadyCallback,
+class TrackSubscriptionView : BottomSheetDialogFragment()
+    ,OnMapReadyCallback,
     GoogleMap.OnMarkerClickListener {
-    private var _binding: ActivityMapsFragmentBinding? = null
+
+    private var _binding: LayoutTrackEmpPositionBinding? = null
     private val binding get() = _binding!!
     private var userPrefManager: UserPrefManager? = null
     private lateinit var viewModel: OrderViewModel
-    private var quantity: Int = 1
     private var tokenManager: TokenManager? = null
     private lateinit var mMap: GoogleMap
     override fun onCreateView(
@@ -48,7 +54,7 @@ class TrackSubscriptionView : Fragment(),OnMapReadyCallback,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = ActivityMapsFragmentBinding.inflate(inflater, container, false)
+        _binding = LayoutTrackEmpPositionBinding.inflate(inflater, container, false)
         val root: View = binding.root
         userPrefManager = UserPrefManager(context)
         tokenManager = TokenManager.getInstance(
@@ -57,9 +63,11 @@ class TrackSubscriptionView : Fragment(),OnMapReadyCallback,
                 AppCompatActivity.MODE_PRIVATE
             )
         )
-        Log.i("TAG", "onCreateView: mmmmmmmmmm mmmmmmmmm mmmmmmmmm mmmmmmmmmm mmmmmmmmm mmmm")
+        val mapFragment = childFragmentManager
+            .findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
         setupViewModel()
-        return root.add_to_cart_view
+        return root.rootView
     }
 
     private fun setupViewModel() {
@@ -70,27 +78,34 @@ class TrackSubscriptionView : Fragment(),OnMapReadyCallback,
 
     }
 
-    private fun getOrderDetail(googleMap: GoogleMap) {
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
+        Log.i("TAG", "onMapReady: i m ready")
+        getOrderDetail()
+
+    }
+    private fun getOrderDetail() {
         val mArgs = arguments
-        val productId = mArgs!!.getString(Constants.PRODUCT_ID)
+        val productId = mArgs!!.getString(Constants.ORDER_ID)
         val type = mArgs!!.getString(Constants.TYPE)
         if (productId != null) {
             val trackDetails= type?.let { RequestBodies.EmpLatlng(productId, it) }
             trackDetails?.let { tokenManager?.let { it1 -> viewModel.empLatLng(it1, it) } }
+            Log.i("TAG", "getOrderDetail: "+productId+" "+type)
         }
         viewModel.empLatLng.observe(requireActivity(), Observer { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { _ ->
-                     plotPositionInMap(googleMap,response.data)
+                     plotPositionInMap(response.data)
                     }
                 }
 
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        binding.mapfragment.errorSnack(message, Snackbar.LENGTH_LONG)
+                        binding.trackEmp.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 
                 }
@@ -102,15 +117,16 @@ class TrackSubscriptionView : Fragment(),OnMapReadyCallback,
         })
     }
 
-    private fun plotPositionInMap(googleMap: GoogleMap, data: ServerResponse) {
-        var branches=data.latlng
-        mMap=googleMap
-            for (i in branches.indices) {
-           var  employeePosition :LatLng = LatLng(27.692334665559105, 85.36821319336133)
+    private fun plotPositionInMap(data: EmployeeTrackDetails) {
+        var employeeDetails=data.latlng
+
+           plotEmployeeDetails(data)
+           var  employeePosition :LatLng = LatLng(employeeDetails.lat,employeeDetails.lng)
                 var mark: Marker? = null
                 mark = mMap.addMarker(
                     MarkerOptions()
                         .position(employeePosition)
+                        .snippet("Contact Employee :-"+data.latlng.phone)
                         .icon(
                             BitmapDescriptorFactory.defaultMarker(
                                 BitmapDescriptorFactory.HUE_ORANGE
@@ -118,25 +134,31 @@ class TrackSubscriptionView : Fragment(),OnMapReadyCallback,
                         )
                         .title("Your Delivery is own its way..")
                 )
-                mark.setTag(i)
-//                                markerList.add(mark)
+                mark.tag = mark
                 val center = CameraUpdateFactory.newLatLng(employeePosition)
-                val zoom = CameraUpdateFactory.zoomTo(10f)
+                val zoom = CameraUpdateFactory.zoomTo(12f)
                 mark.showInfoWindow()
                 mMap.moveCamera(center)
                 mMap.animateCamera(zoom)
-            }
+
             mMap.setOnMarkerClickListener(this)
 
 
     }
 
-
-    override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
-        getOrderDetail(googleMap)
-
+    private fun plotEmployeeDetails(data: EmployeeTrackDetails) {
+        binding.subscriberAvatar.load(BASE_URL+data.latlng.avatar)
+        binding.employeeName.text=data.latlng.name
+        binding.employeeContact.text=data.latlng.phone.toString()
+        binding.employeeEmail.text=data.latlng.email
+        if(data.latlng.gender==0){
+            binding.employeeGender.text="Female"
+        }else if(data.latlng.gender==1){
+            binding.employeeGender.text="Male"
+        }
     }
+
+
 
     private fun hideProgressBar() {
         binding.progress.visibility = View.GONE
@@ -152,9 +174,6 @@ class TrackSubscriptionView : Fragment(),OnMapReadyCallback,
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {
-        var clickCount = marker.tag as Int
-        clickCount += 1
-        marker.tag = clickCount
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle(marker.title)
         builder.setMessage(marker.snippet)

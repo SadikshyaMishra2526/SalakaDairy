@@ -1,7 +1,5 @@
 package com.eightpeak.salakafarm.views.order.orderview.orderhistory
 
-import android.content.Intent
-import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -191,7 +189,7 @@ class OrderHistoryDetails : Fragment() {
                 }
 
             } else {
-                productName.text = details[i].product.descriptions[0].name
+//                productName.text = details[i].product.descriptions[0].name
 
                 if(!details[i].product.cost.equals("0")){
                     productPrice.text =

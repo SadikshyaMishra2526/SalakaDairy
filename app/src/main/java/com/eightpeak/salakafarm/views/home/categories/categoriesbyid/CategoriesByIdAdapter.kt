@@ -1,14 +1,11 @@
 package com.eightpeak.salakafarm.views.home.categories.categoriesbyid
 
-import android.app.Application
 import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -93,7 +90,7 @@ class CategoriesByIdAdapter : RecyclerView.Adapter<CategoriesByIdAdapter.Categor
                 if (userPrefManager.language.equals("ne")) {
                     product_name.text = categoriesItem.descriptions[1].name
 
-                    if(!categoriesItem.promotion_price.price_promotion.equals("0")){
+                    if(categoriesItem.promotion_price.price_promotion != "0"){
                         product_price_discount.text= GeneralUtils.getUnicodeNumber(categoriesItem.price.toString())
                         product_price_discount.paintFlags = product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                         product_price.text =
@@ -106,7 +103,7 @@ class CategoriesByIdAdapter : RecyclerView.Adapter<CategoriesByIdAdapter.Categor
                 } else {
                     product_name.text = categoriesItem.descriptions[0].name
 
-                    if(!categoriesItem.promotion_price.price_promotion.equals("0")){
+                    if(categoriesItem.promotion_price.price_promotion!=null){
                         product_price_discount.text=categoriesItem.price.toString()
                         product_price_discount.paintFlags = product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                         product_price.text =

@@ -126,41 +126,17 @@
                         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
+                    <ImageView
+                        android:id="@+id/add_addresses"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_baseline_add_24"
+                        android:background="@drawable/circle_background"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:layout_height="@dimen/_20sdp"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_3sdp"
-                app:cardCornerRadius="@dimen/_10sdp">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:orientation="horizontal"
-    android:layout_height="wrap_content">
-    <ImageView
-        android:id="@+id/add_addresses"
-        android:layout_gravity="center"
-        android:src="@drawable/ic_baseline_add_24"
-        android:background="@drawable/circle_background"
-        android:layout_width="@dimen/_20sdp"
-        android:layout_margin="@dimen/_5sdp"
-        android:layout_height="@dimen/_20sdp"/>
-    <TextView
-        android:id="@+id/add_address_tv"
-        android:text="Add Your Address "
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    <LinearLayout
-        android:id="@+id/viewAddressList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_3sdp"
-        android:orientation="vertical" />
-
-</LinearLayout>
-                  </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView_policies"
@@ -191,7 +167,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="Edit Address"
+                            android:text="@string/address_details"
                             android:textColor="@color/sub_color" />
 
                         <View
@@ -228,7 +204,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="Edit Profile"
+                            android:text="@string/edit_profile"
                             android:textColor="@color/sub_color" />
 
                         <View
@@ -265,7 +241,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="Change Password"
+                            android:text="@string/change_password"
                             android:textColor="@color/sub_color" />
 
                         <View
@@ -302,7 +278,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="WishList"
+                            android:text="@string/wishlist"
                             android:textColor="@color/sub_color" />
 
                         <View
@@ -340,7 +316,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="Compare List"
+                            android:text="@string/compare_list"
                             android:textColor="@color/sub_color" />
 
                         <View
@@ -377,7 +353,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="Cart List"
+                            android:text="@string/cart_list"
                             android:textColor="@color/sub_color" />
 
                         <View
@@ -414,7 +390,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="Order History"
+                            android:text="@string/order_history"
                             android:textColor="@color/sub_color" />
 
                         <View
