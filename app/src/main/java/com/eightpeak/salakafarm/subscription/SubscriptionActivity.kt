@@ -100,7 +100,7 @@ class SubscriptionActivity : AppCompatActivity() {
             finish()
         }
         binding.goToCart.setOnClickListener {
-            val mainActivity = Intent(this, CartActivity::class.java)
+            val mainActivity = Intent(this@SubscriptionActivity, CartActivity::class.java)
             startActivity(mainActivity)
             finish()
         }

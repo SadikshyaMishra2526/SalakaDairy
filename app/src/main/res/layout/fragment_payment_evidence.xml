@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:backgroundTint="@color/background_color"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/sub_color_lighter"
+            android:padding="@dimen/_10sdp"
+            android:gravity="center"
+            android:text="@string/alter_subscription"
+            android:textColor="@color/teal_200"
+            android:textSize="@dimen/_15sdp"
+            android:textStyle="bold" />
+        <ImageView
+            android:id="@+id/evidence_photo"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_gravity="center"
+            android:src="@drawable/statement"
+            android:layout_height="@dimen/_300sdp"/>
+        <Button
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:text="Submit Payment ScreenShot"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

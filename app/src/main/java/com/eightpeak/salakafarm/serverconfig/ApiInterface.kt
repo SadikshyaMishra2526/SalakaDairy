@@ -42,6 +42,8 @@ import com.eightpeak.salakafarm.views.pages.videos.YoutubeVideoModel
 import com.eightpeak.salakafarm.views.popup.PopUpModel
 import com.eightpeak.salakafarm.views.register.RegisterResponse
 import com.eightpeak.salakafarm.views.search.SearchModel
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
@@ -154,7 +156,7 @@ interface ApiInterface {
     @GET(EndPoints.GET_CHECKOUT_DETAILS)
     suspend fun getCheckoutDetails(): Response<CheckOutModel>
 
-//user info update
+    //user info update
     @POST(UPDATE_USER_INFO)
     suspend fun getUserProfile(
         @Body body: RequestBodies.UserProfile
@@ -177,11 +179,11 @@ interface ApiInterface {
     suspend fun getOrderHistoryList(): Response<OrderHistoryModel>
 
     @GET(EndPoints.GET_ORDER_DETAILS)
-    suspend fun getOrderHistoryDetails(@Query("id")id:String): Response<OrderHistoryDetailsModel>
+    suspend fun getOrderHistoryDetails(@Query("id") id: String): Response<OrderHistoryDetailsModel>
 
 
     @GET(EndPoints.GET_PAGE_DETAILS)
-    suspend fun getPageDetails(@Path("id")id:String): Response<PageDetailsModel>
+    suspend fun getPageDetails(@Path("id") id: String): Response<PageDetailsModel>
 
 
     @GET(EndPoints.GET_RANDOM_PRODUCTS)
@@ -193,34 +195,34 @@ interface ApiInterface {
 
 
     @POST(EndPoints.UPDATE_CART_PRODUCTS)
-    suspend fun updateCart(@Query("id")id:String,
-                           @Query("new_qty")new_qty:String)
-    : Response<ServerResponse>
+    suspend fun updateCart(
+        @Query("id") id: String,
+        @Query("new_qty") new_qty: String
+    )
+            : Response<ServerResponse>
 
 
     @POST(EndPoints.ADD_COMPLAIN)
-    suspend fun addComplain(@Body body:RequestBodies.AddComplain): Response<ServerResponse>
+    suspend fun addComplain(@Body body: RequestBodies.AddComplain): Response<ServerResponse>
 
 
     @POST(EndPoints.ADD_ORDER)
-    suspend fun addOrder(@Body body:RequestBodies.AddOrder): Response<ServerResponse>
+    suspend fun addOrder(@Body body: RequestBodies.AddOrder): Response<ServerResponse>
 
     @POST(EndPoints.ADD_ADDRESS)
-    suspend fun addNewAddress(@Body body:RequestBodies.AddAddress): Response<ServerResponse>
+    suspend fun addNewAddress(@Body body: RequestBodies.AddAddress): Response<ServerResponse>
 
 
     @FormUrlEncoded
     @POST(EndPoints.DELETE_ADDRESS)
-    suspend fun deleteAddress(@Field("id") addressId:String ): Response<ServerResponse>
-
+    suspend fun deleteAddress(@Field("id") addressId: String): Response<ServerResponse>
 
 
     @POST(EndPoints.GET_EMPLOYEE_LATLNG)
-    suspend fun getEmployeeLatLng(@Body body:RequestBodies.EmpLatlng ): Response<EmployeeTrackDetails>
+    suspend fun getEmployeeLatLng(@Body body: RequestBodies.EmpLatlng): Response<EmployeeTrackDetails>
 
     @POST(EndPoints.ADD_ALTERATION)
-    suspend fun subscriptionAlteration(@Body body:RequestBodies.AddAlteration ): Response<ServerResponse>
-
+    suspend fun subscriptionAlteration(@Body body: RequestBodies.AddAlteration): Response<ServerResponse>
 
 
     @GET("search?key=AIzaSyBFfGX8c8zWp6O8spofADuDlJP_96BOc2M&channelId=UCIx6fxkutSyo-I6KxsSV8zg&part=snippet,id&order=date&maxResults=20")
@@ -231,12 +233,23 @@ interface ApiInterface {
     suspend fun getCustomerSubscription(): Response<DisplaySubscriptionModel>
 
 
-
     @POST(EndPoints.POST_RATE)
     suspend fun postRate(): Response<DisplaySubscriptionModel>
 
     @FormUrlEncoded
-    @POST(EndPoints.GET_RATE)
-    suspend fun getRate(@Field("product_id") addressId:String ): Response<ProductRatingModel>
+    @POST(EndPoints.CANCEL_SUBSCRIPTION)
+    suspend fun cancelSubscription(@Field("subscription_id") subscriptionId: String): Response<ServerResponse>
 
+
+    @Multipart
+    @POST(EndPoints.PAYMENT_EVIDENCE)
+    suspend fun paymentEvidence(
+        @Part("mode") email: RequestBody,
+        @Part("subscription_id") subscriptionId: RequestBody,
+        @Part citizenShip: MultipartBody.Part
+    ): Response<ServerResponse>
+
+    @FormUrlEncoded
+    @POST(EndPoints.GET_RATE)
+    suspend fun getRate(@Field("product_id") addressId: String): Response<ProductRatingModel>
 }

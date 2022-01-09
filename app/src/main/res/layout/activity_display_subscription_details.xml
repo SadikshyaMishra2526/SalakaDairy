@@ -160,13 +160,7 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/display_subscription_dates"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/customer_details"
-                app:layout_constraintVertical_bias="0.0" />
+
 <androidx.cardview.widget.CardView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -174,99 +168,13 @@
     android:layout_gravity="center"
     android:layout_margin="@dimen/_5sdp"
     android:elevation="@dimen/_5sdp">
-    <LinearLayout
-        android:padding="@dimen/_5sdp"
-        android:layout_width="wrap_content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/display_subscription_dates"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <include android:id="@+id/alter_subscription_layout"
-                layout="@layout/subscription_date_item" />
-
-            <include android:id="@+id/alter_subscription_layout_one"
-                layout="@layout/subscription_date_item" />
-
-            <include android:id="@+id/alter_subscription_layout_two"
-                layout="@layout/subscription_date_item" />
-
-            <include layout="@layout/subscription_date_item" />
-
-            <include layout="@layout/subscription_date_item" />
-
-            <include layout="@layout/subscription_date_item" />
-
-            <include layout="@layout/subscription_date_item" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <include layout="@layout/subscription_date_item" />
-
-            <include layout="@layout/subscription_date_item" />
-
-            <include layout="@layout/subscription_date_item" />
-
-            <include layout="@layout/subscription_date_item" />
-
-            <include layout="@layout/subscription_date_item" />
-
-            <include layout="@layout/subscription_date_item" />
-
-            <include layout="@layout/subscription_date_item" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <include layout="@layout/subscription_date_item" />
-
-            <include layout="@layout/subscription_date_item" />
-
-            <include layout="@layout/subscription_date_item" />
-
-            <include layout="@layout/subscription_date_item" />
-
-            <include layout="@layout/subscription_date_item" />
-
-            <include layout="@layout/subscription_date_item" />
-
-            <include layout="@layout/subscription_date_item" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <include layout="@layout/subscription_date_item" />
-
-            <include layout="@layout/subscription_date_item" />
-
-            <include layout="@layout/subscription_date_item" />
-
-            <include layout="@layout/subscription_date_item" />
-
-            <include layout="@layout/subscription_date_item" />
-
-            <include layout="@layout/subscription_date_item" />
-
-            <include layout="@layout/subscription_date_item" />
-        </LinearLayout>
-
-
-    </LinearLayout>
-
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customer_details"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.cardview.widget.CardView>
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -619,7 +527,7 @@
                     android:textSize="@dimen/_10sdp" />
 
                 <Button
-                    android:id="@+id/cancel_your_order"
+                    android:id="@+id/cancel_your_subscription"
                     android:layout_width="@dimen/_120sdp"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginLeft="@dimen/_5sdp"

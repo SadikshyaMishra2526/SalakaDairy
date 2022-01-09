@@ -1,16 +1,22 @@
 package com.eightpeak.salakafarm.subscription.displaysubscription
 
+import DeliveryHistory
 import DisplaySubscriptionModel
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.databinding.ActivityDisplaySubscriptionDetailsBinding
@@ -21,6 +27,9 @@ import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.viewmodel.SubscriptionViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
+import com.eightpeak.salakafarm.views.addtocart.CartActivity
+import com.eightpeak.salakafarm.views.home.categories.categoriesbyid.CategoriesByIdAdapter
+import com.eightpeak.salakafarm.views.home.categories.categoriesbyid.Products_with_description
 import com.eightpeak.salakafarm.views.home.products.AddToCartView
 import com.google.android.material.snackbar.Snackbar
 
@@ -29,7 +38,9 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
     private lateinit var viewModel: SubscriptionViewModel
     lateinit var userPrefManager: UserPrefManager
     private var tokenManager: TokenManager? = null
-
+    private var subscriptionAdapter: SubscriptionAdapter? = null
+    private var layoutManager: GridLayoutManager? = null
+    private var subscriptionDetailsModel: DisplaySubscriptionModel?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         tokenManager = TokenManager.getInstance(
@@ -42,8 +53,8 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
         binding.headerTitle.text = getString(R.string.track_your_subscription)
         binding.returnHome.setOnClickListener { finish() }
         userPrefManager = UserPrefManager(this)
-        setupViewModel()
 
+        init()
         setContentView(binding.root)
     }
 
@@ -54,6 +65,29 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
         getCustomerSubscription()
 
 
+    }
+    private fun init() {
+        subscriptionAdapter = SubscriptionAdapter(   onClickListener = { view, category -> openActivity(view, category)})
+        layoutManager = GridLayoutManager(this, 4)
+        binding.displaySubscriptionDates.layoutManager = layoutManager
+        binding.displaySubscriptionDates.setHasFixedSize(true)
+        binding.displaySubscriptionDates.isFocusable = false
+        binding.displaySubscriptionDates.adapter = subscriptionAdapter
+        setupViewModel()
+    }
+
+    private fun openActivity(view: View, category: DeliveryHistory) {
+        Log.i("TAG", "openActivity: "+category)
+            val args = Bundle()
+            args.putString(Constants.SUBSCRIPTION_ID, subscriptionDetailsModel?.subscription?.id.toString())
+            args.putString(Constants.QUANTITY, subscriptionDetailsModel?.subscription?.unit_per_day.toString())
+            args.putString(Constants.ALTER_DAY, "01/${category.date}/2022")
+            val bottomSheet = AddAlterationDisplay()
+            bottomSheet.arguments = args
+            bottomSheet.show(
+                (this as FragmentActivity).supportFragmentManager,
+                bottomSheet.tag
+            )
     }
 
     private fun getCustomerSubscription() {
@@ -82,7 +116,9 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
     }
 
     private fun displaySubscriptionDetails(subscriptionDetails: DisplaySubscriptionModel) {
+        subscriptionDetailsModel=subscriptionDetails
         val subscription = subscriptionDetails.subscription
+        addSubscriptionDate(subscription.deliveryHistory)
         Log.i("TAG", "displaySubscriptionDetails: $subscriptionDetails")
         binding.subscriberName.text = userPrefManager.firstName + " " + userPrefManager.lastName
         binding.subscriptionStarted.text = subscriptionDetails.subscription.starting_date
@@ -97,21 +133,7 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
         binding.deliveryTime.text = "Morning"
         binding.subscriberBranch.text = subscription.branch.name
 //        binding.subscriptionAddress.text =subscription.address.address1
-        binding.alterSubscriptionLayout.subItem.setBackgroundColor(Color.GREEN)
-        binding.alterSubscriptionLayoutOne.subItem.setBackgroundColor(Color.RED)
-        binding.alterSubscriptionLayoutTwo.subItem.setBackgroundColor(Color.YELLOW)
-        binding.alterSubscriptionLayout.alterSubscription.setOnClickListener {
-            val args = Bundle()
-            args.putString(Constants.SUBSCRIPTION_ID, subscriptionDetails.subscription.id.toString())
-            args.putString(Constants.QUANTITY, subscriptionDetails.subscription.unit_per_day.toString())
-            args.putString(Constants.ALTER_DAY, "01/09/2022")
-            val bottomSheet = AddAlterationDisplay()
-            bottomSheet.arguments = args
-            bottomSheet.show(
-                (this@DisplaySubscriptionDetails as FragmentActivity).supportFragmentManager,
-                bottomSheet.tag
-            )
-        }
+
         binding.trackYourOrder.setOnClickListener {
             val args = Bundle()
             args.putString(Constants.ORDER_ID, subscriptionDetails.subscription.id.toString())
@@ -123,18 +145,64 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
                 bottomSheet.tag
             )
         }
-        binding.cancelYourOrder.setOnClickListener {
 
+            binding.cancelYourSubscription.setOnClickListener {
+                tokenManager?.let { it1 -> viewModel.postCancelSubscription(it1, subscriptionDetailsModel!!.subscription.id.toString()) }
+                 getCancelSubscription()
+        }
+        binding.viewOrderHistory.setOnClickListener {
+            val args = Bundle()
+            args.putString(Constants.SUBSCRIPTION_ID, subscriptionDetailsModel?.subscription?.id.toString())
+             val bottomSheet = PaymentEvidenceFragment()
+            bottomSheet.arguments = args
+            bottomSheet.show(
+                (this as FragmentActivity).supportFragmentManager,
+                bottomSheet.tag
+            )
         }
 
     }
 
+    private fun getCancelSubscription() {
+        viewModel.cancelSubscription.observe(this, Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let {
+                        val mainActivity = Intent(this@DisplaySubscriptionDetails, CartActivity::class.java)
+                        startActivity(mainActivity)
+                        finish()
+                    }
+                }
+
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let { message ->
+                        binding.subscriptionDetails.errorSnack(message, Snackbar.LENGTH_LONG)
+                    }
+                }
+
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+            }
+        })
+    }
+
+    private fun addSubscriptionDate(subscriptionDetails: List<DeliveryHistory>) {
+        val deliveryHistory: List<DeliveryHistory> = subscriptionDetails
+        subscriptionAdapter!!.differ.submitList(deliveryHistory)
+        binding.displaySubscriptionDates.adapter = subscriptionAdapter
+
+
+    }
+
     private fun hideProgressBar() {
-//        binding.progress.visibility = View.GONE
+        binding.progress.visibility = View.GONE
     }
 
     private fun showProgressBar() {
-//        binding.progress.visibility = View.VISIBLE
+        binding.progress.visibility = View.VISIBLE
     }
 
 

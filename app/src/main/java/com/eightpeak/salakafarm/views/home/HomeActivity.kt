@@ -66,13 +66,9 @@ import java.util.*
 import com.google.firebase.messaging.FirebaseMessaging
 
 
-
-
-
-class HomeActivity : AppCompatActivity() , OnMapReadyCallback,
-GoogleApiClient.ConnectionCallbacks,
-GoogleApiClient.OnConnectionFailedListener
-{
+class HomeActivity : AppCompatActivity(), OnMapReadyCallback,
+    GoogleApiClient.ConnectionCallbacks,
+    GoogleApiClient.OnConnectionFailedListener {
     private lateinit var binding: ActivityHomeBinding
     private val MULTIPLE_PERMISSION_REQUEST_CODE = 4
     private var longitude = 0.0
@@ -96,16 +92,15 @@ GoogleApiClient.OnConnectionFailedListener
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val navView: BottomNavigationView = binding.navView
-        userPrefManager= UserPrefManager(this)
+        userPrefManager = UserPrefManager(this)
 
         binding.swipeFresh.setOnRefreshListener(OnRefreshListener {
             Handler().postDelayed({
-               finish()
+                finish()
                 startActivity(intent)
                 binding.swipeFresh.isRefreshing = false
             }, 1000)
         })
-
 
         //Initializing googleApiClient
         googleApiClient = GoogleApiClient.Builder(this)
@@ -116,9 +111,12 @@ GoogleApiClient.OnConnectionFailedListener
         pushNotificationService()
         initialNotification()
         val navController = findNavController(R.id.nav_host_fragment_activity_home)
-          val appBarConfiguration = AppBarConfiguration(
+        val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_message, R.id.navigation_cart,R.id.navigation_setting
+                R.id.navigation_home,
+                R.id.navigation_message,
+                R.id.navigation_cart,
+                R.id.navigation_setting
             )
         )
 //        setupActionBarWithNavController(navController, appBarConfiguration)
@@ -130,6 +128,7 @@ GoogleApiClient.OnConnectionFailedListener
         checkPermissionsState()
         setupViewModel()
     }
+
     private fun setupViewModel() {
         val repository = AppRepository()
         val factory = ViewModelProviderFactory(application, repository)
@@ -150,12 +149,12 @@ GoogleApiClient.OnConnectionFailedListener
             when (response) {
                 is Resource.Success -> {
 
-                    val status :Boolean= userPrefManager.popupBoolean
-                    Log.i("TAG", "getPopUp: "+userPrefManager.popupBoolean)
+                    val status: Boolean = userPrefManager.popupBoolean
+                    Log.i("TAG", "getPopUp: " + userPrefManager.popupBoolean)
                     if (status) {
                         response.data?.popup?.let { popupMessage(it.image) }
                     }
-                  }
+                }
 
                 is Resource.Error -> {
                     response.message?.let { message ->
@@ -186,6 +185,7 @@ GoogleApiClient.OnConnectionFailedListener
     override fun onConnectionFailed(p0: ConnectionResult) {
         TODO("Not yet implemented")
     }
+
     override fun onStart() {
         googleApiClient.connect()
         super.onStart()
@@ -195,6 +195,7 @@ GoogleApiClient.OnConnectionFailedListener
         googleApiClient.disconnect()
         super.onStop()
     }
+
     private fun getCurrentLocation() {
 //        mMap.clear();
         if (ActivityCompat.checkSelfPermission(
@@ -212,8 +213,8 @@ GoogleApiClient.OnConnectionFailedListener
             //Getting longitude and latitude
             longitude = location.longitude
             latitude = location.latitude
-            userPrefManager.currentLat=location.latitude.toFloat()
-            userPrefManager.currentLng=location.longitude.toFloat()
+            userPrefManager.currentLat = location.latitude.toFloat()
+            userPrefManager.currentLng = location.longitude.toFloat()
             val latLng = LatLng(latitude, longitude)
             getMyPosition(latLng)
         }
@@ -261,11 +262,11 @@ GoogleApiClient.OnConnectionFailedListener
         }
     }
 
-   override fun onRequestPermissionsResult(
-       requestCode: Int,
-       permissions: Array<out String>,
-       grantResults: IntArray
-   ) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions!!, grantResults)
         when (requestCode) {
             MULTIPLE_PERMISSION_REQUEST_CODE -> {
@@ -313,9 +314,9 @@ GoogleApiClient.OnConnectionFailedListener
                 val addressLine: String =
                     addresses[0].getAddressLine(0).replace("Unnamed Road,", "")
 //                currentlocation.setText("Your Current Location :-$addressLine")
-                userPrefManager.currentPosition=addressLine
+                userPrefManager.currentPosition = addressLine
                 Log.i("TAG", "getMyPosition: $addressLine")
-             } catch (e: Exception) {
+            } catch (e: Exception) {
 //                Toast.makeText(this@HomeActivity, "Could not get Address!!", Toast.LENGTH_SHORT)
 //                    .show()
                 e.printStackTrace()
@@ -350,17 +351,19 @@ GoogleApiClient.OnConnectionFailedListener
                 if (token != null) {
                     Log.i("token ---->>", token)
                 }
-            //                PrefUtils.getInstance(applicationContext).setValue(PrefKeys.FCM_TOKEN, token)
+                //                PrefUtils.getInstance(applicationContext).setValue(PrefKeys.FCM_TOKEN, token)
             }
         }
     }
 
 
     private fun initialNotification() {
-        LocalBroadcastManager.getInstance(this@HomeActivity).registerReceiver(mMessageReceiver,
+        LocalBroadcastManager.getInstance(this@HomeActivity).registerReceiver(
+            mMessageReceiver,
             IntentFilter("notification-message")
         )
     }
+
     var mMessageReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent) {
             val title = intent.getStringExtra("title")
@@ -371,8 +374,10 @@ GoogleApiClient.OnConnectionFailedListener
                 title?.let {
                     if (message != null) {
                         if (imageUrl != null) {
-                            NotificationDetails(0,
-                                it, message, imageUrl,"fffff")
+                            NotificationDetails(
+                                0,
+                                it, message, imageUrl, "fffff"
+                            )
                         }
                     }
                 }
@@ -381,21 +386,21 @@ GoogleApiClient.OnConnectionFailedListener
         }
     }
 
-    fun popupMessage(banner:String) {
+    fun popupMessage(banner: String) {
         if (!isFinishing) {
             dialog = Dialog(this)
             dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog?.setCancelable(true)
             dialog?.setContentView(R.layout.popup_ads)
-        val ads_img: ImageView = dialog!!.findViewById(R.id.ads_img)
-        ads_img.load(BASE_URL+banner)
-        val closePopup: ImageView? = dialog?.findViewById(R.id.close_popup)
+            val ads_img: ImageView = dialog!!.findViewById(R.id.ads_img)
+            ads_img.load(BASE_URL + banner)
+            val closePopup: ImageView? = dialog?.findViewById(R.id.close_popup)
             userPrefManager.popupBoolean = false
             closePopup?.setOnClickListener {
                 userPrefManager.popupBoolean = false
                 dialog!!.dismiss()
             }
-        dialog?.show()
+            dialog?.show()
         }
     }
 

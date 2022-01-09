@@ -32,7 +32,7 @@ data class Subscription (
 	@SerializedName("employee_id") val employee_id : Int,
 	@SerializedName("created_at") val created_at : String,
 	@SerializedName("updated_at") val updated_at : String,
-	@SerializedName("deliveryHistory") val deliveryHistory : DeliveryHistory,
+	@SerializedName("deliveryHistory") val deliveryHistory : List<DeliveryHistory>,
 	@SerializedName("address") val address : Address,
 	@SerializedName("sub_package") val sub_package : Sub_package,
 	@SerializedName("branch") val branch : Branch
@@ -63,8 +63,8 @@ data class Address (
 	)
 
 data class DeliveryHistory (
-	@SerializedName("1") @Expose  val one : One,
-)
-data class One (
-	@SerializedName("delivery_count") @Expose  val delivery_count : String,
+
+	@SerializedName("date") val date : Int,
+	@SerializedName("delivery_count") val delivery_count : Int,
+	@SerializedName("alter_status") val alter_status : Int
 )

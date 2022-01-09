@@ -5,6 +5,8 @@ import com.eightpeak.salakafarm.database.NotificationDetails
 import com.eightpeak.salakafarm.serverconfig.RequestBodies
 import com.eightpeak.salakafarm.serverconfig.RetrofitInstance
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 class AppRepository {
 
@@ -153,11 +155,22 @@ class AppRepository {
         RetrofitInstance.useApiWithAccessToken(tokenManager).getCustomerSubscription()
 
 
+    suspend fun cancelSubscription(tokenManager: TokenManager,subscriptionId:String) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).cancelSubscription(subscriptionId)
+
+
     suspend fun subscriptionAlteration(tokenManager: TokenManager, body: RequestBodies.AddAlteration) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).subscriptionAlteration(body)
 
 
     suspend fun getProductRating(product_id: String) =
         RetrofitInstance.useApiWithoutToken.getRate(product_id)
+
+
+    suspend fun postPaymentEvidence(tokenManager: TokenManager,
+                                    mode: RequestBody,
+                                    subscription_id: RequestBody,
+                                    screenshot: MultipartBody.Part) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).paymentEvidence(mode,subscription_id,screenshot)
 
 }
