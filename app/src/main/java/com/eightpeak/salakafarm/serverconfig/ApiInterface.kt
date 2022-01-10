@@ -246,7 +246,7 @@ interface ApiInterface {
     suspend fun paymentEvidence(
         @Part("mode") email: RequestBody,
         @Part("subscription_id") subscriptionId: RequestBody,
-        @Part citizenShip: MultipartBody.Part
+        @Part screenshot: MultipartBody.Part
     ): Response<ServerResponse>
 
     @FormUrlEncoded

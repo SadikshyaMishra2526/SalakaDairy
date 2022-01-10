@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,16 +13,20 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.databinding.FragmentPaymentEvidenceBinding
-import com.eightpeak.salakafarm.databinding.LayoutTrackEmpPositionBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
+import com.eightpeak.salakafarm.utils.subutils.Resource
+import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.viewmodel.SubscriptionViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
+import com.eightpeak.salakafarm.views.addtocart.CartActivity
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.snackbar.Snackbar
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -63,6 +68,7 @@ class PaymentEvidenceFragment : BottomSheetDialogFragment() {
         setupViewModel()
         return root.rootView
     }
+
     private fun setupViewModel() {
         val repository = AppRepository()
         val factory = ViewModelProviderFactory(requireActivity().application, repository)
@@ -72,12 +78,18 @@ class PaymentEvidenceFragment : BottomSheetDialogFragment() {
     }
 
     private fun getEvidence() {
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             // Do the file write
         } else {
             // Request permission from the user
-            ActivityCompat.requestPermissions(requireActivity(),
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 0);
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 0
+            );
         }
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
@@ -101,6 +113,7 @@ class PaymentEvidenceFragment : BottomSheetDialogFragment() {
             )
         })
     }
+
     fun getFile(url: String): File? {
         val filename = url.hashCode().toString()
         // String filename = URLEncoder.encode(url);
@@ -118,7 +131,7 @@ class PaymentEvidenceFragment : BottomSheetDialogFragment() {
                     val file= File(imageUri?.path)
 
                     val requestFile: RequestBody? = imageUri?.path?.let {
-                        getFile(it)?.let {
+                        getFile(it)?.let { it ->
                             RequestBody.create(
                                 imageUri.let { it1 -> activity?.contentResolver?.getType(it1)?.toMediaTypeOrNull() },
                                 it
@@ -132,6 +145,49 @@ class PaymentEvidenceFragment : BottomSheetDialogFragment() {
                             )
                         }!!
 
+                binding.submitEvidence.setOnClickListener {
+                    val subId: RequestBody? = subscriptionId?.let { it1 ->
+                        RequestBody.create(
+                            MultipartBody.FORM, it1
+                        )
+                    }
+                    val mode: RequestBody = RequestBody.create(
+                        MultipartBody.FORM, "bank"
+                    )
+
+                    tokenManager?.let { it1 ->
+                        if (subId != null) {
+                            viewModel.postPaymentEvidence(
+                                it1, mode, subId, evidence
+                            )
+                        }
+                    }
+                    Log.i("TAG", "onActivityResultccccccc: "+evidence.body)
+
+
+                    viewModel.paymentEvidence.observe(this, Observer { response ->
+                        when (response) {
+                            is Resource.Success -> {
+                                hideProgressBar()
+                                response.data?.let {
+                                    Log.i("TAG", "getEvidence: i m here")
+                                }
+                            }
+
+                            is Resource.Error -> {
+                                hideProgressBar()
+                                response.message?.let { message ->
+                                    binding.evidenceLayout.errorSnack(message, Snackbar.LENGTH_LONG)
+                                }
+                            }
+
+                            is Resource.Loading -> {
+                                showProgressBar()
+                            }
+                        }
+                    })
+
+                }
 
             } catch (e: FileNotFoundException) {
                 e.printStackTrace()
@@ -140,6 +196,19 @@ class PaymentEvidenceFragment : BottomSheetDialogFragment() {
         } else {
             Toast.makeText(requireContext(), "Please Choose your image", Toast.LENGTH_LONG).show()
         }
+    }
+
+    private fun hideProgressBar() {
+        binding.progress.visibility = View.GONE
+    }
+
+    private fun showProgressBar() {
+        binding.progress.visibility = View.VISIBLE
+    }
+
+
+    fun onProgressClick(view: View) {
+        //Preventing Click during loading
     }
 
 }

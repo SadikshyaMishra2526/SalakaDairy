@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:id="@+id/evidence_layout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:backgroundTint="@color/background_color"
     android:layout_height="wrap_content"
     android:layout_gravity="center">
@@ -19,6 +20,15 @@
             android:textColor="@color/teal_200"
             android:textSize="@dimen/_15sdp"
             android:textStyle="bold" />
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
         <ImageView
             android:id="@+id/evidence_photo"
             android:layout_width="@dimen/_200sdp"
@@ -26,6 +36,7 @@
             android:src="@drawable/statement"
             android:layout_height="@dimen/_300sdp"/>
         <Button
+            android:id="@+id/submit_evidence"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:text="Submit Payment ScreenShot"

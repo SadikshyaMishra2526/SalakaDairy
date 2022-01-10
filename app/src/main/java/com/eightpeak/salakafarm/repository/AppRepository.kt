@@ -171,6 +171,7 @@ class AppRepository {
                                     mode: RequestBody,
                                     subscription_id: RequestBody,
                                     screenshot: MultipartBody.Part) =
+
         RetrofitInstance.useApiWithAccessToken(tokenManager).paymentEvidence(mode,subscription_id,screenshot)
 
 }
