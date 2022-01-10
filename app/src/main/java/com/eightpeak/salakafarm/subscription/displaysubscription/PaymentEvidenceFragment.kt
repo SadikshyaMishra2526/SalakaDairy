@@ -27,11 +27,11 @@ import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.addtocart.CartActivity
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
+import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import java.io.File
 import java.io.FileNotFoundException
+
 
 class PaymentEvidenceFragment : BottomSheetDialogFragment() {
 
@@ -46,7 +46,7 @@ class PaymentEvidenceFragment : BottomSheetDialogFragment() {
     private var tokenManager: TokenManager? = null
     private var subscriptionId: String? = null
 
-    private lateinit var evidence: MultipartBody.Part
+//    private lateinit var evidence: MultipartBody.Part
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -114,9 +114,8 @@ class PaymentEvidenceFragment : BottomSheetDialogFragment() {
         })
     }
 
-    fun getFile(url: String): File? {
+    private fun getFile(url: String): File? {
         val filename = url.hashCode().toString()
-        // String filename = URLEncoder.encode(url);
         return File.createTempFile(filename, ".jpg", requireActivity().cacheDir)
     }
 
@@ -129,22 +128,12 @@ class PaymentEvidenceFragment : BottomSheetDialogFragment() {
                 val selectedImage = BitmapFactory.decodeStream(imageStream)
                     binding.evidencePhoto.setImageBitmap(selectedImage)
                     val file= File(imageUri?.path)
+                Log.i("TAG", "onActivityResult: "+file.absolutePath)
+//
+                val requestFile: RequestBody = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
 
-                    val requestFile: RequestBody? = imageUri?.path?.let {
-                        getFile(it)?.let { it ->
-                            RequestBody.create(
-                                imageUri.let { it1 -> activity?.contentResolver?.getType(it1)?.toMediaTypeOrNull() },
-                                it
-                            )
-                        }
-                    }
-                evidence =
-                        requestFile?.let {
-                            MultipartBody.Part.createFormData("screenshot", file.name,
-                                it
-                            )
-                        }!!
-
+                val body: MultipartBody.Part =   MultipartBody.Part
+                    .createFormData("screenshot", file.name, requestFile)
                 binding.submitEvidence.setOnClickListener {
                     val subId: RequestBody? = subscriptionId?.let { it1 ->
                         RequestBody.create(
@@ -158,11 +147,11 @@ class PaymentEvidenceFragment : BottomSheetDialogFragment() {
                     tokenManager?.let { it1 ->
                         if (subId != null) {
                             viewModel.postPaymentEvidence(
-                                it1, mode, subId, evidence
+                                it1, mode, subId, body
                             )
                         }
                     }
-                    Log.i("TAG", "onActivityResultccccccc: "+evidence.body)
+//                    Log.i("TAG", "onActivityResultccccccc: "+evidence.body)
 
 
                     viewModel.paymentEvidence.observe(this, Observer { response ->

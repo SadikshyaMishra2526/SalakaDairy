@@ -28,6 +28,8 @@ import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.viewmodel.SubscriptionViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.addtocart.CartActivity
+import com.eightpeak.salakafarm.views.home.HomeActivity
+import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdActivity
 import com.esewa.android.sdk.payment.ESewaConfiguration
 import com.esewa.android.sdk.payment.ESewaPayment
 import com.esewa.android.sdk.payment.ESewaPaymentActivity
@@ -180,8 +182,8 @@ class ConfirmSubscription : AppCompatActivity() {
                       response.data?.let {
                           userPrefManager.subscriptionStatus = true
 
-
-
+                          val intent = Intent(this@ConfirmSubscription, ProductByIdActivity::class.java)
+                          startActivity(intent)
                       }
                   }
 

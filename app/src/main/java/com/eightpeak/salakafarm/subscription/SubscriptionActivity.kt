@@ -106,9 +106,6 @@ class SubscriptionActivity : AppCompatActivity() {
         }
         setupViewModel()
 
-
-
-
         binding.chooseSubscriptionDate.setOnClickListener {
             val newCalendar = dateSelected
             val dateFormat: java.text.DateFormat? = DateFormat.getDateFormat(applicationContext)
@@ -118,6 +115,7 @@ class SubscriptionActivity : AppCompatActivity() {
                         view, year, monthOfYear, dayOfMonth ->
                     dateSelected[year, monthOfYear, dayOfMonth, 0] = 0
                     binding.chooseSubscriptionDate.text = dateFormat?.format(dateSelected.time)
+
                     selectedStartingDate = dateFormat?.format(dateSelected.time).toString()
                     Log.i("TAG", "onCreate: "+ GeneralUtils.calculateNepaliDate(dayOfMonth,monthOfYear,year)
                     )

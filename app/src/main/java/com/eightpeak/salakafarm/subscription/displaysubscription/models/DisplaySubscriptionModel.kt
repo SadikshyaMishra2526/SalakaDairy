@@ -29,7 +29,7 @@ data class Subscription (
 	@SerializedName("last_delivered_at") val last_delivered_at : String,
 	@SerializedName("expired_at") val expired_at : String,
 	@SerializedName("address_id") val address_id : Int,
-	@SerializedName("employee_id") val employee_id : Int,
+	@SerializedName("employee_id") val employee_id : String,
 	@SerializedName("created_at") val created_at : String,
 	@SerializedName("updated_at") val updated_at : String,
 	@SerializedName("deliveryHistory") val deliveryHistory : List<DeliveryHistory>,
@@ -55,7 +55,7 @@ data class Sub_package (
 )
 
 data class Address (
-	@SerializedName("id") val id : Int,
+	@SerializedName("id") val id : String,
 	@SerializedName("phone") val phone : String,
 	@SerializedName("address1") val address1 : String,
 	@SerializedName("lat") val lat : Double,

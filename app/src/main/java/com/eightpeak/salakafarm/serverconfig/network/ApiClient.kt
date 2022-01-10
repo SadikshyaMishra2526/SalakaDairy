@@ -19,7 +19,7 @@ public object ApiClient {
         .build()
 
 
-  public  val retrofitBuilder: Retrofit.Builder by lazy {
+    val retrofitBuilder: Retrofit.Builder by lazy {
         val gson = GsonBuilder()
             .setLenient()
             .create()

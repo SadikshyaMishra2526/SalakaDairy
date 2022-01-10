@@ -91,13 +91,13 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
         binding.subscriptionLayout.setOnClickListener {
             tokenManager?.let {
                 if (it.token!= NO_LOGIN) {
-//                    if(userPrefManager.subscriptionStatus){
-//                        val mainActivity = Intent(context, DisplaySubscriptionDetails::class.java)
-//                        startActivity(mainActivity)
-//                    }else{
+                    if(userPrefManager.subscriptionStatus){
+                        val mainActivity = Intent(context, DisplaySubscriptionDetails::class.java)
+                        startActivity(mainActivity)
+                    }else{
                         val mainActivity = Intent(context, SubscriptionActivity::class.java)
                         startActivity(mainActivity)
-//                    }
+                    }
                 } else {
                     binding.homeContainer.notLoginWarningSnack(requireContext(),Snackbar.LENGTH_LONG)
                 }
