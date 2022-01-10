@@ -128,4 +128,56 @@ class ProductListViewModel(
         return Resource.Error(response.message())
     }
 
+//    remove from wishlist
+val removeFromWishlist: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
+
+
+
+    fun removeFromWishlist(tokenManager: TokenManager, productId:String) = viewModelScope.launch {
+        removeFromWishView(tokenManager,productId)
+    }
+
+
+    private suspend fun removeFromWishView(tokenManager: TokenManager, productId:String) {
+        removeFromWishlist.postValue(Resource.Loading())
+        try {
+            if (Utils.hasInternetConnection(getApplication<Application>())) {
+                val response = appRepository.deleteWishListItem(tokenManager,productId)
+                Log.i("TAG", "fetchPics: $response")
+                removeFromWishlist.postValue(handleRevomeWishListResponse(response))
+            } else {
+                removeFromWishlist.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+            }
+        } catch (t: Throwable) {
+
+            when (t) {
+                is IOException -> removeFromWishlist.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.network_failure
+                        )
+                    )
+                )
+                else -> removeFromWishlist.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.conversion_error
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun handleRevomeWishListResponse(response: Response<ServerResponse>): Resource<ServerResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }else{
+            Log.i("TAG", "handleWishListResponse:$response ")
+        }
+        return Resource.Error(response.message())
+    }
+
 }

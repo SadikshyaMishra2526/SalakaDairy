@@ -12,11 +12,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.eightpeak.salakafarm.databinding.FragmentProductListBinding
 import com.eightpeak.salakafarm.repository.AppRepository
-import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.ProductListViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.google.android.material.snackbar.Snackbar
-import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import androidx.recyclerview.widget.GridLayoutManager
 
 import android.content.Intent
@@ -29,8 +27,7 @@ import com.eightpeak.salakafarm.App
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
-import com.eightpeak.salakafarm.utils.subutils.successCompareSnack
-import com.eightpeak.salakafarm.utils.subutils.successWishListSnack
+import com.eightpeak.salakafarm.utils.subutils.*
 
 class ProductFragment : Fragment() {
     private lateinit var viewModel: ProductListViewModel
@@ -68,11 +65,20 @@ class ProductFragment : Fragment() {
             val wishlist = intent.getBooleanExtra("wishlist",false)
             val compareList = intent.getBooleanExtra("compare_list",false)
             val productId = intent.getStringExtra("product_id")
+            val removeFromCart= intent.getBooleanExtra("remove",false)
             if(wishlist){
-                if (productId != null) {
-                    tokenManager?.let { viewModel.addtowishlist(it,productId)}
-                    addToWishListResponse()
+                if(!removeFromCart){
+                    if (productId != null) {
+                        tokenManager?.let { viewModel.addtowishlist(it,productId)}
+                        addToWishListResponse()
+                    }
+                }else{
+                    if (productId != null) {
+                        tokenManager?.let { viewModel.removeFromWishlist(it,productId)}
+                        removeWishListResponse()
+                    }
                 }
+
             }else if(compareList){
                 App.addItem(productId)
                 binding.categoriesLayout.successCompareSnack(requireContext(),"Add to Compare List",Snackbar.LENGTH_LONG)
@@ -91,6 +97,32 @@ class ProductFragment : Fragment() {
                           val serverResponse:ServerResponse = picsResponse
                         Log.i("TAG", "getPictures: $serverResponse")
                         binding.categoriesLayout.successWishListSnack(requireContext(),getString(R.string.add_to_wishlist),Snackbar.LENGTH_LONG)
+
+                    }
+                }
+
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let { message ->
+                        binding.productRecyclerView.errorSnack(message, Snackbar.LENGTH_LONG)
+                    }
+                }
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+            }
+        })
+    }
+
+    private fun removeWishListResponse() {
+        viewModel.removeFromWishlist.observe(requireActivity(), Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let { picsResponse ->
+                          val serverResponse:ServerResponse = picsResponse
+
+                        binding.categoriesLayout.showSnack("Removed from Wishlist!!!",Snackbar.LENGTH_LONG)
 
                     }
                 }

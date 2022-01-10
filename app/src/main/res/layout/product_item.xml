@@ -55,7 +55,7 @@
                         android:layout_height="@dimen/_18sdp"
                         android:layout_gravity="center"
                         android:layout_margin="@dimen/_5sdp"
-                        android:background="@drawable/favourite" />
+                        android:background="@drawable/ic_baseline_favorite_24" />
 
                     <View
                         android:layout_width="1dp"

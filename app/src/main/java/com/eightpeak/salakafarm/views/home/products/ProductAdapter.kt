@@ -20,8 +20,15 @@ import kotlinx.android.synthetic.main.product_item.view.*
 import androidx.fragment.app.FragmentActivity
 
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.eightpeak.salakafarm.serverconfig.network.TokenManager
+import com.eightpeak.salakafarm.utils.Constants
+import com.eightpeak.salakafarm.utils.Constants.Companion.NO_LOGIN
 import com.eightpeak.salakafarm.utils.GeneralUtils
+import com.eightpeak.salakafarm.utils.subutils.errorSnack
+import com.eightpeak.salakafarm.utils.subutils.notLoginWarningSnack
+import com.google.android.material.snackbar.Snackbar
 import kotlin.math.roundToInt
 
 
@@ -57,6 +64,13 @@ class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductListViewHolder
     override fun onBindViewHolder(holder: ProductListViewHolder, position: Int) {
         val categoriesItem = differ.currentList[position]
         holder.itemView.apply {
+
+            var wishlistClick=true
+
+          val tokenManager = TokenManager.getInstance(context.getSharedPreferences(
+                Constants.TOKEN_PREF,
+                AppCompatActivity.MODE_PRIVATE
+            ))
             product_thumbnail.load(EndPoints.BASE_URL + categoriesItem.image)
             rated_by.text = "("+categoriesItem.no_of_rating+") "
 
@@ -126,14 +140,20 @@ class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductListViewHolder
 
             product_feature.text=categoriesItem.sku
             bt_add_to_cart.setOnClickListener {
-                val args = Bundle()
-                args.putString(PRODUCT_ID, categoriesItem.id.toString())
-                val bottomSheet = AddToCartView()
-                bottomSheet.arguments = args
-                bottomSheet.show(
-                    (context as FragmentActivity).supportFragmentManager,
-                    bottomSheet.tag
-                )
+                Log.i("TAG", "onBindViewHolder: "+tokenManager.token)
+                if(tokenManager.token!= NO_LOGIN){
+                    val args = Bundle()
+                    args.putString(PRODUCT_ID, categoriesItem.id.toString())
+                    val bottomSheet = AddToCartView()
+                    bottomSheet.arguments = args
+                    bottomSheet.show(
+                        (context as FragmentActivity).supportFragmentManager,
+                        bottomSheet.tag
+                    )
+                }else{
+                    product_feature.notLoginWarningSnack(context, Snackbar.LENGTH_LONG)
+                }
+
             }
             productViewItem.setOnClickListener {
                 val intent = Intent(context, ProductByIdActivity::class.java)
@@ -142,11 +162,28 @@ class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductListViewHolder
             }
 
             product_add_to_wishlist.setOnClickListener {
-                val intent = Intent("custom-message")
-                 intent.putExtra("wishlist", true)
-                intent.putExtra("product_id", categoriesItem.id.toString())
-                LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
+                if(tokenManager.token!= NO_LOGIN) {
+                    if(wishlistClick){
+                        wishlistClick=false
+                        product_add_to_wishlist.load(R.drawable.favourite)
+                        val intent = Intent("custom-message")
+                        intent.putExtra("wishlist", true)
+                        intent.putExtra("product_id", categoriesItem.id.toString())
+                        LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
+                    }else{
+                        val intent = Intent("custom-message")
+                        intent.putExtra("wishlist", true)
+                        intent.putExtra("remove", true)
+                        intent.putExtra("product_id", categoriesItem.id.toString())
+                        LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
 
+                        wishlistClick=true
+                        product_add_to_wishlist.load(R.drawable.ic_baseline_favorite_24)
+                    }
+
+                }else{
+                    product_feature.notLoginWarningSnack(context, Snackbar.LENGTH_LONG)
+                }
             }
 
             product_add_to_compare_list.setOnClickListener {

@@ -22,6 +22,7 @@ import com.eightpeak.salakafarm.subscription.SubscriptionActivity
 import com.eightpeak.salakafarm.subscription.displaysubscription.DisplaySubscriptionDetails
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.Constants.Companion.NO_LOGIN
+import com.eightpeak.salakafarm.utils.subutils.notLoginWarningSnack
 import com.eightpeak.salakafarm.views.home.categories.CategoriesFragment
 import com.eightpeak.salakafarm.views.home.products.ProductFragment
 import com.eightpeak.salakafarm.views.home.slider.SliderFragment
@@ -34,6 +35,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.snackbar.Snackbar
 import java.lang.Exception
 import java.util.*
 
@@ -63,7 +65,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
         val root: View = binding.root
         binding.customerCurrentLocation.text = userPrefManager.currentPosition
 
-        tokenManager = TokenManager.getInstance(requireActivity().getSharedPreferences(
+       val tokenManager = TokenManager.getInstance(requireActivity().getSharedPreferences(
             Constants.TOKEN_PREF,
             AppCompatActivity.MODE_PRIVATE
         ))
@@ -87,14 +89,19 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
         }
 
         binding.subscriptionLayout.setOnClickListener {
-            if(userPrefManager.subscriptionStatus){
-                val mainActivity = Intent(context, DisplaySubscriptionDetails::class.java)
-                startActivity(mainActivity)
-            }else{
-                val mainActivity = Intent(context, SubscriptionActivity::class.java)
-                startActivity(mainActivity)
+            tokenManager?.let {
+                if (it.token!= NO_LOGIN) {
+//                    if(userPrefManager.subscriptionStatus){
+//                        val mainActivity = Intent(context, DisplaySubscriptionDetails::class.java)
+//                        startActivity(mainActivity)
+//                    }else{
+                        val mainActivity = Intent(context, SubscriptionActivity::class.java)
+                        startActivity(mainActivity)
+//                    }
+                } else {
+                    binding.homeContainer.notLoginWarningSnack(requireContext(),Snackbar.LENGTH_LONG)
+                }
             }
-
         }
 
         //Initializing googleApiClient

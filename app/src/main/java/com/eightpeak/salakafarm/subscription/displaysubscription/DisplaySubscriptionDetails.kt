@@ -28,6 +28,7 @@ import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.viewmodel.SubscriptionViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.addtocart.CartActivity
+import com.eightpeak.salakafarm.views.home.HomeActivity
 import com.eightpeak.salakafarm.views.home.categories.categoriesbyid.CategoriesByIdAdapter
 import com.eightpeak.salakafarm.views.home.categories.categoriesbyid.Products_with_description
 import com.eightpeak.salakafarm.views.home.products.AddToCartView
@@ -169,7 +170,8 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let {
-                        val mainActivity = Intent(this@DisplaySubscriptionDetails, CartActivity::class.java)
+                        userPrefManager.subscriptionStatus=false;
+                        val mainActivity = Intent(this@DisplaySubscriptionDetails, HomeActivity::class.java)
                         startActivity(mainActivity)
                         finish()
                     }

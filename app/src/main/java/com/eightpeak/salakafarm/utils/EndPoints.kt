@@ -56,6 +56,7 @@ class EndPoints {
         const val GET_RATE = "api/get_product_rating"
         //address
         const val GET_ADDRESS = "api/get_address_list"
+        const val SUB_HISTORY = "api/get_customer_subscription_detail_by_dates"
 
 
         //        order

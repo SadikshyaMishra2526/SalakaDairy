@@ -9,6 +9,7 @@ import com.eightpeak.salakafarm.subscription.attributes.SubscriptionItemModel
 import com.eightpeak.salakafarm.subscription.attributes.SubscriptionPackageModel
 import com.eightpeak.salakafarm.subscription.attributes.SubscriptionResponse
 import com.eightpeak.salakafarm.subscription.displaysubscription.EmployeeTrackDetails
+import com.eightpeak.salakafarm.subscription.displaysubscription.models.SubscriptionHistoryModel
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.COMPARE_LIST_DETAILS
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.DELETE_CART
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.DELETE_CART_ITEM
@@ -252,4 +253,9 @@ interface ApiInterface {
     @FormUrlEncoded
     @POST(EndPoints.GET_RATE)
     suspend fun getRate(@Field("product_id") addressId: String): Response<ProductRatingModel>
+
+
+    @FormUrlEncoded
+    @POST(EndPoints.SUB_HISTORY)
+    suspend fun getSubscriptionHistory(@Body body: RequestBodies.SubHistoryList): Response<SubscriptionHistoryModel>
 }

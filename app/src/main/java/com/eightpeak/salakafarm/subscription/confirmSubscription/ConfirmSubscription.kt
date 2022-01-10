@@ -8,6 +8,8 @@ import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import coil.api.load
@@ -66,7 +68,7 @@ class ConfirmSubscription : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        changeStatusBarColor()
         eSewaConfiguration = ESewaConfiguration()
             .clientId(Constants.MERCHANT_ID)
             .secretKey(Constants.MERCHANT_SECRET_KEY)
@@ -201,7 +203,11 @@ class ConfirmSubscription : AppCompatActivity() {
         setContentView(binding.root)
 
     }
-
+    private fun changeStatusBarColor() {
+        val window: Window = window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = resources.getColor(R.color.sub_color)
+    }
     private fun makePayment(amount: String) {
         val eSewaPayment = ESewaPayment(
             amount,

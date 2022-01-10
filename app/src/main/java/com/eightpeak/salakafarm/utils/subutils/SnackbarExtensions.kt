@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.IntegerRes
@@ -15,6 +16,7 @@ import com.eightpeak.salakafarm.serverconfig.RequestBodies
 import com.eightpeak.salakafarm.views.addtocart.CartActivity
 import com.eightpeak.salakafarm.views.comparelist.CompareListActivity
 import com.eightpeak.salakafarm.views.home.address.AddressModification
+import com.eightpeak.salakafarm.views.login.LoginActivity
 import com.eightpeak.salakafarm.views.wishlist.WishlistActivity
 import com.google.android.material.snackbar.Snackbar
 
@@ -53,6 +55,32 @@ fun View.errorSnack(message: String, length: Int = Snackbar.LENGTH_LONG) {
     snack.show()
 }
 
+fun View.notLoginWarningSnack(
+    context: Context,
+    length: Int = Snackbar.LENGTH_LONG
+) {
+    val snackbar = Snackbar
+        .make(this, "Login/Register to ADD !!! ", length)
+        .setAction("Lets Login") {
+            val intent = Intent(context, LoginActivity::class.java)
+            context.startActivity(intent)
+        }
+
+    val snackbarLayout = snackbar.view
+    val lp = LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams.MATCH_PARENT,
+        LinearLayout.LayoutParams.WRAP_CONTENT
+    )
+
+    lp.setMargins(10, 150, 10, 10)
+
+    snackbarLayout.layoutParams = lp
+
+
+    snackbar.setActionTextColor(Color.parseColor("#FFFFFF"))
+    snackbar.view.setBackgroundColor(ContextCompat.getColor(context, R.color.yellow))
+    snackbar.show()
+}
 
 fun View.successWishListSnack(
 

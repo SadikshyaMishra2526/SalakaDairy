@@ -1,7 +1,5 @@
 package com.eightpeak.salakafarm.repository
 
-import androidx.lifecycle.LiveData
-import com.eightpeak.salakafarm.database.NotificationDetails
 import com.eightpeak.salakafarm.serverconfig.RequestBodies
 import com.eightpeak.salakafarm.serverconfig.RetrofitInstance
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
@@ -155,23 +153,35 @@ class AppRepository {
         RetrofitInstance.useApiWithAccessToken(tokenManager).getCustomerSubscription()
 
 
-    suspend fun cancelSubscription(tokenManager: TokenManager,subscriptionId:String) =
+    suspend fun cancelSubscription(tokenManager: TokenManager, subscriptionId: String) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).cancelSubscription(subscriptionId)
 
 
-    suspend fun subscriptionAlteration(tokenManager: TokenManager, body: RequestBodies.AddAlteration) =
+    suspend fun subscriptionAlteration(
+        tokenManager: TokenManager,
+        body: RequestBodies.AddAlteration
+    ) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).subscriptionAlteration(body)
+
+
+    suspend fun getSubscriptionHistory(
+        tokenManager: TokenManager,
+        body: RequestBodies.SubHistoryList
+    ) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).getSubscriptionHistory(body)
 
 
     suspend fun getProductRating(product_id: String) =
         RetrofitInstance.useApiWithoutToken.getRate(product_id)
 
 
-    suspend fun postPaymentEvidence(tokenManager: TokenManager,
-                                    mode: RequestBody,
-                                    subscription_id: RequestBody,
-                                    screenshot: MultipartBody.Part) =
-
-        RetrofitInstance.useApiWithAccessToken(tokenManager).paymentEvidence(mode,subscription_id,screenshot)
+    suspend fun postPaymentEvidence(
+        tokenManager: TokenManager,
+        mode: RequestBody,
+        subscription_id: RequestBody,
+        screenshot: MultipartBody.Part
+    ) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager)
+            .paymentEvidence(mode, subscription_id, screenshot)
 
 }

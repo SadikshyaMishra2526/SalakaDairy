@@ -121,6 +121,9 @@ object RequestBodies {
         val lng: String
     )
 
-
+    data class SubHistoryList(
+        val from: String,
+        val to: String
+    )
 }
 

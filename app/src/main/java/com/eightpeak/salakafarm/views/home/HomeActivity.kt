@@ -94,13 +94,13 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback,
         val navView: BottomNavigationView = binding.navView
         userPrefManager = UserPrefManager(this)
 
-        binding.swipeFresh.setOnRefreshListener(OnRefreshListener {
-            Handler().postDelayed({
-                finish()
-                startActivity(intent)
-                binding.swipeFresh.isRefreshing = false
-            }, 1000)
-        })
+//        binding.swipeFresh.setOnRefreshListener(OnRefreshListener {
+//            Handler().postDelayed({
+//                finish()
+//                startActivity(intent)
+//                binding.swipeFresh.isRefreshing = false
+//            }, 1000)
+//        })
 
         //Initializing googleApiClient
         googleApiClient = GoogleApiClient.Builder(this)

@@ -74,39 +74,33 @@ class AddAlterationDisplay : BottomSheetDialogFragment() {
         binding.cancelSubscription.setOnClickListener {
             binding.deductSubscription.visibility=View.GONE
             binding.addSubscription.visibility=View.GONE
-            val builder = AlertDialog.Builder(requireContext())
-            val dialog = builder.create()
-            builder.setTitle("Cancel Subscription")
-            builder.setMessage("Do you want to cancel 2022/01/09's subscription ? ")
-            builder.setPositiveButton(
-                R.string.logout,
-                DialogInterface.OnClickListener { _, _ ->
-                   val body= alterQuantity?.let { it1 ->
-                       subscriptionId?.let { it2 ->
-                           alterationDate?.let { it3 ->
-                               RequestBodies.AddAlteration(
-                                   it2,"1",
-                                   it1, it3
-                               )
-                           }
+            binding.cancelSubscription.visibility=View.GONE
 
-                       }
-                   }
-                    alterSubscription(body)
-                })
-            builder.setNegativeButton(R.string.cancel) { _, _ ->
-                binding.alterSubscription.visibility = View.VISIBLE
-                binding.addSubscription.visibility = View.VISIBLE
-                dialog.dismiss()
+            binding.alterSubLayout.visibility=View.VISIBLE
+            binding.cancelSubscriptionTv.text = "Do you want to cancel this day's subscription? "
+
+            binding.submitSubscription.setOnClickListener {
+                val body= alterQuantity?.let { it1 ->
+                    subscriptionId?.let { it2 ->
+                        alterationDate?.let { it3 ->
+                            RequestBodies.AddAlteration(
+                                it2,"1",
+                                it1, it3
+                            )
+                        }
+
+                    }
+                }
+                alterSubscription(body)
             }
-            dialog.show()
+
         }
 
         binding.deductSubscription.setOnClickListener {
             binding.cancelSubscription.visibility=View.GONE
             binding.deductSubscription.visibility=View.GONE
             binding.addSubscription.visibility=View.GONE
-
+            binding.alterSubLayout.visibility=View.VISIBLE
             binding.alterationLayout.visibility=View.VISIBLE
             binding.alterationDate.text=alterationDate
             binding.alterationQuantity.setText(alterQuantity.toString())
@@ -130,7 +124,7 @@ class AddAlterationDisplay : BottomSheetDialogFragment() {
             binding.cancelSubscription.visibility=View.GONE
             binding.addSubscription.visibility=View.GONE
             binding.deductSubscription.visibility=View.GONE
-
+            binding.alterSubLayout.visibility=View.VISIBLE
             binding.alterationLayout.visibility=View.VISIBLE
             binding.alterationDate.text=alterationDate
             binding.alterationQuantity.setText(alterQuantity.toString())

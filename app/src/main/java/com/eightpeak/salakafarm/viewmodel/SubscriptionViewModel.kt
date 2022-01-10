@@ -14,6 +14,7 @@ import com.eightpeak.salakafarm.subscription.attributes.BranchModel
 import com.eightpeak.salakafarm.subscription.attributes.SubscriptionItemModel
 import com.eightpeak.salakafarm.subscription.attributes.SubscriptionPackageModel
 import com.eightpeak.salakafarm.subscription.attributes.SubscriptionResponse
+import com.eightpeak.salakafarm.subscription.displaysubscription.models.SubscriptionHistoryModel
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.Utils
 import com.eightpeak.salakafarm.views.addresslist.AddressListModel
@@ -408,8 +409,6 @@ class SubscriptionViewModel(
     }
 
 
-
-
     //    to cancel subscription
     val cancelSubscription: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
 
@@ -519,6 +518,63 @@ class SubscriptionViewModel(
     }
 
     private fun handlePaymentEvidenceResponse(response: Response<ServerResponse>): Resource<ServerResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+
+    //    to view  subscription history
+    val subHistory: MutableLiveData<Resource<SubscriptionHistoryModel>> = MutableLiveData()
+
+    fun getSubHistory(
+        tokenManager: TokenManager,
+        body: RequestBodies.SubHistoryList
+    ) = viewModelScope.launch {
+        postSubHistoryResponse(tokenManager, body)
+    }
+
+    private suspend fun postSubHistoryResponse(
+        tokenManager: TokenManager,
+        body: RequestBodies.SubHistoryList
+    ) {
+        subHistory.postValue(Resource.Loading())
+        try {
+            if (Utils.hasInternetConnection(getApplication<Application>())) {
+                val response = appRepository.getSubscriptionHistory(
+                    tokenManager,
+                    body
+                )
+                Log.i("TAG", "fetchSubscription: $response")
+                subHistory.postValue(handleOrderHistoryResponse(response))
+            } else {
+                subHistory.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+            }
+        } catch (t: Throwable) {
+            Log.i("TAG", "fetchSubscription: " + t.localizedMessage)
+            when (t) {
+                is IOException -> subHistory.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.network_failure
+                        )
+                    )
+                )
+                else -> subHistory.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.conversion_error
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun handleOrderHistoryResponse(response: Response<SubscriptionHistoryModel>): Resource<SubscriptionHistoryModel> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)

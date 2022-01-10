@@ -270,7 +270,7 @@ public class UserPrefManager {
     }
 
 
-    public  void setSubscriptionStatus(Boolean fcmToken) {
+    public void setSubscriptionStatus(Boolean fcmToken) {
         userPrefEditor.putBoolean(SUBSCRIPTION, fcmToken);
         userPrefEditor.commit();
     }

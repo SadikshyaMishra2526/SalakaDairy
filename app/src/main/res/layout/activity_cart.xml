@@ -256,7 +256,7 @@
         android:layout_gravity="bottom|end"
         android:text="Proceed With Checkout"
         android:id="@+id/proceed_with_checkout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
