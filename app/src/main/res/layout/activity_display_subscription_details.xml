@@ -52,6 +52,21 @@
                 android:layout_weight="1.5" />
         </LinearLayout>
 
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/warning_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.cardview.widget.CardView>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -120,9 +135,9 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/sub_color_lighter"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@color/sub_color_lighter"
                 android:padding="@dimen/_5sdp">
 
                 <TextView
@@ -138,6 +153,7 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_weight="1" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -145,6 +161,7 @@
                     android:textColor="@color/main_color"
                     android:textSize="@dimen/_13sdp"
                     android:textStyle="bold" />
+
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -161,68 +178,79 @@
             </LinearLayout>
 
 
-<androidx.cardview.widget.CardView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    app:cardCornerRadius="@dimen/_5sdp"
-    android:layout_gravity="center"
-    android:layout_margin="@dimen/_5sdp"
-    android:elevation="@dimen/_5sdp">
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/display_subscription_dates"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/customer_details"
-        app:layout_constraintVertical_bias="0.0" />
-</androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_5sdp"
+                android:elevation="@dimen/_5sdp"
+                app:cardCornerRadius="@dimen/_5sdp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/display_subscription_dates"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/customer_details"
+                    app:layout_constraintVertical_bias="0.0" />
+            </androidx.cardview.widget.CardView>
+
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:orientation="horizontal"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
                 <LinearLayout
-                    android:layout_marginStart="@dimen/_10sdp"
                     android:layout_width="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:orientation="vertical">
+
                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="M : Morning"
-                        android:layout_width="wrap_content"
-                        android:textSize="@dimen/_10sdp"
-                        android:layout_height="wrap_content"/>
+                        android:textSize="@dimen/_10sdp" />
+
                     <TextView
-                        android:text="E : Evening"
-                        android:textSize="@dimen/_10sdp"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:text="E : Evening"
+                        android:textSize="@dimen/_10sdp" />
                 </LinearLayout>
+
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1" />
+
                 <LinearLayout
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:orientation="vertical"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:orientation="vertical">
+
                     <TextView
-                        android:textSize="@dimen/_10sdp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="Red : Cancelled"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:textSize="@dimen/_10sdp" />
+
                     <TextView
-                        android:textSize="@dimen/_10sdp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="Green : Delivered"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:textSize="@dimen/_10sdp" />
+
                     <TextView
-                        android:textSize="@dimen/_10sdp"
-                        android:text="Yellow : In Progress"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:text="Yellow : In Progress"
+                        android:textSize="@dimen/_10sdp" />
 
                 </LinearLayout>
             </LinearLayout>
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/customer_details"
                 android:layout_width="match_parent"
@@ -246,13 +274,13 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:layout_margin="@dimen/_5sdp"
-                        android:padding="@dimen/_5sdp"
                         android:background="@color/sub_color_lighter"
-                        android:textSize="@dimen/_13sdp"
+                        android:gravity="center"
+                        android:padding="@dimen/_5sdp"
                         android:text="@string/subscription_details"
                         android:textColor="@color/teal_200"
+                        android:textSize="@dimen/_13sdp"
                         android:textStyle="bold" />
 
                     <LinearLayout

@@ -38,6 +38,7 @@ import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.addresslist.Address_list
 import com.eightpeak.salakafarm.views.addtocart.CartActivity
 import com.google.android.material.snackbar.Snackbar
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -115,8 +116,9 @@ class SubscriptionActivity : AppCompatActivity() {
                         view, year, monthOfYear, dayOfMonth ->
                     dateSelected[year, monthOfYear, dayOfMonth, 0] = 0
                     binding.chooseSubscriptionDate.text = dateFormat?.format(dateSelected.time)
+                    val formatter = SimpleDateFormat("yyyy-MM-dd")
+                    selectedStartingDate = formatter.format(Date.parse(dateSelected.time.toString()))
 
-                    selectedStartingDate = dateFormat?.format(dateSelected.time).toString()
                     Log.i("TAG", "onCreate: "+ GeneralUtils.calculateNepaliDate(dayOfMonth,monthOfYear,year)
                     )
                 },

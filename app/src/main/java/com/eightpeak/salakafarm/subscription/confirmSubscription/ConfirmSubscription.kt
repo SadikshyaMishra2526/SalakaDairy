@@ -21,6 +21,7 @@ import com.eightpeak.salakafarm.databinding.ActivityConfirmSubscriptionBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.RequestBodies
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
+import com.eightpeak.salakafarm.subscription.displaysubscription.DisplaySubscriptionDetails
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
 import com.eightpeak.salakafarm.utils.subutils.Resource
@@ -182,8 +183,9 @@ class ConfirmSubscription : AppCompatActivity() {
                       response.data?.let {
                           userPrefManager.subscriptionStatus = true
 
-                          val intent = Intent(this@ConfirmSubscription, ProductByIdActivity::class.java)
+                          val intent = Intent(this@ConfirmSubscription, DisplaySubscriptionDetails::class.java)
                           startActivity(intent)
+                          finish()
                       }
                   }
 

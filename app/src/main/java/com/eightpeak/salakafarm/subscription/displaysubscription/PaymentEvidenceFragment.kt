@@ -24,7 +24,6 @@ import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.viewmodel.SubscriptionViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
-import com.eightpeak.salakafarm.views.addtocart.CartActivity
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
 import okhttp3.*
@@ -114,7 +113,7 @@ class PaymentEvidenceFragment : BottomSheetDialogFragment() {
         })
     }
 
-    private fun getFile(url: String): File? {
+    private fun getFile(url: File): File? {
         val filename = url.hashCode().toString()
         return File.createTempFile(filename, ".jpg", requireActivity().cacheDir)
     }
@@ -130,7 +129,11 @@ class PaymentEvidenceFragment : BottomSheetDialogFragment() {
                     val file= File(imageUri?.path)
                 Log.i("TAG", "onActivityResult: "+file.absolutePath)
 //
-                val requestFile: RequestBody = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
+                val requestFile: RequestBody = getFile(file)?.let {
+                    RequestBody.create("multipart/form-data".toMediaTypeOrNull(),
+                        it
+                    )
+                }!!
 
                 val body: MultipartBody.Part =   MultipartBody.Part
                     .createFormData("screenshot", file.name, requestFile)
@@ -151,8 +154,6 @@ class PaymentEvidenceFragment : BottomSheetDialogFragment() {
                             )
                         }
                     }
-//                    Log.i("TAG", "onActivityResultccccccc: "+evidence.body)
-
 
                     viewModel.paymentEvidence.observe(this, Observer { response ->
                         when (response) {

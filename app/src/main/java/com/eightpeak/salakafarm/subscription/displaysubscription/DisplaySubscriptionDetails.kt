@@ -127,13 +127,22 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
         binding.subscriberPackageName.text = subscription.sub_package.name.toString()
         binding.subscriptionRemaining.text =
             subscription.remaining_quantity.toString() + "/" + subscription.subscribed_total_amount.toString()
-       binding.paymentStatus.text="Unpaid"
-       binding.paymentVia.text="By Bank"
-
+       binding.paymentVia.text=subscription.mode
         binding.unitPerDay.text = subscription.unit_per_day.toString()
         binding.deliveryTime.text = "Morning"
         binding.subscriberBranch.text = subscription.branch.name
-//        binding.subscriptionAddress.text =subscription.address.address1
+        binding.subscriptionAddress.text =subscription.address.address1
+
+
+        binding.paymentStatus.text="Unpaid"
+        if(subscription.mode == "bank"||subscription.mode == "qr"){
+
+        }else if (subscription.mode == "esewa"||subscription.mode == "cashondelivery")
+
+
+
+
+
 
         binding.trackYourOrder.setOnClickListener {
             val args = Bundle()

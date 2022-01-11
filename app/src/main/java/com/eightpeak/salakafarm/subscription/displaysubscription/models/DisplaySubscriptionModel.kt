@@ -32,11 +32,19 @@ data class Subscription (
 	@SerializedName("employee_id") val employee_id : String,
 	@SerializedName("created_at") val created_at : String,
 	@SerializedName("updated_at") val updated_at : String,
+	@SerializedName("mode") val mode : String,
+	@SerializedName("payment_at") val payment_at : String,
+	@SerializedName("approved_at") val approved_at : String,
+	@SerializedName("refId") val refId : String,
+	@SerializedName("oid") val oid : String,
+	@SerializedName("account_number") val account_number : Int,
+	@SerializedName("bank") val bank : String,
+	@SerializedName("screenshot") val screenshot : String,
 	@SerializedName("deliveryHistory") val deliveryHistory : List<DeliveryHistory>,
 	@SerializedName("address") val address : Address,
 	@SerializedName("sub_package") val sub_package : Sub_package,
 	@SerializedName("branch") val branch : Branch
-) {
+){
 	override fun toString(): String {
 		return "Subscription(id=$id, customer_id=$customer_id, sub_package_id=$sub_package_id, total_quantity=$total_quantity, remaining_quantity=$remaining_quantity, delivery_peroid=$delivery_peroid,delivery=$deliveryHistory, starting_date='$starting_date', subscribed_price=$subscribed_price, subscribed_discount=$subscribed_discount, subscribed_total_amount=$subscribed_total_amount, unit_per_day=$unit_per_day, branch_id=$branch_id, extra='$extra', last_delivered_status=$last_delivered_status, last_delivered_at='$last_delivered_at', expired_at='$expired_at', address_id=$address_id, employee_id=$employee_id, created_at='$created_at', updated_at='$updated_at', address=$address, sub_package=$sub_package, branch=$branch)"
 	}
