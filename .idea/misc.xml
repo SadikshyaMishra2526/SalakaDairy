@@ -10,6 +10,7 @@
         <entry key="..\:/RamLaxman/SalakaDairy/app/src/main/res/layout/activity_cart.xml" value="0.36666666666666664" />
         <entry key="..\:/RamLaxman/SalakaDairy/app/src/main/res/layout/activity_checkout_details_view.xml" value="0.36666666666666664" />
         <entry key="..\:/RamLaxman/SalakaDairy/app/src/main/res/layout/activity_confirm_subscription.xml" value="0.25" />
+        <entry key="..\:/RamLaxman/SalakaDairy/app/src/main/res/layout/activity_display_subscription_details.xml" value="0.36666666666666664" />
         <entry key="..\:/RamLaxman/SalakaDairy/app/src/main/res/layout/activity_home.xml" value="0.36666666666666664" />
         <entry key="..\:/RamLaxman/SalakaDairy/app/src/main/res/layout/activity_otp_activity.xml" value="0.3574074074074074" />
         <entry key="..\:/RamLaxman/SalakaDairy/app/src/main/res/layout/activity_register.xml" value="0.36666666666666664" />
@@ -17,8 +18,10 @@
         <entry key="..\:/RamLaxman/SalakaDairy/app/src/main/res/layout/activity_splash_screen.xml" value="0.36666666666666664" />
         <entry key="..\:/RamLaxman/SalakaDairy/app/src/main/res/layout/alter_subscription_layout.xml" value="0.36666666666666664" />
         <entry key="..\:/RamLaxman/SalakaDairy/app/src/main/res/layout/fragment_home.xml" value="0.36666666666666664" />
+        <entry key="..\:/RamLaxman/SalakaDairy/app/src/main/res/layout/fragment_product_view_by_id.xml" value="0.36666666666666664" />
         <entry key="..\:/RamLaxman/SalakaDairy/app/src/main/res/layout/layout_track_emp_position.xml" value="0.36666666666666664" />
         <entry key="..\:/RamLaxman/SalakaDairy/app/src/main/res/layout/product_item.xml" value="0.36666666666666664" />
+        <entry key="..\:/RamLaxman/SalakaDairy/app/src/main/res/layout/subscription_date_item.xml" value="0.36666666666666664" />
         <entry key="..\:/RamLaxman/SalakaDairy/app/src/main/res/layout/subscription_history_item.xml" value="0.36666666666666664" />
         <entry key="..\:/TechnologySalesProjects/SalakaFarm/app/src/main/res/layout/activity_login.xml" value="0.13043478260869565" />
         <entry key="..\:/TechnologySalesProjects/SalakaFarm/app/src/main/res/layout/activity_login2.xml" value="0.18931159420289856" />

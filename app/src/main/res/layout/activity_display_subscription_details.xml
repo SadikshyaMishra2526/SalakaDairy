@@ -53,18 +53,35 @@
         </LinearLayout>
 
         <androidx.cardview.widget.CardView
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            app:cardCornerRadius="@dimen/_10sdp"
+            android:backgroundTint="@color/sub_color_lighter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:padding="@dimen/_5sdp"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:layout_margin="@dimen/_5sdp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
                 <TextView
+                    android:text="Note !!!"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@color/sub_color"
+                    android:layout_height="wrap_content"/>
+                <TextView
+
+                    android:textSize="@dimen/_9sdp"
+                    android:text="Subscription needs to be validated to start. If you want to pay via QR or Online Banking.. Please upload your payment statement in the end of this page and wait for approval..."
                     android:id="@+id/warning_message"
+                    android:textColor="@color/red"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
-            </androidx.appcompat.widget.LinearLayoutCompat>
+            </LinearLayout>
         </androidx.cardview.widget.CardView>
 
         <LinearLayout
@@ -189,7 +206,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/display_subscription_dates"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/customer_details"
                     app:layout_constraintVertical_bias="0.0" />
@@ -524,6 +541,24 @@
                             android:padding="@dimen/_5sdp"
                             android:selectAllOnFocus="true"
                             android:textSize="@dimen/_12sdp" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="Add Evidence"
+                            android:textColor="@color/sub_color"
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

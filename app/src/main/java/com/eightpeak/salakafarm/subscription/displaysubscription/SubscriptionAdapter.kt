@@ -48,16 +48,22 @@ class SubscriptionAdapter(   private val onClickListener: (View, DeliveryHistory
     override fun onBindViewHolder(holder: DataListViewHolder, position: Int) {
         val dateDetails = differ.currentList[position]
         holder.itemView.apply {
-//            if(dateDetails.delivery_count!=0){
-//                date_item.text = dateDetails.date.toString()
-//                sub_item.setBackgroundColor(Color.GREEN)
-//            }else{
-                date_item.text = dateDetails.date.toString()
-                sub_item.setBackgroundColor(Color.GRAY)
-//            }
-            holder.itemView.setOnClickListener { view ->
-                onClickListener.invoke(view, dateDetails)
+            date_item.text = dateDetails.date.toString()
+            if(  dateDetails.date==27||dateDetails.date>27){
+                if(dateDetails.delivery_count!=0){
+                    date_item.text = dateDetails.date.toString()
+                }else{
+                    date_item.text = dateDetails.date.toString()
+                    holder.itemView.setOnClickListener { view ->
+                        onClickListener.invoke(view, dateDetails)
+                    }
+                }
+                sub_item.setBackgroundColor(Color.GREEN)
+            }else{
+                alter_subscription.setCardBackgroundColor(Color.GRAY)
             }
+
+
 
         }
 

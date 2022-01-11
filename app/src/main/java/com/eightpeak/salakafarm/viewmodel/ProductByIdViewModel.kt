@@ -10,7 +10,6 @@ import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.Utils
-import com.eightpeak.salakafarm.views.home.products.ProductModel
 import com.eightpeak.salakafarm.views.home.products.ServerResponse
 import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdModel
 import com.eightpeak.salakafarm.views.home.products.productbyid.ProductRatingModel

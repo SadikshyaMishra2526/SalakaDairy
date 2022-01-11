@@ -57,7 +57,7 @@ data class Data (
 	@SerializedName("updated_at") val updated_at : String,
 	@SerializedName("images") val images : List<Images>,
 	@SerializedName("descriptions") val descriptions : List<Descriptions>,
-	@SerializedName("promotion_price") val promotion_price : Promotion_price,
+	@SerializedName("promotion_price") val promotion_price : Promotion_price?=null,
 	@SerializedName("attributes") val attributes : List<Attributes>
 )
 data class Images (
@@ -81,7 +81,7 @@ data class Descriptions (
 data class Promotion_price (
 
 	@SerializedName("product_id") val product_id : Int,
-	@SerializedName("price_promotion") val price_promotion : Int,
+	@SerializedName("price_promotion") val price_promotion : String,
 	@SerializedName("date_start") val date_start : String,
 	@SerializedName("date_end") val date_end : String,
 	@SerializedName("status_promotion") val status_promotion : Int,
