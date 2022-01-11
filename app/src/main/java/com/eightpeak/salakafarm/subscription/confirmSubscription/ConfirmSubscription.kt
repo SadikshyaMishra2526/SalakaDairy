@@ -177,7 +177,7 @@ class ConfirmSubscription : AppCompatActivity() {
       binding.proceedWithPayment.setOnClickListener {
           tokenManager?.let { it1 -> viewModel.addSubscription(it1,body) }
           viewModel.addSubscription.observe(this, Observer { response ->
-              when (response) {
+              when (responsgite) {
                   is Resource.Success -> {
                       hideProgressBar()
                       response.data?.let {
