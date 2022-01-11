@@ -3,7 +3,10 @@ package com.eightpeak.salakafarm.utils;
 import android.location.Location;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+
+import com.eightpeak.salakafarm.R;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -11,6 +14,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GeneralUtils {
+   private static Map<Integer, int[]> nepaliMap;
+
+    private static int startingEngYear = 1944;
+
+    private static int startingEngMonth = 0;
+
+    private static int startingEngDay = 1;
+
+    private static int dayOfWeek = Calendar.SATURDAY;
+
+    private static int startingNepYear = 2000;
+
+    private static int startingNepMonth = 9;
+
+    private static int startingNepDay = 17;
 
     public static String getUnicodeNumber(String number) {
         String unicodeChar = "";
@@ -61,17 +79,12 @@ public class GeneralUtils {
 
         return distance;
     }
+
+
     public static String calculateNepaliDate(int day, int month, int year) {
-        Log.i("TAG", "calculateNepaliDate: "+day+" "+month+" "+year);
-        String getDate="";
-        Map<Integer, int[]> nepaliMap;
-        int startingEngYear = 2078;
-        int startingEngMonth = 0;
-        int startingEngDay = 1;
-        int dayOfWeek = Calendar.SATURDAY;
-        int startingNepYear = 2000;
-        int startingNepMonth = 9;
-        int startingNepDay = 17;
+
+
+
         nepaliMap = new HashMap<Integer, int[]>();
 
         nepaliMap.put(2000, new int[] { 0, 30, 32, 31, 32, 31, 30, 30, 30, 29,
@@ -258,115 +271,113 @@ public class GeneralUtils {
                 30, 30, 30 });
 
 
-        int engYear = year;
+                int engYear = year;
 
-        int engMonth = month;
+                int engMonth = month;
 
-        int engDay = day;
+                int engDay = day;
+
+                int nepYear = startingNepYear;
+                int nepMonth = startingNepMonth;
+                int nepDay = startingNepDay;
+
+                Calendar currentEngDate = new GregorianCalendar();
+
+                currentEngDate.set(engYear, engMonth, engDay);
+
+                Calendar baseEngDate = new GregorianCalendar();
+
+                baseEngDate.set(startingEngYear, startingEngMonth,
+                        startingEngDay);
+
+                long totalEngDaysCount = daysBetween(baseEngDate,
+                        currentEngDate);
+
+                while (totalEngDaysCount != 0) {
+
+                    int daysInIthMonth = nepaliMap.get(nepYear)[nepMonth];
+
+                    nepDay++;
+                    if (nepDay > daysInIthMonth) {
+                        nepMonth++;
+                        nepDay = 1;
+                    }
+
+                    if (nepMonth > 12) {
+                        nepYear++;
+                        nepMonth = 1;
+                    }
+
+                    dayOfWeek++; // count the days in terms of 7 days
+                    if (dayOfWeek > 7) {
+                        dayOfWeek = 1;
+                    }
+
+                    totalEngDaysCount--;
+                }
+                switch (dayOfWeek) {
+                    case 1:
+                        Log.i("TAG", "calculateNepaliDate: "+"The Date in BS is \n\n" + nepYear + " /"
+                                + nepMonth + " /" + nepDay + " Sunday");
+//                        t.setText("The Date in BS is \n\n" + nepYear + " /"
+//                                + nepMonth + " /" + nepDay + " Sunday");
+
+                        dayOfWeek = Calendar.SATURDAY;
+                        break;
+                    case 2:
+                        Log.i("TAG", "calculateNepaliDate: "+"The Date in BS is \n\n" + nepYear + " /"
+                                + nepMonth + " /" + nepDay + " Sunday");
+//                        t.setText("The Date in BS is \n\n" + nepYear + " /"
+//                                + nepMonth + " /" + nepDay + " Monday");
+
+                        dayOfWeek = Calendar.SATURDAY;
+                        break;
+                    case 3:
+                        Log.i("TAG", "calculateNepaliDate: "+"The Date in BS is \n\n" + nepYear + " /"
+                                + nepMonth + " /" + nepDay + " Sunday");
+//                        t.setText("The Date in BS is \n\n" + nepYear + " /"
+//                                + nepMonth + " /" + nepDay + " Tuesday");
+
+                        dayOfWeek = Calendar.SATURDAY;
+                        break;
+                    case 4:
+                        Log.i("TAG", "calculateNepaliDate: "+"The Date in BS is \n\n" + nepYear + " /"
+                                + nepMonth + " /" + nepDay + " Sunday");
+//                        t.setText("The Date in BS is \n\n" + nepYear + " /"
+//                                + nepMonth + " /" + nepDay + " Wednesday");
+
+                        dayOfWeek = Calendar.SATURDAY;
+                        break;
+                    case 5:
+                        Log.i("TAG", "calculateNepaliDate: "+"The Date in BS is \n\n" + nepYear + " /"
+                                + nepMonth + " /" + nepDay + " Sunday");
+//                        t.setText("The Date in BS is \n\n" + nepYear + " /"
+//                                + nepMonth + " /" + nepDay + " Thursday");
+
+                        dayOfWeek = Calendar.SATURDAY;
+                        break;
+                    case 6:
+                        Log.i("TAG", "calculateNepaliDate: "+"The Date in BS is \n\n" + nepYear + " /"
+                                + nepMonth + " /" + nepDay + " Sunday");
+//                        t.setText("The Date in BS is \n\n" + nepYear + " /"
+//                                + nepMonth + " /" + nepDay + " Friday");
+
+                        dayOfWeek = Calendar.SATURDAY;
+                        break;
+                    case 7:
+                        Log.i("TAG", "calculateNepaliDate: "+"The Date in BS is \n\n" + nepYear + " /"
+                                + nepMonth + " /" + nepDay + " Sunday");
+//                        t.setText("The Date in BS is \n\n" + nepYear + " /"
+//                                + nepMonth + " /" + nepDay + " Saturday");
+
+                        dayOfWeek = Calendar.SATURDAY;
+                        break;
+
+                }
 
 
-
-        int nepYear = startingNepYear;
-        int nepMonth = startingNepMonth;
-        int nepDay = startingNepDay;
-
-        Calendar currentEngDate = new GregorianCalendar();
-
-        currentEngDate.set(engYear, engMonth, engDay);
-
-        Calendar baseEngDate = new GregorianCalendar();
-
-        baseEngDate.set(startingEngYear, startingEngMonth,
-                startingEngDay);
-
-        long totalEngDaysCount = daysBetween(baseEngDate,
-                currentEngDate);
-
-        while (totalEngDaysCount != 0) {
-
-            int daysInIthMonth = nepaliMap.get(nepYear)[nepMonth];
-
-            nepDay++;
-            if (nepDay > daysInIthMonth) {
-                nepMonth++;
-                nepDay = 1;
-            }
-
-            if (nepMonth > 12) {
-                nepYear++;
-                nepMonth = 1;
-            }
-
-            dayOfWeek++; // count the days in terms of 7 days
-            if (dayOfWeek > 7) {
-                dayOfWeek = 1;
-            }
-
-            totalEngDaysCount--;
-        }
-        switch (dayOfWeek) {
-            case 1:
-
-                getDate=nepYear + " /"
-                        + nepMonth + " /" + nepDay + " Sunday";
-
-                Log.i("TAG", "calculateNepaliDate: "+getDate);
-                dayOfWeek = Calendar.SATURDAY;
-                break;
-            case 2:
-
-                getDate= nepYear + " /"
-                        + nepMonth + " /" + nepDay + " Monday";
-
-                Log.i("TAG", "calculateNepaliDate: "+getDate);
-                dayOfWeek = Calendar.SATURDAY;
-                break;
-            case 3:
-
-                getDate= nepYear + " /"
-                        + nepMonth + " /" + nepDay + " Tuesday";
-
-                Log.i("TAG", "calculateNepaliDate: "+getDate);
-                dayOfWeek = Calendar.SATURDAY;
-                break;
-            case 4:
-
-                getDate=nepYear + " /"
-                        + nepMonth + " /" + nepDay + " Wednesday";
-
-                Log.i("TAG", "calculateNepaliDate: "+getDate);
-                dayOfWeek = Calendar.SATURDAY;
-                break;
-            case 5:
-
-                getDate= nepYear + " /"
-                        + nepMonth + " /" + nepDay + " Thursday";
-
-                Log.i("TAG", "calculateNepaliDate: "+getDate);
-                dayOfWeek = Calendar.SATURDAY;
-                break;
-            case 6:
-
-                getDate=nepYear + " /"
-                        + nepMonth + " /" + nepDay + " Friday";
-
-                Log.i("TAG", "calculateNepaliDate: "+getDate);
-                dayOfWeek = Calendar.SATURDAY;
-                break;
-            case 7:
-
-                getDate=nepYear + " /"
-                        + nepMonth + " /" + nepDay + " Saturday";
-
-                Log.i("TAG", "calculateNepaliDate: "+getDate);
-                dayOfWeek = Calendar.SATURDAY;
-                break;
-        }
-        Log.i("TAG", "calculateNepaliDate: "+getDate);
-        return getDate;
+        return "";
     }
-
-
     private static long daysBetween(Calendar startDate, Calendar endDate) {
         Calendar date = (Calendar) startDate.clone();
         long daysBetween = 0;
@@ -377,6 +388,7 @@ public class GeneralUtils {
 
         return daysBetween;
     }
+
 
 
 }

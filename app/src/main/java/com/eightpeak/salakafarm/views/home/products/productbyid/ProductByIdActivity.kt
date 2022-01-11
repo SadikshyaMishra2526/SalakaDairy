@@ -136,7 +136,13 @@ class ProductByIdActivity : AppCompatActivity() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
-                        plotRating(picsResponse)
+                        if(picsResponse!=null){
+                            plotRating(picsResponse)
+                            binding.ratingViewLayout.visibility=View.VISIBLE
+                        }else{
+                            binding.ratingViewLayout.visibility=View.GONE
+                        }
+
                     }
                 }
 

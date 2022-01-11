@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.databinding.FragmentHomeBinding
+import com.eightpeak.salakafarm.date.AD
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.subscription.SubscriptionActivity
 import com.eightpeak.salakafarm.subscription.displaysubscription.DisplaySubscriptionDetails
@@ -129,7 +130,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
 
     private fun setUpCategoriesFragment() {
         val managerCategories = childFragmentManager
-        val fragmentCategories: Fragment = CategoriesFragment()
+        val fragmentCategories: Fragment = AD()
         val transactionCategories = managerCategories.beginTransaction()
         transactionCategories.replace(R.id.containerCategories, fragmentCategories)
             .addToBackStack(null)

@@ -291,11 +291,36 @@
                         android:drawableLeft="@drawable/ic_baseline_shopping_cart_24"
                         />
                 </LinearLayout>
+                <View
+                    android:id="@+id/view_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_2sdp"
+                    android:background="@color/tab_indicator_gray"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/price_layout" />
+
+                <TextView
+                    android:id="@+id/product_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_5sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_divider" />
+
+                <View
+                    android:id="@+id/rating_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_2sdp"
+                    android:background="@color/sub_color_lighter"
+                    app:layout_constraintTop_toBottomOf="@+id/product_content"/>
                 <LinearLayout
                     android:id="@+id/rating_view_layout"
                     android:layout_width="match_parent"
                     android:layout_margin="@dimen/_10sdp"
-                    app:layout_constraintTop_toBottomOf="@+id/price_layout"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@+id/rating_line"
                       android:orientation="vertical"
                     android:layout_height="wrap_content">
                     <TextView
@@ -313,23 +338,6 @@
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
 
-                <View
-                    android:id="@+id/view_divider"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_2sdp"
-                    android:background="@color/tab_indicator_gray"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rating_view_layout" />
-
-                <TextView
-                    android:id="@+id/product_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/_5sdp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view_divider" />
 
                 <LinearLayout
                     android:id="@+id/linearLayout3"
@@ -339,7 +347,7 @@
                     android:padding="@dimen/_5sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/product_content">
+                    app:layout_constraintTop_toBottomOf="@+id/rating_view_layout">
 
                     <TextView
                         android:layout_width="wrap_content"

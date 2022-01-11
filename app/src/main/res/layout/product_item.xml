@@ -168,7 +168,6 @@
                 android:id="@+id/product_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rs.100"
                 android:textColor="@color/sub_color"
                 android:textSize="@dimen/_14sdp" />
 
@@ -178,7 +177,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_5sdp"
-                android:text="Rs.100"
                 android:textColor="@color/sub_color"
                 android:textSize="@dimen/_10sdp" />
         </LinearLayout>

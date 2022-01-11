@@ -37,7 +37,7 @@ data class Subscription (
 	@SerializedName("approved_at") val approved_at : String,
 	@SerializedName("refId") val refId : String,
 	@SerializedName("oid") val oid : String,
-	@SerializedName("account_number") val account_number : Int,
+	@SerializedName("account_number") val account_number : String,
 	@SerializedName("bank") val bank : String,
 	@SerializedName("screenshot") val screenshot : String,
 	@SerializedName("deliveryHistory") val deliveryHistory : List<DeliveryHistory>,
