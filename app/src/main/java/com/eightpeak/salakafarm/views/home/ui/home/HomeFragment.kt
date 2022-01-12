@@ -130,7 +130,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
 
     private fun setUpCategoriesFragment() {
         val managerCategories = childFragmentManager
-        val fragmentCategories: Fragment = AD()
+        val fragmentCategories: Fragment = CategoriesFragment()
         val transactionCategories = managerCategories.beginTransaction()
         transactionCategories.replace(R.id.containerCategories, fragmentCategories)
             .addToBackStack(null)

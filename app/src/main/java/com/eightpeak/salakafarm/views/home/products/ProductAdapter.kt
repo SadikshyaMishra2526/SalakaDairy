@@ -74,7 +74,7 @@ class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductListViewHolder
             product_thumbnail.load(EndPoints.BASE_URL + categoriesItem.image)
             rated_by.text = "("+categoriesItem.no_of_rating+") "
 
-            val rating:Int= categoriesItem.average_rating.roundToInt()
+            val rating: Int? = categoriesItem?.average_rating?.roundToInt()
 
             if(rating==1){
                 rating_1.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
@@ -96,22 +96,17 @@ class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductListViewHolder
                 rating_3.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
                 rating_4.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
                 rating_5.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
-
             }
 
-
-
-
-
-            var userPrefManager = UserPrefManager(App.getContext())
-                  if(categoriesItem.stock>0){
+            val userPrefManager = UserPrefManager(App.getContext())
+                  if(categoriesItem.stock!! >0){
                       out_of_stock.visibility=View.GONE
                   }else{
                       out_of_stock.visibility=View.VISIBLE
                   }
-            if (categoriesItem.descriptions.isNotEmpty()) {
+            if (categoriesItem.descriptions!!.isNotEmpty()) {
                 if (userPrefManager.language.equals("ne")) {
-                    product_name.text = categoriesItem.descriptions[1].name
+                    product_name.text = categoriesItem?.descriptions[1].name
 
                     if(categoriesItem.promotion_price!=null){
                       product_price_discount.text=GeneralUtils.getUnicodeNumber(categoriesItem.price.toString())
@@ -124,7 +119,7 @@ class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductListViewHolder
                   }
 
                 } else {
-                    product_name.text = categoriesItem.descriptions[0].name
+                    product_name.text = categoriesItem?.descriptions?.get(0)?.name
                     Log.i("TAG", "onBindViewHolder: "+categoriesItem.promotion_price?.price_promotion)
                     if(categoriesItem.promotion_price==null){
                         product_price.text =

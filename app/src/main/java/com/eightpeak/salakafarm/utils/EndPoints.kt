@@ -92,5 +92,7 @@ class EndPoints {
         const val PAYMENT_EVIDENCE = "api/post_payment_evidence"
 
 
+        const val VERIFY_OPT = "api/verify_otp"
+        const val GENERATE_NEW_OTP = "api/generate_new_opt"
     }
 }

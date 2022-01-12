@@ -162,7 +162,7 @@ class ProductByIdActivity : AppCompatActivity() {
 
     private fun plotRating(ratingResponse: ProductRatingModel) {
 
-        if (ratingResponse.ratings.data.isNotEmpty()) {
+        if (ratingResponse.ratings.data?.isNotEmpty() == true) {
             val data: List<Data> = ratingResponse.ratings.data
             for (i in data.indices) {
                 val itemView: View =
@@ -178,9 +178,9 @@ class ProductByIdActivity : AppCompatActivity() {
                 val rating4 = itemView.findViewById<ImageView>(R.id.rating_4)
                 val rating5 = itemView.findViewById<ImageView>(R.id.rating_5)
                 commentedAt.text = data[i].created_at
-                commentedBy.text = data[i].customer.name
+                commentedBy.text = data[i].customer?.name ?:"n"
                 comment.text = (data[i].comment)
-                val rating: Int = data[i].rating
+                val rating: Int? = data[i].rating
                 if (rating == 1) {
                     rating1.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))
                 } else if (rating == 2) {

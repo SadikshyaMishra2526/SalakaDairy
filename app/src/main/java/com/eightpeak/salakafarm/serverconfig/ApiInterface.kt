@@ -258,4 +258,16 @@ interface ApiInterface {
     @FormUrlEncoded
     @POST(EndPoints.SUB_HISTORY)
     suspend fun getSubscriptionHistory(@Body body: RequestBodies.SubHistoryList): Response<SubscriptionHistoryModel>
+
+
+    @FormUrlEncoded
+    @POST(EndPoints.GENERATE_NEW_OTP)
+    suspend fun generateNewOTP(@Field("phone") phone: String): Response<ServerResponse>
+
+
+    @FormUrlEncoded
+    @POST(EndPoints.VERIFY_OPT)
+    suspend fun verifyOTP(@Field("phone") phone: String,@Field("otp") otp: String): Response<ServerResponse>
+
+
 }

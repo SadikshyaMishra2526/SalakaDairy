@@ -184,4 +184,11 @@ class AppRepository {
         RetrofitInstance.useApiWithAccessToken(tokenManager)
             .paymentEvidence(mode, subscription_id, screenshot)
 
+
+    suspend fun generateOTP(phone: String) =
+        RetrofitInstance.useApiWithoutToken.generateNewOTP(phone)
+
+    suspend fun verifiyOTP(phone: String,otp: String) =
+        RetrofitInstance.useApiWithoutToken.verifyOTP(phone,otp)
+
 }

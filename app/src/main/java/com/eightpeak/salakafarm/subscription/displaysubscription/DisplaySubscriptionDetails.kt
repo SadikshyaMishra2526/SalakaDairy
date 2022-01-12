@@ -23,6 +23,7 @@ import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.viewmodel.SubscriptionViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.home.HomeActivity
+import com.eightpeak.salakafarm.views.order.orderview.orderhistory.OrderHistory
 import com.google.android.material.snackbar.Snackbar
 
 class DisplaySubscriptionDetails : AppCompatActivity() {
@@ -174,6 +175,11 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
             getCancelSubscription()
         }
         binding.viewOrderHistory.setOnClickListener {
+            Intent(this@DisplaySubscriptionDetails, OrderHistory::class.java)
+            finish()
+
+        }
+        binding.addEvidence.setOnClickListener {
             val args = Bundle()
             args.putString(
                 Constants.SUBSCRIPTION_ID,

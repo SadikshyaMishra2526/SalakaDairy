@@ -61,8 +61,12 @@ class ViewModelProviderFactory(
         if (modelClass.isAssignableFrom(CheckOutViewModel::class.java)) {
             return CheckOutViewModel(app, appRepository) as T
         }
-  if (modelClass.isAssignableFrom(OrderViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(OrderViewModel::class.java)) {
             return OrderViewModel(app, appRepository) as T
+        }
+
+        if (modelClass.isAssignableFrom(OTPViewModel::class.java)) {
+            return OTPViewModel(app, appRepository) as T
         }
 
         throw IllegalArgumentException("Unknown class name")
