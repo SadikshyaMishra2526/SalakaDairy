@@ -126,7 +126,7 @@ class PaymentEvidenceFragment : BottomSheetDialogFragment() {
                 val imageStream = activity?.contentResolver?.openInputStream(imageUri!!)
                 val selectedImage = BitmapFactory.decodeStream(imageStream)
                     binding.evidencePhoto.setImageBitmap(selectedImage)
-                    val file= File(imageUri?.path)
+                    val file= File(imageUri!!.path)
                 Log.i("TAG", "onActivityResult: "+file.absolutePath)
 //
                 val requestFile: RequestBody = getFile(file)?.let {
