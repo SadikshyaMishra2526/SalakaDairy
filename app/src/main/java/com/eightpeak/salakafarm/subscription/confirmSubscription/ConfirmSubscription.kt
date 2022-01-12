@@ -95,8 +95,7 @@ class ConfirmSubscription : AppCompatActivity() {
 
         selectedBranchId = intent.getStringExtra("selectedBranchId").toString()
         selectedAddressId = intent.getStringExtra("selectedAddressId").toString()
-        selectedSubscribedTotalAmount =
-            intent.getStringExtra("selectedSubscribedTotalAmount").toString()
+        selectedSubscribedTotalAmount = intent.getStringExtra("selectedSubscribedTotalAmount").toString()
         selectedSubscribedDiscount = intent.getStringExtra("selectedSubscribedDiscount").toString()
         selectedSubscribedPrice = intent.getStringExtra("selectedSubscribedPrice").toString()
         selectedUnitPerDay = intent.getStringExtra("selectedUnitPerDay").toString()

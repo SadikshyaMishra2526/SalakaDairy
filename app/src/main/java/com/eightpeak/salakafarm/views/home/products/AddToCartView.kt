@@ -58,10 +58,10 @@ class AddToCartView : BottomSheetDialogFragment() {
         val repository = AppRepository()
         val factory = ViewModelProviderFactory(requireActivity().application, repository)
         viewModel = ViewModelProvider(this, factory).get(ProductByIdViewModel::class.java)
-        getPictures()
+        addProductToCart()
     }
 
-    private fun getPictures() {
+    private fun addProductToCart() {
         val mArgs = arguments
         val productId = mArgs!!.getString(Constants.PRODUCT_ID)
         if (productId != null) {
