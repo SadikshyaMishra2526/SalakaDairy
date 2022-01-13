@@ -14,7 +14,6 @@ import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.Utils
 import com.eightpeak.salakafarm.views.home.products.Data
 import com.eightpeak.salakafarm.views.home.products.ServerResponse
-import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdModel
 import com.eightpeak.salakafarm.views.order.orderview.orderhistory.OrderHistoryDetailsModel
 import com.eightpeak.salakafarm.views.order.orderview.orderhistory.OrderHistoryModel
 import kotlinx.coroutines.launch

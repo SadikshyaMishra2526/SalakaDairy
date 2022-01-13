@@ -81,16 +81,16 @@ class CategoriesByIdActivity  : AppCompatActivity() {
                     response.data?.let { picsResponse ->
                         val categoryDetails:CategoriesByIdModel=picsResponse
                         Log.i("TAG", "getPictures: $categoryDetails")
-                        if(categoryDetails.descriptions.isNotEmpty()){
-                            binding.edtSearchInput.visibility=View.VISIBLE
-                            binding.categoriesByIdTitle.visibility=View.VISIBLE
-
-                            if(userPrefManager.language.equals("ne")){
-                                binding.categoryName.text = categoryDetails.descriptions[1].name
-                            }else{
-                                binding.categoryName.text = categoryDetails.descriptions[0].name
-                            }
-                        }
+//                        if(categoryDetails.descriptions.isNotEmpty()){
+//                            binding.edtSearchInput.visibility=View.VISIBLE
+//                            binding.categoriesByIdTitle.visibility=View.VISIBLE
+//
+//                            if(userPrefManager.language.equals("ne")){
+//                                binding.categoryName.text = categoryDetails.descriptions[1].name
+//                            }else{
+//                                binding.categoryName.text = categoryDetails.descriptions[0].name
+//                            }
+//                        }
 
                         if(picsResponse.products_with_description.isNotEmpty()){
                             binding.categoriesNotFound.visibility=View.GONE

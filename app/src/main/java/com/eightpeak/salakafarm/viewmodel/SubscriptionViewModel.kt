@@ -211,10 +211,7 @@ class SubscriptionViewModel(
                 val response = appRepository.addSubscription(tokenManager, body)
                 Log.i(
                     "TAG",
-                    "getSubscriptionPackageList: " + appRepository.addSubscription(
-                        tokenManager,
-                        body
-                    )
+                    "getSubscriptionPackageList: $response"
                 )
                 addSubscription.postValue(handleSubscriptionResponse(response))
 

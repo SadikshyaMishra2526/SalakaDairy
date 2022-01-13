@@ -16,7 +16,7 @@ data class Subscription (
 	@SerializedName("customer_id") val customer_id : Int,
 	@SerializedName("sub_package_id") val sub_package_id : Int,
 	@SerializedName("total_quantity") val total_quantity : Int,
-	@SerializedName("remaining_quantity") val remaining_quantity : Int,
+	@SerializedName("remaining_quantity") val remaining_quantity : String,
 	@SerializedName("delivery_peroid") val delivery_peroid : Int,
 	@SerializedName("starting_date") val starting_date : String,
 	@SerializedName("subscribed_price") val subscribed_price : Int,
@@ -29,7 +29,7 @@ data class Subscription (
 	@SerializedName("last_delivered_at") val last_delivered_at : String,
 	@SerializedName("expired_at") val expired_at : String,
 	@SerializedName("address_id") val address_id : Int,
-	@SerializedName("employee_id") val employee_id : String,
+	@SerializedName("employee_id") val employee_id : Int?=null,
 	@SerializedName("created_at") val created_at : String,
 	@SerializedName("updated_at") val updated_at : String,
 	@SerializedName("mode") val mode : String,
@@ -41,14 +41,17 @@ data class Subscription (
 	@SerializedName("bank") val bank : String,
 	@SerializedName("screenshot") val screenshot : String,
 	@SerializedName("deliveryHistory") val deliveryHistory : List<DeliveryHistory>,
+	@SerializedName("expiration_day_remaining") val expiration_day_remaining : Int,
+	@SerializedName("expiration_time") val expiration_time : String,
 	@SerializedName("address") val address : Address,
 	@SerializedName("sub_package") val sub_package : Sub_package,
 	@SerializedName("branch") val branch : Branch
-){
+) {
 	override fun toString(): String {
-		return "Subscription(id=$id, customer_id=$customer_id, sub_package_id=$sub_package_id, total_quantity=$total_quantity, remaining_quantity=$remaining_quantity, delivery_peroid=$delivery_peroid,delivery=$deliveryHistory, starting_date='$starting_date', subscribed_price=$subscribed_price, subscribed_discount=$subscribed_discount, subscribed_total_amount=$subscribed_total_amount, unit_per_day=$unit_per_day, branch_id=$branch_id, extra='$extra', last_delivered_status=$last_delivered_status, last_delivered_at='$last_delivered_at', expired_at='$expired_at', address_id=$address_id, employee_id=$employee_id, created_at='$created_at', updated_at='$updated_at', address=$address, sub_package=$sub_package, branch=$branch)"
+		return "Subscription(id=$id, customer_id=$customer_id, sub_package_id=$sub_package_id, total_quantity=$total_quantity, remaining_quantity=$remaining_quantity, delivery_peroid=$delivery_peroid, starting_date='$starting_date', subscribed_price=$subscribed_price, subscribed_discount=$subscribed_discount, subscribed_total_amount=$subscribed_total_amount, unit_per_day=$unit_per_day, branch_id=$branch_id, extra='$extra', last_delivered_status=$last_delivered_status, last_delivered_at='$last_delivered_at', expired_at='$expired_at', address_id=$address_id, employee_id=$employee_id, created_at='$created_at', updated_at='$updated_at', mode='$mode', payment_at='$payment_at', approved_at='$approved_at', refId='$refId', oid='$oid', account_number=$account_number, bank='$bank', screenshot='$screenshot', deliveryHistory=$deliveryHistory, expiration_day_remaining=$expiration_day_remaining, expiration_time='$expiration_time', address=$address, sub_package=$sub_package, branch=$branch)"
 	}
 }
+
 
 data class Branch (
 

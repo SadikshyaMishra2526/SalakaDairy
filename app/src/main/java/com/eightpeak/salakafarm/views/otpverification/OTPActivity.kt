@@ -80,10 +80,12 @@ class OTPActivity : AppCompatActivity() {
                     hideProgressBar()
                     response.data?.let {
                         setContentView(subBinding.root)
-                        getOTPVerification()
+                        subBinding.verifyOtp.setOnClickListener {
+                            getOTPVerification()
+                        }
+
                     }
                 }
-
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->

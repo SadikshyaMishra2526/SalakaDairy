@@ -58,7 +58,7 @@ class CategoriesByIdAdapter : RecyclerView.Adapter<CategoriesByIdAdapter.Categor
         holder.itemView.apply {
             product_thumbnail.load(EndPoints.BASE_URL +categoriesItem.image)
 
-            val rating:Int= categoriesItem.average_rating.roundToInt()
+            val rating: Int? = categoriesItem.average_rating?.roundToInt()
             rated_by.text = "("+categoriesItem.no_of_rating+") "
             if(rating==1){
                 rating_1.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
@@ -86,7 +86,7 @@ class CategoriesByIdAdapter : RecyclerView.Adapter<CategoriesByIdAdapter.Categor
 
 
 
-            if (categoriesItem.descriptions.isNotEmpty()) {
+            if (categoriesItem.descriptions?.isNotEmpty() == true) {
                 if (userPrefManager.language.equals("ne")) {
                     product_name.text = categoriesItem.descriptions[1].name
 

@@ -105,7 +105,7 @@ class ProductByIdActivity : AppCompatActivity() {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
                         setProductsDetails(picsResponse)
-                        if (picsResponse.productRelation.isNotEmpty())
+                        if (picsResponse.productRelation?.isNotEmpty() == true)
                             relatedProductAdapter.differ.submitList(picsResponse.productRelation)
                         binding.relatedProductRecycler.adapter = relatedProductAdapter
                         getRating()
@@ -215,13 +215,13 @@ class ProductByIdActivity : AppCompatActivity() {
 //            "TAG",
 //            "setProductsDetails: " + productDetailsByIdResponse.promotion_price.price_promotion.toString()
 //        )
-        if (productDetailsByIdResponse.stock > 0) {
+        if (productDetailsByIdResponse.stock !=null) {
             binding.outOfStock.visibility = View.GONE
         } else {
             binding.outOfStock.visibility = View.VISIBLE
         }
         product_price.text = productDetailsByIdResponse.price.toString()
-        if (productDetailsByIdResponse.descriptions.isNotEmpty()) {
+        if (productDetailsByIdResponse.descriptions?.isNotEmpty() == true) {
             if (userPrefManager?.language.equals("ne")) {
                 product_details_name.text = productDetailsByIdResponse.descriptions[1].name
                 product_content.text =
@@ -273,12 +273,12 @@ class ProductByIdActivity : AppCompatActivity() {
 
 
         product_details_sku.text = productDetailsByIdResponse.sku
-        if (productDetailsByIdResponse.images.isNotEmpty()) {
+        if (productDetailsByIdResponse.images?.isNotEmpty() == true) {
             binding.productDetailsThumbnail.visibility = View.GONE
             sliderList = ArrayList()
-            sliderList.add(productDetailsByIdResponse.image)
-            for (item in productDetailsByIdResponse.images) {
-                sliderList.add(item.image)
+            productDetailsByIdResponse.image?.let { sliderList.add(it) }
+            for (item in productDetailsByIdResponse.images!!) {
+                item.image?.let { sliderList.add(it) }
             }
             showSlider(sliderList)
         } else {
@@ -354,7 +354,7 @@ class ProductByIdActivity : AppCompatActivity() {
 
         }
 
-        val rating: Int = productDetailsByIdResponse.average_rating.roundToInt()
+        val rating: Int = productDetailsByIdResponse.average_rating?.roundToInt() ?: 0
         rated_by.text = "(" + productDetailsByIdResponse.no_of_rating + ") "
         if (rating == 1) {
             binding.rating1.setImageDrawable(getDrawable(R.drawable.ic_baseline_star_rate_24))

@@ -3,6 +3,7 @@ package com.eightpeak.salakafarm.views.home.products.productbyid
 import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.EndPoints
+import com.eightpeak.salakafarm.utils.GeneralUtils
 import com.eightpeak.salakafarm.views.home.products.AddToCartView
 import kotlinx.android.synthetic.main.product_item.view.*
 import kotlin.math.roundToInt
@@ -52,14 +54,14 @@ class RelatedProductAdapter : RecyclerView.Adapter<RelatedProductAdapter.Product
         val categoriesItem = differ.currentList[position]
         holder.itemView.apply {
             product_thumbnail.load(EndPoints.BASE_URL + categoriesItem.image)
-            if(categoriesItem.stock>0){
+            if(categoriesItem.stock?.equals(0) == true){
                 out_of_stock.visibility=View.GONE
             }else{
                 out_of_stock.visibility=View.VISIBLE
             }
             var userPrefManager = UserPrefManager(App.getContext())
 
-            val rating:Int= categoriesItem.average_rating.roundToInt()
+            val rating:Int= categoriesItem.average_rating!!.roundToInt()
             rated_by.text = "("+categoriesItem.no_of_rating+") "
             if(rating==1){
                 rating_1.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
@@ -83,34 +85,36 @@ class RelatedProductAdapter : RecyclerView.Adapter<RelatedProductAdapter.Product
                 rating_5.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
             }
 
-            if (categoriesItem.descriptions.isNotEmpty()) {
+            if (categoriesItem.descriptions!!.isNotEmpty()) {
                 if (userPrefManager.language.equals("ne")) {
-                    product_name.text = categoriesItem.descriptions[1].name
+                    product_name.text = categoriesItem?.descriptions[1].name
 
-//                    if(!categoriesItem.promotion_price.price_promotion.equals("0")){
-//                        product_price_discount.text=GeneralUtils.getUnicodeNumber(categoriesItem.price.toString())
-//                        product_price_discount.paintFlags = product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-//                        product_price.text =
-//                            context.getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(categoriesItem.promotion_price.price_promotion.toString())
-//                    }else{
-//                        product_price.text =
-//                            context.getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(categoriesItem.price.toString())
-//                    }
-
-                } else {
-                    product_name.text = categoriesItem.descriptions[0].name
-
-                    if(!categoriesItem.cost.equals("0")){
-                        product_price_discount.text=categoriesItem.price.toString()
+                    if(categoriesItem.promotion_price!=null){
+                        product_price_discount.text= GeneralUtils.getUnicodeNumber(categoriesItem.price.toString())
                         product_price_discount.paintFlags = product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-//                        product_price.text =
-//                            context.getString(R.string.rs) + categoriesItem.promotion_price.price_promotion.toString()
+                        product_price.text =
+                            context.getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(categoriesItem.promotion_price?.price_promotion.toString())
                     }else{
                         product_price.text =
+                            context.getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(categoriesItem.price.toString())
+                    }
+
+                } else {
+                    product_name.text = categoriesItem?.descriptions?.get(0)?.name
+                    Log.i("TAG", "onBindViewHolder: "+categoriesItem.promotion_price?.price_promotion)
+                    if(categoriesItem.promotion_price==null){
+                        product_price.text =
                             context.getString(R.string.rs) + categoriesItem.price.toString()
+                    }else{
+
+                        product_price_discount.text=categoriesItem.price.toString()
+                        product_price_discount.paintFlags = product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                        product_price.text =
+                            context.getString(R.string.rs) + categoriesItem.promotion_price?.price_promotion.toString()
                     }
                 }
             }
+
 
             bt_add_to_cart.setOnClickListener {
                 val args = Bundle()

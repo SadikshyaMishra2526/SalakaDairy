@@ -134,7 +134,10 @@ class ConfirmSubscription : AppCompatActivity() {
             selectedStartingDate,
             selectedDeliveryPeroidResponse,
             selectedSubPackageId,
-            selectedTotalQuantity
+            selectedTotalQuantity,
+            selectedPaymentMethod,
+            "",""
+
         )
 
         binding.customerAddress.text = selectedAddressName

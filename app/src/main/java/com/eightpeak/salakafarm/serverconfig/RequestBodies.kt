@@ -61,7 +61,10 @@ object RequestBodies {
         val starting_date: String,
         val delivery_peroid: String,
         val sub_package_id: String,
-        val total_quantity: String
+        val total_quantity: String,
+        val mode: String,
+        val refId: String,
+        val oid: String
     )
 
 

@@ -52,7 +52,7 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
         init()
         setContentView(binding.root)
 
-        Log.i("TAG", "onCreate: "+ GeneralUtils.calculateNepaliDate(11,1,2022))
+        Log.i("TAG", "onCreate: " + GeneralUtils.calculateNepaliDate(11, 1, 2022))
     }
 
     private fun setupViewModel() {
@@ -90,7 +90,7 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
             Constants.QUANTITY,
             subscriptionDetailsModel?.subscription?.unit_per_day.toString()
         )
-        args.putString(Constants.ALTER_DAY, "01/${category.date}/2022")
+        args.putString(Constants.ALTER_DAY, "2022-01-${category.date}")
         val bottomSheet = AddAlterationDisplay()
         bottomSheet.arguments = args
         bottomSheet.show(
@@ -131,39 +131,58 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
         Log.i("TAG", "displaySubscriptionDetails: $subscriptionDetails")
         binding.subscriberName.text = userPrefManager.firstName + " " + userPrefManager.lastName
         binding.subscriptionStarted.text = subscriptionDetails.subscription.starting_date
-        binding.subscriptionExpire.text = subscriptionDetails.subscription.expired_at
+        binding.subscriptionExpire.text = subscriptionDetails.subscription.expiration_time
         binding.subscriberPackageName.text = subscription.sub_package.name.toString()
         binding.subscriptionRemaining.text =
             subscription.remaining_quantity.toString() + "/" + subscription.subscribed_total_amount.toString()
         binding.paymentVia.text = subscription.mode
+        binding.remainingDays.text = subscription.remaining_quantity.toString()
         binding.unitPerDay.text = subscription.unit_per_day.toString()
         binding.deliveryTime.text = "Morning"
         binding.subscriberBranch.text = subscription.branch.name
         binding.subscriptionAddress.text = subscription.address.address1
 
+        if (subscription.approved_at != null) {
+            binding.paymentStatus.text = "Paid"
+        } else {
 
-        binding.paymentStatus.text = "Unpaid"
+            binding.paymentStatus.text = "Unpaid"
+        }
+
         if (subscription.mode == "bank" || subscription.mode == "qr") {
 
             binding.warningMessage.visibility = View.VISIBLE
-        } else if (subscription.mode == "esewa" ){
+        } else if (subscription.mode == "esewa") {
 
-        }else if( subscription.mode == "cashondelivery"){
-            binding.warningMessage.text ="Subscription needs to be validated to start. You can pay our employee when he/she delivers your first subscription..."
+        } else if (subscription.mode == "cashondelivery") {
+            binding.warningMessage.text =
+                "Subscription needs to be validated to start. You can pay our employee when he/she delivers your first subscription..."
         }
 
 
-            binding.trackYourOrder.setOnClickListener {
-                val args = Bundle()
-                args.putString(Constants.ORDER_ID, subscriptionDetails.subscription.id.toString())
-                args.putString(Constants.TYPE, Constants.SUBSCRIPTION)
-                val bottomSheet = TrackSubscriptionView()
-                bottomSheet.arguments = args
-                bottomSheet.show(
-                    (this@DisplaySubscriptionDetails as FragmentActivity).supportFragmentManager,
-                    bottomSheet.tag
-                )
-            }
+        binding.addComplainToSubscription.setOnClickListener {
+            val args = Bundle()
+            args.putString(Constants.ORDER_ID, subscriptionDetails.subscription.id.toString())
+            args.putString(Constants.TYPE, Constants.SUBSCRIPTION)
+            val bottomSheet = SubscriptionComplain()
+            bottomSheet.arguments = args
+            bottomSheet.show(
+                (this@DisplaySubscriptionDetails as FragmentActivity).supportFragmentManager,
+                bottomSheet.tag
+            )
+        }
+
+        binding.trackYourOrder.setOnClickListener {
+            val args = Bundle()
+            args.putString(Constants.ORDER_ID, subscriptionDetails.subscription.id.toString())
+            args.putString(Constants.TYPE, Constants.SUBSCRIPTION)
+            val bottomSheet = TrackSubscriptionView()
+            bottomSheet.arguments = args
+            bottomSheet.show(
+                (this@DisplaySubscriptionDetails as FragmentActivity).supportFragmentManager,
+                bottomSheet.tag
+            )
+        }
 
         binding.cancelYourSubscription.setOnClickListener {
             tokenManager?.let { it1 ->
