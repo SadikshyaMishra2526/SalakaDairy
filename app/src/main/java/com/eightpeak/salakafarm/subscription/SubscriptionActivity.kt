@@ -74,6 +74,9 @@ class SubscriptionActivity : AppCompatActivity() {
     private lateinit var paymentOptionRadio: RadioButton
 
 //
+    private  val TAG: String="SubscriptionActivity"
+
+//
 //    private lateinit var   getDate:String="";
 //       private lateinit var  startingEngYear = 2078
 //       private lateinit var  startingEngMonth = 0
@@ -304,80 +307,85 @@ class SubscriptionActivity : AppCompatActivity() {
         customerLat: Double,
         customerLng: Double
     ) {
-        binding.getBranchesList.removeAllViews()
+        var lat:Double= 27.70988983756394
+        var lng:Double=85.3262103958108
 
-        for (i in branches.indices) {
-            val itemView: View =
-                LayoutInflater.from(this)
-                    .inflate(R.layout.branch_items, binding.getBranchesList, false)
+        if(branches.isNotEmpty()){
+          for(branch in branches){
+              if(branch.sub_packages_count>0){
+                  var distance: Double = GeneralUtils.calculateDistance(
+                      customerLat,
+                      customerLng,
+                      branch.latitude,
+                      branch.longitude)
+                  Log.i(
+                      "TAG", "displayBranchList: " + distance + "   " + customerLat + "   " +
+                              customerLng + "   " +
+                              branch.latitude+" "+
+                             branch.longitude
+                  )
 
-            val branchName = itemView.findViewById<TextView>(R.id.branch_name)
-            val branchLocation = itemView.findViewById<TextView>(R.id.branch_location)
-            val branchContact = itemView.findViewById<TextView>(R.id.branch_contact)
-            val branchCard = itemView.findViewById<CardView>(R.id.branch_cart)
-            val branchType = itemView.findViewById<TextView>(R.id.branch_type)
-            val milk_cartoon = itemView.findViewById<RadioGroup>(R.id.milk_cartoon)
-            milk_cartoon.visibility = View.GONE
-            branchName.text = branches[i].name
-            branchLocation.text = branches[i].address
-            branchContact.text = branches[i].contact
-            branchCard.setOnClickListener {
-                binding.branchSelected.text = branches[i].name
-                selectedBranchId = branches[i].id.toString()
-
-
-                userPrefManager.bankAccountNo = branches[i].account_number
-                userPrefManager.qrPath = branches[i].qrcode
-                userPrefManager.accountName = branches[i].name
-                userPrefManager.accountHolderName = branches[i].account_holder
-                userPrefManager.bankName = branches[i].bank
-
-
-
-
-                getSubscriptionPackageList(branches[i].id)
-                binding.layoutSubItem.visibility = View.GONE
-                binding.getBranchesList.visibility = View.GONE
-                binding.subPackageView.visibility = View.VISIBLE
-                binding.deliverToLayout.visibility = View.VISIBLE
-                binding.paymentLayout.visibility = View.VISIBLE
-                binding.proceedSubscription.visibility = View.VISIBLE
-            }
-
-            var distance: Float = GeneralUtils.calculateDistance(
-                customerLat,
-                customerLng,
-                branches[i].latitude,
-                branches[i].longitude
-            )
-            Log.i(
-                "TAG", "displayBranchList: " + distance + "   " + customerLat + "   " +
-                        customerLng + "   " +
-                        branches[i].latitude + "   " +
-                        branches[i].longitude
-            )
-
-            if (branches[i].branch_status == 0) {
-                branchType.text = getString(R.string.main_branch)
-                branchesType = "0"
-
-            } else {
-                branchesType = "1"
-                branchType.text = getString(R.string.partner_branch)
-
-            }
-
-//            val selectedId: Int = binding.paymentMethod.checkedRadioButtonId
-//
-//            val radioButton = findViewById<View>(selectedId) as RadioButton
-//
-//            Toast.makeText(
-//                this@SubscriptionActivity,
-//                radioButton.text, Toast.LENGTH_SHORT
-//            ).show()
-
-            binding.getBranchesList.addView(itemView)
+              }
+          }
         }
+
+         binding.changeBranch.setOnClickListener {
+             binding.getBranchesList.removeAllViews()
+             for (i in branches.indices) {
+                 val itemView: View =
+                     LayoutInflater.from(this)
+                         .inflate(R.layout.branch_items, binding.getBranchesList, false)
+
+                 val branchName = itemView.findViewById<TextView>(R.id.branch_name)
+                 val branchLocation = itemView.findViewById<TextView>(R.id.branch_location)
+                 val branchContact = itemView.findViewById<TextView>(R.id.branch_contact)
+                 val branchCard = itemView.findViewById<CardView>(R.id.branch_cart)
+                 val branchType = itemView.findViewById<TextView>(R.id.branch_type)
+                 val milk_cartoon = itemView.findViewById<RadioGroup>(R.id.milk_cartoon)
+                 milk_cartoon.visibility = View.GONE
+                 branchName.text = branches[i].name
+                 branchLocation.text = branches[i].address
+                 branchContact.text = branches[i].contact
+                 branchCard.setOnClickListener {
+                     binding.branchSelected.text = branches[i].name
+                     selectedBranchId = branches[i].id.toString()
+
+
+                     userPrefManager.bankAccountNo = branches[i].account_number
+                     userPrefManager.qrPath = branches[i].qrcode
+                     userPrefManager.accountName = branches[i].name
+                     userPrefManager.accountHolderName = branches[i].account_holder
+                     userPrefManager.bankName = branches[i].bank
+
+
+
+
+                     getSubscriptionPackageList(branches[i].id)
+                     binding.layoutSubItem.visibility = View.GONE
+                     binding.getBranchesList.visibility = View.GONE
+                     binding.subPackageView.visibility = View.VISIBLE
+                     binding.deliverToLayout.visibility = View.VISIBLE
+                     binding.paymentLayout.visibility = View.VISIBLE
+                     binding.proceedSubscription.visibility = View.VISIBLE
+                 }
+
+
+
+
+                 if (branches[i].branch_status == 0) {
+                     branchType.text = getString(R.string.main_branch)
+                     branchesType = "0"
+
+                 } else {
+                     branchesType = "1"
+                     branchType.text = getString(R.string.partner_branch)
+
+                 }
+
+                 binding.getBranchesList.addView(itemView)
+             }
+         }
+
     }
 
     private fun getSubscriptionPackageList(s: Int) {

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/complain_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/complain_layout"
     android:layout_gravity="center"
     android:background="@color/main_color">
 
@@ -19,6 +19,7 @@
             android:layout_margin="@dimen/_5sdp"
             android:background="@color/white"
             android:orientation="vertical">
+
             <ProgressBar
                 android:id="@+id/progress"
                 android:layout_width="wrap_content"
@@ -28,6 +29,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
             <ImageView
                 android:layout_width="150dp"
                 android:layout_height="80dp"
@@ -35,34 +37,46 @@
                 android:layout_margin="@dimen/_10sdp"
                 android:src="@drawable/logo" />
 
-            <androidx.cardview.widget.CardView
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_marginRight="@dimen/_10sdp"
-                app:cardCornerRadius="@dimen/_10sdp"
-                android:backgroundTint="@color/sub_color_lighter"
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/sub_color"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold"
+                android:text="Subscription Complain Box" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:backgroundTint="@color/sub_color_lighter"
+                app:cardCornerRadius="@dimen/_10sdp">
+
                 <LinearLayout
-                    android:padding="@dimen/_5sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5sdp"
                     android:background="@color/white"
                     android:orientation="vertical"
-                    android:layout_margin="@dimen/_5sdp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:padding="@dimen/_5sdp">
+
                     <TextView
-                        android:text="Note !!!"
                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:textColor="@color/sub_color"
-                        android:layout_height="wrap_content"/>
+                        android:text="Note !!!"
+                        android:textColor="@color/sub_color" />
+
                     <TextView
-                       android:text="Milk needs to be boiled within half hour after received. Your complain will be valid if send within half hour."
-                        android:textSize="@dimen/_9sdp"
                         android:id="@+id/warning_message"
-                        android:textColor="@color/red"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:text="Milk needs to be boiled within half hour after received. Your complain will be valid if send within half hour."
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/_9sdp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -79,76 +93,56 @@
                 android:layout_margin="@dimen/_15sdp"
                 android:orientation="vertical">
 
-                <RelativeLayout
-                    android:id="@+id/old_password_layout"
+                <EditText
+                    android:id="@+id/customer_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/edit_view"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:orientation="horizontal">
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/background_edit_text_bottom"
+                    android:gravity="start"
+                    android:hint="Name"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:padding="10dp"
+                    android:textSize="@dimen/_12sdp" />
 
-                    <EditText
-                        android:id="@+id/editTextName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:gravity="left"
-                        android:hint="Name"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:textSize="@dimen/_12sdp" />
 
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/edtSubject_layout"
+                <EditText
+                    android:id="@+id/complain_subject"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/edit_view"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:orientation="horizontal">
+                    android:background="@drawable/background_edit_text_bottom"
+                    android:gravity="left"
+                    android:hint="Subject"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:padding="10dp"
+                    android:textSize="@dimen/_12sdp" />
 
-                    <EditText
-                        android:id="@+id/edtSubject"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:gravity="left"
-                        android:hint="Subject"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:textSize="@dimen/_12sdp" />
 
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/edtDescription_layout"
+                <EditText
+                    android:id="@+id/complain_description"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/edit_view"
-                    android:orientation="horizontal">
-
-                    <EditText
-                        android:id="@+id/edtDescription"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_80sdp"
-                        android:hint="Description"
-                        android:inputType="textMultiLine"
-                        android:textSize="@dimen/_12sdp" />
+                    android:layout_height="@dimen/_80sdp"
+                    android:background="@drawable/background_edit_text_bottom"
+                    android:gravity="left|center"
+                    android:hint=" Description"
+                    android:inputType="textMultiLine"
+                    android:textSize="@dimen/_12sdp" />
 
 
-                </RelativeLayout>
-
-
-                <Button
+                <TextView
                     android:id="@+id/btSummit"
-                    style="@style/loginButton"
-                    android:layout_width="120dp"
+                    android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:text="Submit" />
+                    android:background="@drawable/capsule"
+                    android:backgroundTint="@color/main_color"
+                    android:gravity="center"
+                    android:text="Submit"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15sdp" />
 
 
             </LinearLayout>

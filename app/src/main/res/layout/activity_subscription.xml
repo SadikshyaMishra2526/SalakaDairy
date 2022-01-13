@@ -156,6 +156,18 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="@dimen/_12sdp"
                                 android:textStyle="bold" />
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="0dp"/>
+                            <TextView
+                                android:id="@+id/change_branch"
+                                android:textSize="@dimen/_9sdp"
+                                android:textColor="@color/blue"
+                                android:text="Change Branch"
+                                android:layout_marginEnd="@dimen/_7sdp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
                         </LinearLayout>
 
 

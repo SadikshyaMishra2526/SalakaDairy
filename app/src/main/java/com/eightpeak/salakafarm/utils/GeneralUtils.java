@@ -63,21 +63,40 @@ public class GeneralUtils {
 
         return unicodeChar;
     }
-    public static float calculateDistance(Double startLat, Double startLng, Double endLat, Double endLng) {
-        float distance;
-        Location startingLocation = new Location("starting point");
-        startingLocation.setLatitude(startLat);
-        startingLocation.setLongitude(startLng);
+    public static double calculateDistance(Double startLat, Double startLng, Double endLat, Double endLng) {
+//        float distance;
+//        Location startingLocation = new Location("starting point");
+//        startingLocation.setLatitude(startLat);
+//        startingLocation.setLongitude(startLng);
+//
+//        //Get the target location
+//        Location endingLocation = new Location("ending point");
+//        endingLocation.setLatitude(endLat);
+//        endingLocation.setLongitude(endLng);
+//
+//        distance = startingLocation.distanceTo(endingLocation);
+//
+//
+//        return distance;
+//    }
+        // haversine great circle distance approximation, returns meters
+        double theta = startLng - endLng;
+        double dist = Math.sin(deg2rad(startLat)) * Math.sin(deg2rad(endLat))
+                + Math.cos(deg2rad(startLat)) * Math.cos(deg2rad(endLat))
+                * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60; // 60 nautical miles per degree of seperation
+        dist = dist * 1852; // 1852 meters per nautical mile
+        return (dist);
+    }
 
-        //Get the target location
-        Location endingLocation = new Location("ending point");
-        endingLocation.setLatitude(endLat);
-        endingLocation.setLongitude(endLng);
+    private static double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
 
-        distance = startingLocation.distanceTo(endingLocation);
-
-
-        return distance;
+    private static double rad2deg(double rad) {
+        return (rad * 180.0 / Math.PI);
     }
 
 

@@ -22,5 +22,6 @@ data class Branches (
     @SerializedName("created_at") val created_at : String,
     @SerializedName("updated_at") val updated_at : String,
     @SerializedName("bank") val bank : String,
-    @SerializedName("account_holder") val account_holder : String
+    @SerializedName("account_holder") val account_holder : String,
+    @SerializedName("sub_packages_count") val sub_packages_count : Int
 )

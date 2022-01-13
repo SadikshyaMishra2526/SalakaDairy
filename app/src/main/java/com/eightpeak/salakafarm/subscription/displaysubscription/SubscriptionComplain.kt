@@ -21,6 +21,7 @@ import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.EndPoints
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
+import com.eightpeak.salakafarm.viewmodel.GetResponseViewModel
 import com.eightpeak.salakafarm.viewmodel.OrderViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -40,7 +41,7 @@ class SubscriptionComplain  : BottomSheetDialogFragment() {
             ? = null
     private val binding get() = _binding!!
     private var userPrefManager: UserPrefManager? = null
-    private lateinit var viewModel: OrderViewModel
+    private lateinit var viewModel: GetResponseViewModel
     private var tokenManager: TokenManager? = null
     private lateinit var mMap: GoogleMap
     override fun onCreateView(
@@ -66,21 +67,15 @@ class SubscriptionComplain  : BottomSheetDialogFragment() {
 
         val repository = AppRepository()
         val factory = ViewModelProviderFactory(requireActivity().application, repository)
-        viewModel = ViewModelProvider(this, factory).get(OrderViewModel::class.java)
-
+        viewModel = ViewModelProvider(this, factory).get(GetResponseViewModel::class.java)
+        getOrderDetail()
     }
 
 
     private fun getOrderDetail() {
-        val mArgs = arguments
-        val productId = mArgs!!.getString(Constants.ORDER_ID)
-        val type = mArgs!!.getString(Constants.TYPE)
-        if (productId != null) {
-            val trackDetails = type?.let { RequestBodies.EmpLatlng(productId, it) }
-            trackDetails?.let { tokenManager?.let { it1 -> viewModel.empLatLng(it1, it) } }
-            Log.i("TAG", "getOrderDetail: " + productId + " " + type)
-        }
-        viewModel.empLatLng.observe(requireActivity(), Observer { response ->
+       var customerName=userPrefManager?.firstName+userPrefManager?.lastName
+        binding.customerName.setText(customerName)
+        viewModel.addComplain.observe(requireActivity(), Observer { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
