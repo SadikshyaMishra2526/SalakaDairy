@@ -384,6 +384,44 @@
                         android:background="#ECEAEA" />
 
                     <LinearLayout
+                        android:id="@+id/gallery_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:padding="@dimen/_3sdp"
+                            android:src="@drawable/ic_baseline_photo_album_24" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="Salaka Images"
+                            android:textColor="@color/sub_color" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:src="@drawable/ic_baseline_keyboard_arrow_right_24" />
+
+                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1.5dp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:background="#ECEAEA" />
+
+                    <LinearLayout
                         android:id="@+id/videos_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

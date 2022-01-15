@@ -63,7 +63,7 @@ open class PushNotificationService : FirebaseMessagingService() {
             val click_action = remoteMessage.notification!!.clickAction //get click_action
             Log.d(TAG, "Message Notification Title: $title")
             Log.d(TAG, "Message Notification Body: $message")
-            Log.d(TAG, "Message Notification click_action: $click_action")
+//            Log.d(TAG, "Message Notification click_action: $click_action")
 //            sendNotification(title, message, click_action)
             setUpNotification()
         }

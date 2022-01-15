@@ -2,6 +2,8 @@ package com.eightpeak.salakafarm.subscription.displaysubscription
 
 import DeliveryHistory
 import DisplaySubscriptionModel
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.databinding.ActivityDisplaySubscriptionDetailsBinding
+import com.eightpeak.salakafarm.date.AD
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
@@ -23,8 +26,8 @@ import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.viewmodel.SubscriptionViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.home.HomeActivity
-import com.eightpeak.salakafarm.views.order.orderview.orderhistory.OrderHistory
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.messaging.FirebaseMessaging
 
 class DisplaySubscriptionDetails : AppCompatActivity() {
     private lateinit var binding: ActivityDisplaySubscriptionDetailsBinding
@@ -34,7 +37,7 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
     private var subscriptionAdapter: SubscriptionAdapter? = null
     private var layoutManager: GridLayoutManager? = null
     private var subscriptionDetailsModel: DisplaySubscriptionModel? = null
-
+    private val ad= AD()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +55,9 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
         init()
         setContentView(binding.root)
 
-        Log.i("TAG", "onCreate: " + GeneralUtils.calculateNepaliDate(11, 1, 2022))
+        // TODO Auto-generated method stub
+        val todayNepaliDate=ad.convertDate(GeneralUtils.getTodayDate())
+        binding.todayDate.text = todayNepaliDate
     }
 
     private fun setupViewModel() {
@@ -60,8 +65,6 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
         val factory = ViewModelProviderFactory(application, repository)
         viewModel = ViewModelProvider(this, factory).get(SubscriptionViewModel::class.java)
         getCustomerSubscription()
-
-
     }
 
     private fun init() {
@@ -76,6 +79,7 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
         binding.displaySubscriptionDates.setHasFixedSize(true)
         binding.displaySubscriptionDates.isFocusable = false
         binding.displaySubscriptionDates.adapter = subscriptionAdapter
+
         setupViewModel()
     }
 
@@ -106,7 +110,12 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
-                        displaySubscriptionDetails(picsResponse)
+//                        if(picsResponse.error.equals("1")){
+//
+//                        }else{
+                            displaySubscriptionDetails(picsResponse)
+
+//                        }
                     }
                 }
 
@@ -130,23 +139,45 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
         addSubscriptionDate(subscription.deliveryHistory)
         Log.i("TAG", "displaySubscriptionDetails: $subscriptionDetails")
         binding.subscriberName.text = userPrefManager.firstName + " " + userPrefManager.lastName
-        binding.subscriptionStarted.text = subscriptionDetails.subscription.starting_date
-        binding.subscriptionExpire.text = subscriptionDetails.subscription.expiration_time
+        binding.subscriptionStarted.text =ad.convertDate(subscriptionDetails.subscription.starting_date)
+        binding.subscriptionExpire.text = ad.convertDate(subscriptionDetails.subscription.expiration_time)
         binding.subscriberPackageName.text = subscription.sub_package.name.toString()
         binding.subscriptionRemaining.text =
             subscription.remaining_quantity.toString() + "/" + subscription.subscribed_total_amount.toString()
         binding.paymentVia.text = subscription.mode
         binding.remainingDays.text = subscription.remaining_quantity.toString()
         binding.unitPerDay.text = subscription.unit_per_day.toString()
-        binding.deliveryTime.text = "Morning"
-        binding.subscriberBranch.text = subscription.branch.name
+         binding.subscriberBranch.text = subscription.branch.name
         binding.subscriptionAddress.text = subscription.address.address1
+//for notification topic
+        pushNotificationService(subscription.branch_id)
 
-        if (subscription.approved_at != null) {
-            binding.paymentStatus.text = "Paid"
+        if (subscription.approved_at!=null) {
+            binding.paymentStatus.text = getString(R.string.paid)
+            binding.unpaid1.visibility=View.VISIBLE
+            binding.unpaid2.visibility=View.VISIBLE
+            binding.unpaid3.visibility=View.VISIBLE
+            binding.unpaid4.visibility=View.GONE
         } else {
+            binding.unpaid1.visibility=View.GONE
+            binding.unpaid2.visibility=View.GONE
+            binding.unpaid3.visibility=View.GONE
+            binding.unpaid4.visibility=View.VISIBLE
+            binding.paymentStatus.text = getString(R.string.unpaid)
+        }
 
-            binding.paymentStatus.text = "Unpaid"
+        if(subscription.delivery_peroid==0){
+            userPrefManager.packageSelected=0
+            binding.deliveryTime.text = getString(R.string.morning_shift)
+
+        }else if(subscription.delivery_peroid==1){
+            userPrefManager.packageSelected=1
+            binding.deliveryTime.text =  getString(R.string.evening_shift)
+
+        }else if(subscription.delivery_peroid==2){
+            userPrefManager.packageSelected=2
+            binding.deliveryTime.text = getString(R.string.both_shift)
+
         }
 
         if (subscription.mode == "bank" || subscription.mode == "qr") {
@@ -185,16 +216,29 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
         }
 
         binding.cancelYourSubscription.setOnClickListener {
-            tokenManager?.let { it1 ->
-                viewModel.postCancelSubscription(
-                    it1,
-                    subscriptionDetailsModel!!.subscription.id.toString()
-                )
-            }
-            getCancelSubscription()
+
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle(getString(R.string.unsubscribe_cancel_title))
+            builder.setMessage(getString(R.string.cancel_sub_content))
+            builder.setPositiveButton(getString(R.string.unsubscribe),
+                DialogInterface.OnClickListener { _, _ ->
+                    tokenManager?.let { it1 ->
+                        viewModel.postCancelSubscription(
+                            it1,
+                            subscriptionDetailsModel!!.subscription.id.toString()
+                        )
+                    }
+                    getCancelSubscription()
+                })
+            builder.setNegativeButton(R.string.cancel, null)
+
+            val dialog = builder.create()
+            dialog.show()
+
         }
-        binding.viewOrderHistory.setOnClickListener {
-            Intent(this@DisplaySubscriptionDetails, OrderHistory::class.java)
+        binding.viewSubscriptionHistory.setOnClickListener {
+           val intent= Intent(this@DisplaySubscriptionDetails, ViewSubscriptionOrderHistory::class.java)
+            startActivity(intent)
             finish()
 
         }
@@ -246,8 +290,7 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
         val deliveryHistory: List<DeliveryHistory> = subscriptionDetails
         subscriptionAdapter!!.differ.submitList(deliveryHistory)
         binding.displaySubscriptionDates.adapter = subscriptionAdapter
-
-
+        binding.displaySubscriptionDates.setItemViewCacheSize(subscriptionDetails.size)
     }
 
     private fun hideProgressBar() {
@@ -268,5 +311,12 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
         val mainActivity = Intent(this@DisplaySubscriptionDetails, HomeActivity::class.java)
         startActivity(mainActivity)
         finish()
+    }
+    private fun pushNotificationService(branchId: Int?) {
+        var topic=branchId.toString()+"_customers"
+        binding.topic.text=topic
+        FirebaseMessaging.getInstance().subscribeToTopic(topic)
+            .addOnSuccessListener {
+            }
     }
 }

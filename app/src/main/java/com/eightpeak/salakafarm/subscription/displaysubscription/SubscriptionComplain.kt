@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -37,8 +38,7 @@ import com.google.android.material.snackbar.Snackbar
 
 class SubscriptionComplain  : BottomSheetDialogFragment() {
 
-    private var _binding:SubscriptionComplainBinding
-            ? = null
+    private var _binding:SubscriptionComplainBinding? = null
     private val binding get() = _binding!!
     private var userPrefManager: UserPrefManager? = null
     private lateinit var viewModel: GetResponseViewModel
@@ -74,6 +74,11 @@ class SubscriptionComplain  : BottomSheetDialogFragment() {
 
     private fun getOrderDetail() {
        var customerName=userPrefManager?.firstName+userPrefManager?.lastName
+        if(binding.complainSubject.length()>0){
+
+        }else{
+            Toast.makeText(requireContext(),"Please add subject of the complain",Toast.LENGTH_SHORT).show()
+        }
         binding.customerName.setText(customerName)
         viewModel.addComplain.observe(requireActivity(), Observer { response ->
             when (response) {

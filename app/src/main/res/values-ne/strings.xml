@@ -175,4 +175,10 @@
     <string name="cancel_today_s_subscription">आजको सदस्यता रद्द गर्नु</string>
     <string name="add_additional_subscription">थप सदस्यता थप्नुहोस्</string>
     <string name="deduct_subscription">सदस्यता कटौती गर्नुहोस्</string>
+    <string name="cancel_sub_content">Do you want to cancel your subscription?</string>
+    <string name="unsubscribe_cancel_title">Cancel Subscription...</string>
+    <string name="paid">Paid</string>
+    <string name="unpaid">Unpaid</string>
+    <string name="our_videoes">Our Videos</string>
+    <string name="our_gallery">Our Gallery</string>
 </resources>

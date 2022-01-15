@@ -155,8 +155,8 @@
     <string name="contact_no">Contact No.:</string>
     <string name="gender">Gender:</string>
     <string name="employee_s_email">Employee\'s Email :</string>
-    <string name="subscription_started">Started</string>
-    <string name="subscription_expires_at">Expires at</string>
+    <string name="subscription_started">Subscription Started</string>
+    <string name="subscription_expires_at">Subscription Expires at</string>
     <string name="view_history"> History</string>
     <string name="delete_subscription">Cancel</string>
     <string name="customer_name">Customer Name:-</string>
@@ -172,6 +172,13 @@
     <string name="deduct_subscription">Deduct Subscription</string>
     <string name="cancel_today_s_subscription">Cancel Today\'s Subscription</string>
     <string name="add_additional_subscription">Add additional Subscription</string>
+    <string name="unsubscribe">Unsubscribe</string>
+    <string name="cancel_sub_content">Do you want to cancel your subscription?</string>
+    <string name="unsubscribe_cancel_title">Cancel Subscription...</string>
+    <string name="paid">Paid</string>
+    <string name="unpaid">Unpaid</string>
+    <string name="our_videoes">Our Videos</string>
+    <string name="our_gallery">Our Gallery</string>
 
 
     <string-array name="nepdays">

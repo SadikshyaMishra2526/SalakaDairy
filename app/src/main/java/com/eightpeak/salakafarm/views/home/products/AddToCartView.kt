@@ -1,6 +1,7 @@
 package com.eightpeak.salakafarm.views.home.products
 
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,12 +19,15 @@ import com.google.android.material.snackbar.Snackbar
 
 import androidx.lifecycle.Observer
 import coil.api.load
+import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.databinding.FragmentAddToCartViewBinding
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
 import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdModel
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
+import com.eightpeak.salakafarm.utils.subutils.notLoginWarningSnack
+import com.eightpeak.salakafarm.utils.subutils.successAddToCartSnack
 import kotlinx.android.synthetic.main.fragment_add_to_cart_view.view.*
 
 class AddToCartView : BottomSheetDialogFragment() {
@@ -137,12 +141,17 @@ class AddToCartView : BottomSheetDialogFragment() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let {
-                        Toast.makeText(
-                            requireContext(),
-                            "Successfully added to cart!!!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        dismiss()
+                        binding.addToCartView.successAddToCartSnack(requireContext(),
+                            getString(R.string.add_to_cart),Snackbar.LENGTH_LONG)
+                        binding.addToCartView.visibility=View.GONE
+                        val handler = Handler()
+                        handler.postDelayed({ dismiss() }, 1500)
+//                        Toast.makeText(
+//                            requireContext(),
+//                            "Successfully added to cart!!!",
+//                            Toast.LENGTH_SHORT
+//                        ).show()
+//                        dismiss()
                     }
                 }
                 is Resource.Error -> {

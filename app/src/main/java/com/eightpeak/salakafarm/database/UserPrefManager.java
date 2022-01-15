@@ -52,6 +52,7 @@ public class UserPrefManager {
     private static final String ACC_HOLDER_NAME= "acc_holder_name";
 
     private static final String BANK_NAME= "bank_name";
+    private static final String DELIVERY_PERIOD= "delivery_period";
 
 
     public UserPrefManager(Context context) {
@@ -137,14 +138,16 @@ public class UserPrefManager {
 //        return userPref.getString(USER_ADDRESS_1, DEFAULT);
 //    }
 //
-//  public  void setUserAddress2(String language) {
-//        userPrefEditor.putString(USER_ADDRESS_2, language);
-//        userPrefEditor.commit();
-//    }
-//
-//    public String getUserAddress2() {
-//        return userPref.getString(USER_ADDRESS_2, DEFAULT);
-//    }
+
+
+  public  void setDeliveryPeriod(Integer language) {
+        userPrefEditor.putInt(DELIVERY_PERIOD, language);
+        userPrefEditor.commit();
+    }
+
+    public Integer getDeliveryPeriod() {
+        return userPref.getInt(DELIVERY_PERIOD, 0);
+    }
 //
 
     public  void setSubSelected(Integer subSelected) {

@@ -7,6 +7,7 @@ import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,7 +23,7 @@ import androidx.fragment.app.Fragment;
 
 import com.eightpeak.salakafarm.R;
 
-public class AD extends Fragment implements OnItemSelectedListener {
+public class AD  {
 	Map<Integer, int[]> nepaliMap;
 	Button convert;
 
@@ -40,57 +41,17 @@ public class AD extends Fragment implements OnItemSelectedListener {
 
 	int startingNepDay = 17;
 
-	
-	
-	Spinner spinner1, spinner2, spinner3;
-	String s1, s2, s3;
-	int num1, num2, num3;
+	String convertedValue="";
 
-	TextView t;
 
 	public AD() {
 		// Required empty public constructor
 	}
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
-		View i = inflater.inflate(R.layout.fragment_a, container, false);
-		t = (TextView) i.findViewById(R.id.texteng);
 
-		spinner1 = (Spinner) i.findViewById(R.id.year);
-		spinner2 = (Spinner) i.findViewById(R.id.month);
-		spinner3 = (Spinner) i.findViewById(R.id.day);
+	public String convertDate(String date) {
 
-		ArrayAdapter<?> adapter3 = ArrayAdapter.createFromResource(
-				getActivity(), R.array.engdays,
-				android.R.layout.simple_spinner_dropdown_item);
 
-		ArrayAdapter<?> adapter2 = ArrayAdapter.createFromResource(
-				getActivity(), R.array.engmonth,
-				android.R.layout.simple_spinner_dropdown_item);
-		ArrayAdapter<?> adapter1 = ArrayAdapter.createFromResource(
-				getActivity(), R.array.engyear,
-				android.R.layout.simple_spinner_dropdown_item);
-		// Specify the layout to use when the list of choices appears
-		// Apply the adapter to the spinner
-		spinner1.setAdapter(adapter1);
-		spinner2.setAdapter(adapter2);
-		spinner3.setAdapter(adapter3);
-		spinner1.setOnItemSelectedListener(this);
-		spinner2.setOnItemSelectedListener(this);
-		spinner3.setOnItemSelectedListener(this);
-		return i;
-	}
-
-	@SuppressLint("UseSparseArrays")
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onActivityCreated(savedInstanceState);
-		
-		
 		nepaliMap = new HashMap<Integer, int[]>();
 
 		nepaliMap.put(2000, new int[] { 0, 30, 32, 31, 32, 31, 30, 30, 30, 29,
@@ -275,23 +236,20 @@ public class AD extends Fragment implements OnItemSelectedListener {
 				30, 30, 30 });
 		nepaliMap.put(2090, new int[] { 0, 30, 32, 31, 32, 31, 30, 30, 30, 29,
 				30, 30, 30 });
-		convert = (Button) getActivity().findViewById(R.id.button1);
-		convert.setOnClickListener(new OnClickListener() {
+		// TODO Auto-generated method stub
+		String[] dateList = date.split("-");
+				int engYear =Integer.parseInt( dateList[0]);
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				int engMonth =Integer.parseInt( dateList[1])-1;
 
-				int engYear = num1;
+				int engDay = Integer.parseInt( dateList[2]);
 
-				int engMonth = num2;
-
-				int engDay = num3;
+				Log.i("TAG", "onClick: "+engYear+" "+engMonth+" "+engDay);
 
 				int nepYear = startingNepYear;
 				int nepMonth = startingNepMonth;
 				int nepDay = startingNepDay;
-				
+
 				Calendar currentEngDate = new GregorianCalendar();
 
 				currentEngDate.set(engYear, engMonth, engDay);
@@ -327,91 +285,64 @@ public class AD extends Fragment implements OnItemSelectedListener {
 					totalEngDaysCount--;
 				}
 				switch (dayOfWeek) {
-				case 1:
+					case 1:
 
-					t.setText("The Date in BS is \n\n" + nepYear + " /"
-							+ nepMonth + " /" + nepDay + " Sunday");
 
-					dayOfWeek = Calendar.SATURDAY;
-					break;
-				case 2:
+						convertedValue= nepYear + "-"
+								+ nepMonth + "-" + nepDay+ "\n"+"Sunday";
+						dayOfWeek = Calendar.SATURDAY;
+						break;
+					case 2:
+						convertedValue= nepYear + "-"
+								+ nepMonth + "-" + nepDay+ "\n"+"Monday";
 
-					t.setText("The Date in BS is \n\n" + nepYear + " /"
-							+ nepMonth + " /" + nepDay + " Monday");
+						dayOfWeek = Calendar.SATURDAY;
+						break;
+					case 3:
 
-					dayOfWeek = Calendar.SATURDAY;
-					break;
-				case 3:
+					 convertedValue= nepYear + "-"
+								+ nepMonth + "-" + nepDay+ "\n"+"Tuesday";
 
-					t.setText("The Date in BS is \n\n" + nepYear + " /"
-							+ nepMonth + " /" + nepDay + " Tuesday");
+						dayOfWeek = Calendar.SATURDAY;
+						break;
+					case 4:
 
-					dayOfWeek = Calendar.SATURDAY;
-					break;
-				case 4:
+						convertedValue= nepYear + "-"
+								+ nepMonth + "-" + nepDay+ "\n"+"Wednesday";
 
-					t.setText("The Date in BS is \n\n" + nepYear + " /"
-							+ nepMonth + " /" + nepDay + " Wednesday");
+						dayOfWeek = Calendar.SATURDAY;
+						break;
+					case 5:
 
-					dayOfWeek = Calendar.SATURDAY;
-					break;
-				case 5:
+						convertedValue= nepYear + "-"
+								+ nepMonth + "-" + nepDay+ "\n"+"Thursday";
 
-					t.setText("The Date in BS is \n\n" + nepYear + " /"
-							+ nepMonth + " /" + nepDay + " Thursday");
+						dayOfWeek = Calendar.SATURDAY;
+						break;
+					case 6:
+						convertedValue= nepYear + "-"
+								+ nepMonth + "-" + nepDay + "\n"+"Friday";
 
-					dayOfWeek = Calendar.SATURDAY;
-					break;
-				case 6:
+						dayOfWeek = Calendar.SATURDAY;
+						break;
+					case 7:
 
-					t.setText("The Date in BS is \n\n" + nepYear + " /"
-							+ nepMonth + " /" + nepDay + " Friday");
+						convertedValue= nepYear + "-"
+								+ nepMonth + "-" + nepDay+ "\n"+"Saturday";
 
-					dayOfWeek = Calendar.SATURDAY;
-					break;
-				case 7:
-
-					t.setText("The Date in BS is \n\n" + nepYear + " /"
-							+ nepMonth + " /" + nepDay + " Saturday");
-
-					dayOfWeek = Calendar.SATURDAY;
-					break;
-
+						dayOfWeek = Calendar.SATURDAY;
+						break;
 				}
-
-			}
-
-			private long daysBetween(Calendar startDate, Calendar endDate) {
-				Calendar date = (Calendar) startDate.clone();
-				long daysBetween = 0;
-				while (date.before(endDate)) {
-					date.add(Calendar.DAY_OF_MONTH, 1);
-					daysBetween++;
-				}
-
-				return daysBetween;
-			}
-		});
+		return convertedValue;
 	}
+	private long daysBetween(Calendar startDate, Calendar endDate) {
+		Calendar date = (Calendar) startDate.clone();
+		long daysBetween = 0;
+		while (date.before(endDate)) {
+			date.add(Calendar.DAY_OF_MONTH, 1);
+			daysBetween++;
+		}
 
-	@Override
-	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
-			long arg3) {
-		// TODO Auto-generated method stub
-		s1 = spinner1.getSelectedItem().toString();
-
-		num1 = Integer.valueOf(s1);
-
-		s3 = spinner3.getSelectedItem().toString();
-
-		num3 = Integer.valueOf(s3);
-
-		num2 = spinner2.getSelectedItemPosition();
-	}
-
-	@Override
-	public void onNothingSelected(AdapterView<?> arg0) {
-		// TODO Auto-generated method stub
-
+		return daysBetween;
 	}
 }

@@ -13,12 +13,17 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.eightpeak.salakafarm.App
 import com.eightpeak.salakafarm.R
+import com.eightpeak.salakafarm.database.UserPrefManager
+import com.eightpeak.salakafarm.date.AD
 import com.eightpeak.salakafarm.utils.Constants
+import com.eightpeak.salakafarm.utils.GeneralUtils
 import kotlinx.android.synthetic.main.categories_item.view.*
 import kotlinx.android.synthetic.main.subscription_date_item.view.*
 
-class SubscriptionAdapter(   private val onClickListener: (View, DeliveryHistory) -> Unit) : RecyclerView.Adapter<SubscriptionAdapter.DataListViewHolder>() {
+class SubscriptionAdapter(private val onClickListener: (View, DeliveryHistory) -> Unit) :
+    RecyclerView.Adapter<SubscriptionAdapter.DataListViewHolder>() {
 
     inner class DataListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
@@ -28,7 +33,10 @@ class SubscriptionAdapter(   private val onClickListener: (View, DeliveryHistory
             return oldItem.date == newItem.date
         }
 
-        override fun areContentsTheSame(oldItem: DeliveryHistory, newItem: DeliveryHistory): Boolean {
+        override fun areContentsTheSame(
+            oldItem: DeliveryHistory,
+            newItem: DeliveryHistory
+        ): Boolean {
             return oldItem == newItem
         }
     }
@@ -47,24 +55,69 @@ class SubscriptionAdapter(   private val onClickListener: (View, DeliveryHistory
 
     override fun onBindViewHolder(holder: DataListViewHolder, position: Int) {
         val dateDetails = differ.currentList[position]
+        val userPrefManager = UserPrefManager(App.getContext())
+         val ad= AD()
         holder.itemView.apply {
+
+            var todayDate: String = ad.convertDate(GeneralUtils.getTodayDate())
+            // TODO Auto-generated method stub
+            val dateList: Array<String> = todayDate.split("-".toRegex()).toTypedArray()
+            val dayOnly: Array<String> = dateList[2].split("\n".toRegex()).toTypedArray()
+            val today=Integer.parseInt(dayOnly[0])
             date_item.text = dateDetails.date.toString()
-            if(  dateDetails.date==27||dateDetails.date>27){
-                if(dateDetails.delivery_count!=0){
-                    date_item.text = dateDetails.date.toString()
-                }else{
-                    date_item.text = dateDetails.date.toString()
-                    holder.itemView.setOnClickListener { view ->
-                        onClickListener.invoke(view, dateDetails)
-                    }
+            Log.i("TAG", "onBindViewHolder: "+today)
+
+               if (dateDetails.alter_status == 3) {
+                    alter_status.visibility = View.GONE
+                } else if (dateDetails.alter_status == 2) {
+                    alter_status.text = "+"+dateDetails.alter_qty+" litre"
+                    alter_status.setTextColor(Color.GREEN)
+                } else if (dateDetails.alter_status == 1) {
+                    alter_status.text = "Cancelled"
+                   date_item.setTextColor(Color.RED)
+                   alter_status.setTextColor(Color.RED)
+                } else if (dateDetails.alter_status == 0) {
+                   alter_status.text = "-"+dateDetails.alter_qty+" litre"
+                    alter_status.setTextColor(Color.BLUE)
+                }else if (dateDetails.alter_status == null) {
+                   alter_status.visibility = View.GONE
                 }
-                sub_item.setBackgroundColor(Color.GREEN)
-            }else{
-                alter_subscription.setCardBackgroundColor(Color.GRAY)
+
+            if (dateDetails.date!! < today) {
+                if (dateDetails.delivery_count == 0) {
+                    sub_item.setBackgroundColor(resources.getColor(R.color.tab_indicator_gray))
+                } else {
+                    if (userPrefManager.deliveryPeriod == 2) {
+                        if(dateDetails.delivery_count==1){
+                            morning_delivery.visibility = View.VISIBLE
+                        }else if(dateDetails.delivery_count==2){
+                            morning_delivery.visibility = View.VISIBLE
+                            evening_delivery.visibility = View.VISIBLE
+                        }
+                    }else{
+                        morning_delivery.visibility = View.VISIBLE
+                    }
+                    sub_item.setBackgroundColor(resources.getColor(R.color.sub_color_lighter))
+                }
+            } else if (dateDetails.date == today) {
+                sub_item.setBackgroundColor(resources.getColor(R.color.yellow_lighter))
+                if (userPrefManager.deliveryPeriod == 2) {
+                    if(dateDetails.delivery_count==1){
+                        morning_delivery.visibility = View.VISIBLE
+                    }else if(dateDetails.delivery_count==2){
+                        morning_delivery.visibility = View.VISIBLE
+                        evening_delivery.visibility = View.VISIBLE
+                        sub_item.setBackgroundColor(resources.getColor(R.color.sub_color_lighter))
+                    }
+                }else{
+                    morning_delivery.visibility = View.VISIBLE
+                }
+            } else if (dateDetails.date > today) {
+                sub_item.setBackgroundColor(resources.getColor(R.color.white))
+                holder.itemView.setOnClickListener { view ->
+                    onClickListener.invoke(view, dateDetails)
+                }
             }
-
-
-
         }
 
     }

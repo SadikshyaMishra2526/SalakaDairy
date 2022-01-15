@@ -13,6 +13,7 @@ import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.Utils
 import com.eightpeak.salakafarm.views.home.products.ServerResponse
 import com.eightpeak.salakafarm.views.addtocart.addtocartfragment.CartResponse
+import com.eightpeak.salakafarm.views.gallery.GalleryListModel
 import com.eightpeak.salakafarm.views.home.products.Data
 import com.eightpeak.salakafarm.views.pages.PageDetailsModel
 import com.eightpeak.salakafarm.views.popup.PopUpModel
@@ -40,7 +41,9 @@ class GetResponseViewModel (
                 cartResponse.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
             }
         } catch (t: Throwable) {
+            Log.i("TAG", "cartResponseFetch: "+t.localizedMessage)
             when (t) {
+
                 is IOException -> cartResponse.postValue(
                     Resource.Error(
                         getApplication<Application>().getString(
@@ -606,6 +609,55 @@ val getPopUp: MutableLiveData<Resource<PopUpModel>> = MutableLiveData()
     }
 
     private fun handleGetPopUpResponse(response: Response<PopUpModel>): Resource<PopUpModel> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+
+
+//    get Gallery view
+val getGalleryDetails: MutableLiveData<Resource<GalleryListModel>> = MutableLiveData()
+
+    fun getGalleryDetailsBanner() = viewModelScope.launch {
+        getPopUP()
+    }
+
+
+    private suspend fun getPopUP() {
+        getGalleryDetails.postValue(Resource.Loading())
+        try {
+            if (Utils.hasInternetConnection(getApplication<Application>())) {
+                val response = appRepository.getGallery()
+                Log.i("TAG", "fetchPics: $response")
+                getGalleryDetails.postValue(handleGetGalleryResponse(response))
+            } else {
+                getGalleryDetails.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+            }
+        } catch (t: Throwable) {
+            when (t) {
+                is IOException -> getGalleryDetails.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.network_failure
+                        )
+                    )
+                )
+                else -> getGalleryDetails.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.conversion_error
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun handleGetGalleryResponse(response: Response<GalleryListModel>): Resource<GalleryListModel> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)

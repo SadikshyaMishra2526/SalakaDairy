@@ -27,6 +27,9 @@ class RegisterActivity : AppCompatActivity() {
 
     lateinit var registerViewModel: RegisterViewModel
     private lateinit var binding: ActivityRegisterBinding
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)

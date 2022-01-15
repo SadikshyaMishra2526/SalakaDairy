@@ -88,6 +88,7 @@ class EndPoints {
 
 
         const val POP_UP = "api/get_popup"
+const val GET_GALLERY = "api/get_gallery"
 
         const val PAYMENT_EVIDENCE = "api/post_payment_evidence"
 

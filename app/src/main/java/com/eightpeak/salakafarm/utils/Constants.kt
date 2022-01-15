@@ -11,8 +11,9 @@ class Constants {
 
         var BASE_URL_VIDEO = "https://www.googleapis.com/youtube/v3/"
 
+      var SECRET_KEY = "L+poNDg7gEEwUVOfHPAmYlgmmHilt9GgpAEF44Dgb64="
 
-        const val SECRET_KEY = "PWXA2PwqJqufvAaP0OIhogwbhPZCxoaFsK4V7GaCs0="
+
 
 
         const val TOKEN_PREF = "token_pref"

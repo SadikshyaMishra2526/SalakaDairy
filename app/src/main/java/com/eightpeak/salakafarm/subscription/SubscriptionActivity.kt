@@ -3,6 +3,7 @@ package com.eightpeak.salakafarm.subscription
 import android.app.DatePickerDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.icu.number.IntegerWidth
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.Log
@@ -122,8 +123,7 @@ class SubscriptionActivity : AppCompatActivity() {
                     val formatter = SimpleDateFormat("yyyy-MM-dd")
                     selectedStartingDate = formatter.format(Date.parse(dateSelected.time.toString()))
 
-                    Log.i("TAG", "onCreate: "+ GeneralUtils.calculateNepaliDate(dayOfMonth,monthOfYear,year)
-                    )
+//                    Log.i("TAG", "onCreate: "+ GeneralUtils.calculateNepaliDate(dayOfMonth,monthOfYear,year))
                 },
                 newCalendar[Calendar.YEAR],
                 newCalendar[Calendar.MONTH],
@@ -487,13 +487,16 @@ class SubscriptionActivity : AppCompatActivity() {
         var totalPrice = subPackages.unit_price * subPackages.number_of_days
         binding.selectedPackage.text = subPackages.name
         if (binding.unitPerDay.text.toString().isNotEmpty()) {
-            selectedTotalQuantity = binding.unitPerDay.text.toString()
+           val requiredQuantity= binding.unitPerDay.text.toString()
+            selectedTotalQuantity = (Integer.parseInt(requiredQuantity)* subPackages.number_of_days).toString()
+            println(",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,$selectedTotalQuantity")
+
             selectedSubscribedTotalAmount = totalPrice.toString()
             binding.totalPackageCost.text = getString(R.string.rs) + totalPrice.toString()
             val unitPerDay = Integer.valueOf(binding.unitPerDay.text.toString())
             val str: String = subPackages.range;
             val arrOfStr: List<String> = str.split("-")
-            for (range in arrOfStr) println(",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,$range")
+            for (range in arrOfStr)
             if (unitPerDay >= Integer.valueOf(arrOfStr[0])) {
                 selectedSubscribedDiscount =
                     ((totalPrice * subPackages.discount_price_per_unit) / 100).toString()
@@ -503,7 +506,6 @@ class SubscriptionActivity : AppCompatActivity() {
                 binding.packageDiscount.text = subPackages.discount_price_per_unit.toString() + " %"
             } else {
                 binding.packageDiscount.text = "0 %"
-
                 binding.totalCostWithDiscount.text = getString(R.string.rs) + totalPrice.toString()
             }
         } else {

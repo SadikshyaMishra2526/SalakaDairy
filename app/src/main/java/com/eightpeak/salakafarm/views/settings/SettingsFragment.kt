@@ -29,6 +29,7 @@ import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.viewmodel.GetResponseViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.comparelist.CompareListActivity
+import com.eightpeak.salakafarm.views.gallery.GalleryActivity
 import com.eightpeak.salakafarm.views.home.HomeActivity
 import com.eightpeak.salakafarm.views.pages.PageDetailsView
 import com.eightpeak.salakafarm.views.pages.videos.VideoViewActivity
@@ -92,6 +93,13 @@ class SettingsFragment : Fragment() {
 
             val intent = Intent(requireContext(), PageDetailsView::class.java)
             intent.putExtra("page_id","2")
+            requireContext().startActivity(intent)
+
+        }
+
+        binding.galleryList.setOnClickListener {
+
+            val intent = Intent(requireContext(), GalleryActivity::class.java)
             requireContext().startActivity(intent)
 
         }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/subscription_details"
@@ -53,6 +53,7 @@
         </LinearLayout>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/warning_card"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginLeft="@dimen/_10sdp"
             android:layout_marginRight="@dimen/_10sdp"
@@ -104,6 +105,14 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/topic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/subscription_started"
+                        android:textColor="@color/sub_color"
+                        android:textSize="@dimen/_10sdp" />
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -115,8 +124,9 @@
                         android:id="@+id/subscription_started"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:layout_gravity="start"
                         android:textSize="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -125,34 +135,6 @@
                     android:layout_height="0dp"
                     android:layout_weight="1" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-
-
-                    <TextView
-                        android:id="@+id/remaining_days"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="1"
-                        android:textSize="@dimen/_17sdp"
-                        android:textColor="@color/green1"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="Remaining Days"
-                        android:textColor="@color/sub_color"
-                        android:textSize="@dimen/_8sdp" />
-                </LinearLayout>
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -168,10 +150,11 @@
                         android:textSize="@dimen/_10sdp" />
 
                     <TextView
+                        android:layout_marginTop="@dimen/_5sdp"
                         android:id="@+id/subscription_expire"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:layout_gravity="end"
                         android:text="2022/01/01"
                         android:textColor="@color/error_red"
                         android:textStyle="bold" />
@@ -179,6 +162,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/unpaid_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_5sdp"
@@ -186,24 +170,12 @@
                 android:background="@color/sub_color_lighter"
                 android:padding="@dimen/_5sdp">
 
-                <TextView
-                    android:id="@+id/today_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2022/01/03"
-                    android:textColor="@color/teal_200"
-                    android:textSize="@dimen/_10sdp"
-                    android:textStyle="bold" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Calender"
+                    android:layout_gravity="center"
                     android:textColor="@color/main_color"
                     android:textSize="@dimen/_13sdp"
                     android:textStyle="bold" />
@@ -212,21 +184,46 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_weight="1" />
-
-                <TextView
-                    android:id="@+id/today_day"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Monday"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/remaining_days"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textSize="@dimen/_17sdp"
+                        android:textColor="@color/green1"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Remaining Litre"
+                        android:textColor="@color/sub_color"
+                        android:textSize="@dimen/_8sdp" />
+                </LinearLayout>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/today_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                   android:layout_gravity="center"
                     android:textColor="@color/teal_200"
-                    android:textSize="@dimen/_10sdp"
+                    android:textSize="@dimen/_13sdp"
                     android:textStyle="bold" />
             </LinearLayout>
 
-
             <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/unpaid_2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/_5sdp"
                 android:elevation="@dimen/_5sdp"
@@ -242,6 +239,7 @@
             </androidx.cardview.widget.CardView>
 
             <LinearLayout
+                android:id="@+id/unpaid_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -572,6 +570,7 @@
                             android:textSize="@dimen/_12sdp" />
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/unpaid_4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -590,8 +589,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:text="Add Evidence"
-                            android:layout_weight="2"
-                          />
+                            android:layout_weight="2" />
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -603,36 +601,35 @@
                 <Button
                     android:id="@+id/track_your_order"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_40sdp"
+                    android:layout_height="@dimen/_50sdp"
                     android:text="@string/track_your_order" />
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <Button
                     android:text="@string/view_history"
-                    android:id="@+id/view_order_history"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/view_subscription_history"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_50sdp"
                     android:textSize="@dimen/_10sdp" />
 
                 <Button
                     android:id="@+id/cancel_your_subscription"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_50sdp"
                     android:text="@string/delete_subscription"
                     android:textSize="@dimen/_10sdp" />
                 <Button
                     android:id="@+id/add_complain_to_subscription"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Complain"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_50sdp"
+                    android:text="Complain Box"
                     android:textSize="@dimen/_10sdp" />
             </LinearLayout>
 
@@ -647,4 +644,4 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </LinearLayout>
     </LinearLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

@@ -32,6 +32,7 @@ import com.eightpeak.salakafarm.views.home.products.ServerResponse
 import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdModel
 import com.eightpeak.salakafarm.views.home.slider.SliderModel
 import com.eightpeak.salakafarm.views.addtocart.addtocartfragment.CartResponse
+import com.eightpeak.salakafarm.views.gallery.GalleryListModel
 import com.eightpeak.salakafarm.views.home.products.Data
 import com.eightpeak.salakafarm.views.home.products.productbyid.ProductRatingModel
 import com.eightpeak.salakafarm.views.login.LoginResponse
@@ -255,7 +256,6 @@ interface ApiInterface {
     suspend fun getRate(@Field("product_id") addressId: String): Response<ProductRatingModel>
 
 
-    @FormUrlEncoded
     @POST(EndPoints.SUB_HISTORY)
     suspend fun getSubscriptionHistory(@Body body: RequestBodies.SubHistoryList): Response<SubscriptionHistoryModel>
 
@@ -268,6 +268,10 @@ interface ApiInterface {
     @FormUrlEncoded
     @POST(EndPoints.VERIFY_OPT)
     suspend fun verifyOTP(@Field("phone") phone: String,@Field("otp") otp: String): Response<ServerResponse>
+
+
+    @GET(EndPoints.GET_GALLERY)
+    suspend fun getGallery(): Response<GalleryListModel>
 
 
 }

@@ -1,6 +1,5 @@
 package com.eightpeak.salakafarm.views.pages.videos
 
-import android.R
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -35,6 +34,7 @@ import okhttp3.Request
 import android.content.Intent
 import android.net.Uri
 import androidx.cardview.widget.CardView
+import com.eightpeak.salakafarm.R
 import kotlinx.android.synthetic.main.activity_login.*
 
 
@@ -46,7 +46,7 @@ class VideoViewActivity : AppCompatActivity() {
 
         binding = ActivityVideoViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.header.text=" Our Videos"
+        binding.header.text=getString(R.string.our_videoes)
         getVideoLink()
 //        retrofit.
       }

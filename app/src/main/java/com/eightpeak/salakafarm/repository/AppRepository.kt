@@ -191,4 +191,8 @@ class AppRepository {
     suspend fun verifiyOTP(phone: String,otp: String) =
         RetrofitInstance.useApiWithoutToken.verifyOTP(phone,otp)
 
+
+    suspend fun getGallery() =
+        RetrofitInstance.useApiWithoutToken.getGallery()
+
 }

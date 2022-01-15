@@ -16,8 +16,8 @@ import javax.crypto.spec.SecretKeySpec
 
 
 object Encrypt {
-    @Throws(Exception::class)
-    fun encrypt(keyValue: ByteArray?, plaintext: String): String {
+
+    fun encrypt(keyValue: ByteArray?, plaintext: String): String? {
         val key: Key = SecretKeySpec(keyValue, "AES")
         //serialize
         val serializedPlaintext = "s:" + plaintext.toByteArray().size + ":\"" + plaintext + "\";"
@@ -32,18 +32,16 @@ object Encrypt {
         hmacSha256.init(macKey)
         hmacSha256.update(Base64.encode(iv, Base64.NO_WRAP))
         val calcMac = hmacSha256.doFinal(encryptedData.toByteArray(charset("UTF-8")))
-//        val mac: String = String(Hex.encodeHex(calcMac))
-//        //Log.d("MAC",mac);
-//        val aesData = AesEncryptionData(
-//            Base64.encodeToString(iv, Base64.NO_WRAP),
-//            encryptedData,
-//            mac
-//        )
-//        val aesDataJson = Gson().toJson(aesData)
-//        return Base64.encodeToString(aesDataJson.toByteArray(charset("UTF-8")), Base64.DEFAULT)
-        return "hello"
+        val mac = String(encodeHex(calcMac))
+        //Log.d("MAC",mac);
+        val aesData = AesEncryptionData(
+            Base64.encodeToString(iv, Base64.NO_WRAP),
+            encryptedData,
+            mac
+        )
+        val aesDataJson = Gson().toJson(aesData)
+        return Base64.encodeToString(aesDataJson.toByteArray(charset("UTF-8")), Base64.DEFAULT)
     }
-
 
     class AesEncryptionData(var iv: String, var value: String, var mac: String)
 }

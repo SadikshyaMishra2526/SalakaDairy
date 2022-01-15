@@ -160,6 +160,9 @@ class PaymentEvidenceFragment : BottomSheetDialogFragment() {
                             is Resource.Success -> {
                                 hideProgressBar()
                                 response.data?.let {
+                                    val intent= Intent(requireContext(), DisplaySubscriptionDetails::class.java)
+                                    startActivity(intent)
+                                    dismiss()
                                     Log.i("TAG", "getEvidence: i m here")
                                 }
                             }

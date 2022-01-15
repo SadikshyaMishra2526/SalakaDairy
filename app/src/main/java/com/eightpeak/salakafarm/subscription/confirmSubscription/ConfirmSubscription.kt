@@ -139,7 +139,7 @@ class ConfirmSubscription : AppCompatActivity() {
             "",""
 
         )
-
+        Log.i("TAG", "onCreate: "+selectedTotalQuantity)
         binding.customerAddress.text = selectedAddressName
         binding.packageName.text = selectedSubscriptionName
 

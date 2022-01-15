@@ -56,7 +56,7 @@ class ProductFragment : Fragment() {
         ))
 
         init()
-        return binding.categoriesLayout
+        return binding.productLayout
     }
 
 
@@ -81,7 +81,7 @@ class ProductFragment : Fragment() {
 
             }else if(compareList){
                 App.addItem(productId)
-                binding.categoriesLayout.successCompareSnack(requireContext(),"Add to Compare List",Snackbar.LENGTH_LONG)
+                binding.productLayout.successCompareSnack(requireContext(),"Add to Compare List",Snackbar.LENGTH_LONG)
 
             }
 
@@ -96,7 +96,7 @@ class ProductFragment : Fragment() {
                     response.data?.let { picsResponse ->
                           val serverResponse:ServerResponse = picsResponse
                         Log.i("TAG", "getPictures: $serverResponse")
-                        binding.categoriesLayout.successWishListSnack(requireContext(),getString(R.string.add_to_wishlist),Snackbar.LENGTH_LONG)
+                        binding.productLayout.successWishListSnack(requireContext(),getString(R.string.add_to_wishlist),Snackbar.LENGTH_LONG)
 
                     }
                 }
@@ -122,7 +122,7 @@ class ProductFragment : Fragment() {
                     response.data?.let { picsResponse ->
                           val serverResponse:ServerResponse = picsResponse
 
-                        binding.categoriesLayout.showSnack("Removed from Wishlist!!!",Snackbar.LENGTH_LONG)
+                        binding.productLayout.showSnack("Removed from Wishlist!!!",Snackbar.LENGTH_LONG)
 
                     }
                 }
@@ -183,7 +183,7 @@ class ProductFragment : Fragment() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        binding.categoriesLayout.errorSnack(message, Snackbar.LENGTH_LONG)
+                        binding.productLayout.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 
                 }

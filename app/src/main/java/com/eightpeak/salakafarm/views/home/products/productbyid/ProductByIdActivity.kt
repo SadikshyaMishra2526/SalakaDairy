@@ -338,14 +338,12 @@ class ProductByIdActivity : AppCompatActivity() {
                             )
                         }
                     }
-
                     is Resource.Error -> {
                         hideProgressBar()
                         response.message?.let { message ->
                             product_view_id_layout.errorSnack(message, Snackbar.LENGTH_LONG)
                         }
                     }
-
                     is Resource.Loading -> {
                         showProgressBar()
                     }
