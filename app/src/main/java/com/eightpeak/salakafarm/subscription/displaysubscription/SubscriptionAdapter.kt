@@ -109,8 +109,10 @@ class SubscriptionAdapter(private val onClickListener: (View, DeliveryHistory) -
                         evening_delivery.visibility = View.VISIBLE
                         sub_item.setBackgroundColor(resources.getColor(R.color.sub_color_lighter))
                     }
-                }else{
+                }else if(userPrefManager.deliveryPeriod == 1){
                     morning_delivery.visibility = View.VISIBLE
+                }else{
+                    morning_delivery.visibility = View.GONE
                 }
             } else if (dateDetails.date > today) {
                 sub_item.setBackgroundColor(resources.getColor(R.color.white))
