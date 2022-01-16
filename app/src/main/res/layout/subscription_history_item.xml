@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:id="@+id/sub_history_layout"
     android:layout_height="wrap_content">
 <LinearLayout
     android:layout_width="match_parent"
@@ -31,42 +32,61 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@color/sub_color_lighter"
                 android:padding="@dimen/_5sdp"
                 android:text="Delivery History"
                 android:textColor="@color/teal_200"
-                android:textSize="@dimen/_15sdp"
+                android:textSize="@dimen/_12sdp"
                 android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
-
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_5sdp"
-                    android:text="Delivered By:"
-                    android:textSize="@dimen/_10sdp"
-                    android:textStyle="bold" />
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5sdp"
+                        android:text="Delivered By:"
+                        android:textColor="@color/sub_color"
+                        android:textSize="@dimen/_10sdp"
+                        android:textStyle="bold" />
 
-                <TextView
+                    <TextView
+                        android:id="@+id/order_delivered_by"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5sdp"
+                        android:selectAllOnFocus="true"
+                        android:textSize="@dimen/_10sdp" />
+                </LinearLayout>
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_5sdp"
-                    android:text="Delivered By:"
-                    android:textSize="@dimen/_10sdp"
-                    android:textStyle="bold" />
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5sdp"
+                        android:text="Quantity:"
+                        android:textColor="@color/sub_color"
+                        android:textSize="@dimen/_10sdp"
+                        android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/_5sdp"
-                    android:text="Delivered By:"
-                    android:textSize="@dimen/_10sdp"
-                    android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/delivered_quantity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5sdp"
+                        android:selectAllOnFocus="true"
+                        android:textSize="@dimen/_10sdp" />
+                </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>
@@ -74,7 +94,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@drawable/edit_view"
             android:orientation="vertical">
 
@@ -85,7 +105,7 @@
                 android:padding="@dimen/_5sdp"
                 android:text="Alteration History"
                 android:textColor="@color/teal_200"
-                android:textSize="@dimen/_15sdp"
+                android:textSize="@dimen/_12sdp"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -93,29 +113,74 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_5sdp"
-                    android:text="Delivered By:"
-                    android:textSize="@dimen/_10sdp"
-                    android:textStyle="bold" />
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5sdp"
+                        android:text="Alter Status:"
+                        android:textColor="@color/sub_color"
+                        android:textSize="@dimen/_10sdp"
+                        android:textStyle="bold" />
 
-                <TextView
+                    <TextView
+                        android:id="@+id/alter_status_history"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5sdp"
+                        android:selectAllOnFocus="true"
+                        android:textSize="@dimen/_10sdp" />
+                </LinearLayout>
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_5sdp"
-                    android:text="Delivered By:"
-                    android:textSize="@dimen/_10sdp"
-                    android:textStyle="bold" />
+                    android:orientation="horizontal">
+                    <TextView
 
-                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5sdp"
+                        android:text="Quantity By:"
+                        android:textColor="@color/sub_color"
+                        android:textSize="@dimen/_10sdp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/alter_quantity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5sdp"
+                        android:selectAllOnFocus="true"
+                        android:textSize="@dimen/_10sdp" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_5sdp"
-                    android:text="Delivered By:"
-                    android:textSize="@dimen/_10sdp"
-                    android:textStyle="bold" />
+                    android:orientation="horizontal">
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5sdp"
+                        android:textColor="@color/sub_color"
+                        android:text="Alter Period:"
+                        android:textSize="@dimen/_10sdp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/alter_period"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5sdp"
+                        android:selectAllOnFocus="true"
+                        android:textSize="@dimen/_10sdp" />
+                </LinearLayout>
+
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

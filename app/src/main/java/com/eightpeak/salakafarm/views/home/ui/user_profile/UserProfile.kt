@@ -154,6 +154,7 @@ class UserProfile : AppCompatActivity() {
         binding.editAddress.setOnClickListener {
             dialog!!.show()
         }
+
         init()
         getAddressList()
 
@@ -169,6 +170,8 @@ class UserProfile : AppCompatActivity() {
                     response.data?.let { picsResponse ->
                         if(picsResponse.address_list.isNotEmpty()){
                             viewAddressList(picsResponse)
+                            binding.customerDefaultAddress.text=addressListString+
+                                    picsResponse.address_list[0].address1 + " " + picsResponse.address_list[0].address2 + " Nepal" + "\n"
                             for (i in picsResponse.address_list.indices) {
                                 addressListString =addressListString+
                                         picsResponse.address_list[i].address1 + " " + picsResponse.address_list[i].address2 + " Nepal" + "\n"

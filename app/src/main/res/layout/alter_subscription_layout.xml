@@ -4,14 +4,15 @@
     android:id="@+id/alter_subscription"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:backgroundTint="@color/tab_indicator_gray"
-    android:layout_gravity="center">
+    android:layout_gravity="center"
+    android:backgroundTint="@color/tab_indicator_gray">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="@dimen/_5sdp">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -21,14 +22,15 @@
             android:textColor="@color/teal_200"
             android:textSize="@dimen/_15sdp"
             android:textStyle="bold" />
+
         <TextView
             android:id="@+id/deduct_subscription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_1ssp"
             android:background="@color/white"
-            android:padding="@dimen/_10sdp"
             android:gravity="center"
+            android:padding="@dimen/_10sdp"
             android:text="@string/deduct_subscription"
             android:textColor="@color/yellow"
             android:textSize="@dimen/_14sdp"
@@ -39,15 +41,15 @@
             android:id="@+id/cancel_subscription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_margin="@dimen/_1ssp"
             android:background="@color/white"
+            android:gravity="center"
             android:padding="@dimen/_10sdp"
             android:text="@string/cancel_today_s_subscription"
             android:textColor="@color/red"
             android:textSize="@dimen/_14sdp"
-            app:drawableStartCompat="@drawable/ic_baseline_settings_24"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:drawableStartCompat="@drawable/ic_baseline_settings_24" />
 
         <TextView
             android:id="@+id/add_subscription"
@@ -55,21 +57,21 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_1ssp"
             android:background="@color/white"
-            android:padding="@dimen/_10sdp"
             android:gravity="center"
+            android:padding="@dimen/_10sdp"
             android:text="@string/add_additional_subscription"
             android:textColor="@color/green1"
-            app:drawableStartCompat="@drawable/ic_baseline_settings_24"
             android:textSize="@dimen/_14sdp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:drawableStartCompat="@drawable/ic_baseline_settings_24" />
 
         <LinearLayout
             android:id="@+id/alteration_layout"
             android:layout_width="match_parent"
+            android:visibility="gone"
             android:layout_height="@dimen/_150sdp"
             android:orientation="vertical"
-            android:padding="@dimen/_5sdp"
-            android:visibility="gone">
+            android:padding="@dimen/_5sdp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -124,17 +126,64 @@
                     android:selectAllOnFocus="true"
                     android:textSize="@dimen/_12sdp" />
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@color/sub_color"
+                    android:textSize="@dimen/_10sdp"
+                    android:text="Alternation Period"
+                    android:textStyle="bold"/>
+
+                <RadioGroup
+                    android:id="@+id/delivery_period"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/morning_shift"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="Morning Shift"
+                        android:textColor="@color/sub_color"
+                        android:textSize="@dimen/_10sdp"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/eveninig_shift"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Evening Shift"
+                        android:textColor="@color/sub_color"
+                        android:textSize="@dimen/_10sdp"
+                        android:textStyle="bold" />
+
+                </RadioGroup>
+
+
+            </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/alter_sub_layout"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:visibility="gone"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
+            android:orientation="vertical">
+
             <TextView
                 android:id="@+id/cancel_subscription_tv"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/_100sdp"/>
+                android:padding="@dimen/_10sdp"
+                android:layout_height="wrap_content" />
 
 
             <ProgressBar
@@ -150,10 +199,12 @@
             <TextView
                 android:id="@+id/submit_subscription"
                 android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/main_color"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/capsule"
-                android:text="Add Subscription"
+                android:padding="@dimen/_15sdp"
+                android:background="@drawable/edit_view"
+                android:text="Alter Subscription"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
         </LinearLayout>

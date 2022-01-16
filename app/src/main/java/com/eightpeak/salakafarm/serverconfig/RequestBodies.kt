@@ -113,6 +113,7 @@ object RequestBodies {
         val alter_status: String,
         val qty: String,
         val alter_for: String,
+        val  alter_peroid: String
     )
 
     data class AddAddress(

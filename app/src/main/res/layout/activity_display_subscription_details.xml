@@ -9,7 +9,6 @@
     <LinearLayout
         android:id="@+id/subscriptionView"
         android:layout_width="match_parent"
-
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
         android:orientation="vertical">
@@ -51,7 +50,16 @@
                 android:layout_height="0dp"
                 android:layout_weight="1.5" />
         </LinearLayout>
-
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
         <androidx.cardview.widget.CardView
             android:id="@+id/warning_card"
             android:layout_marginTop="@dimen/_10sdp"
@@ -103,15 +111,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/topic"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="@string/subscription_started"
-                        android:textColor="@color/sub_color"
-                        android:textSize="@dimen/_10sdp" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -633,15 +632,7 @@
                     android:textSize="@dimen/_10sdp" />
             </LinearLayout>
 
-            <ProgressBar
-                android:id="@+id/progress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+
         </LinearLayout>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

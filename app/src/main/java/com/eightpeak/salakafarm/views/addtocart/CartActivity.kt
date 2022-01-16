@@ -31,6 +31,7 @@ import com.eightpeak.salakafarm.views.home.products.Data
 import com.eightpeak.salakafarm.views.home.products.ProductAdapter
 import com.eightpeak.salakafarm.views.order.orderview.viewordercheckoutdetails.CheckoutDetailsView
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
+import com.eightpeak.salakafarm.views.addtocart.addtocartfragment.Cart
 import com.eightpeak.salakafarm.views.home.HomeActivity
 import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdActivity
 import kotlinx.android.synthetic.main.fragment_add_to_cart.*
@@ -102,7 +103,7 @@ class CartActivity : AppCompatActivity() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
-                        getSelectedProducts(picsResponse)
+                        getSelectedProducts(picsResponse.cart)
                         binding.shimmerLayout.stopShimmer()
                         binding.shimmerLayout.visibility = View.GONE
                     }
@@ -156,7 +157,7 @@ class CartActivity : AppCompatActivity() {
 
     }
 
-    private fun getSelectedProducts(cartResponse: List<CartResponse>) {
+    private fun getSelectedProducts(cartResponse: List<Cart>) {
         if(cartResponse.isNotEmpty()){
             binding.ifEmpty.visibility=View.GONE
             for (i in cartResponse.indices) {

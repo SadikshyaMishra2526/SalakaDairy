@@ -1,18 +1,18 @@
-package com.eightpeak.salakafarm.views.addtocart.addtocartfragment
+package com.eightpeak.salakafarm.views.wishlist
 
 import com.google.gson.annotations.SerializedName
 
-class CartResponse (
-    @SerializedName("cart") val cart : List<Cart>
+data class WishListResponse(
+    @SerializedName("wishlist") val wishlist : List<WishList>
 
 
 ) {
     override fun toString(): String {
-        return "CartResponse(cart=$cart)"
+        return "CartResponse(wishlist=$wishlist)"
     }
 }
 
-data class Cart (
+data class WishList (
 
     @SerializedName("id") val id : Int,
     @SerializedName("product_id") val product_id : Int,

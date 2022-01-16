@@ -36,7 +36,7 @@ fun View.showSnack(message: String, length: Int = Snackbar.LENGTH_LONG) {
     val snack = Snackbar.make(this, message, length)
 
     snack.setActionTextColor(Color.parseColor("#FFFFFF"))
-    snack.view.setBackgroundColor(Color.parseColor("#00FF00"))
+    snack.view.setBackgroundColor(ContextCompat.getColor(context, R.color.yellow))
     snack.show()
 }
 

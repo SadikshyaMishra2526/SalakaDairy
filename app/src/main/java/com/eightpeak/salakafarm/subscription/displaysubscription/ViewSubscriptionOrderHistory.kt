@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
-import com.eightpeak.salakafarm.databinding.ActivityDisplaySubscriptionDetailsBinding
 import com.eightpeak.salakafarm.databinding.LayoutSubscriptionOrderHistoryBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.RequestBodies
@@ -18,18 +17,12 @@ import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
-import com.eightpeak.salakafarm.viewmodel.GetResponseViewModel
 import com.eightpeak.salakafarm.viewmodel.SubscriptionViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
-import com.eightpeak.salakafarm.views.gallery.GalleryAdapter
-import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.installations.FirebaseInstallations
-import com.google.firebase.messaging.FirebaseMessaging
-import okhttp3.ResponseBody
 
 class ViewSubscriptionOrderHistory  : AppCompatActivity() {
-    private lateinit var binding:LayoutSubscriptionOrderHistoryBinding
+    private lateinit var binding: LayoutSubscriptionOrderHistoryBinding
     private lateinit var viewModel: SubscriptionViewModel
     lateinit var userPrefManager: UserPrefManager
     private var tokenManager: TokenManager? = null
@@ -47,7 +40,7 @@ class ViewSubscriptionOrderHistory  : AppCompatActivity() {
         )
         binding = LayoutSubscriptionOrderHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+      binding.header.text="Subscription History"
         binding.returnHome.setOnClickListener { finish() }
         userPrefManager = UserPrefManager(this)
 
@@ -72,14 +65,14 @@ class ViewSubscriptionOrderHistory  : AppCompatActivity() {
 
     private fun init() {
         historyAdapter = SubscriptionHistoryAdapter()
-        layoutManager = GridLayoutManager(this, 2)
+        layoutManager = GridLayoutManager(this, 1)
         binding.subOrderHistoryRecycler.layoutManager = layoutManager
         binding.subOrderHistoryRecycler.setHasFixedSize(true)
         binding.subOrderHistoryRecycler.isFocusable = false
         binding.subOrderHistoryRecycler.adapter = historyAdapter
     }
     private fun getPageDetails() {
-        val historyDate= RequestBodies.SubHistoryList("2021-12-25","2022-01-15")
+        val historyDate= RequestBodies.SubHistoryList("2021-12-25","2022-01-30")
 
         tokenManager?.let { viewModel.getSubHistory(it,historyDate) }
         viewModel.subHistory.observe(this, Observer { response ->

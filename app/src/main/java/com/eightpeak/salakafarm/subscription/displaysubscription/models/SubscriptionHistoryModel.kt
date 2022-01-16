@@ -12,8 +12,8 @@ data class SubscriptionHistoryModel (
 }
 
 data class MoreInfo1 (
-    @SerializedName("deliveryHistory") val deliveryHistory : DeliveryHistory?=null,
-    @SerializedName("deliveryAlter") val deliveryAlter :DeliveryAlter1?=null,
+    @SerializedName("deliveryHistory") val deliveryHistory : List<DeliveryHistory>?=null,
+    @SerializedName("deliveryAlter") val deliveryAlter : List<DeliveryAlter1>?=null,
     @SerializedName("date") val date : String?=null
 )
 data class DeliveryHistory (

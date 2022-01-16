@@ -41,49 +41,49 @@ class NotificationsFragment : Fragment() {
     }
 
 
-    open class PushNotificationService : FirebaseMessagingService() {
-
-        private lateinit var notificationViewModel: NotificationViewModel
-
-        override fun onMessageReceived(remoteMessage: RemoteMessage) {
-//        logViewModel = ViewModelProvider(App.getContext()).get(NotificationsViewModel::class.java)
-
-            var data = remoteMessage.data
-            val title = remoteMessage.notification?.title
-            val message = remoteMessage.notification!!.body
-            val imageUrl = data.get("image")
-
-//        val action = data.get("action") as String
-            Log.i("TAG", "onMessageReceived: title : $title")
-            Log.i("TAG", "onMessageReceived: message : $message")
-            Log.i("TAG", "onMessageReceived: imageUrl : $imageUrl")
-
-            val loggerRegistration=  NotificationDetails(0,"title","message","imageUrl","ddd")
-
-
-
-            notificationViewModel.addDailyLogger(loggerRegistration)
-
-            val intent = Intent(App.getContext(), HomeActivity::class.java)
-            intent.putExtra("EXTRA_DATA", title)
-        }
-
-        override fun onNewToken(token: String) {
-            super.onNewToken(token)
-            // whatever you want
-        }
-        protected  fun onHandleIntent(@Nullable intent: Intent) {
-            sendDataToActivity()
-        }
-
-        private fun sendDataToActivity()
-        {
-            var  sendLevel = Intent();
-            sendLevel.action = "GET_SIGNAL_STRENGTH";
-            sendLevel.putExtra( "LEVEL_DATA","Strength_Value");
-            sendBroadcast(sendLevel);
-
-        }
-    }
+//    open class PushNotificationService : FirebaseMessagingService() {
+//
+//        private lateinit var notificationViewModel: NotificationViewModel
+//
+//        override fun onMessageReceived(remoteMessage: RemoteMessage) {
+////        logViewModel = ViewModelProvider(App.getContext()).get(NotificationsViewModel::class.java)
+//
+//            var data = remoteMessage.data
+//            val title = remoteMessage.notification?.title
+//            val message = remoteMessage.notification!!.body
+//            val imageUrl = data.get("image")
+//
+////        val action = data.get("action") as String
+//            Log.i("TAG", "onMessageReceived: title : $title")
+//            Log.i("TAG", "onMessageReceived: message : $message")
+//            Log.i("TAG", "onMessageReceived: imageUrl : $imageUrl")
+//
+//            val loggerRegistration=  NotificationDetails(0,"title","message","imageUrl","ddd")
+//
+//
+//
+//            notificationViewModel.addDailyLogger(loggerRegistration)
+//
+//            val intent = Intent(App.getContext(), HomeActivity::class.java)
+//            intent.putExtra("EXTRA_DATA", title)
+//        }
+//
+//        override fun onNewToken(token: String) {
+//            super.onNewToken(token)
+//            // whatever you want
+//        }
+//        protected  fun onHandleIntent(@Nullable intent: Intent) {
+//            sendDataToActivity()
+//        }
+//
+//        private fun sendDataToActivity()
+//        {
+//            var  sendLevel = Intent();
+//            sendLevel.action = "GET_SIGNAL_STRENGTH";
+//            sendLevel.putExtra( "LEVEL_DATA","Strength_Value");
+//            sendBroadcast(sendLevel);
+//
+//        }
+//    }
 
 }

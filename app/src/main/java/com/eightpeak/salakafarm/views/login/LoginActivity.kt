@@ -80,20 +80,19 @@ class LoginActivity : AppCompatActivity() {
 
 
         if (email.isNotEmpty() && password.isNotEmpty()) {
-            val body = Encrypt.encrypt(value1, email)?.let {
-                Encrypt.encrypt(value1, password)?.let { it1 ->
-                    RequestBodies.LoginBody(
-                        it,
-                        it1,
-                        "1",
-                        userPrefManager.fcmToken
-                    )
-                }
-            }
+//            val body = Encrypt.encrypt(value1, email)?.let {
+//                Encrypt.encrypt(value1, password)?.let { it1 ->
+//                    RequestBodies.LoginBody(
+//                        it,
+//                        it1,
+//                        "1",
+//                        userPrefManager.fcmToken
+//                    )
+//                }
+//            }
 
-            if (body != null) {
-                loginViewModel.loginUser(body)
-            }
+            val body =  RequestBodies.LoginBody(email,password,"1",userPrefManager.fcmToken)
+            loginViewModel.loginUser(body)
             loginViewModel.loginResponse.observe(this, Observer { event ->
                 event.getContentIfNotHandled()?.let { response ->
                     when (response) {
@@ -103,6 +102,7 @@ class LoginActivity : AppCompatActivity() {
 
                                 userPrefManager.subscriptionStatus=loginResponse.subscription
                                  tokenManager?.saveToken(loginResponse.access_token)
+                                Log.i("TAG", "onLoginClick: "+loginResponse.access_token)
                                 getUserDetails()
                                 getUserAddress()
 

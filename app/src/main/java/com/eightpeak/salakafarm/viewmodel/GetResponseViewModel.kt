@@ -17,6 +17,7 @@ import com.eightpeak.salakafarm.views.gallery.GalleryListModel
 import com.eightpeak.salakafarm.views.home.products.Data
 import com.eightpeak.salakafarm.views.pages.PageDetailsModel
 import com.eightpeak.salakafarm.views.popup.PopUpModel
+import com.eightpeak.salakafarm.views.wishlist.WishListResponse
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
@@ -26,7 +27,7 @@ class GetResponseViewModel (
     private val appRepository: AppRepository
 ) : AndroidViewModel(app) {
 
-    val cartResponse: MutableLiveData<Resource<List<CartResponse>>> = MutableLiveData()
+    val cartResponse: MutableLiveData<Resource<CartResponse>> = MutableLiveData()
     fun getCartResponse(tokenManager: TokenManager) = viewModelScope.launch {
         cartResponseFetch(tokenManager)
     }
@@ -62,7 +63,7 @@ class GetResponseViewModel (
         }
     }
 
-    private fun handleCartResponse(response: Response<List<CartResponse>>): Resource<List<CartResponse>> {
+    private fun handleCartResponse(response: Response<CartResponse>): Resource<CartResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)
@@ -75,7 +76,7 @@ class GetResponseViewModel (
 
 
 
-    val wishListResponse: MutableLiveData<Resource<List<CartResponse>>> = MutableLiveData()
+    val wishListResponse: MutableLiveData<Resource<WishListResponse>> = MutableLiveData()
     fun getWishListResponse(tokenManager: TokenManager) = viewModelScope.launch {
         wishlistResponseFetch(tokenManager)
     }
@@ -84,7 +85,6 @@ class GetResponseViewModel (
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
                 val response =appRepository.getWishList(tokenManager)
-                Log.i("TAG", "fetchPics: "+appRepository.getWishList(tokenManager))
                 wishListResponse.postValue(handleWishListResponse(response))
             } else {
                 wishListResponse.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
@@ -109,7 +109,7 @@ class GetResponseViewModel (
         }
     }
 
-    private fun handleWishListResponse(response: Response<List<CartResponse>>): Resource<List<CartResponse>> {
+    private fun handleWishListResponse(response: Response<WishListResponse>): Resource<WishListResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)
