@@ -232,11 +232,25 @@ public class BS extends Fragment{
 				30, 30, 30});
 
 
-		int nepYear = num1;
+//		int nepYear = num1;
+//		int nepMonth = num2;
+//		int nepDay = num3;
 
-		int nepMonth = num2;
+		String[] dateList = date.split("-");
+		int nepYear =Integer.parseInt( dateList[0]);
 
-		int nepDay = num3;
+		int nepMonth =Integer.parseInt( dateList[1])-1;
+
+		int nepDay = Integer.parseInt( dateList[2]);
+
+
+
+
+
+
+
+
+
 
 		long totalNepDaysCount = 0;
 

@@ -2,6 +2,7 @@ package com.eightpeak.salakafarm.subscription.displaysubscription
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +23,8 @@ import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.EndPoints
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
+import com.eightpeak.salakafarm.utils.subutils.showSnack
+import com.eightpeak.salakafarm.utils.subutils.successAddToCartSnack
 import com.eightpeak.salakafarm.viewmodel.GetResponseViewModel
 import com.eightpeak.salakafarm.viewmodel.OrderViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
@@ -35,6 +38,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.subscription_complain.*
 
 class SubscriptionComplain  : BottomSheetDialogFragment() {
 
@@ -73,18 +77,31 @@ class SubscriptionComplain  : BottomSheetDialogFragment() {
 
 
     private fun getOrderDetail() {
-       var customerName=userPrefManager?.firstName+userPrefManager?.lastName
-        if(binding.complainSubject.length()>0){
+       val customerName=userPrefManager?.firstName+userPrefManager?.lastName
 
+        binding.customerName.setText(customerName)
+        binding.btSummit.setOnClickListener {
+            if(binding.complainSubject.length()>0){
+                if(binding.complainDescription.length()>0){
+                    val body=RequestBodies.AddComplain(binding.complainSubject.text.toString(),binding.complainDescription.text.toString())
+                    tokenManager?.let { it1 -> viewModel.addComplain(it1,body) }
+                }else{
+                    Toast.makeText(requireContext(),"Please add subject of the complain",Toast.LENGTH_SHORT).show()
+                }
         }else{
             Toast.makeText(requireContext(),"Please add subject of the complain",Toast.LENGTH_SHORT).show()
-        }
-        binding.customerName.setText(customerName)
+        } }
         viewModel.addComplain.observe(requireActivity(), Observer { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { _ ->
+                        binding.complainLayout.showSnack("We will investigate and contact you soon...", Snackbar.LENGTH_LONG)
+                        binding.complainLayout.visibility=View.GONE
+                        val handler = Handler()
+                        handler.postDelayed({ dismiss() }, 1500)
+
+
                     }
                 }
 
@@ -92,6 +109,7 @@ class SubscriptionComplain  : BottomSheetDialogFragment() {
                     hideProgressBar()
                     response.message?.let { message ->
                         binding.complainLayout.errorSnack(message, Snackbar.LENGTH_LONG)
+                        dismiss()
                     }
 
                 }

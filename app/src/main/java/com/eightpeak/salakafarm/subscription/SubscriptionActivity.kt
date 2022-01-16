@@ -186,19 +186,19 @@ class SubscriptionActivity : AppCompatActivity() {
             validate = true
         }
         if (selectedAddressId.isEmpty()) {
-            binding.addSubscriptionLayout.errorSnack("Please select branch", Snackbar.LENGTH_LONG)
+            binding.addSubscriptionLayout.errorSnack("Please select Address", Snackbar.LENGTH_LONG)
             validate = true
         }
         if (selectedSubscribedTotalAmount.isEmpty()) {
-            binding.addSubscriptionLayout.errorSnack("Please select branch", Snackbar.LENGTH_LONG)
+            binding.addSubscriptionLayout.errorSnack("Please Add Subscription Total", Snackbar.LENGTH_LONG)
             validate = true
         }
         if (selectedSubscribedDiscount.isEmpty()) {
-            binding.addSubscriptionLayout.errorSnack("Please select branch", Snackbar.LENGTH_LONG)
+            binding.addSubscriptionLayout.errorSnack("Please Add Subscription Discount", Snackbar.LENGTH_LONG)
             validate = true
         }
         if (selectedSubscribedPrice.isEmpty()) {
-            binding.addSubscriptionLayout.errorSnack("Please select branch", Snackbar.LENGTH_LONG)
+            binding.addSubscriptionLayout.errorSnack("Please Add Subscription Price", Snackbar.LENGTH_LONG)
             validate = true
         }
         if ( binding.unitPerDay.text.toString().isEmpty()) {
@@ -214,19 +214,19 @@ class SubscriptionActivity : AppCompatActivity() {
             validate = true
         }
         if (selectedSubPackageId.isEmpty()) {
-            binding.addSubscriptionLayout.errorSnack("Please select branch", Snackbar.LENGTH_LONG)
+            binding.addSubscriptionLayout.errorSnack("Please Add Subscription", Snackbar.LENGTH_LONG)
             validate = true
         }
         if (selectedTotalQuantity.isEmpty()) {
-            binding.addSubscriptionLayout.errorSnack("Please select branch", Snackbar.LENGTH_LONG)
+            binding.addSubscriptionLayout.errorSnack("Please Add total", Snackbar.LENGTH_LONG)
             validate = true
         }
         if (selectedSubscriptionName.isEmpty()) {
-            binding.addSubscriptionLayout.errorSnack("Please select branch", Snackbar.LENGTH_LONG)
+            binding.addSubscriptionLayout.errorSnack("Please Add Subscription Name", Snackbar.LENGTH_LONG)
             validate = true
         }
         if (selectedPaymentMethod.isEmpty()) {
-            binding.addSubscriptionLayout.errorSnack("Please select branch", Snackbar.LENGTH_LONG)
+            binding.addSubscriptionLayout.errorSnack("Please Payment Method", Snackbar.LENGTH_LONG)
             validate = true
         }
         return validate

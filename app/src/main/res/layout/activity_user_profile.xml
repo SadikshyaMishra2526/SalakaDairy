@@ -29,20 +29,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_5sdp">
+
                 <ImageView
                     android:id="@+id/bt_backpressed"
                     android:layout_width="wrap_content"
-                    android:src="@drawable/ic_baseline_arrow_back_24"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_height="wrap_content"/>
+                    android:src="@drawable/ic_baseline_arrow_back_24" />
+
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1" />
 
                 <TextView
                     android:id="@+id/header_name"
@@ -56,12 +59,13 @@
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1" />
+
                 <ImageView
-                    android:src="@drawable/ic_baseline_search_24"
                     android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
                     android:layout_gravity="center"
-                    android:layout_height="@dimen/_20sdp"/>
+                    android:src="@drawable/ic_baseline_search_24" />
             </LinearLayout>
 
             <androidx.cardview.widget.CardView
@@ -119,6 +123,7 @@
                         android:id="@+id/user_logout"
                         android:layout_width="@dimen/_30sdp"
                         android:layout_height="@dimen/_30sdp"
+                        android:layout_gravity="center"
                         android:layout_margin="@dimen/_5sdp"
                         android:padding="@dimen/_5sdp"
                         android:scaleType="centerCrop"
@@ -126,17 +131,51 @@
                         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
-                    <ImageView
-                        android:id="@+id/add_addresses"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_baseline_add_24"
-                        android:background="@drawable/circle_background"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_margin="@dimen/_5sdp"
-                        android:layout_height="@dimen/_20sdp"/>
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_3sdp"
+                app:cardCornerRadius="@dimen/_10sdp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="Address:-"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/customer_default_address"
+                        android:textStyle="bold"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:textColor="@color/sub_color"
+                        android:layout_width="wrap_content"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_gravity="center"
+                        android:layout_height="wrap_content"/>
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
+                    <ImageView
+                        android:id="@+id/add_addresses"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:background="@drawable/circle_background"
+                        android:src="@drawable/ic_baseline_add_24" />
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView_policies"

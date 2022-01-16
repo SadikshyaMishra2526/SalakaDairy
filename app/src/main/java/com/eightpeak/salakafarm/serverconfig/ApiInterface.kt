@@ -44,6 +44,7 @@ import com.eightpeak.salakafarm.views.pages.videos.YoutubeVideoModel
 import com.eightpeak.salakafarm.views.popup.PopUpModel
 import com.eightpeak.salakafarm.views.register.RegisterResponse
 import com.eightpeak.salakafarm.views.search.SearchModel
+import com.eightpeak.salakafarm.views.wishlist.WishListResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -106,11 +107,11 @@ interface ApiInterface {
 
 
     @GET(GET_CART_DETAILS)
-    suspend fun getCartList(): Response<List<CartResponse>>
+    suspend fun getCartList(): Response<CartResponse>
 
 
     @GET(GET_WISHLIST_DETAILS)
-    suspend fun getWishList(): Response<List<CartResponse>>
+    suspend fun getWishList(): Response<WishListResponse>
 
 
     @GET(COMPARE_LIST_DETAILS)

@@ -158,7 +158,9 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
             binding.unpaid2.visibility=View.VISIBLE
             binding.unpaid3.visibility=View.VISIBLE
             binding.unpaid4.visibility=View.GONE
+            binding.warningCard.visibility=View.GONE
         } else {
+            binding.warningCard.visibility=View.VISIBLE
             binding.unpaid1.visibility=View.GONE
             binding.unpaid2.visibility=View.GONE
             binding.unpaid3.visibility=View.GONE
@@ -314,7 +316,6 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
     }
     private fun pushNotificationService(branchId: Int?) {
         var topic=branchId.toString()+"_customers"
-        binding.topic.text=topic
         FirebaseMessaging.getInstance().subscribeToTopic(topic)
             .addOnSuccessListener {
             }

@@ -1,17 +1,17 @@
 package com.eightpeak.salakafarm.subscription.displaysubscription
 
-import android.app.AlertDialog
-import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.databinding.AlterSubscriptionLayoutBinding
 import com.eightpeak.salakafarm.repository.AppRepository
@@ -21,7 +21,6 @@ import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.utils.subutils.showSnack
-import com.eightpeak.salakafarm.viewmodel.OrderViewModel
 import com.eightpeak.salakafarm.viewmodel.SubscriptionViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -37,7 +36,9 @@ class AddAlterationDisplay : BottomSheetDialogFragment() {
     private var subscriptionId: String? = null
     private var alterQuantity: String? = null
     private var alterationDate: String? = null
+    private var selectPeriod: String?=null
 
+    private lateinit var deliveryPeriodRadio: RadioButton
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -59,6 +60,7 @@ class AddAlterationDisplay : BottomSheetDialogFragment() {
         alterationDate = mArgs!!.getString(Constants.ALTER_DAY)
 
         setupViewModel()
+        getAlterationChange(root)
         return root.rootView
     }
 
@@ -67,10 +69,10 @@ class AddAlterationDisplay : BottomSheetDialogFragment() {
         val repository = AppRepository()
         val factory = ViewModelProviderFactory(requireActivity().application, repository)
         viewModel = ViewModelProvider(this, factory).get(SubscriptionViewModel::class.java)
-        getAlterationChange()
+
     }
 
-    private fun getAlterationChange() {
+    private fun getAlterationChange(root: View) {
         binding.cancelSubscription.setOnClickListener {
             binding.deductSubscription.visibility=View.GONE
             binding.addSubscription.visibility=View.GONE
@@ -80,13 +82,24 @@ class AddAlterationDisplay : BottomSheetDialogFragment() {
             binding.cancelSubscriptionTv.text = "Do you want to cancel this day's subscription? "
 
             binding.submitSubscription.setOnClickListener {
+                if(userPrefManager?.deliveryPeriod==2){
+                    val deliveryPeriod: Int = binding.deliveryPeriod.checkedRadioButtonId
+                    deliveryPeriodRadio = root.findViewById<View>(deliveryPeriod) as RadioButton
+                    selectPeriod= deliveryPeriodRadio.text.toString()
+                }else if(userPrefManager?.deliveryPeriod==1){
+                    selectPeriod= "1"
+                }else if(userPrefManager?.deliveryPeriod==0){
+                    selectPeriod= "0"
+                }
                 val body= alterQuantity?.let { it1 ->
                     subscriptionId?.let { it2 ->
                         alterationDate?.let { it3 ->
-                            RequestBodies.AddAlteration(
-                                it2,"1",
-                                it1, it3
-                            )
+                            selectPeriod?.let { it4 ->
+                                RequestBodies.AddAlteration(
+                                    it2,"1",
+                                    it1, it3, it4
+                                )
+                            }
                         }
 
                     }
@@ -105,13 +118,24 @@ class AddAlterationDisplay : BottomSheetDialogFragment() {
             binding.alterationDate.text=alterationDate
             binding.alterationQuantity.setText(alterQuantity.toString())
             binding.submitSubscription.setOnClickListener {
+                if(userPrefManager?.deliveryPeriod==2){
+                    val deliveryPeriod: Int = binding.deliveryPeriod.checkedRadioButtonId
+                    deliveryPeriodRadio = root.findViewById<View>(deliveryPeriod) as RadioButton
+                    selectPeriod= deliveryPeriodRadio.text.toString()
+                }else if(userPrefManager?.deliveryPeriod==1){
+                    selectPeriod= "1"
+                }else if(userPrefManager?.deliveryPeriod==0){
+                    selectPeriod= "0"
+                }
                 val body= binding.alterationQuantity.text.toString().let { it1 ->
                     subscriptionId?.let { it2 ->
                         alterationDate?.let { it3 ->
-                            RequestBodies.AddAlteration(
-                                it2,"0",
-                                it1, it3
-                            )
+                            selectPeriod?.let { it4 ->
+                                RequestBodies.AddAlteration(
+                                    it2,"0",
+                                    it1, it3, it4
+                                )
+                            }
                         }
 
                     }
@@ -128,14 +152,25 @@ class AddAlterationDisplay : BottomSheetDialogFragment() {
             binding.alterationLayout.visibility=View.VISIBLE
             binding.alterationDate.text=alterationDate
             binding.alterationQuantity.setText(alterQuantity.toString())
+            if(userPrefManager?.deliveryPeriod==2){
+                val deliveryPeriod: Int = binding.deliveryPeriod.checkedRadioButtonId
+                deliveryPeriodRadio = root.findViewById<View>(deliveryPeriod) as RadioButton
+                selectPeriod= deliveryPeriodRadio.text.toString()
+            }else if(userPrefManager?.deliveryPeriod==1){
+                selectPeriod= "1"
+            }else if(userPrefManager?.deliveryPeriod==0){
+                selectPeriod= "0"
+            }
             binding.submitSubscription.setOnClickListener {
                 val body= binding.alterationQuantity.text.toString().let { it1 ->
                     subscriptionId?.let { it2 ->
                         alterationDate?.let { it3 ->
-                            RequestBodies.AddAlteration(
-                                it2,"2",
-                                it1, it3
-                            )
+                            selectPeriod?.let { it4 ->
+                                RequestBodies.AddAlteration(
+                                    it2,"2",
+                                    it1, it3, it4
+                                )
+                            }
                         }
 
                     }
@@ -154,15 +189,20 @@ class AddAlterationDisplay : BottomSheetDialogFragment() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { _ ->
-                        Log.i("TAG", "alterSubscription: "+response.message)
-                      Toast.makeText(requireContext(),"Subscription Successfully edited", Toast.LENGTH_LONG).show()
-                        dismiss()
+                        binding.alterSubscription.showSnack("Subscription Successfully edited", Snackbar.LENGTH_LONG)
+                        binding.alterSubscription.visibility=View.GONE
+                        val handler = Handler()
+                        handler.postDelayed({
+                            dismiss()
+                            startActivity(Intent(requireContext(),DisplaySubscriptionDetails::class.java))
+                                 }, 1500)
                     }
                 }
 
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
+                        dismiss()
                         binding.alterSubscription.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 

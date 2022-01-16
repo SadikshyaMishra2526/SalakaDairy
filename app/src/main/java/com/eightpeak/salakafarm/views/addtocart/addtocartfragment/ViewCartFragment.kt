@@ -90,7 +90,7 @@ class ViewCartFragment : Fragment() {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
                         Log.i("TAG", "getPictures: $picsResponse")
-                        getSelectedProducts(picsResponse)
+                        getSelectedProducts(picsResponse.cart)
                     }
                 }
 
@@ -110,7 +110,7 @@ class ViewCartFragment : Fragment() {
         })
     }
 
-    private fun getSelectedProducts(cartResponse: List<CartResponse>) {
+    private fun getSelectedProducts(cartResponse: List<Cart>) {
         binding.viewCartList.removeAllViews()
         if(cartResponse.isNotEmpty()){
             binding.ifEmpty.visibility=View.GONE

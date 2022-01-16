@@ -65,13 +65,13 @@ class SubscriptionAdapter(private val onClickListener: (View, DeliveryHistory) -
             val dayOnly: Array<String> = dateList[2].split("\n".toRegex()).toTypedArray()
             val today=Integer.parseInt(dayOnly[0])
             date_item.text = dateDetails.date.toString()
-            Log.i("TAG", "onBindViewHolder: "+today)
 
                if (dateDetails.alter_status == 3) {
                     alter_status.visibility = View.GONE
                 } else if (dateDetails.alter_status == 2) {
                     alter_status.text = "+"+dateDetails.alter_qty+" litre"
                     alter_status.setTextColor(Color.GREEN)
+                   date_item.setTextColor(Color.GREEN)
                 } else if (dateDetails.alter_status == 1) {
                     alter_status.text = "Cancelled"
                    date_item.setTextColor(Color.RED)
@@ -79,6 +79,7 @@ class SubscriptionAdapter(private val onClickListener: (View, DeliveryHistory) -
                 } else if (dateDetails.alter_status == 0) {
                    alter_status.text = "-"+dateDetails.alter_qty+" litre"
                     alter_status.setTextColor(Color.BLUE)
+                   date_item.setTextColor(Color.BLUE)
                 }else if (dateDetails.alter_status == null) {
                    alter_status.visibility = View.GONE
                 }

@@ -30,6 +30,7 @@ import com.eightpeak.salakafarm.views.home.products.ProductAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.utils.subutils.successAddToCartSnack
+import com.eightpeak.salakafarm.views.addtocart.addtocartfragment.Cart
 import com.eightpeak.salakafarm.views.home.HomeActivity
 import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdActivity
 
@@ -79,7 +80,7 @@ class WishlistActivity : AppCompatActivity() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
-                        getSelectedProducts(picsResponse)
+                        getSelectedProducts(picsResponse.wishlist)
                         binding.shimmerLayout.stopShimmer()
                         binding.shimmerLayout.visibility = View.GONE
                     }
@@ -100,7 +101,7 @@ class WishlistActivity : AppCompatActivity() {
         })
     }
 
-    private fun getSelectedProducts(wishlist: List<CartResponse>) {
+    private fun getSelectedProducts(wishlist: List<WishList>) {
         if(wishlist.isNotEmpty()){
             binding.ifEmpty.visibility=View.GONE
 
