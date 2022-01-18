@@ -181,4 +181,9 @@
     <string name="unpaid">Unpaid</string>
     <string name="our_videoes">Our Videos</string>
     <string name="our_gallery">Our Gallery</string>
+    <string name="old_password"><font color='#5FA95F' size="13">Old password</font></string>
+    <string name="confirm_password"><font color='#5FA95F' size="13">Confirm Password</font></string>
+    <string name="new_password"><font color='#5FA95F' size="13">New Password</font></string>
+    <string name="add_to_compare">Add to Compare List</string>
+    <string name="your_wishlist">Your WishList</string>
 </resources>

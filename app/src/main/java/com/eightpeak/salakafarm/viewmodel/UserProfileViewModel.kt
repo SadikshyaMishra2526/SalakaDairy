@@ -16,6 +16,8 @@ import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.Utils
 import com.eightpeak.salakafarm.views.addresslist.AddressListModel
 import com.eightpeak.salakafarm.views.home.products.ServerResponse
+import com.eightpeak.salakafarm.views.home.products.UpdatePasswordResponse
+import com.eightpeak.salakafarm.views.home.products.UserProfileResponse
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
@@ -73,9 +75,9 @@ private val appRepository: AppRepository
 
 // user profile details
 
-    val userProfileDetails: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
+    val userProfileDetails: MutableLiveData<Resource<UserProfileResponse>> = MutableLiveData()
 
-    public fun getUserProfileDetails(token:TokenManager,body: RequestBodies.UserProfile) = viewModelScope.launch {
+     fun getUserProfileDetails(token:TokenManager,body: RequestBodies.UserProfile) = viewModelScope.launch {
         fetchUserDetails(token,body)
     }
 
@@ -113,7 +115,7 @@ private val appRepository: AppRepository
         }
     }
 
-    private fun handleUserProfileResponse(response: Response<ServerResponse>): Resource<ServerResponse> {
+    private fun handleUserProfileResponse(response: Response<UserProfileResponse>): Resource<UserProfileResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)
@@ -174,9 +176,9 @@ private val appRepository: AppRepository
     }
 
     //    for update details password
-    val updatePassword: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
+    val updatePassword: MutableLiveData<Resource<UpdatePasswordResponse>> = MutableLiveData()
 
-    public fun updatePasswordDetails(token:TokenManager,body: RequestBodies.UpdatePassword) = viewModelScope.launch {
+    public fun updatePasswordDetails(token:TokenManager, body: RequestBodies.UpdatePassword) = viewModelScope.launch {
         fetchPasswordDetails(token,body)
     }
 
@@ -185,6 +187,7 @@ private val appRepository: AppRepository
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
                 val response = appRepository.updatePassword(token,body)
+                Log.i("TAG", "fetchPasswordDetails: "+response.body())
                 updatePassword.postValue(handleUpdatePasswordDetailsResponse(response))
             } else {
                 updatePassword.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
@@ -209,7 +212,7 @@ private val appRepository: AppRepository
         }
     }
 
-    private fun handleUpdatePasswordDetailsResponse(response: Response<ServerResponse>): Resource<ServerResponse> {
+    private fun handleUpdatePasswordDetailsResponse(response: Response<UpdatePasswordResponse>): Resource<UpdatePasswordResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)

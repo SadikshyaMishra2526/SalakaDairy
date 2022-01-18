@@ -122,7 +122,8 @@
             android:theme="@style/Theme.SalakaFarm" />
         <activity
             android:name=".views.order.orderview.confirmOrder.ConfirmOrderActivity"
-            android:theme="@style/Theme.SalakaFarm" />
+            android:theme="@style/Theme.SalakaFarm"
+            android:noHistory="true"/>
         <activity
             android:name=".views.home.address.AddressModification"
             android:theme="@style/Theme.SalakaFarm" />

@@ -222,11 +222,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/products_title"
                     app:layout_constraintVertical_bias="0.0"
-                    android:layout_marginBottom="@dimen/_80sdp"
+                    android:layout_marginBottom="@dimen/_90sdp"
                     app:snapGravity="start" />
-
-
-
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.cardview.widget.CardView>

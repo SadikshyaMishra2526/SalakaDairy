@@ -27,13 +27,11 @@ import com.eightpeak.salakafarm.views.addresslist.AddressListModel
 import com.eightpeak.salakafarm.views.comparelist.CompareResponse
 import com.eightpeak.salakafarm.views.home.categories.CategoriesModel
 import com.eightpeak.salakafarm.views.home.categories.categoriesbyid.CategoriesByIdModel
-import com.eightpeak.salakafarm.views.home.products.ProductModel
-import com.eightpeak.salakafarm.views.home.products.ServerResponse
 import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdModel
 import com.eightpeak.salakafarm.views.home.slider.SliderModel
 import com.eightpeak.salakafarm.views.addtocart.addtocartfragment.CartResponse
 import com.eightpeak.salakafarm.views.gallery.GalleryListModel
-import com.eightpeak.salakafarm.views.home.products.Data
+import com.eightpeak.salakafarm.views.home.products.*
 import com.eightpeak.salakafarm.views.home.products.productbyid.ProductRatingModel
 import com.eightpeak.salakafarm.views.login.LoginResponse
 import com.eightpeak.salakafarm.views.order.orderview.orderhistory.OrderHistoryDetailsModel
@@ -163,7 +161,7 @@ interface ApiInterface {
     @POST(UPDATE_USER_INFO)
     suspend fun getUserProfile(
         @Body body: RequestBodies.UserProfile
-    ): Response<ServerResponse>
+    ): Response<UserProfileResponse>
 
 
     @POST(UPDATE_ADDRESS_LIST)
@@ -173,7 +171,7 @@ interface ApiInterface {
 
 
     @POST(UPDATE_USER_PASSWORD)
-    suspend fun updatePassword(@Body body: RequestBodies.UpdatePassword): Response<ServerResponse>
+    suspend fun updatePassword(@Body body: RequestBodies.UpdatePassword): Response<UpdatePasswordResponse>
 
     @GET(EndPoints.GET_ADDRESS)
     suspend fun getAddressList(): Response<AddressListModel>

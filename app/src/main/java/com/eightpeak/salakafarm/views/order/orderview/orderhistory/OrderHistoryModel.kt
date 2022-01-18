@@ -33,7 +33,7 @@ data class Orderlist (
     @SerializedName("country") val country : String,
     @SerializedName("company") val company : String,
     @SerializedName("postcode") val postcode : String,
-    @SerializedName("phone") val phone : Int,
+    @SerializedName("phone") val phone : String,
     @SerializedName("email") val email : String,
     @SerializedName("comment") val comment : String,
     @SerializedName("payment_method") val payment_method : String,

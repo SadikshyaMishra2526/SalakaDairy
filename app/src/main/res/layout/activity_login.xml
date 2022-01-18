@@ -83,9 +83,7 @@
                 android:layout_alignStart="@+id/address_second_img"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:text="123123"
                 android:hint="@string/password"
-
                 android:inputType="textPassword"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -211,22 +209,28 @@
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_facebook"/>
 
-        <ImageView
-            android:id="@+id/google"
+<!--        <ImageView-->
+<!--            android:id="@+id/google"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="10dp"-->
+<!--            app:srcCompat="@drawable/ic_google_plus" />-->
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            app:srcCompat="@drawable/ic_google_plus" />
-    </LinearLayout>
+           app:srcCompat="@drawable/ic_google_plus"
+            android:background="@color/red"
+            android:layout_height="wrap_content" />
+            </LinearLayout>
 
 
-    <ProgressBar
-        android:id="@+id/progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>

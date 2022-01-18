@@ -359,7 +359,7 @@ public class BS extends Fragment{
 		return "";
 	}
 
-	gprivate boolean isLeapYear(int year) {
+	private boolean isLeapYear(int year) {
 		// TODO Auto-generated method stub
 		if (year % 100 == 0) {
 			return year % 400 == 0;

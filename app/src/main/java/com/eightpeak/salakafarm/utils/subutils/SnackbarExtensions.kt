@@ -11,8 +11,6 @@ import android.widget.Toast
 import androidx.annotation.IntegerRes
 import androidx.core.content.ContextCompat
 import com.eightpeak.salakafarm.R
-import com.eightpeak.salakafarm.databinding.AddNewAddressBinding
-import com.eightpeak.salakafarm.serverconfig.RequestBodies
 import com.eightpeak.salakafarm.views.addtocart.CartActivity
 import com.eightpeak.salakafarm.views.comparelist.CompareListActivity
 import com.eightpeak.salakafarm.views.home.address.AddressModification
@@ -36,7 +34,7 @@ fun View.showSnack(message: String, length: Int = Snackbar.LENGTH_LONG) {
     val snack = Snackbar.make(this, message, length)
 
     snack.setActionTextColor(Color.parseColor("#FFFFFF"))
-    snack.view.setBackgroundColor(ContextCompat.getColor(context, R.color.yellow))
+    snack.view.setBackgroundColor(ContextCompat.getColor(context, R.color.sub_color))
     snack.show()
 }
 
@@ -110,6 +108,7 @@ fun View.successAddToCartSnack(
         .setAction(context.getString(R.string.view_cart)) {
             val intent = Intent(context, CartActivity::class.java)
             context.startActivity(intent)
+            intent
 
         }
     snackbar.setActionTextColor(Color.parseColor("#FFFFFF"))

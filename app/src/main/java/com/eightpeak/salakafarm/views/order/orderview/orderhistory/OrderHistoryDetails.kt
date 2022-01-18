@@ -23,10 +23,7 @@ import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
 import com.eightpeak.salakafarm.utils.GeneralUtils
-import com.eightpeak.salakafarm.utils.subutils.Resource
-import com.eightpeak.salakafarm.utils.subutils.errorSnack
-import com.eightpeak.salakafarm.utils.subutils.successCompareSnack
-import com.eightpeak.salakafarm.utils.subutils.successWishListSnack
+import com.eightpeak.salakafarm.utils.subutils.*
 import com.eightpeak.salakafarm.viewmodel.OrderViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.home.products.ServerResponse
@@ -174,7 +171,7 @@ class OrderHistoryDetails : Fragment() {
             productPrice.text = "( "+getString(R.string.rs)+ details[i].price.toString()+" )"
             productUnit.text=details[i].qty.toString()+" units"
             quantityTotal.text = getString(R.string.rs)+ details[i].total_price.toString()
-
+            productThumbnail.load(BASE_URL+details[i].product.image)
 
 
             if (userPrefManager.language.equals("ne")) {
@@ -200,30 +197,50 @@ class OrderHistoryDetails : Fragment() {
                 }
             }
 
-
-
-
-
-
-
             productWishList.setOnClickListener {
-                tokenManager?.let { viewModel.addtowishlist(it,details[i].id.toString())}
+                tokenManager?.let { viewModel.addtowishlist(it,details[i].product.id.toString())}
                 addToWishListResponse()
             }
 
-            productThumbnail.load(BASE_URL+details[i].product.image)
             productCart.setOnClickListener {
-
+                tokenManager?.let { viewModel.addToCartView(it,details[i].product.id.toString(),"1","")}
+                addToCartResponse()
             }
             productCompare.setOnClickListener {
-                App.addItem(details[i].id.toString())
-                binding.orderHistoryDetails.successCompareSnack(requireContext(),"Add to Compare List",
+                App.addItem(details[i].product.id.toString())
+                binding.orderHistoryDetails.successCompareSnack(requireContext(),getString(R.string.add_to_compare),
                     Snackbar.LENGTH_LONG)
-
             }
         }
 
     }
+
+    private fun addToCartResponse() {
+        viewModel.addToCart.observe(requireActivity(), Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let { picsResponse ->
+                        val serverResponse: ServerResponse = picsResponse
+                        Log.i("TAG", "getPictures: $serverResponse")
+                        binding.orderHistoryDetails.successAddToCartSnack(requireContext(),getString(R.string.add_to_cart),Snackbar.LENGTH_LONG)
+
+                    }
+                }
+
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let { message ->
+                        binding.orderHistoryDetails.errorSnack(message, Snackbar.LENGTH_LONG)
+                    }
+                }
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+            }
+        })
+    }
+
     private fun addToWishListResponse() {
         viewModel.wishlist.observe(requireActivity(), Observer { response ->
             when (response) {

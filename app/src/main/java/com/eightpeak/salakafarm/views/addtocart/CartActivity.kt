@@ -26,7 +26,6 @@ import com.eightpeak.salakafarm.utils.GeneralUtils
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.GetResponseViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
-import com.eightpeak.salakafarm.views.addtocart.addtocartfragment.CartResponse
 import com.eightpeak.salakafarm.views.home.products.Data
 import com.eightpeak.salakafarm.views.home.products.ProductAdapter
 import com.eightpeak.salakafarm.views.order.orderview.viewordercheckoutdetails.CheckoutDetailsView
@@ -34,8 +33,6 @@ import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.views.addtocart.addtocartfragment.Cart
 import com.eightpeak.salakafarm.views.home.HomeActivity
 import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdActivity
-import kotlinx.android.synthetic.main.fragment_add_to_cart.*
-import kotlinx.android.synthetic.main.product_item.view.*
 
 class CartActivity : AppCompatActivity() {
 
@@ -112,7 +109,7 @@ class CartActivity : AppCompatActivity() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        addToCart.errorSnack(message, Snackbar.LENGTH_LONG)
+                        binding.addToCart.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 
                 }
@@ -139,7 +136,7 @@ class CartActivity : AppCompatActivity() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        addToCart.errorSnack(message, Snackbar.LENGTH_LONG)
+                           binding.addToCart.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 
                 }
@@ -256,7 +253,7 @@ class CartActivity : AppCompatActivity() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        addToCart.errorSnack(message, Snackbar.LENGTH_LONG)
+                           binding.addToCart.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 
                 }
@@ -282,7 +279,7 @@ class CartActivity : AppCompatActivity() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        addToCart.errorSnack(message, Snackbar.LENGTH_LONG)
+                           binding.addToCart.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 
                 }
@@ -310,7 +307,7 @@ class CartActivity : AppCompatActivity() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        addToCart.errorSnack(message, Snackbar.LENGTH_LONG)
+                           binding.addToCart.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 
                 }

@@ -28,19 +28,30 @@ import com.eightpeak.salakafarm.views.order.orderview.orderhistory.OrderHistory
 import com.eightpeak.salakafarm.views.order.orderview.viewordercheckoutdetails.CartItem
 import com.eightpeak.salakafarm.views.order.orderview.viewordercheckoutdetails.DataTotal
 import com.eightpeak.salakafarm.views.order.orderview.viewordercheckoutdetails.ShippingAddress
+import com.esewa.android.sdk.payment.ESewaConfiguration
+import com.esewa.android.sdk.payment.ESewaPayment
+import com.esewa.android.sdk.payment.ESewaPaymentActivity
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
 class ConfirmOrderActivity : AppCompatActivity() {
 
     private lateinit var userPrefManager: UserPrefManager
-
+    private var tokenManager: TokenManager? = null
     private lateinit var viewModel: CheckOutViewModel
     private lateinit var binding: ActivityConfirmOrderBinding
 
-    private var tokenManager: TokenManager? = null
+    private val CONFIG_ENVIRONMENT: String = ESewaConfiguration.ENVIRONMENT_TEST
+    private val REQUEST_CODE_PAYMENT = 1
+    private var eSewaConfiguration: ESewaConfiguration? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        eSewaConfiguration = ESewaConfiguration()
+            .clientId(Constants.MERCHANT_ID)
+            .secretKey(Constants.MERCHANT_SECRET_KEY)
+            .environment(CONFIG_ENVIRONMENT)
 
         tokenManager = TokenManager.getInstance(
             getSharedPreferences(
@@ -51,9 +62,22 @@ class ConfirmOrderActivity : AppCompatActivity() {
         userPrefManager = UserPrefManager(this)
         binding = ActivityConfirmOrderBinding.inflate(layoutInflater)
 
+       var selectedPaymentMethod = intent.getStringExtra("payment_option").toString()
+        Log.i("TAG", "onCreate: "+selectedPaymentMethod)
+        if(selectedPaymentMethod=="Cash"){
+            binding.paymentStatus.load(R.drawable.cod)
+
+        }else if(selectedPaymentMethod=="Esewa"){
+            binding.placeOrderEsewa.setOnClickListener {
+                makePayment("232")
+
+            }
+        }
         setupViewModel()
         setContentView(binding.root)
-
+//        binding.payByEsewa.setOnClickListener {
+//            makePayment("10")
+//        }
         binding.header.text = "Your Order Details"
     }
 
@@ -74,17 +98,15 @@ class ConfirmOrderActivity : AppCompatActivity() {
                     hideProgressBar()
 
                     response.data?.let { picsResponse ->
-
                         addViewShippingAddress(picsResponse.order_details.shippingAddress)
                         addCartDetails(picsResponse.order_details.cartItem)
                         addTotalPrice(picsResponse.order_details.dataTotal)
-                        val random: Int = Random().nextInt(61) + 20
                         binding.placeOrder.setOnClickListener {
-                            val body = RequestBodies.AddOrder(
-                                random.toString(), "dsfs", "1000","1", "1"
-                            )
+                            val random: Int = Random().nextInt(61) + 20
+                            val body = RequestBodies.AddOrder(random.toString(), "dsfs", "1000","119", "119")
                             tokenManager?.let { it1 -> viewModel.addOrder(it1,body) }
-                             getOrderResponse()
+                            getOrderResponse()
+
                         }
                     }
                 }
@@ -196,44 +218,8 @@ class ConfirmOrderActivity : AppCompatActivity() {
                 }
             }
 
-
-
-
-
-
-
-
-
             binding.cartList.addView(itemView)
         }
-    }
-
-    private fun observeData() {
-        viewModel.deleteCartById.observe(this, Observer { response ->
-            when (response) {
-                is Resource.Success -> {
-                    hideProgressBar()
-
-                    response.data?.let { picsResponse ->
-                        finish()
-                        startActivity(intent)
-
-                    }
-                }
-
-                is Resource.Error -> {
-                    hideProgressBar()
-                    response.message?.let { message ->
-                        binding.checkoutView.errorSnack(message, Snackbar.LENGTH_LONG)
-                    }
-
-                }
-
-                is Resource.Loading -> {
-                    showProgressBar()
-                }
-            }
-        })
     }
 
     private fun addViewShippingAddress(shippingAddress: ShippingAddress) {
@@ -253,5 +239,39 @@ class ConfirmOrderActivity : AppCompatActivity() {
 
     fun onProgressClick(view: View) {
         //Preventing Click during loading
+    }
+
+    private fun makePayment(amount: String) {
+        val eSewaPayment = ESewaPayment(
+            amount,
+            "someProductName",
+            "someUniqueId_" + System.nanoTime(),
+            "https://somecallbackurl.com"
+        )
+        val intent = Intent(this@ConfirmOrderActivity, ESewaPaymentActivity::class.java)
+        intent.putExtra(ESewaConfiguration.ESEWA_CONFIGURATION, eSewaConfiguration)
+        intent.putExtra(ESewaPayment.ESEWA_PAYMENT, eSewaPayment)
+        startActivityForResult(
+            intent,
+            REQUEST_CODE_PAYMENT
+        )
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_PAYMENT) {
+            if (resultCode == RESULT_OK) {
+                val s = data?.getStringExtra(ESewaPayment.EXTRA_RESULT_MESSAGE)
+                Log.i("Proof of Payment", s!!)
+                Toast.makeText(this, "SUCCESSFUL PAYMENT", Toast.LENGTH_SHORT).show()
+
+                getCheckOutDetails()
+            } else if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(this, "Canceled By User", Toast.LENGTH_SHORT).show()
+            } else if (resultCode == ESewaPayment.RESULT_EXTRAS_INVALID) {
+                val s = data?.getStringExtra(ESewaPayment.EXTRA_RESULT_MESSAGE)
+                Log.i("Proof of Payment", s!!)
+            }
+        }
     }
 }

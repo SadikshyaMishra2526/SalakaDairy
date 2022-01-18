@@ -29,6 +29,7 @@ import com.eightpeak.salakafarm.views.home.products.Data
 import com.eightpeak.salakafarm.views.home.products.ProductAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
+import com.eightpeak.salakafarm.utils.subutils.showSnack
 import com.eightpeak.salakafarm.utils.subutils.successAddToCartSnack
 import com.eightpeak.salakafarm.views.addtocart.addtocartfragment.Cart
 import com.eightpeak.salakafarm.views.home.HomeActivity
@@ -47,7 +48,7 @@ class WishlistActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityWishlistBinding.inflate(layoutInflater)
-        binding.headerTitle.text="Your WishList"
+        binding.headerTitle.text=getString(R.string.your_wishlist)
         userPrefManager= UserPrefManager(this)
         setContentView(binding.root)
         tokenManager = TokenManager.getInstance(
@@ -103,6 +104,7 @@ class WishlistActivity : AppCompatActivity() {
 
     private fun getSelectedProducts(wishlist: List<WishList>) {
         if(wishlist.isNotEmpty()){
+
             binding.ifEmpty.visibility=View.GONE
 
 
@@ -114,6 +116,7 @@ class WishlistActivity : AppCompatActivity() {
                     DialogInterface.OnClickListener { dialog, _ ->
                         tokenManager?.let { it1 -> viewModel.deleteAllWish(it1) }
                         getDeleteResponse()
+                        binding.wishlistView.showSnack("Product successfully removed!!!")
                         dialog.dismiss()
                     })
                 builder.setNegativeButton(R.string.cancel, null)
@@ -121,6 +124,7 @@ class WishlistActivity : AppCompatActivity() {
                 val dialog = builder.create()
                 dialog.show()
             }
+            binding.viewCartList.removeAllViews()
             for (i in wishlist.indices) {
                 val itemView: View =
                     LayoutInflater.from(this)
@@ -156,8 +160,11 @@ class WishlistActivity : AppCompatActivity() {
                     builder.setMessage("Are you sure you want to delete this item?")
                     builder.setPositiveButton("Confirm",
                         DialogInterface.OnClickListener { dialog, _ ->
+                            binding.wishlistView.showSnack("Product successfully removed!!!")
                             tokenManager?.let { it1 -> viewModel.deleteWishlistById(it1,wishlist[i].id.toString()) }
                             dialog.dismiss()
+                            getPictures()
+
                         })
                     builder.setNegativeButton(R.string.cancel, null)
 

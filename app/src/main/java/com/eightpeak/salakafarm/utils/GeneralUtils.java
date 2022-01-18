@@ -1,9 +1,11 @@
 package com.eightpeak.salakafarm.utils;
 
+import android.app.Activity;
 import android.location.Location;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 
 import com.eightpeak.salakafarm.R;
@@ -15,21 +17,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GeneralUtils {
-   private static Map<Integer, int[]> nepaliMap;
-
-    private static int startingEngYear = 1944;
-
-    private static int startingEngMonth = 0;
-
-    private static int startingEngDay = 1;
-
-    private static int dayOfWeek = Calendar.SATURDAY;
-
-    private static int startingNepYear = 2000;
-
-    private static int startingNepMonth = 9;
-
-    private static int startingNepDay = 17;
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        assert imm != null;
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 
     public static String getUnicodeNumber(String number) {
         String unicodeChar = "";

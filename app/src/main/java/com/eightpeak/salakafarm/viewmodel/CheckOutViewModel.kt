@@ -12,6 +12,7 @@ import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.subscription.attributes.BranchModel
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.Utils
+import com.eightpeak.salakafarm.views.addresslist.AddressListModel
 import com.eightpeak.salakafarm.views.home.products.ServerResponse
 import com.eightpeak.salakafarm.views.order.orderview.viewordercheckoutdetails.CheckOutModel
 import kotlinx.coroutines.launch
@@ -34,10 +35,7 @@ class CheckOutViewModel (app: Application,
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
                 val response = appRepository.getCheckoutDetails(tokenManager)
-                Log.i(
-                    "TAG", "fetchPics: " +
-                            appRepository.getCheckoutDetails(tokenManager)
-                )
+                Log.i("TAG", "checkoutResponse: $response")
                 checkoutResponse.postValue(handleCheckoutResponse(response))
             } else {
                 checkoutResponse.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
@@ -213,6 +211,51 @@ class CheckOutViewModel (app: Application,
     }
 
     private fun handleUpdateCartDetails(response: Response<ServerResponse>): Resource<ServerResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+
+    val userAddressList: MutableLiveData<Resource<AddressListModel>> = MutableLiveData()
+
+    fun getUserAddressList(token: TokenManager) = viewModelScope.launch {
+        fetchUserAddress(token)
+    }
+
+    private suspend fun fetchUserAddress(token: TokenManager) {
+        userAddressList.postValue(Resource.Loading())
+        try {
+            if (Utils.hasInternetConnection(getApplication<Application>())) {
+                val response = appRepository.getAddressList(token)
+                userAddressList.postValue(handleAddressResponse(response))
+            } else {
+                userAddressList.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+            }
+        } catch (t: Throwable) {
+            when (t) {
+                is IOException -> userAddressList.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.network_failure
+                        )
+                    )
+                )
+                else -> userAddressList.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.conversion_error
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun handleAddressResponse(response: Response<AddressListModel>): Resource<AddressListModel> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)

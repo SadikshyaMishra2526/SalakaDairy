@@ -86,12 +86,12 @@ object RequestBodies {
 
     data class UpdatePassword(
         val old_password: String,
-        val new_password: String,
+        val new_password: String
     )
 
     data class AddComplain(
         val title: String,
-        val description: String,
+        val description: String
     )
 
 

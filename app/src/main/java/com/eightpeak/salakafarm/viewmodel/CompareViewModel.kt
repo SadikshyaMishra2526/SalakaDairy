@@ -32,7 +32,7 @@ class CompareViewModel (
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
                 val response = appRepository.getCompareProduct(tokenManager,compareId)
-                Log.i("TAG", "fetchPics: " + appRepository.getCompareProduct(tokenManager,compareId))
+                Log.i("TAG", "fetchPics: $response")
                 compareResponse.postValue(handleCartResponse(response))
             } else {
                 compareResponse.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))

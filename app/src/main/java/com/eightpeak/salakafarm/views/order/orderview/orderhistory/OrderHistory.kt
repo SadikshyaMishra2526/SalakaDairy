@@ -231,7 +231,7 @@ class OrderHistory : AppCompatActivity() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        addToCart.errorSnack(message, Snackbar.LENGTH_LONG)
+                        binding.orderHistory.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 
                 }

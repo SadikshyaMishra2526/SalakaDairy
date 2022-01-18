@@ -1,15 +1,13 @@
 package com.eightpeak.salakafarm.views.order.orderview.viewordercheckoutdetails
 
+import android.content.DialogInterface
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -19,46 +17,35 @@ import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.databinding.ActivityCheckoutDetailsViewBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
+import com.eightpeak.salakafarm.subscription.confirmSubscription.ConfirmSubscription
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.EndPoints
 import com.eightpeak.salakafarm.utils.GeneralUtils
 import com.eightpeak.salakafarm.utils.subutils.Resource
+import com.eightpeak.salakafarm.utils.subutils.addAddressSnack
+import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.viewmodel.CheckOutViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
-import com.esewa.android.sdk.payment.ESewaConfiguration
-import com.esewa.android.sdk.payment.ESewaPayment
-import com.esewa.android.sdk.payment.ESewaPaymentActivity
-import com.google.android.material.snackbar.Snackbar
-import com.eightpeak.salakafarm.utils.subutils.errorSnack
+import com.eightpeak.salakafarm.views.addresslist.Address_list
 import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdActivity
 import com.eightpeak.salakafarm.views.order.orderview.confirmOrder.ConfirmOrderActivity
-import kotlinx.android.synthetic.main.fragment_add_to_cart.*
-import kotlinx.android.synthetic.main.fragment_home_slider.*
+import com.google.android.material.snackbar.Snackbar
+
 
 class CheckoutDetailsView : AppCompatActivity() {
-    private val CONFIG_ENVIRONMENT: String = ESewaConfiguration.ENVIRONMENT_TEST
-    private val REQUEST_CODE_PAYMENT = 1
-    private var eSewaConfiguration: ESewaConfiguration? = null
-
     private  var quantity: Int = 0
-
     private  var priceTotal: Int = 0
-
     private lateinit var userPrefManager: UserPrefManager
-
     private lateinit var viewModel: CheckOutViewModel
     private lateinit var binding: ActivityCheckoutDetailsViewBinding
-
-
     private var tokenManager: TokenManager? = null
+    private var total:Int=0
+
+    private  var selectedAddressId: String=""
+    private  var selectedAddressName: String=""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        eSewaConfiguration = ESewaConfiguration()
-            .clientId(Constants.MERCHANT_ID)
-            .secretKey(Constants.MERCHANT_SECRET_KEY)
-            .environment(CONFIG_ENVIRONMENT)
-
-
         tokenManager = TokenManager.getInstance(
             getSharedPreferences(
                 Constants.TOKEN_PREF,
@@ -72,12 +59,34 @@ class CheckoutDetailsView : AppCompatActivity() {
         }
         setupViewModel()
         setContentView(binding.root)
-        binding.payByEsewa.setOnClickListener {
-            makePayment("10")
-        }
 
-        binding.payOnArrival.setOnClickListener {
-            startActivity(Intent(this@CheckoutDetailsView,ConfirmOrderActivity::class.java))
+
+        binding.confirmOrder.setOnClickListener {
+            if(total>1000){
+                val paymentOptionRatio = findViewById<RadioGroup>(R.id.payment_option).checkedRadioButtonId
+                var payment:String =""
+//                = findViewById<View>(paymentOptionRatio) as RadioButton
+                if(paymentOptionRatio==R.id.paid_by_cash){
+                    Log.i("TAG", "onCreate: paid_by_cash")
+                    payment="Cash"
+                }else if(paymentOptionRatio==R.id.paid_by_esewa){
+                    Log.i("TAG", "onCreate: paid_by_esewa")
+                    payment="Esewa"
+                }
+                if(paymentOptionRatio!=null){
+                    val intent = Intent(this@CheckoutDetailsView, ConfirmOrderActivity::class.java)
+                      intent.putExtra("payment_option", payment)
+                      intent.putExtra("selected_shipping", selectedAddressId)
+                      intent.putExtra("payment_option", payment)
+                      startActivity(intent)
+                }else{
+                    binding.checkoutView.errorSnack("Please select payment option")
+
+                }
+
+            }else{
+                binding.checkoutView.errorSnack("Price needs to be above thousand Rupees for us to delivery...")
+            }
         }
         binding.header.text="Your Checkout Details"
     }
@@ -86,13 +95,14 @@ class CheckoutDetailsView : AppCompatActivity() {
         val factory = ViewModelProviderFactory(application, repository)
         viewModel = ViewModelProvider(this, factory).get(CheckOutViewModel::class.java)
         getCheckOutDetails()
+        getAddressList()
+
     }
 
     private fun getCheckOutDetails() {
 
         tokenManager?.let { it1 -> viewModel.getCheckOutResponse(it1) }
-
-        viewModel.checkoutResponse.observe(this, Observer { response ->
+        viewModel.checkoutResponse.observe(this, { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
@@ -100,9 +110,10 @@ class CheckoutDetailsView : AppCompatActivity() {
                     response.data?.let { picsResponse ->
 
                         addViewShippingAddress(picsResponse.order_details.shippingAddress)
-                        val total:Int= addCartDetails(picsResponse.order_details.cartItem)
-                        binding.totalCost.text=total.toString()
+                         total= addCartDetails(picsResponse.order_details.cartItem)
                         addTotalPrice(picsResponse.order_details.dataTotal)
+
+
                     }
                 }
 
@@ -146,7 +157,6 @@ class CheckoutDetailsView : AppCompatActivity() {
         }
 
     private fun addCartDetails(cartItem: List<CartItem>) :Int{
-//        cart_list
 
         for (i in cartItem.indices) {
             val itemView: View =
@@ -204,15 +214,6 @@ class CheckoutDetailsView : AppCompatActivity() {
 
                 }
             }
-
-
-
-
-
-
-
-
-
             binding.cartList.addView(itemView)
         }
         return priceTotal
@@ -233,7 +234,7 @@ class CheckoutDetailsView : AppCompatActivity() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        addToCart.errorSnack(message, Snackbar.LENGTH_LONG)
+                        binding.checkoutView.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 
                 }
@@ -275,8 +276,7 @@ class CheckoutDetailsView : AppCompatActivity() {
 
     private fun addViewShippingAddress(shippingAddress: ShippingAddress) {
         binding.customerName.text=shippingAddress.first_name+" "+shippingAddress.last_name
-        binding.customerAddress.text=shippingAddress.address1+", "+shippingAddress.address2
-
+        binding.customerDelivery.text=selectedAddressName
     }
 
     private fun hideProgressBar() {
@@ -293,37 +293,81 @@ class CheckoutDetailsView : AppCompatActivity() {
     }
 
 
-    private fun makePayment(amount: String) {
-        val eSewaPayment = ESewaPayment(
-            amount,
-            "someProductName",
-            "someUniqueId_" + System.nanoTime(),
-            "https://somecallbackurl.com"
-        )
-        val intent = Intent(this@CheckoutDetailsView, ESewaPaymentActivity::class.java)
-        intent.putExtra(ESewaConfiguration.ESEWA_CONFIGURATION, eSewaConfiguration)
-        intent.putExtra(ESewaPayment.ESEWA_PAYMENT, eSewaPayment)
-        startActivityForResult(
-            intent,
-            REQUEST_CODE_PAYMENT
-        )
+    private fun getAddressList() {
+        tokenManager?.let { it1 -> viewModel.getUserAddressList(it1) }
+        viewModel.userAddressList.observe(this,  { response ->
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let { picsResponse ->
+                        if (picsResponse.address_list.isNotEmpty()) {
+                            selectedAddressId = picsResponse.address_list.get(0).id.toString()
+                            selectedAddressName = picsResponse.address_list[0].address1 + ", " + picsResponse.address_list[0].address2 + ", " +  picsResponse.address_list[0].phone
+                            binding.changeAddress.setOnClickListener {
+                                showAddressList(picsResponse.address_list)
+                            }
+                        } else {
+                            binding.checkoutView.addAddressSnack(
+                                this@CheckoutDetailsView,
+                                "Address List Empty,Please add your address",
+                                Snackbar.LENGTH_LONG
+                            )
+                        }
+                    }
+                }
+
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let { message ->
+                        binding.checkoutView.errorSnack(message, Snackbar.LENGTH_LONG)
+                    }
+                }
+
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+            }
+        })
+    }
+    private fun showAddressList(addressList: List<Address_list>) {
+
+
+            val builder: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(this)
+            builder.setTitle("Selected Delivery Location")
+            val addressId = arrayOfNulls<String>(addressList.size)
+            val names = arrayOfNulls<String>(addressList.size)
+            val checkedItems = BooleanArray(addressList.size)
+
+
+            var i = 0
+            for (key in addressList) {
+                addressId[i] = key.id.toString()
+
+
+                names[i] = key.address1 + ", " + key.address2 + ", " + key.phone
+                checkedItems[i] = false
+                i += 1
+            }
+            builder.setMultiChoiceItems(
+                names, checkedItems
+            ) { _, which, isChecked ->
+                checkedItems[which] = isChecked
+            }
+            builder.setPositiveButton("OK"
+            ) { _, _ ->
+                for (i in checkedItems.indices) {
+                    if (checkedItems[i])
+                    {
+                        selectedAddressId = addressId[i].toString()
+                        selectedAddressName = names[i].toString()
+                        binding.customerDelivery.text=names[i].toString()
+                    }
+                }
+            }
+        builder.setNegativeButton("Cancel", null)
+            val dialog: android.app.AlertDialog? = builder.create()
+            dialog?.show()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_PAYMENT) {
-            if (resultCode == RESULT_OK) {
-                val s = data?.getStringExtra(ESewaPayment.EXTRA_RESULT_MESSAGE)
-                Log.i("Proof of Payment", s!!)
-                Toast.makeText(this, "SUCCESSFUL PAYMENT", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this@CheckoutDetailsView,ConfirmOrderActivity::class.java))
-            } else if (resultCode == RESULT_CANCELED) {
-                Toast.makeText(this, "Canceled By User", Toast.LENGTH_SHORT).show()
-            } else if (resultCode == ESewaPayment.RESULT_EXTRAS_INVALID) {
-                val s = data?.getStringExtra(ESewaPayment.EXTRA_RESULT_MESSAGE)
-                Log.i("Proof of Payment", s!!)
-            }
-        }
-    }
 
 }

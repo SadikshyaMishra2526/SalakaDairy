@@ -28,6 +28,7 @@ import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdModel
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.utils.subutils.notLoginWarningSnack
 import com.eightpeak.salakafarm.utils.subutils.successAddToCartSnack
+import com.eightpeak.salakafarm.views.home.HomeActivity
 import kotlinx.android.synthetic.main.fragment_add_to_cart_view.view.*
 
 class AddToCartView : BottomSheetDialogFragment() {
@@ -145,7 +146,10 @@ class AddToCartView : BottomSheetDialogFragment() {
                             getString(R.string.add_to_cart),Snackbar.LENGTH_LONG)
                         binding.addToCartView.visibility=View.GONE
                         val handler = Handler()
-                        handler.postDelayed({ dismiss() }, 1500)
+                        handler.postDelayed({
+                            dismiss()
+
+                                            }, 2000)
 //                        Toast.makeText(
 //                            requireContext(),
 //                            "Successfully added to cart!!!",

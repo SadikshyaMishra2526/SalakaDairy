@@ -61,7 +61,7 @@ class ViewCartFragment : Fragment() {
         binding.continueShoppingEmpty.setOnClickListener {
             startActivity(Intent(requireContext(), HomeActivity::class.java))
              }
-        return binding.addToCart
+        return binding.buttomAddToCart
     }
     private fun init() {
         productAdapter = ProductAdapter()
@@ -89,7 +89,6 @@ class ViewCartFragment : Fragment() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
-                        Log.i("TAG", "getPictures: $picsResponse")
                         getSelectedProducts(picsResponse.cart)
                     }
                 }
@@ -98,7 +97,7 @@ class ViewCartFragment : Fragment() {
                     hideProgressBar()
                     response.message?.let { message ->
 //                        Toast.makeText(requireContext(),message,Toast.LENGTH_SHORT)
-//                      binding.addToCart.errorSnack(message, Snackbar.LENGTH_LONG)
+                      binding.buttomAddToCart.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 
                 }
@@ -169,7 +168,7 @@ class ViewCartFragment : Fragment() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        binding.addToCart.errorSnack(message, Snackbar.LENGTH_LONG)
+                        binding.buttomAddToCart.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
                 }
 
@@ -195,7 +194,7 @@ class ViewCartFragment : Fragment() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        addToCart.errorSnack(message, Snackbar.LENGTH_LONG)
+                        binding.buttomAddToCart.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 
                 }

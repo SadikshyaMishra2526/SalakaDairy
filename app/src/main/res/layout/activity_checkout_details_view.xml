@@ -62,12 +62,13 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="0.0"
     app:layout_constraintStart_toStartOf="parent"
-    android:layout_marginBottom="@dimen/_30sdp"
     app:layout_constraintTop_toBottomOf="@+id/header_layout"
     app:layout_constraintVertical_bias="0.0">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_50sdp"
+
         android:orientation="vertical">
         <androidx.cardview.widget.CardView
             android:layout_margin="@dimen/_5sdp"
@@ -94,7 +95,7 @@
                         android:layout_width="wrap_content"
                         android:text="Total order price must exceed Rs 1000.***"
                         android:layout_gravity="end"
-                        android:textSize="@dimen/_7sdp"
+                        android:textSize="@dimen/_9sdp"
                         android:layout_height="wrap_content"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -129,6 +130,7 @@
                         android:layout_height="0dp"
                         android:layout_weight="1"/>
                     <TextView
+                        android:id="@+id/change_address"
                         android:layout_width="wrap_content"
                         android:text="Change"
                         android:textStyle="bold"
@@ -138,26 +140,18 @@
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:padding="@dimen/_5sdp"
+                    android:padding="@dimen/_3sdp"
                     android:layout_height="wrap_content">
                     <TextView
                         android:id="@+id/customer_delivery"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:padding="@dimen/_3sdp"
                         app:drawableStartCompat="@drawable/ic_baseline_drive_eta_24" />
                 </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:padding="@dimen/_5sdp"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:id="@+id/customer_address"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:drawableStartCompat="@drawable/ic_baseline_location_on_24" />
-                </LinearLayout>
+
                 <TextView
-                    android:padding="@dimen/_5sdp"
+                    android:padding="@dimen/_3sdp"
                     android:textSize="@dimen/_8sdp"
                     android:id="@+id/delivery_earlier"
                     android:text="Eariest Delivery by 2 PM"
@@ -167,7 +161,7 @@
                     app:drawableStartCompat="@drawable/ic_baseline_location_on_24" />
                 <TextView
                     android:textSize="@dimen/_9sdp"
-                    android:padding="@dimen/_5sdp"
+                    android:padding="@dimen/_3sdp"
                     android:text="Quick and Fast delivery at your door step..."
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -240,85 +234,66 @@
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:layout_height="wrap_content">
 
-                    <TextView
-                        android:text="Payment Method"
-                        android:textColor="@color/sub_color"
-                        android:textStyle="bold"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+<!--                    <TextView-->
+<!--                        android:text="Payment Method"-->
+<!--                        android:textColor="@color/sub_color"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"/>-->
                     <RadioGroup
                         android:id="@+id/payment_option"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
-                        <RadioButton
-                            android:id="@+id/paid_by_cash"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Cash on Delivery"/>
-                        <RadioButton
-                            android:id="@+id/paid_by_esewa"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Pay by Esewa"/>
+                            <RadioButton
+                                android:id="@+id/paid_by_cash"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                          <RadioButton
+                              android:id="@+id/paid_by_esewa"
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              />
 
                     </RadioGroup>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="center"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:layout_width="@dimen/_110sdp"
+                            android:src="@drawable/cod"
+                            android:layout_height="@dimen/_30sdp"/>
+
+                        <ImageView
+                            android:layout_marginTop="@dimen/_3sdp"
+                        android:layout_width="@dimen/_110sdp"
+                            android:src="@drawable/esewa"
+                            android:layout_height="@dimen/_30sdp"/>
+
+                    </LinearLayout>
 
 
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+        <Button
+            android:layout_gravity="bottom|end"
+            android:text="Confirm Order"
+            android:id="@+id/confirm_order"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="@dimen/_40sdp"
+            android:layout_marginRight="@dimen/_40sdp"
+            android:drawableLeft="@drawable/ic_baseline_shopping_cart_24"
+            />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:background="@drawable/btn_gradient_style"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.95"
-    app:layout_constraintStart_toStartOf="parent" >
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent">
-        <TextView
-            android:text="@string/total_cost"
-            android:textColor="@color/blue"
-            android:textStyle="bold"
-            android:textSize="@dimen/_12sdp"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:id="@+id/total_cost"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
-    <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-
-    <Button
-        android:id="@+id/pay_by_esewa"
-        android:layout_gravity="end"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Pay by Esewa"  />
-
-    <Button
-        android:id="@+id/pay_on_arrival"
-        android:layout_gravity="end"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Pay on Arrival"
-        />
-</LinearLayout>
-
-
     <ProgressBar
         android:id="@+id/progress"
         android:layout_width="wrap_content"

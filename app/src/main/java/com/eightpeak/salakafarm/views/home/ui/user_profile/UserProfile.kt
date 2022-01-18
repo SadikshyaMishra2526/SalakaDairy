@@ -26,7 +26,6 @@ import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.RequestBodies
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
-import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.UserProfileViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.addtocart.CartActivity
@@ -38,17 +37,18 @@ import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
 import com.eightpeak.salakafarm.views.addresslist.AddressListModel
-import com.eightpeak.salakafarm.utils.subutils.errorSnack
 
-import java.lang.Exception
 import android.widget.Toast
 
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import com.eightpeak.salakafarm.databinding.ActivityUserProfileBinding
-import com.eightpeak.salakafarm.utils.subutils.addAddressSnack
 import com.eightpeak.salakafarm.views.home.address.AddressModification
-
+import com.eightpeak.salakafarm.utils.GeneralUtils
+import com.eightpeak.salakafarm.utils.subutils.Resource
+import com.eightpeak.salakafarm.utils.subutils.addAddressSnack
+import com.eightpeak.salakafarm.utils.subutils.errorSnack
+import com.eightpeak.salakafarm.utils.subutils.showSnack
 
 class UserProfile : AppCompatActivity() {
 
@@ -60,7 +60,7 @@ class UserProfile : AppCompatActivity() {
 
     var dateSelected: Calendar = Calendar.getInstance()
 
-//    var value1: ByteArray = GeneralUtils.decoderfun(Constants.SECRET_KEY)
+    var value1: ByteArray = GeneralUtils.decoderfun(Constants.SECRET_KEY)
     private var dialog: Dialog? = null
     private var datePickerDialog: DatePickerDialog? = null
     private fun init() {
@@ -88,9 +88,10 @@ class UserProfile : AppCompatActivity() {
         userPrefManager = UserPrefManager(this)
         binding.userName.text = userPrefManager.firstName + " " + userPrefManager.lastName
         binding.userEmail.text = userPrefManager.email
+        binding.userPhone.text = userPrefManager.contactNo
+
         dialog = Dialog(this)
 
-        binding.userPhone.text = userPrefManager.contactNo
         binding.userLogout.setOnClickListener {
             val builder = AlertDialog.Builder(this)
             builder.setTitle(R.string.logout)
@@ -106,6 +107,19 @@ class UserProfile : AppCompatActivity() {
 
             val dialog = builder.create()
             dialog.show()
+
+
+
+////            for google signout
+//            mGoogleSignInClient.signOut()
+//                .addOnCompleteListener(this, object : OnCompleteListener<Void?>() {
+//                    fun onComplete(task: Task<Void?>) {
+//                        // ...
+//                    }
+//                })
+
+
+
 
         }
 
@@ -244,10 +258,6 @@ class UserProfile : AppCompatActivity() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let {
-//                        finish();
-//                        overridePendingTransition( 0, 0)
-//                        startActivity(intent);
-//                        overridePendingTransition( 0, 0)
                         dialog?.show()
                         Log.i("TAG", "getDeleteResponse: "+response)
                     }
@@ -309,18 +319,14 @@ class UserProfile : AppCompatActivity() {
         newPasswordString: String,
         dialog: Dialog
     ) {
-        try {
-//            val encrOldPassword = Encrypt.encrypt(value1, oldPasswordString)
-//            val encrNewPassword = Encrypt.encrypt(value1, newPasswordString)
-//            val body = RequestBodies.UpdatePassword(
-//                encrOldPassword, encrNewPassword
-//            )
-//            tokenManager?.let { it1 -> viewModel.updatePasswordDetails(it1, body) }
+        val encrOldPassword: String? = Encrypt.encrypt(value1, oldPasswordString)
+        val encrNewPassword: String?  = Encrypt.encrypt(value1, newPasswordString)
+            if (encrNewPassword?.length!! >6&&encrOldPassword != null) {
+                val body =
+                    RequestBodies.UpdatePassword(encrOldPassword,encrNewPassword)
+                tokenManager?.let { it1 -> viewModel.updatePasswordDetails(it1, body) }
 
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+            }
 
 
         viewModel.updatePassword.observe(this, Observer { response ->
@@ -328,6 +334,14 @@ class UserProfile : AppCompatActivity() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
+                        dialog.dismiss()
+                        var res=response.data.error
+                        if(res>0){
+                            binding.userProfileView.errorSnack(response.data.message, Snackbar.LENGTH_LONG)
+                        }else{
+                            binding.userProfileView.showSnack(response.data.message, Snackbar.LENGTH_LONG)
+
+                        }
                     }
                 }
 
@@ -354,7 +368,6 @@ class UserProfile : AppCompatActivity() {
         dialog.setContentView(R.layout.layout_edit_profile)
         val firstName = dialog.findViewById<EditText>(R.id.customer_first_name)
         val lastName = dialog.findViewById<EditText>(R.id.customer_last_name)
-        val userGender = dialog.findViewById<RadioGroup>(R.id.customer_gender)
         val userDoB = dialog.findViewById<TextView>(R.id.customer_DOB)
         val btnSummit = dialog.findViewById<Button>(R.id.continuebtn)
         val btnCancel = dialog.findViewById<Button>(R.id.cancel)
@@ -376,23 +389,33 @@ class UserProfile : AppCompatActivity() {
             Log.i("TAG", "onCreate: " + dateSelected.time)
 
         }
-        val selectedId: Int = userGender.checkedRadioButtonId
-
-        Log.i("TAG", "editProfile: " + selectedId)
+         firstName.setText(userPrefManager.firstName)
+         lastName.setText(userPrefManager.lastName)
 
 
         btnSummit.setOnClickListener {
-
-             val radioButtonID = userGender.checkedRadioButtonId
-            val radioButton = dialog.findViewById<View>(radioButtonID) as RadioButton
-
+            val userGender = dialog.findViewById<RadioGroup>(R.id.customer_gender).checkedRadioButtonId
+            val gender = dialog.findViewById<View>(userGender) as RadioButton
 
             val name = firstName.text.toString()
             val email = lastName.text.toString()
             val dob = userDoB.text.toString()
-            val gender =radioButton.text as String
-            Log.i("TAG", "editProfile: "+gender)
-            changeUserProfile(name, email, dob, "gender",dialog)
+            val genderString =gender.text.toString()
+            if(dob.isNotEmpty()){
+                if(userGender!=null){
+                    changeUserProfile(name, email, dob, genderString,dialog)
+                }else{
+                    changeUserProfile(name, email, dob, "",dialog)
+                }
+            }else{
+
+                if(genderString.isNotEmpty()){
+                    changeUserProfile(name, email, "", genderString,dialog)
+                }else{
+                    changeUserProfile(name, email, "", "",dialog)
+                }
+            }
+            GeneralUtils.hideKeyboard(this)
         }
         dialog.setCanceledOnTouchOutside(true)
         dialog.show()
@@ -422,7 +445,7 @@ class UserProfile : AppCompatActivity() {
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
-                    response.data?.let { picsResponse ->
+                    response.data?.let {
                         dialog.dismiss()
                         getUserDetails()
                         Log.i("TAG", "changeUserProfile: "+response.data)
@@ -445,7 +468,6 @@ class UserProfile : AppCompatActivity() {
         })
     }
     private fun getUserDetails() {
-        var addressListString =""
         tokenManager?.let { viewModel.userDetailsUser(it) }
         viewModel.userDetailsResponse.observe(this, Observer { event ->
             event.getContentIfNotHandled()?.let { response ->
@@ -458,9 +480,10 @@ class UserProfile : AppCompatActivity() {
                             userPrefManager.lastName=loginResponse.last_name
                             userPrefManager.contactNo= loginResponse.phone.toString()
                             userPrefManager.email=loginResponse.email
-                            val mainActivity = Intent(this@UserProfile, UserProfile::class.java)
-                            startActivity(mainActivity)
-                            finish()
+                            binding.userName.text = loginResponse.first_name + " " + loginResponse.last_name
+                            binding.userEmail.text = loginResponse.email
+                            binding.userPhone.text = loginResponse.phone
+
                         }
                     }
 

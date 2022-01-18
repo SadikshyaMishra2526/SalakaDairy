@@ -1,5 +1,6 @@
 package com.eightpeak.salakafarm.database.notifications
 import android.app.Notification
+import android.app.NotificationChannel
 import com.eightpeak.salakafarm.App
 import androidx.annotation.Nullable
 import com.eightpeak.salakafarm.views.home.HomeActivity
@@ -14,6 +15,7 @@ import android.app.PendingIntent
 import android.content.Context
 
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.util.Log
 import android.widget.RemoteViews
@@ -27,6 +29,8 @@ import org.json.JSONObject
 import android.os.Build.VERSION_CODES
 
 import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat.PRIORITY_MIN
 import com.eightpeak.salakafarm.R
 
 
@@ -44,7 +48,7 @@ open class PushNotificationService : FirebaseMessagingService() {
             Log.d(TAG, "Message data payload: " + remoteMessage.data)
             try {
                 val data = JSONObject(remoteMessage.data as Map<*, *>)
-                val jsonMessage = data.getString("extra_information")
+                val jsonMessage = data.getString("oid")
                 Log.d(
                     TAG, """
      onMessageReceived: 
@@ -70,6 +74,14 @@ open class PushNotificationService : FirebaseMessagingService() {
     }
 
      open fun setUpNotification() {
+         val channelId =
+             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                 createNotificationChannel("my_service", "My Background Service")
+             } else {
+                 // If earlier version channel ID is not used
+                 // https://developer.android.com/reference/android/support/v4/app/NotificationCompat.Builder.html#NotificationCompat.Builder(android.content.Context)
+                 ""
+             }
         mNotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
         // we need to build a basic notification first, then update it
@@ -114,33 +126,20 @@ open class PushNotificationService : FirebaseMessagingService() {
             // starting service with notification in foreground mode
             startForeground(NOTIF_ID, mBuilder.build())
         }
+
     }
 
-//     open fun updateNotification() {
-//        val api = Build.VERSION.SDK_INT
-//        // update the icon
-//        mRemoteViews!!.setImageViewResource(R.id.notif_icon, R.drawable.icon_off2)
-//        // update the title
-//        mRemoteViews!!.setTextViewText(R.id.notif_title, resources.getString(R.string.new_title))
-//        // update the content
-//        mRemoteViews!!.setTextViewText(
-//            R.id.notif_content,
-//            resources.getString(R.string.new_content_text)
-//        )
-//
-//        // update the notification
-//        if (api < VERSION_CODES.HONEYCOMB) {
-//            mNotificationManager.notify(NOTIF_ID, mNotification)
-//        } else if (api >= VERSION_CODES.HONEYCOMB) {
-//            mNotificationManager.notify(NOTIF_ID, mBuilder.build())
-//        }
-//    }
 
-
-
-
-
-
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createNotificationChannel(channelId: String, channelName: String): String{
+        val chan = NotificationChannel(channelId,
+            channelName, NotificationManager.IMPORTANCE_NONE)
+        chan.lightColor = Color.BLUE
+        chan.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+        val service = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        service.createNotificationChannel(chan)
+        return channelId
+    }
 
    private fun sendNotification(title: String?, messageBody: String?, click_action: String?) {
        var intent = Intent(this, SubscriptionActivity::class.java)

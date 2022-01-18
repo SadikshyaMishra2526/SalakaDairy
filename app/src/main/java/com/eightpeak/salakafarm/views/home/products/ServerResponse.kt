@@ -3,6 +3,7 @@ package com.eightpeak.salakafarm.views.home.products
 import com.google.gson.annotations.SerializedName
 
 data class ServerResponse (
+
     @SerializedName("id") val id : Int,
     @SerializedName("product_id") val product_id : Int,
     @SerializedName("customer_id") val customer_id : Int,
@@ -14,6 +15,17 @@ data class ServerResponse (
 
     ) {
     override fun toString(): String {
-        return "ServerResponse(id=$id, product_id=$product_id, customer_id=$customer_id, qty=$qty, options='$options', created_at='$created_at', updated_at='$updated_at')"
+        return "ServerResponse(id=$id, product_id=$product_id, customer_id=$customer_id, qty=$qty, options='$options', created_at='$created_at', updated_at='$updated_at', latlng='$latlng')"
     }
 }
+
+
+data class UpdatePasswordResponse(
+    @SerializedName("error") val error : Int,
+    @SerializedName("message") val message : String,
+)
+
+data class UserProfileResponse(
+    @SerializedName("error") val error : Int,
+    @SerializedName("message") val message : String,
+)
