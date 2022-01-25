@@ -54,7 +54,7 @@
 
     </LinearLayout>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/content_layout"
@@ -89,7 +89,7 @@
                         android:background="@color/sub_color_lighter"
                         android:gravity="center"
                         android:padding="@dimen/_5sdp"
-                        android:text="Payment Details"
+                        android:text="@string/payment_details"
                         android:textColor="@color/teal_200"
                         android:textStyle="bold" />
 
@@ -98,7 +98,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
                         android:orientation="vertical">
 
                         <LinearLayout
@@ -111,7 +111,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="center_vertical"
-                                android:text="@string/payment_by"
+                                android:text="@string/payment_method"
                                 android:textColor="@color/sub_color"
                                 android:textSize="@dimen/_10sdp"
                                 android:textStyle="bold" />
@@ -165,7 +165,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="center_vertical"
-                                android:text="Acc Holder Name "
+                                android:text="@string/acc_holder_name"
                                 android:textColor="@color/sub_color"
                                 android:textSize="@dimen/_10sdp"
                                 android:textStyle="bold" />
@@ -192,7 +192,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="center_vertical"
-                                android:text="Bank Name"
+                                android:text="@string/bank_name"
                                 android:textColor="@color/sub_color"
                                 android:textSize="@dimen/_10sdp"
                                 android:textStyle="bold" />
@@ -219,7 +219,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="center_vertical"
-                                android:text="Acc Number"
+                                android:text="@string/account_number"
                                 android:textColor="@color/sub_color"
                                 android:textSize="@dimen/_10sdp"
                                 android:textStyle="bold" />
@@ -253,7 +253,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Scan QR to Pay for your subscription"
+                            android:text="@string/scan_qr_to_pay_for_your_subscription"
                             android:textColor="@color/error_red"
                             android:textSize="@dimen/_9sdp" />
                     </LinearLayout>
@@ -263,7 +263,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
                     android:orientation="vertical"
                     android:padding="@dimen/_5sdp">
 
@@ -274,7 +274,7 @@
                         android:gravity="center"
                         android:layout_margin="@dimen/_5sdp"
                         android:padding="@dimen/_5sdp"
-                        android:text="Subscription Details"
+                        android:text="@string/subscriber_details"
                         android:textColor="@color/teal_200"
                         android:textStyle="bold" />
 
@@ -288,7 +288,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:text="Customer Address :-"
+                            android:text="@string/address"
                             android:textColor="@color/sub_color"
                             android:textSize="@dimen/_10sdp"
                             android:textStyle="bold" />
@@ -315,7 +315,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:text="Delivery Period :-"
+                            android:text="@string/delivery_period"
                             android:textColor="@color/sub_color"
                             android:textSize="@dimen/_10sdp"
                             android:textStyle="bold" />
@@ -332,6 +332,33 @@
                             android:textSize="@dimen/_12sdp" />
                     </LinearLayout>
 
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:orientation="horizontal">-->
+
+<!--                        <TextView-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_weight="1"-->
+<!--                            android:gravity="center_vertical"-->
+<!--                            android:text="Item Name :-"-->
+<!--                            android:textColor="@color/sub_color"-->
+<!--                            android:textSize="@dimen/_10sdp"-->
+<!--                            android:textStyle="bold" />-->
+
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/package_item"-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_weight="2"-->
+<!--                            android:background="@drawable/background_edit_text_bottom"-->
+<!--                            android:padding="@dimen/_5sdp"-->
+<!--                            android:selectAllOnFocus="true"-->
+<!--                            android:textSize="@dimen/_12sdp" />-->
+<!--                    </LinearLayout>-->
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -342,34 +369,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:text="Item Name :-"
-                            android:textColor="@color/sub_color"
-                            android:textSize="@dimen/_10sdp"
-                            android:textStyle="bold" />
-
-
-                        <TextView
-                            android:id="@+id/package_item"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:background="@drawable/background_edit_text_bottom"
-                            android:padding="@dimen/_5sdp"
-                            android:selectAllOnFocus="true"
-                            android:textSize="@dimen/_12sdp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:text="Package Name :-"
+                            android:text="@string/package_name"
                             android:textColor="@color/sub_color"
                             android:textSize="@dimen/_10sdp"
                             android:textStyle="bold" />
@@ -396,7 +396,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:text="Total Quantity :-"
+                            android:text="@string/total_quantity"
                             android:textColor="@color/sub_color"
                             android:textSize="@dimen/_10sdp"
                             android:textStyle="bold" />
@@ -423,7 +423,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:text="Total Cost :-"
+                            android:text="@string/total_cost"
                             android:textColor="@color/sub_color"
                             android:textSize="@dimen/_10sdp"
                             android:textStyle="bold" />
@@ -450,7 +450,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:text="Discount :-"
+                            android:text="@string/discount"
                             android:textColor="@color/sub_color"
                             android:textSize="@dimen/_10sdp"
                             android:textStyle="bold" />
@@ -470,6 +470,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/_50sdp"
+
                         android:orientation="horizontal">
 
                         <TextView
@@ -477,7 +479,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:text="Overall Cost :-"
+                            android:text="@string/overall_cost"
                             android:textColor="@color/sub_color"
                             android:textSize="@dimen/_10sdp"
                             android:textStyle="bold" />
@@ -497,45 +499,29 @@
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 
     <Button
         android:id="@+id/proceed_with_payment"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_50sdp"
-        android:text="Proceed with Payment"
+        android:text="@string/proceed_with_payment"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+    <Button
+        android:id="@+id/pay_by_esewa"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_50sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/pay_with_esewa"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
-    <LinearLayout
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/content_layout"
-        app:layout_constraintVertical_bias="1.0"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:orientation="horizontal">
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <Button
-            android:id="@+id/pay_by_esewa"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_50sdp"
-            android:background="@color/sub_color"
-            android:text="Pay With ESEWA"
-            android:visibility="gone" />
-
-
-    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/progress"

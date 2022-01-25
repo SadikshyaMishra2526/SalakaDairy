@@ -87,13 +87,13 @@
                         android:layout_width="wrap_content"
                         android:layout_margin="@dimen/_5sdp"
                         android:textSize="@dimen/_10sdp"
-                        android:text="Please contact us to get fresh products at your door."
+                        android:text="@string/please_contact_us_to_get_fresh_products_at_your_door"
                         android:layout_height="wrap_content"/>
                     <TextView
 
                         android:textColor="@color/red"
                         android:layout_width="wrap_content"
-                        android:text="Total order price must exceed Rs 1000.***"
+                        android:text="@string/total_order_price_must_exceed_rs_1000"
                         android:layout_gravity="end"
                         android:textSize="@dimen/_9sdp"
                         android:layout_height="wrap_content"/>
@@ -154,7 +154,7 @@
                     android:padding="@dimen/_3sdp"
                     android:textSize="@dimen/_8sdp"
                     android:id="@+id/delivery_earlier"
-                    android:text="Eariest Delivery by 2 PM"
+                    android:text="@string/earliest_delivery_by_2_pm"
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -162,7 +162,7 @@
                 <TextView
                     android:textSize="@dimen/_9sdp"
                     android:padding="@dimen/_3sdp"
-                    android:text="Quick and Fast delivery at your door step..."
+                    android:text="@string/quick_and_fast_delivery_at_your_door_step"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:drawableStartCompat="@drawable/ic_baseline_location_on_24" />
@@ -219,7 +219,7 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:text="Shipping Method"
+                        android:text="@string/shipping_method"
                         android:textColor="@color/sub_color"
                         android:textStyle="bold"
                         android:layout_width="match_parent"
@@ -228,7 +228,7 @@
                         android:layout_width="wrap_content"
                         android:checked="true"
                         android:layout_height="wrap_content"
-                        android:text="Standard Shipping"/>
+                        android:text="@string/standard_shipping"/>
 
 
                 </LinearLayout>
@@ -237,12 +237,6 @@
                     android:orientation="horizontal"
                     android:layout_height="wrap_content">
 
-<!--                    <TextView-->
-<!--                        android:text="Payment Method"-->
-<!--                        android:textColor="@color/sub_color"-->
-<!--                        android:textStyle="bold"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"/>-->
                     <RadioGroup
                         android:id="@+id/payment_option"
                         android:layout_width="wrap_content"
@@ -283,7 +277,7 @@
         </androidx.cardview.widget.CardView>
         <Button
             android:layout_gravity="bottom|end"
-            android:text="Confirm Order"
+            android:text="@string/confirm_order"
             android:id="@+id/confirm_order"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_50sdp"

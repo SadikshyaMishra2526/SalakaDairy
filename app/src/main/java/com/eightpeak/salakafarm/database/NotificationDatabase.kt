@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 
-@Database( entities = [NotificationDetails::class],version = 1,exportSchema = false)
+@Database( entities = [NotificationDetails::class],version = 2,exportSchema = false)
 
 abstract class NotificationDatabase : RoomDatabase() {
 

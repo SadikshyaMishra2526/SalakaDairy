@@ -1,10 +1,14 @@
 <resources>
+    <string name="facebook_app_id">1376274882826132</string>
+    <string name="fb_login_protocol_scheme">fb1376274882826132</string>
+<string name="default_notification_channel_id">notification_channel</string>
+
     <string name="app_name">Salaka Farm</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="sign_in">Sign In</string>
-    <string name="email"><font color='#FFFFFF' size="13">Email</font></string>
+    <string name="email">Email</string>
     <string name="password">Password</string>
-<string name="address">Address</string>
+    <string name="address">Address</string>
     <string name="register">Registration</string>
     <string name="terms_conditions">I have read and agree to the <font color='#23a1d1' size="13">Terms &amp; Conditions</font></string>
     <string name="privacy_policy">I have read and agree to the<font color='#23a1d1' size="13">\u0020 Privacy Policy</font></string>
@@ -19,12 +23,12 @@
     <string name="otp_is_resent_in_10_sec">OTP is resent in 10 sec</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_home">Home</string>
-    <string name="first_name"><font color='#FFFFFF' size="13">First Name</font></string>
-    <string name="last_name"><font color='#FFFFFF' size="13">Last Name</font></string>
-    <string name="address_1"><font color='#FFFFFF' size="13">Address 1</font></string>
-    <string name="address_2"><font color='#FFFFFF' size="13">Address 2</font></string>
-    <string name="address_3"><font color='#FFFFFF' size="13">Address 3</font></string>
-    <string name="contact"><font color='#FFFFFF' size="13">Contact</font></string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="address_1">Address 1</string>
+    <string name="address_2">Address 2</string>
+    <string name="address_3">Address 3</string>
+    <string name="contact">Contact</string>
     <string name="imagecontent">ImageContent</string>
     <string name="next">Next</string>
     <string name="get_started">Get Started</string>
@@ -43,8 +47,8 @@
     <string name="shipping_status">Shipping Status </string>
     <string name="order_at">Order At </string>
 
-    <string name="telephone_n9808608666"><font color='black' size="16">Telephone</font>\n9801234567</string>
-    <string name="opening_times_n7_am_8_pm"><font color='black' size="16"> Opening Times</font>\n7 Am - 8 Pm</string>
+    <string name="telephone_n9808608666"><font color='black' size="16">Telephone</font>\n\n<font color='blue' size="16">9801234567</font></string>
+    <string name="opening_times_n7_am_8_pm"><font color='black' size="16">Opening Times</font>\n7 Am - 8 Pm</string>
     <string name="company_name">Salaka Organic and Traning Center</string>
 
     <string name="language_change"><font color='#5FA95F'>Language Change</font></string>
@@ -184,7 +188,102 @@
     <string name="new_password"><font color='#5FA95F' size="13">New Password</font></string>
     <string name="add_to_compare">Add to Compare List</string>
     <string name="your_wishlist">Your WishList</string>
+    <string name="your_order_details">Your Order Details</string>
+    <string name="unauthorized">Unauthorized</string>
+    <string name="request_password_change">Request Password Change</string>
+    <string name="proceed_with_subscription">Proceed With Subscription</string>
+    <string name="payment_method">Payment Method</string>
+    <string name="earliest_delivery_by_1_hour">Earliest Delivery by 1 hour</string>
+    <string name="change">Change</string>
+    <string name="subscriber_details">Subscriber Details</string>
+    <string name="total_cost_with_discount">Total Cost with Discount :-</string>
+    <string name="selected_package">Selected Package</string>
+    <string name="select_package">Select Package</string>
+    <string name="quantity">Quantity</string>
+    <string name="choose_starting_date">Choose Starting Date</string>
+    <string name="period">Period</string>
+    <string name="add_subscription_plan_header">Add Your Subscription Plan</string>
+    <string name="please_select_delivery_shift">Please select delivery shift</string>
+    <string name="please_payment_method">Please select payment method</string>
+    <string name="please_select_branch">Please select Branch</string>
+    <string name="payment_details">Payment Details</string>
 
+    <string name="total_quantity">Total Quantity :</string>
+    <string name="overall_cost">Overall Cost :</string>
+    <string name="pay_with_esewa">Pay With ESEWA</string>
+    <string name="proceed_with_payment">Proceed with Payment</string>
+    <string name="scan_qr_to_pay_for_your_subscription">Scan QR to Pay for your subscription</string>
+    <string name="continue_btn">Continue</string>
+    <string name="proceed_with_checkout">Proceed With Checkout</string>
+    <string name="please_contact_us_to_get_fresh_products_at_your_door">Please contact us to get fresh products at your door.</string>
+    <string name="total_order_price_must_exceed_rs_1000">Total order price must exceed Rs 1000.***</string>
+    <string name="quick_and_fast_delivery_at_your_door_step">Quick and Fast delivery at your door step...</string>
+    <string name="shipping_method">Shipping Method</string>
+    <string name="confirm_order">Confirm Order</string>
+    <string name="earliest_delivery_by_2_pm">Earliest Delivery by 2 PM</string>
+    <string name="billing_address">Billing Address :</string>
+    <string name="place_order">Place Order</string>
+    <string name="place_order_by_esewa">Place Order by Esewa</string>
+    <string name="standard_shipping">Standard Shipping</string>
+    <string name="add_evidence">Add Evidence</string>
+    <string name="complain_box">Complain Box</string>
+    <string name="yellow_in_progress">Yellow : In Progress</string>
+    <string name="green_delivered">Green : Delivered</string>
+    <string name="red_cancelled">Red : Cancelled</string>
+    <string name="e_evening">E : Evening</string>
+    <string name="m_morning">M : Morning</string>
+    <string name="subscription_needs_to_be_validated_to_start_if_you_want_to_pay_via_qr_or_online_banking_please_upload_your_payment_statement_in_the_end_of_this_page_and_wait_for_approval">Subscription needs to be validated to start. If you want to pay via QR or Online Banking.. Please upload your payment statement in the end of this page and wait for approval...</string>
+    <string name="note">Note !!!</string>
+    <string name="estimated_time">Estimated Time</string>
+    <string name="order_id">#Order Id</string>
+    <string name="_30_mins">30 mins</string>
+    <string name="track_your_order_here">Track your Order Here</string>
+    <string name="new_order">New Order</string>
+    <string name="new_order_has_been_placed">New Order has been placed</string>
+    <string name="processing_order">Processing Order</string>
+    <string name="your_order_is_in_processing">Your order is in processing</string>
+    <string name="completed">Completed</string>
+    <string name="new_order_is_processed_and_ready_to_ship">New Order is processed and ready to ship.</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="enter_your_phone_number">Enter Your Phone Number</string>
+    <string name="we_will_send_you_your_otp">We will send you..Your OTP</string>
+    <string name="_977_nepal">( +977 ) Nepal</string>
+    <string name="change_branch">Change Branch</string>
+    <string name="there_are_no_items_in_wishlist">There are no items in Wishlist</string>
+    <string name="please_drag_the_location_to_get_your_accurate_position">Please drag the location to get your accurate position</string>
+
+    <string name="delivery_period">"Delivery Period "</string>
+    <string name="account_number">Account Number</string>
+    <string name="acc_holder_name">Acc Holder Name</string>
+    <string name="bank_name">Bank Name</string>
+    <string name="otp_verification">OTP Verification</string>
+    <string name="subscription">Subscription</string>
+    <string name="edit_address">Edit Address</string>
+    <string name="your_address_details">Your Address Details</string>
+    <string name="first_address">First Address</string>
+    <string name="there_are_no_items_in_cart">There are no items in Cart</string>
+    <string name="name">Name</string>
+    <string name="subject">Subject</string>
+    <string name="description">Description</string>
+    <string name="follow_us_on">Follow Us on :</string>
+    <string name="notifications">Notifications</string>
+    <string name="customer_details">Customer Details</string>
+    <string name="customer_payment_details">Customer Payment Details</string>
+    <string name="submit_payment_screenshot">Submit Payment ScreenShot</string>
+    <string name="rating_and_review">Rating and Review</string>
+    <string name="track_order">Track Order</string>
+    <string name="view_details">View Details</string>
+    <string name="your_personal_details">Your Personal Details</string>
+    <string name="profile_picture">Profile Picture</string>
+    <string name="click_here_to_choose">Click Here to Choose</string>
+    <string name="update">Update</string>
+    <string name="your_address_list">Your Address List</string>
+    <string name="no_internet_connection_nplease_check_your_internet_connection">No Internet Connection....\nPlease check your Internet Connection</string>
+    <string name="refresh">Refresh</string>
+    <string name="enter_verification_code">Enter Verification Code</string>
+    <string name="milk_needs_to_be_boiled_within_half_hour_after_received_your_complain_will_be_valid_if_send_within_half_hour">Milk needs to be boiled within half hour after received. Your complain will be valid if send within half hour.</string>
+    <string name="submit">Submit</string>
+    <string name="subscription_complain_box">Subscription Complain Box</string>
 
     <string-array name="nepdays">
         <item>01</item>

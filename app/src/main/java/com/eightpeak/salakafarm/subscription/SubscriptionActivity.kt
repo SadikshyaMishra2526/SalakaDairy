@@ -3,16 +3,12 @@ package com.eightpeak.salakafarm.subscription
 import android.app.DatePickerDialog
 import android.content.DialogInterface
 import android.content.Intent
-import android.icu.number.IntegerWidth
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
@@ -41,6 +37,7 @@ import com.eightpeak.salakafarm.views.addtocart.CartActivity
 import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class SubscriptionActivity : AppCompatActivity() {
@@ -58,35 +55,23 @@ class SubscriptionActivity : AppCompatActivity() {
 
     private lateinit var selectedBranchId: String
     private lateinit var selectedAddressId: String
-    private lateinit var selectedSubscribedTotalAmount: String
-    private lateinit var selectedSubscribedDiscount: String
-    private lateinit var selectedSubscribedPrice: String
+    private  var selectedSubscribedTotalAmount: String="0"
+    private  var selectedSubscribedDiscount: String="0"
+    private  var selectedSubscribedPrice: String="0"
     private lateinit var selectedUnitPerDay: String
-    private lateinit var selectedStartingDate: String
-    private lateinit var selectedDeliveryPeroid: String
-    private lateinit var selectedSubPackageId: String
-    private lateinit var selectedTotalQuantity: String
+    private  var selectedStartingDate: String="0"
+    private  var selectedDeliveryPeroid: String="0"
+    private  var selectedSubPackageId: String="0"
+    private  var selectedTotalQuantity: String="0"
 
-    private lateinit var selectedPaymentMethod: String
-    private lateinit var selectedSubscriptionName: String
+    private  var selectedPaymentMethod: String="0"
+    private  var selectedSubscriptionName: String="0"
     private lateinit var selectedAddressName: String
 
     private lateinit var deliveryPeriodRadio: RadioButton
     private lateinit var paymentOptionRadio: RadioButton
 
-//
     private  val TAG: String="SubscriptionActivity"
-
-//
-//    private lateinit var   getDate:String="";
-//       private lateinit var  startingEngYear = 2078
-//       private lateinit var  startingEngMonth = 0
-//       private lateinit var  startingEngDay = 1
-//       private lateinit var  dayOfWeek = Calendar.SATURDAY
-//       private lateinit var  startingNepYear = 2000
-//       private lateinit var  startingNepMonth = 9
-//       private lateinit var  startingNepDay = 17
-//        nepaliMap = new HashMap<Integer, int[]>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,7 +85,7 @@ class SubscriptionActivity : AppCompatActivity() {
         binding = ActivitySubscriptionBinding.inflate(layoutInflater)
         userPrefManager = UserPrefManager(this)
 
-        binding.headerTitle.text = "Add Your Subscription Plan"
+        binding.headerTitle.text = getString(R.string.add_subscription_plan_header)
         binding.returnHome.setOnClickListener {
             finish()
         }
@@ -122,8 +107,6 @@ class SubscriptionActivity : AppCompatActivity() {
                     binding.chooseSubscriptionDate.text = dateFormat?.format(dateSelected.time)
                     val formatter = SimpleDateFormat("yyyy-MM-dd")
                     selectedStartingDate = formatter.format(Date.parse(dateSelected.time.toString()))
-
-//                    Log.i("TAG", "onCreate: "+ GeneralUtils.calculateNepaliDate(dayOfMonth,monthOfYear,year))
                 },
                 newCalendar[Calendar.YEAR],
                 newCalendar[Calendar.MONTH],
@@ -143,16 +126,19 @@ class SubscriptionActivity : AppCompatActivity() {
             val deliveryPeriodId: Int = binding.deliveryPeriod.checkedRadioButtonId
             val paymentMethodId: Int = binding.paymentMethod.checkedRadioButtonId
 
-            deliveryPeriodRadio = findViewById<View>(deliveryPeriodId) as RadioButton
-            paymentOptionRadio = findViewById<View>(paymentMethodId) as RadioButton
+            if (binding.morningShift.isChecked || binding.eveningShift.isChecked|| binding.bothShift.isChecked) {
+                deliveryPeriodRadio = findViewById<View>(deliveryPeriodId) as RadioButton
+                selectedDeliveryPeroid = deliveryPeriodRadio.text.toString()
+            } else {
+                binding.addSubscriptionLayout.errorSnack(getString(R.string.please_select_delivery_shift), Snackbar.LENGTH_LONG)
+             }
 
-            selectedDeliveryPeroid = deliveryPeriodRadio.text.toString()
-            selectedPaymentMethod = paymentOptionRadio.text.toString()
-            Log.i(
-                "TAG", "onCreate: |$selectedPaymentMethod $selectedDeliveryPeroid " +
-                        "$selectedSubscribedDiscount $selectedBranchId $selectedAddressId $selectedSubscribedTotalAmount " +
-                        "$selectedSubscribedPrice $selectedUnitPerDay $selectedStartingDate  $selectedSubPackageId $selectedTotalQuantity"
-            )
+            if (binding.byBank.isChecked || binding.byEsewa.isChecked|| binding.byQr.isChecked|| binding.cashOnDelivery.isChecked) {
+                paymentOptionRadio = findViewById<View>(paymentMethodId) as RadioButton
+                selectedPaymentMethod = paymentOptionRadio.text.toString()
+            } else {
+                binding.addSubscriptionLayout.errorSnack(getString(R.string.please_payment_method), Snackbar.LENGTH_LONG)
+             }
 
 
             if (!validateSubscription()) {
@@ -182,53 +168,54 @@ class SubscriptionActivity : AppCompatActivity() {
     private fun validateSubscription(): Boolean {
         var validate = false
         if (selectedBranchId.isEmpty()) {
-            binding.addSubscriptionLayout.errorSnack("Please select branch", Snackbar.LENGTH_LONG)
+            binding.addSubscriptionLayout.errorSnack(getString(R.string.please_select_branch), Snackbar.LENGTH_LONG)
             validate = true
         }
         if (selectedAddressId.isEmpty()) {
             binding.addSubscriptionLayout.errorSnack("Please select Address", Snackbar.LENGTH_LONG)
             validate = true
         }
-        if (selectedSubscribedTotalAmount.isEmpty()) {
+        if (selectedSubscribedTotalAmount=="0") {
             binding.addSubscriptionLayout.errorSnack("Please Add Subscription Total", Snackbar.LENGTH_LONG)
             validate = true
         }
-        if (selectedSubscribedDiscount.isEmpty()) {
-            binding.addSubscriptionLayout.errorSnack("Please Add Subscription Discount", Snackbar.LENGTH_LONG)
+        if (selectedSubscribedDiscount=="0") {
+            binding.addSubscriptionLayout.errorSnack("Please Add Subscription Discount!!!", Snackbar.LENGTH_LONG)
             validate = true
         }
-        if (selectedSubscribedPrice.isEmpty()) {
+        if (selectedSubscribedPrice=="0") {
             binding.addSubscriptionLayout.errorSnack("Please Add Subscription Price", Snackbar.LENGTH_LONG)
             validate = true
         }
         if ( binding.unitPerDay.text.toString().isEmpty()) {
-            binding.addSubscriptionLayout.errorSnack("Please select branch", Snackbar.LENGTH_LONG)
+            binding.addSubscriptionLayout.errorSnack("Please add Unit per day !!!", Snackbar.LENGTH_LONG)
             validate = true
         }
-        if (selectedStartingDate.isEmpty()) {
-            binding.addSubscriptionLayout.errorSnack("Please select branch", Snackbar.LENGTH_LONG)
+        if (selectedStartingDate=="0") {
+            binding.addSubscriptionLayout.errorSnack("Please select starting date !!!", Snackbar.LENGTH_LONG)
             validate = true
         }
-        if (selectedDeliveryPeroid.isEmpty()) {
-            binding.addSubscriptionLayout.errorSnack("Please select branch", Snackbar.LENGTH_LONG)
+        if (selectedDeliveryPeroid=="0") {
+            binding.addSubscriptionLayout.errorSnack("Please select delivery period!!!", Snackbar.LENGTH_LONG)
             validate = true
         }
-        if (selectedSubPackageId.isEmpty()) {
+        if (selectedSubPackageId=="0") {
             binding.addSubscriptionLayout.errorSnack("Please Add Subscription", Snackbar.LENGTH_LONG)
             validate = true
         }
-        if (selectedTotalQuantity.isEmpty()) {
-            binding.addSubscriptionLayout.errorSnack("Please Add total", Snackbar.LENGTH_LONG)
-            validate = true
-        }
-        if (selectedSubscriptionName.isEmpty()) {
-            binding.addSubscriptionLayout.errorSnack("Please Add Subscription Name", Snackbar.LENGTH_LONG)
-            validate = true
-        }
-        if (selectedPaymentMethod.isEmpty()) {
+        if (selectedPaymentMethod=="0") {
             binding.addSubscriptionLayout.errorSnack("Please Payment Method", Snackbar.LENGTH_LONG)
             validate = true
         }
+        if (selectedSubscriptionName=="0") {
+            binding.addSubscriptionLayout.errorSnack("Please Add Subscription Name", Snackbar.LENGTH_LONG)
+            validate = true
+        }
+        if (selectedTotalQuantity=="0") {
+            binding.addSubscriptionLayout.errorSnack("Please Add total", Snackbar.LENGTH_LONG)
+            validate = true
+        }
+
         return validate
     }
 
@@ -307,29 +294,53 @@ class SubscriptionActivity : AppCompatActivity() {
         customerLat: Double,
         customerLng: Double
     ) {
-        var lat:Double= 27.70988983756394
-        var lng:Double=85.3262103958108
+        var branchesIndex=ArrayList<Double>(branches.size)
+        var selectBranch=ArrayList<Branches>(branches.size)
 
         if(branches.isNotEmpty()){
           for(branch in branches){
               if(branch.sub_packages_count>0){
-                  var distance: Double = GeneralUtils.calculateDistance(
+                  val distance: Double = GeneralUtils.calculateDistance(
                       customerLat,
                       customerLng,
                       branch.latitude,
                       branch.longitude)
+                  branchesIndex.add(distance)
+                  selectBranch.add(branch)
                   Log.i(
                       "TAG", "displayBranchList: " + distance + "   " + customerLat + "   " +
                               customerLng + "   " +
                               branch.latitude+" "+
-                             branch.longitude
+                              branch.longitude+" "+branch.name
                   )
 
               }
           }
+
         }
 
-         binding.changeBranch.setOnClickListener {
+        if(selectBranch[findMin(branchesIndex)]!=null){
+            binding.mainView.visibility=View.VISIBLE
+            binding.proceedWithCheckout.visibility=View.VISIBLE
+           val branchSelected: Branches=selectBranch[findMin(branchesIndex)]
+            binding.branchSelected.text = branchSelected.name
+            selectedBranchId = branchSelected.id.toString()
+            userPrefManager.bankAccountNo = branchSelected.account_number
+            userPrefManager.qrPath = branchSelected.qrcode
+            userPrefManager.accountName = branchSelected.name
+            userPrefManager.accountHolderName = branchSelected.account_holder
+            userPrefManager.bankName = branchSelected.bank
+            getSubscriptionPackageList(branchSelected.id)
+
+            binding.layoutSubItem.visibility = View.GONE
+            binding.getBranchesList.visibility = View.GONE
+            binding.subPackageView.visibility = View.VISIBLE
+            binding.deliverToLayout.visibility = View.VISIBLE
+            binding.paymentLayout.visibility = View.VISIBLE
+            binding.proceedSubscription.visibility = View.VISIBLE
+        }
+
+        binding.changeBranch.setOnClickListener {
              binding.getBranchesList.removeAllViews()
              for (i in branches.indices) {
                  val itemView: View =
@@ -347,20 +358,16 @@ class SubscriptionActivity : AppCompatActivity() {
                  branchLocation.text = branches[i].address
                  branchContact.text = branches[i].contact
                  branchCard.setOnClickListener {
+
                      binding.branchSelected.text = branches[i].name
                      selectedBranchId = branches[i].id.toString()
-
-
                      userPrefManager.bankAccountNo = branches[i].account_number
                      userPrefManager.qrPath = branches[i].qrcode
                      userPrefManager.accountName = branches[i].name
                      userPrefManager.accountHolderName = branches[i].account_holder
                      userPrefManager.bankName = branches[i].bank
-
-
-
-
                      getSubscriptionPackageList(branches[i].id)
+
                      binding.layoutSubItem.visibility = View.GONE
                      binding.getBranchesList.visibility = View.GONE
                      binding.subPackageView.visibility = View.VISIBLE
@@ -452,24 +459,19 @@ class SubscriptionActivity : AppCompatActivity() {
                     getString(R.string.rs) + " " + subItem[i].unit_price.toString()
                 subPackageDays.text = subItem[i].number_of_days.toString() + " days"
                 subPackageDiscount.text =
-                    "Dis. Range:- " + subItem[i].range.toString() + " (" + subItem[i].discount_price_per_unit.toString() + "%" + ")"
+                    "Dis. Range:- " + subItem[i].range.toString() + " ( " + getString(R.string.rs)+subItem[i].discount_price_per_unit.toString() + " per unit" + ")"
                 subItemThumbnail.load(BASE_URL + subItem[i].sub_item.image.toString())
 
-                if (subItem[i].isSelected) {
-                    selectSubPackage.setCardBackgroundColor(getColor(R.color.sub_color))
-                } else {
-                    selectSubPackage.setCardBackgroundColor(getColor(R.color.white))
-                }
+
                 selectSubPackage.setOnClickListener {
-                    displaySelectedDetails(subItem[i])
-                    subItem[i].isSelected = true
-                    selectSubPackage.setCardBackgroundColor(getColor(R.color.sub_color))
+                    displaySelectedDetails(subItem[i],selectSubPackage)
+                    userPrefManager.selectedPackage = subItem[i].id
 
                     binding.selectCardView.visibility = View.VISIBLE
                     selectedSubPackageId = subItem[i].id.toString()
                     selectedSubscriptionName = subItem[i].name
+                    GeneralUtils.hideKeyboard(this)
                 }
-                Log.i("TAG", "displayPackageList: " + subItem[i].isSelected)
 
 
 
@@ -483,13 +485,28 @@ class SubscriptionActivity : AppCompatActivity() {
         }
     }
 
-    private fun displaySelectedDetails(subPackages: Sub_packages) {
+    private fun displaySelectedDetails(subPackages: Sub_packages, selectSubPackage: CardView) {
         var totalPrice = subPackages.unit_price * subPackages.number_of_days
         binding.selectedPackage.text = subPackages.name
         if (binding.unitPerDay.text.toString().isNotEmpty()) {
+
+
+            Log.i("TAG", "displayPackageList: " + userPrefManager.selectedPackage)
+            if (subPackages.id==userPrefManager.packageSelected) {
+                selectSubPackage.setCardBackgroundColor(getColor(R.color.sub_color))
+            } else {
+                selectSubPackage.setCardBackgroundColor(getColor(R.color.white))
+            }
+
+
+
+
+
+
+
+
            val requiredQuantity= binding.unitPerDay.text.toString()
             selectedTotalQuantity = (Integer.parseInt(requiredQuantity)* subPackages.number_of_days).toString()
-            println(",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,$selectedTotalQuantity")
 
             selectedSubscribedTotalAmount = totalPrice.toString()
             binding.totalPackageCost.text = getString(R.string.rs) + totalPrice.toString()
@@ -499,14 +516,16 @@ class SubscriptionActivity : AppCompatActivity() {
             for (range in arrOfStr)
             if (unitPerDay >= Integer.valueOf(arrOfStr[0])) {
                 selectedSubscribedDiscount =
-                    ((totalPrice * subPackages.discount_price_per_unit) / 100).toString()
-                totalPrice -= (totalPrice * subPackages.discount_price_per_unit) / 100
+                    ((unitPerDay * subPackages.discount_price_per_unit)).toString()
+                totalPrice -= Integer.parseInt(selectedSubscribedDiscount)
                 selectedSubscribedPrice = totalPrice.toString()
                 binding.totalCostWithDiscount.text = getString(R.string.rs) + totalPrice.toString()
-                binding.packageDiscount.text = subPackages.discount_price_per_unit.toString() + " %"
+                binding.packageDiscount.text =getString(R.string.rs)+ selectedSubscribedDiscount
             } else {
-                binding.packageDiscount.text = "0 %"
-                binding.totalCostWithDiscount.text = getString(R.string.rs) + totalPrice.toString()
+                binding.packageDiscount.text = "Rs 0"
+                selectedSubscribedDiscount ="0"
+                    binding.totalCostWithDiscount.text = getString(R.string.rs) + totalPrice.toString()
+                selectedSubscribedPrice = totalPrice.toString()
             }
         } else {
             binding.addSubscriptionLayout.errorSnack(
@@ -609,9 +628,14 @@ class SubscriptionActivity : AppCompatActivity() {
 
     private fun showAddressList(addressList: List<Address_list>) {
         if (addressList.size == 1) {
-            val customerLat: Double = 27.699972326072345
-            val customerLng: Double = 85.36797715904281
+
+            val customerLat: Double = addressList[0].lat!!
+            val customerLng: Double =addressList[0].lng!!
             selectedAddressId = addressList[0].id.toString()
+            selectedAddressName = addressList[0].address1+" "+ addressList[0].address2+" "+ addressList[0].address3+" "+ addressList[0].phone.toString()
+            binding.customerLocation.text =  addressList[0].address1+" "+ addressList[0].address2+" "+ addressList[0].address3+" "+ addressList[0].phone.toString()
+
+
             getSubscriptionItemList()
             setUpBranchesView(customerLat, customerLng)
 
@@ -622,15 +646,15 @@ class SubscriptionActivity : AppCompatActivity() {
             val addressId = arrayOfNulls<String>(addressList.size)
             val names = arrayOfNulls<String>(addressList.size)
             val checkedItems = BooleanArray(addressList.size)
-            val latList = BooleanArray(addressList.size)
-            val lngList = BooleanArray(addressList.size)
+            val latList = arrayOfNulls<Double>(addressList.size)
+            val lngList = arrayOfNulls<Double>(addressList.size)
 
             var i = 0
             for (key in addressList) {
                 addressId[i] = key.id.toString()
 
-//                latList[i]=key.lat.toString()
-//                lngList[i]=key.lng.toString()
+                latList[i]=key.lat
+                lngList[i]=key.lng
 
                 names[i] = key.address1 + ", " + key.address2 + ", " + "\n" + key.phone
                 checkedItems[i] = false
@@ -646,8 +670,8 @@ class SubscriptionActivity : AppCompatActivity() {
                     for (i in checkedItems.indices) {
                         if (checkedItems[i]) {
                             binding.customerLocation.text = names[i]
-                            val customerLat: Double = 27.699972326072345
-                            val customerLng: Double = 85.36797715904281
+                            val customerLat:Double= latList[i]!!
+                            val customerLng: Double =lngList[i]!!
                             selectedAddressId = addressId[i].toString()
                             selectedAddressName = names[i].toString()
                             getSubscriptionItemList()
@@ -662,313 +686,17 @@ class SubscriptionActivity : AppCompatActivity() {
             dialog?.show()
         }
     }
-//   public static String calculateNepaliDate(int day, int month, int year) {
-//        Log.i("TAG", "calculateNepaliDate: "+day+" "+month+" "+year);
-//
-//
-//        nepaliMap.put(2000, new int[] { 0, 30, 32, 31, 32, 31, 30, 30, 30, 29,
-//                30, 29, 31 });
-//        nepaliMap.put(2001, new int[] { 0, 31, 31, 32, 31, 31, 31, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2002, new int[] { 0, 31, 31, 32, 32, 31, 30, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2003, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29,
-//                29, 30, 31 });
-//        nepaliMap.put(2004, new int[] { 0, 30, 32, 31, 32, 31, 30, 30, 30, 29,
-//                30, 29, 31 });
-//        nepaliMap.put(2005, new int[] { 0, 31, 31, 32, 31, 31, 31, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2006, new int[] { 0, 31, 31, 32, 32, 31, 30, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2007, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29,
-//                29, 30, 31 });
-//        nepaliMap.put(2008, new int[] { 0, 31, 31, 31, 32, 31, 31, 29, 30, 30,
-//                29, 29, 31 });
-//        nepaliMap.put(2009, new int[] { 0, 31, 31, 32, 31, 31, 31, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2010, new int[] { 0, 31, 31, 32, 32, 31, 30, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2011, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29,
-//                29, 30, 31 });
-//        nepaliMap.put(2012, new int[] { 0, 31, 31, 31, 32, 31, 31, 29, 30, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2013, new int[] { 0, 31, 31, 32, 31, 31, 31, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2014, new int[] { 0, 31, 31, 32, 32, 31, 30, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2015, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29,
-//                29, 30, 31 });
-//        nepaliMap.put(2016, new int[] { 0, 31, 31, 31, 32, 31, 31, 29, 30, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2017, new int[] { 0, 31, 31, 32, 31, 31, 31, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2018, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2019, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29,
-//                30, 29, 31 });
-//        nepaliMap.put(2020, new int[] { 0, 31, 31, 31, 32, 31, 31, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2021, new int[] { 0, 31, 31, 32, 31, 31, 31, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2022, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29,
-//                29, 30, 30 });
-//        nepaliMap.put(2023, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29,
-//                30, 29, 31 });
-//        nepaliMap.put(2024, new int[] { 0, 31, 31, 31, 32, 31, 31, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2025, new int[] { 0, 31, 31, 32, 31, 31, 31, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2026, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29,
-//                29, 30, 31 });
-//        nepaliMap.put(2027, new int[] { 0, 30, 32, 31, 32, 31, 30, 30, 30, 29,
-//                30, 29, 31 });
-//        nepaliMap.put(2028, new int[] { 0, 31, 31, 32, 31, 31, 31, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2029, new int[] { 0, 31, 31, 32, 31, 32, 30, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2030, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29,
-//                29, 30, 31 });
-//        nepaliMap.put(2031, new int[] { 0, 30, 32, 31, 32, 31, 30, 30, 30, 29,
-//                30, 29, 31 });
-//        nepaliMap.put(2032, new int[] { 0, 31, 31, 32, 31, 31, 31, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2033, new int[] { 0, 31, 31, 32, 32, 31, 30, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2034, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29,
-//                29, 30, 31 });
-//        nepaliMap.put(2035, new int[] { 0, 30, 32, 31, 32, 31, 31, 29, 30, 30,
-//                29, 29, 31 });
-//        nepaliMap.put(2036, new int[] { 0, 31, 31, 32, 31, 31, 31, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2037, new int[] { 0, 31, 31, 32, 32, 31, 30, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2038, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29,
-//                29, 30, 31 });
-//        nepaliMap.put(2039, new int[] { 0, 31, 31, 31, 32, 31, 31, 29, 30, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2040, new int[] { 0, 31, 31, 32, 31, 31, 31, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2041, new int[] { 0, 31, 31, 32, 32, 31, 30, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2042, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29,
-//                29, 30, 31 });
-//        nepaliMap.put(2043, new int[] { 0, 31, 31, 31, 32, 31, 31, 29, 30, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2044, new int[] { 0, 31, 31, 32, 31, 31, 31, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2045, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2046, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29,
-//                29, 30, 31 });
-//        nepaliMap.put(2047, new int[] { 0, 31, 31, 31, 32, 31, 31, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2048, new int[] { 0, 31, 31, 32, 31, 31, 31, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2049, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29,
-//                29, 30, 30 });
-//        nepaliMap.put(2050, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29,
-//                30, 29, 31 });
-//        nepaliMap.put(2051, new int[] { 0, 31, 31, 31, 32, 31, 31, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2052, new int[] { 0, 31, 31, 32, 31, 31, 31, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2053, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29,
-//                29, 30, 30 });
-//        nepaliMap.put(2054, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29,
-//                30, 29, 31 });
-//        nepaliMap.put(2055, new int[] { 0, 31, 31, 32, 31, 31, 31, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2056, new int[] { 0, 31, 31, 32, 31, 32, 30, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2057, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29,
-//                29, 30, 31 });
-//        nepaliMap.put(2058, new int[] { 0, 30, 32, 31, 32, 31, 30, 30, 30, 29,
-//                30, 29, 31 });
-//        nepaliMap.put(2059, new int[] { 0, 31, 31, 32, 31, 31, 31, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2060, new int[] { 0, 31, 31, 32, 32, 31, 30, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2061, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29,
-//                29, 30, 31 });
-//        nepaliMap.put(2062, new int[] { 0, 30, 32, 31, 32, 31, 31, 29, 30, 29,
-//                30, 29, 31 });
-//        nepaliMap.put(2063, new int[] { 0, 31, 31, 32, 31, 31, 31, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2064, new int[] { 0, 31, 31, 32, 32, 31, 30, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2065, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29,
-//                29, 30, 31 });
-//        nepaliMap.put(2066, new int[] { 0, 31, 31, 31, 32, 31, 31, 29, 30, 30,
-//                29, 29, 31 });
-//        nepaliMap.put(2067, new int[] { 0, 31, 31, 32, 31, 31, 31, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2068, new int[] { 0, 31, 31, 32, 32, 31, 30, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2069, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29,
-//                29, 30, 31 });
-//        nepaliMap.put(2070, new int[] { 0, 31, 31, 31, 32, 31, 31, 29, 30, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2071, new int[] { 0, 31, 31, 32, 31, 31, 31, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2072, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2073, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29,
-//                29, 30, 31 });
-//        nepaliMap.put(2074, new int[] { 0, 31, 31, 31, 32, 31, 31, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2075, new int[] { 0, 31, 31, 32, 31, 31, 31, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2076, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29,
-//                29, 30, 30 });
-//        nepaliMap.put(2077, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29,
-//                30, 29, 31 });
-//        nepaliMap.put(2078, new int[] { 0, 31, 31, 31, 32, 31, 31, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2079, new int[] { 0, 31, 31, 32, 31, 31, 31, 30, 29, 30,
-//                29, 30, 30 });
-//        nepaliMap.put(2080, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29,
-//                29, 30, 30 });
-//        nepaliMap.put(2081, new int[] { 0, 31, 31, 32, 32, 31, 30, 30, 30, 29,
-//                30, 30, 30 });
-//        nepaliMap.put(2082, new int[] { 0, 30, 32, 31, 32, 31, 30, 30, 30, 29,
-//                30, 30, 30 });
-//        nepaliMap.put(2083, new int[] { 0, 31, 31, 32, 31, 31, 30, 30, 30, 29,
-//                30, 30, 30 });
-//        nepaliMap.put(2084, new int[] { 0, 31, 31, 32, 31, 31, 30, 30, 30, 29,
-//                30, 30, 30 });
-//        nepaliMap.put(2085, new int[] { 0, 31, 32, 31, 32, 30, 31, 30, 30, 29,
-//                30, 30, 30 });
-//        nepaliMap.put(2086, new int[] { 0, 30, 32, 31, 32, 31, 30, 30, 30, 29,
-//                30, 30, 30 });
-//        nepaliMap.put(2087, new int[] { 0, 31, 31, 32, 31, 31, 31, 30, 30, 29,
-//                30, 30, 30 });
-//        nepaliMap.put(2088, new int[] { 0, 30, 31, 32, 32, 30, 31, 30, 30, 29,
-//                30, 30, 30 });
-//        nepaliMap.put(2089, new int[] { 0, 30, 32, 31, 32, 31, 30, 30, 30, 29,
-//                30, 30, 30 });
-//        nepaliMap.put(2090, new int[] { 0, 30, 32, 31, 32, 31, 30, 30, 30, 29,
-//                30, 30, 30 });
-//
-//
-//        int engYear = year;
-//
-//        int engMonth = month;
-//
-//        int engDay = day;
-//
-//
-//
-//        int nepYear = startingNepYear;
-//        int nepMonth = startingNepMonth;
-//        int nepDay = startingNepDay;
-//
-//        Calendar currentEngDate = new GregorianCalendar();
-//
-//        currentEngDate.set(engYear, engMonth, engDay);
-//
-//        Calendar baseEngDate = new GregorianCalendar();
-//
-//        baseEngDate.set(startingEngYear, startingEngMonth,
-//                startingEngDay);
-//
-//        long totalEngDaysCount = daysBetween(baseEngDate,
-//                currentEngDate);
-//
-//        while (totalEngDaysCount != 0) {
-//
-//            int daysInIthMonth = nepaliMap.get(nepYear)[nepMonth];
-//
-//            nepDay++;
-//            if (nepDay > daysInIthMonth) {
-//                nepMonth++;
-//                nepDay = 1;
-//            }
-//
-//            if (nepMonth > 12) {
-//                nepYear++;
-//                nepMonth = 1;
-//            }
-//
-//            dayOfWeek++; // count the days in terms of 7 days
-//            if (dayOfWeek > 7) {
-//                dayOfWeek = 1;
-//            }
-//
-//            totalEngDaysCount--;
-//        }
-//        switch (dayOfWeek) {
-//            case 1:
-//
-//                getDate=nepYear + " /"
-//                        + nepMonth + " /" + nepDay + " Sunday";
-//
-//                Log.i("TAG", "calculateNepaliDate: "+getDate);
-//                dayOfWeek = Calendar.SATURDAY;
-//                break;
-//            case 2:
-//
-//                getDate= nepYear + " /"
-//                        + nepMonth + " /" + nepDay + " Monday";
-//
-//                Log.i("TAG", "calculateNepaliDate: "+getDate);
-//                dayOfWeek = Calendar.SATURDAY;
-//                break;
-//            case 3:
-//
-//                getDate= nepYear + " /"
-//                        + nepMonth + " /" + nepDay + " Tuesday";
-//
-//                Log.i("TAG", "calculateNepaliDate: "+getDate);
-//                dayOfWeek = Calendar.SATURDAY;
-//                break;
-//            case 4:
-//
-//                getDate=nepYear + " /"
-//                        + nepMonth + " /" + nepDay + " Wednesday";
-//
-//                Log.i("TAG", "calculateNepaliDate: "+getDate);
-//                dayOfWeek = Calendar.SATURDAY;
-//                break;
-//            case 5:
-//
-//                getDate= nepYear + " /"
-//                        + nepMonth + " /" + nepDay + " Thursday";
-//
-//                Log.i("TAG", "calculateNepaliDate: "+getDate);
-//                dayOfWeek = Calendar.SATURDAY;
-//                break;
-//            case 6:
-//
-//                getDate=nepYear + " /"
-//                        + nepMonth + " /" + nepDay + " Friday";
-//
-//                Log.i("TAG", "calculateNepaliDate: "+getDate);
-//                dayOfWeek = Calendar.SATURDAY;
-//                break;
-//            case 7:
-//
-//                getDate=nepYear + " /"
-//                        + nepMonth + " /" + nepDay + " Saturday";
-//
-//                Log.i("TAG", "calculateNepaliDate: "+getDate);
-//                dayOfWeek = Calendar.SATURDAY;
-//                break;
-//        }
-//        Log.i("TAG", "calculateNepaliDate: "+getDate);
-//        return getDate;
-//    }
 
 
-//    private static long daysBetween(Calendar startDate, Calendar endDate) {
-//        Calendar date = (Calendar) startDate.clone();
-//        long daysBetween = 0;
-//        while (date.before(endDate)) {
-//            date.add(Calendar.DAY_OF_MONTH, 1);
-//            daysBetween++;
-//        }
-//
-//        return daysBetween;
-//    }
-
-
+    private fun findMin(array: ArrayList<Double>): Int {
+        var min = array[0]
+        var index = 0
+        for (i in 1 until array.size) {
+            if (min > array[i]) {
+                min = array[i]
+                index=i
+            }
+        }
+        return index
+    }
 }

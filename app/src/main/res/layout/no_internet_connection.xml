@@ -28,12 +28,12 @@
             android:textStyle="bold"
             android:textColor="@color/white"
             android:gravity="center"
-            android:text="No Internet Connection....\nPlease check your Internet Connection"
+            android:text="@string/no_internet_connection_nplease_check_your_internet_connection"
             android:layout_height="wrap_content"/>
         <Button
             android:id="@+id/refresh"
             android:layout_width="wrap_content"
-            android:text="Refresh"
+            android:text="@string/refresh"
             android:layout_gravity="center"
             android:layout_height="wrap_content"/>
     </LinearLayout>

@@ -101,7 +101,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Billing Address :"
+                            android:text="@string/billing_address"
                             android:textColor="@color/sub_color"
                             android:textStyle="bold" />
 
@@ -184,14 +184,15 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Shipping Method :-"
+                            android:text="@string/shipping_method"
                             android:textColor="@color/sub_color"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=" Standard Shipping" />
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:text="@string/standard_shipping" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -204,7 +205,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="285dp"
-        android:text="Place Order "
+        android:text="@string/place_order"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.95"
@@ -215,7 +216,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="285dp"
-        android:text="Place Order "
+        android:text="@string/place_order_by_esewa"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

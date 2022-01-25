@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 
  class NotificationViewModel(application: Application): AndroidViewModel(application) {
 
-     private val fetchRegisterLogger : LiveData<List<NotificationDetails>>
+      val fetchRegisterLogger : LiveData<List<NotificationDetails>>
     private val repository : NotificationRepository
     init {
         val loggerDao= NotificationDatabase.getLoggerDatabase(application).loggerDao()
@@ -22,9 +22,11 @@ import kotlinx.coroutines.launch
             repository.addLoggerDetails(notificationDetails)
         }
     }
-     fun addDailyLogger(logger: NotificationDetails){
-         viewModelScope.launch(Dispatchers.IO) {
-             repository.addLoggerDetails(logger)
-         }
-     }
+
+     fun deleteNotificationDetails(id:String){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteDetails(id)
+        }
+    }
+
 }

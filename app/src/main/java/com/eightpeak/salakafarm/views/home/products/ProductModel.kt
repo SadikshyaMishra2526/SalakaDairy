@@ -1,6 +1,5 @@
 package com.eightpeak.salakafarm.views.home.products
 
-import com.eightpeak.salakafarm.views.home.products.productbyid.Attributes
 import com.google.gson.annotations.SerializedName
 
 data class ProductModel (
@@ -58,7 +57,6 @@ data class Data (
 	@SerializedName("images") val images : List<Images>?=null,
 	@SerializedName("descriptions") val descriptions : List<Descriptions>?=null,
 	@SerializedName("promotion_price") val promotion_price : Promotion_price?=null,
-	@SerializedName("attributes") val attributes : List<Attributes>
 )
 data class Images (
 

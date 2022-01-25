@@ -53,7 +53,7 @@ class OrderHistoryDetails : Fragment() {
                 AppCompatActivity.MODE_PRIVATE
             )
         )
-        binding.header.text = "Your Order Details"
+        binding.header.text = getString(R.string.your_order_details)
         setupViewModel()
         return root
     }
@@ -65,7 +65,6 @@ class OrderHistoryDetails : Fragment() {
         val factory = ViewModelProviderFactory(requireActivity().application, repository)
         viewModel = ViewModelProvider(this, factory).get(OrderViewModel::class.java)
         val orderId = requireArguments().getString("order_id")
-        Log.i("TAG", "setupViewModel: "+orderId)
         getOrderHistoryDetails(orderId)
     }
 

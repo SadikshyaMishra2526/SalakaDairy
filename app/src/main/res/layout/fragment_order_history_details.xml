@@ -76,7 +76,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Customer Details"
+                android:text="@string/customer_details"
                 android:textColor="@color/sub_color"
                 android:textSize="@dimen/_10sdp"
                 android:layout_margin="@dimen/_5sdp"
@@ -147,7 +147,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Customer Payment Details"
+                android:text="@string/customer_payment_details"
                 android:textColor="@color/sub_color"
                 android:textSize="@dimen/_10sdp"
                 android:layout_margin="@dimen/_5sdp"

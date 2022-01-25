@@ -6,10 +6,7 @@ import coil.api.load
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
 import android.Manifest
 import android.app.Dialog
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -49,10 +46,12 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.eightpeak.salakafarm.database.NotificationDetails
 import com.eightpeak.salakafarm.database.UserPrefManager
+import com.eightpeak.salakafarm.database.notifications.NotificationViewModel
 import com.eightpeak.salakafarm.databinding.ActivityHomeBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
+import com.eightpeak.salakafarm.utils.GeneralUtils
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.viewmodel.GetResponseViewModel
@@ -83,6 +82,7 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback,
         }
     }
 
+    private lateinit var viewModelNotification: NotificationViewModel
     private lateinit var viewModel: GetResponseViewModel
     lateinit var userPrefManager: UserPrefManager
 
@@ -94,13 +94,6 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback,
         val navView: BottomNavigationView = binding.navView
         userPrefManager = UserPrefManager(this)
 
-//        binding.swipeFresh.setOnRefreshListener(OnRefreshListener {
-//            Handler().postDelayed({
-//                finish()
-//                startActivity(intent)
-//                binding.swipeFresh.isRefreshing = false
-//            }, 1000)
-//        })
 
         //Initializing googleApiClient
         googleApiClient = GoogleApiClient.Builder(this)
@@ -109,7 +102,7 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback,
             .addApi(LocationServices.API)
             .build()
         pushNotificationService()
-        initialNotification()
+
         val navController = findNavController(R.id.nav_host_fragment_activity_home)
         val appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -127,12 +120,32 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback,
 
         checkPermissionsState()
         setupViewModel()
+
+        val notificationPreferences: SharedPreferences? = getSharedPreferences("notificationPrefs", MODE_PRIVATE)
+        val title = notificationPreferences?.getString("title", "")
+        val message = notificationPreferences?.getString("message", "")
+        val image = notificationPreferences?.getString("image", "")
+         if(title!!.isNotEmpty() && message!!.isNotEmpty() && image!!.isNotEmpty()){
+             val notificationDetails=NotificationDetails(0,title!!,message!!,image!!,GeneralUtils.getTodayDate())
+             viewModelNotification.addNotificationDetails(notificationDetails)
+             val loginPreferences:SharedPreferences? = getSharedPreferences("notificationPrefs", MODE_PRIVATE)
+             var loginPrefsEditor: SharedPreferences.Editor? = null
+             loginPrefsEditor = loginPreferences?.edit()
+             loginPrefsEditor?.putString("title",   "")
+             loginPrefsEditor?.putString("message",  "")
+             loginPrefsEditor?.putString("image",  "")
+             loginPrefsEditor?.apply()
+
+         }
+
     }
 
     private fun setupViewModel() {
         val repository = AppRepository()
         val factory = ViewModelProviderFactory(application, repository)
         viewModel = ViewModelProvider(this, factory).get(GetResponseViewModel::class.java)
+        viewModelNotification = ViewModelProvider(this).get(NotificationViewModel::class.java)
+
         getPopUp()
     }
 
@@ -357,34 +370,6 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback,
     }
 
 
-    private fun initialNotification() {
-        LocalBroadcastManager.getInstance(this@HomeActivity).registerReceiver(
-            mMessageReceiver,
-            IntentFilter("notification-message")
-        )
-    }
-
-    var mMessageReceiver: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent) {
-            val title = intent.getStringExtra("title")
-            val message = intent.getStringExtra("message")
-            val imageUrl = intent.getStringExtra("imageUrl")
-            Log.i("TAG", "onReceive: $title $message $imageUrl")
-            val logRecorded =
-                title?.let {
-                    if (message != null) {
-                        if (imageUrl != null) {
-                            NotificationDetails(
-                                0,
-                                it, message, imageUrl, "fffff"
-                            )
-                        }
-                    }
-                }
-
-
-        }
-    }
 
     fun popupMessage(banner: String) {
         if (!isFinishing) {

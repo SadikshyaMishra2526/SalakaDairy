@@ -155,6 +155,7 @@ class CartActivity : AppCompatActivity() {
     }
 
     private fun getSelectedProducts(cartResponse: List<Cart>) {
+        binding.viewCartList.removeAllViews()
         if(cartResponse.isNotEmpty()){
             binding.ifEmpty.visibility=View.GONE
             for (i in cartResponse.indices) {
@@ -245,8 +246,9 @@ class CartActivity : AppCompatActivity() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let {
-                        finish()
-                        startActivity(intent)
+//                        finish()
+//                        startActivity(intent)
+                        getPictures()
                     }
                 }
 

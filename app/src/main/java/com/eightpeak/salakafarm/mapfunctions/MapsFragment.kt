@@ -1,20 +1,28 @@
 package com.eightpeak.salakafarm.mapfunctions
 
+import android.Manifest
 import android.app.AlertDialog
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.util.Linkify
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SnapHelper
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.databinding.ActivityMapsFragmentBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
+import com.eightpeak.salakafarm.subscription.attributes.Branches
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.SubscriptionViewModel
@@ -28,6 +36,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
+import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 
 class MapsFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
 
@@ -35,19 +44,31 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
     private lateinit var binding: ActivityMapsFragmentBinding
     private lateinit var viewModel: SubscriptionViewModel
 
+    private var employeeAdapter: EmployeeAdapter? = null
     private var tokenManager: TokenManager? = null
 
+    private var layoutManager: LinearLayoutManager? = null
     private fun setupViewModel() {
         val repository = AppRepository()
         val factory = ViewModelProviderFactory(requireActivity().application, repository)
         viewModel = ViewModelProvider(this, factory).get(SubscriptionViewModel::class.java)
 
     }
+    private fun init() {
+        val snapHelper: SnapHelper = GravitySnapHelper(Gravity.START)
+        snapHelper.attachToRecyclerView(binding.branchesRecycler)
+        layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        employeeAdapter = EmployeeAdapter()
+        binding.branchesRecycler.layoutManager = layoutManager
+        binding.branchesRecycler.setHasFixedSize(true)
+        binding.branchesRecycler.isFocusable = false
+        binding.branchesRecycler.adapter = employeeAdapter
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = ActivityMapsFragmentBinding.inflate(layoutInflater, container, false)
         tokenManager = TokenManager.getInstance(
@@ -60,6 +81,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
         setupViewModel()
+        init()
         return binding.mapfragment
     }
 
@@ -74,6 +96,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
 
                     response.data?.let {
                         var branches=response.data.branches
+                        displayBranchesDetails(response.data.branches)
                          mMap=googleMap
                         if (branches.size != 0) {
                             for (i in branches.indices) {
@@ -102,8 +125,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
                                         )
                                         .title("Salaka Farm's Branches")
                                 )
-                                mark.setTag(i)
-//                                markerList.add(mark)
+                                mark.tag = i
                                 val center = CameraUpdateFactory.newLatLng(branchesPoints)
                                 val zoom = CameraUpdateFactory.zoomTo(10f)
                                 mark.showInfoWindow()
@@ -129,10 +151,26 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener{
         })
     }
 
+    private fun displayBranchesDetails(branches: List<Branches>) {
+        employeeAdapter?.differ?.submitList(branches)
+        binding.branchesRecycler.adapter = employeeAdapter
+    }
+
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         getBranchesList(googleMap)
 
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
+        mMap.isMyLocationEnabled = true;
     }
 
     private fun hideProgressBar() {

@@ -28,9 +28,6 @@ import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.viewmodel.SubscriptionViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
-import com.eightpeak.salakafarm.views.addtocart.CartActivity
-import com.eightpeak.salakafarm.views.home.HomeActivity
-import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdActivity
 import com.esewa.android.sdk.payment.ESewaConfiguration
 import com.esewa.android.sdk.payment.ESewaPayment
 import com.esewa.android.sdk.payment.ESewaPaymentActivity
@@ -64,7 +61,6 @@ class ConfirmSubscription : AppCompatActivity() {
 
 
     private lateinit var selectedPaymentMethod: String
-    private lateinit var selectedPaymentMethodResponse: String
     private lateinit var selectedSubscriptionName: String
     private lateinit var selectedAddressName: String
 
@@ -109,6 +105,7 @@ class ConfirmSubscription : AppCompatActivity() {
 
         if (selectedDeliveryPeroid == getString(R.string.morning_shift)) {
             selectedDeliveryPeroidResponse = "0"
+
         } else if (selectedDeliveryPeroid == getString(R.string.evening_shift)) {
             selectedDeliveryPeroidResponse = "1"
         } else if (selectedDeliveryPeroid == getString(R.string.both_shift)) {
@@ -152,7 +149,7 @@ class ConfirmSubscription : AppCompatActivity() {
         binding.paymentMethod.text = selectedPaymentMethod
         binding.paymentTo.text = userPrefManager.accountName
 
-
+        binding.deliveryPeriod.text=selectedDeliveryPeroid
 
         binding.paymentQr.load(BASE_URL + userPrefManager.qrPath)
 
@@ -165,17 +162,24 @@ class ConfirmSubscription : AppCompatActivity() {
         if (selectedPaymentMethod == getString(R.string.by_bank_account)) {
            binding.bankLayout.visibility=View.VISIBLE
             binding.proceedWithPayment.visibility=View.VISIBLE
+            binding.payByEsewa.visibility=View.GONE
         } else if (selectedPaymentMethod == getString(R.string.by_qr)) {
             binding.qrLayout.visibility=View.VISIBLE
 
+            binding.payByEsewa.visibility=View.GONE
             binding.proceedWithPayment.visibility=View.VISIBLE
         } else if (selectedPaymentMethod == getString(R.string.by_esewa)) {
          binding.payByEsewa.visibility=View.VISIBLE
+            binding.proceedWithPayment.visibility=View.GONE
         } else if (selectedPaymentMethod == getString(R.string.cash_on_delivery)) {
             binding.proceedWithPayment.visibility=View.VISIBLE
+            binding.payByEsewa.visibility=View.GONE
+
         }
 
-
+   binding.payByEsewa.setOnClickListener {
+       makePayment("1243")
+   }
       binding.proceedWithPayment.setOnClickListener {
           tokenManager?.let { it1 -> viewModel.addSubscription(it1,body) }
           viewModel.addSubscription.observe(this, Observer { response ->

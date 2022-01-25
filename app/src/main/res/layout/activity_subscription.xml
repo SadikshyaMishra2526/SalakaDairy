@@ -57,6 +57,8 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
+        android:id="@+id/main_view"
+        android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/_50sdp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -95,11 +97,14 @@
                              android:layout_marginLeft="@dimen/_5sdp"
                             android:layout_height="wrap_content"
                             android:text="@string/select_subscription_item"
-                            android:textColor="#2E7D32" />
+                            android:textStyle="bold"
+                            android:textColor="@color/sub_color" />
                            <TextView
                                android:layout_width="wrap_content"
                                android:layout_height="wrap_content"
-                               android:text=" :- "/>
+                               android:text=" :- "
+                               android:textStyle="bold"
+                               android:textColor="@color/sub_color" />
                         <TextView
                             android:id="@+id/sub_item_selected"
                             android:layout_width="wrap_content"
@@ -144,12 +149,15 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/selected_branch"
-                                android:layout_marginLeft="@dimen/_5sdp"
-                                android:textColor="#2E7D32" />
+                                android:layout_marginStart="@dimen/_5sdp"
+                                android:textStyle="bold"
+                                android:textColor="@color/sub_color"  />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text=" :- "/>
+                                android:text=" :- "
+                                android:textStyle="bold"
+                                android:textColor="@color/sub_color" />
                             <TextView
                                 android:id="@+id/branch_selected"
                                 android:layout_width="wrap_content"
@@ -163,8 +171,9 @@
                             <TextView
                                 android:id="@+id/change_branch"
                                 android:textSize="@dimen/_9sdp"
+                                android:visibility="gone"
                                 android:textColor="@color/blue"
-                                android:text="Change Branch"
+                                android:text="@string/change_branch"
                                 android:layout_marginEnd="@dimen/_7sdp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
@@ -198,9 +207,15 @@
                     android:id="@+id/sub_package_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone">
+                    android:orientation="vertical">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/subscription_schedule_and_quantity"
+                        android:textColor="@color/sub_color"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:textStyle="bold" />
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -212,12 +227,6 @@
                             android:layout_margin="@dimen/_5sdp"
                             android:orientation="vertical">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/subscription_schedule_and_quantity"
-                                android:textColor="@color/sub_color"
-                                android:textStyle="bold" />
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
@@ -257,7 +266,7 @@
                                 <TextView
                                     android:layout_width="@dimen/_50sdp"
                                     android:layout_height="wrap_content"
-                                    android:text="Period "
+                                    android:text="@string/period"
                                     android:textColor="@color/sub_color"
                                     android:textSize="@dimen/_12sdp"
                                     android:textStyle="bold" />
@@ -275,7 +284,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="@dimen/_30sdp"
                                     android:background="@drawable/edit_view"
-                                    android:text="Choose Starting Date"
+                                    android:text="@string/choose_starting_date"
                                     android:textColor="@color/sub_color"
                                     android:textSize="@dimen/_9sdp" />
                             </LinearLayout>
@@ -288,7 +297,7 @@
                                 <TextView
                                     android:layout_width="@dimen/_50sdp"
                                     android:layout_height="wrap_content"
-                                    android:text="Quantity "
+                                    android:text="@string/quantity"
                                     android:textColor="@color/sub_color"
                                     android:textSize="@dimen/_12sdp"
                                     android:textStyle="bold" />
@@ -324,8 +333,9 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Select Package"
+                        android:text="@string/select_package"
                         android:textColor="@color/sub_color"
+                        android:layout_marginLeft="@dimen/_10sdp"
                         android:textStyle="bold" />
 
                     <androidx.cardview.widget.CardView
@@ -374,7 +384,7 @@
                                 <TextView
                                     android:layout_width="@dimen/_100sdp"
                                     android:layout_height="wrap_content"
-                                    android:text="Selected Package "
+                                    android:text="@string/selected_package"
                                     android:textColor="@color/sub_color"
                                     android:textStyle="bold" />
                                  <TextView
@@ -395,7 +405,7 @@
                                 <TextView
                                     android:layout_width="@dimen/_100sdp"
                                     android:layout_height="wrap_content"
-                                    android:text="Total cost "
+                                    android:text="@string/total_cost"
                                     android:textColor="@color/sub_color"
                                     android:textStyle="bold" />
                                 <TextView
@@ -439,7 +449,7 @@
                                 <TextView
                                     android:layout_width="@dimen/_100sdp"
                                     android:layout_height="wrap_content"
-                                    android:text="Total Cost with Discount :-"
+                                    android:text="@string/total_cost_with_discount"
                                     android:textColor="@color/sub_color"
                                     android:textStyle="bold" />
                                 <TextView
@@ -457,6 +467,13 @@
 
                 </LinearLayout>
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/subscriber_details"
+                    android:textColor="@color/sub_color"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:textStyle="bold" />
                 <androidx.cardview.widget.CardView
                     android:id="@+id/deliver_to_layout"
                     android:layout_width="match_parent"
@@ -471,12 +488,6 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Subscriber Details"
-                            android:textColor="@color/sub_color"
-                            android:textStyle="bold" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -498,7 +509,7 @@
                                 android:id="@+id/change_location"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Change"
+                                android:text="@string/change"
                                 android:textColor="@color/blue"
                                 android:textSize="@dimen/_10sdp"
                                 android:textStyle="bold" />
@@ -522,13 +533,20 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/_5sdp"
-                            android:text="Earliest Delivery by 1 hour"
+                            android:text="@string/earliest_delivery_by_1_hour"
                             android:textSize="@dimen/_8sdp"
                             app:drawableStartCompat="@drawable/ic_baseline_drive_eta_24" />
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/payment_method"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:textColor="@color/sub_color"
+                    android:textStyle="bold" />
                 <androidx.cardview.widget.CardView
                     android:id="@+id/payment_layout"
                     android:layout_width="match_parent"
@@ -544,13 +562,6 @@
                         android:layout_margin="@dimen/_5sdp"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Payment Method"
-                            android:textColor="@color/sub_color"
-                            android:textSize="@dimen/_12sdp"
-                            android:textStyle="bold" />
 
                         <RadioGroup
                             android:id="@+id/payment_method"
@@ -603,13 +614,6 @@
                     android:layout_height="0dp"
                     android:layout_weight="1" />
 
-                <Button
-                    android:id="@+id/proceed_with_checkout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="bottom|end"
-                    android:layout_marginBottom="4dp"
-                    android:text="Proceed With Checkout" />
             </LinearLayout>
         </LinearLayout>
 
@@ -617,6 +621,17 @@
     </androidx.core.widget.NestedScrollView>
 
 
+    <Button
+        android:id="@+id/proceed_with_checkout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_gravity="bottom|end"
+        android:drawableStart="@drawable/ic_baseline_shopping_cart_24"
+        android:text="@string/proceed_with_subscription"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
     <ProgressBar
         android:id="@+id/progress"
         android:layout_width="wrap_content"

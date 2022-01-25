@@ -25,7 +25,7 @@ public class App extends Application {
     }
 
 
-    private static ArrayList<String> data = new ArrayList<>();
+    private static final ArrayList<String> data = new ArrayList<>();
 
     public static void addItem(String item) {
         data.add(item);

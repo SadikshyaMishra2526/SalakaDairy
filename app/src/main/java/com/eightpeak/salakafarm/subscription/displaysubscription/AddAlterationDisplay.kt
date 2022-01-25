@@ -79,7 +79,8 @@ class AddAlterationDisplay : BottomSheetDialogFragment() {
             binding.cancelSubscription.visibility=View.GONE
 
             binding.alterSubLayout.visibility=View.VISIBLE
-            binding.cancelSubscriptionTv.text = "Do you want to cancel this day's subscription? "
+            binding.cancelSubscriptionTv.text =
+                "Do you want to cancel $alterationDate's subscription? "
 
             binding.submitSubscription.setOnClickListener {
                 if(userPrefManager?.deliveryPeriod==2){
@@ -109,48 +110,14 @@ class AddAlterationDisplay : BottomSheetDialogFragment() {
 
         }
 
-        binding.deductSubscription.setOnClickListener {
-            binding.cancelSubscription.visibility=View.GONE
-            binding.deductSubscription.visibility=View.GONE
-            binding.addSubscription.visibility=View.GONE
-            binding.alterSubLayout.visibility=View.VISIBLE
-            binding.alterationLayout.visibility=View.VISIBLE
-            binding.alterationDate.text=alterationDate
-            binding.alterationQuantity.setText(alterQuantity.toString())
-            binding.submitSubscription.setOnClickListener {
-                if(userPrefManager?.deliveryPeriod==2){
-                    val deliveryPeriod: Int = binding.deliveryPeriod.checkedRadioButtonId
-                    deliveryPeriodRadio = root.findViewById<View>(deliveryPeriod) as RadioButton
-                    selectPeriod= deliveryPeriodRadio.text.toString()
-                }else if(userPrefManager?.deliveryPeriod==1){
-                    selectPeriod= "1"
-                }else if(userPrefManager?.deliveryPeriod==0){
-                    selectPeriod= "0"
-                }
-                val body= binding.alterationQuantity.text.toString().let { it1 ->
-                    subscriptionId?.let { it2 ->
-                        alterationDate?.let { it3 ->
-                            selectPeriod?.let { it4 ->
-                                RequestBodies.AddAlteration(
-                                    it2,"0",
-                                    it1, it3, it4
-                                )
-                            }
-                        }
 
-                    }
-                }
-                alterSubscription(body)
-            }
-
-        }
         binding.addSubscription.setOnClickListener {
             binding.cancelSubscription.visibility=View.GONE
             binding.addSubscription.visibility=View.GONE
             binding.deductSubscription.visibility=View.GONE
             binding.alterSubLayout.visibility=View.VISIBLE
             binding.alterationLayout.visibility=View.VISIBLE
-            binding.alterationDate.text=alterationDate
+            binding.alterationDate.setText(alterationDate)
             binding.alterationQuantity.setText(alterQuantity.toString())
             if(userPrefManager?.deliveryPeriod==2){
                 val deliveryPeriod: Int = binding.deliveryPeriod.checkedRadioButtonId
@@ -164,7 +131,7 @@ class AddAlterationDisplay : BottomSheetDialogFragment() {
             binding.submitSubscription.setOnClickListener {
                 val body= binding.alterationQuantity.text.toString().let { it1 ->
                     subscriptionId?.let { it2 ->
-                        alterationDate?.let { it3 ->
+                        binding.alterationDate.text.toString()?.let { it3 ->
                             selectPeriod?.let { it4 ->
                                 RequestBodies.AddAlteration(
                                     it2,"2",
@@ -191,11 +158,11 @@ class AddAlterationDisplay : BottomSheetDialogFragment() {
                     response.data?.let { _ ->
                         binding.alterSubscription.showSnack("Subscription Successfully edited", Snackbar.LENGTH_LONG)
                         binding.alterSubscription.visibility=View.GONE
-                        val handler = Handler()
-                        handler.postDelayed({
-                            dismiss()
-                            startActivity(Intent(requireContext(),DisplaySubscriptionDetails::class.java))
-                                 }, 1500)
+//                        val handler = Handler()
+//                        handler.postDelayed({
+//                            dismiss()
+//                            startActivity(Intent(requireContext(),DisplaySubscriptionDetails::class.java))
+//                                 }, 1500)
                     }
                 }
 

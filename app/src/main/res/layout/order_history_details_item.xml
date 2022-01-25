@@ -113,7 +113,7 @@
                          android:background="@drawable/compare"
                          android:layout_width="@dimen/_18sdp"
                          android:layout_height="@dimen/_18sdp"/>
-                <View
+                     <View
                          android:layout_width="1dp"
                          android:layout_gravity="center"
                          android:background="@color/tab_indicator_gray"

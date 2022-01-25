@@ -11,8 +11,6 @@ import com.eightpeak.salakafarm.databinding.ActivityOtpActivityBinding
 import com.eightpeak.salakafarm.databinding.OtpVerificationViewBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.RequestBodies
-import com.eightpeak.salakafarm.utils.Constants
-import com.eightpeak.salakafarm.utils.GeneralUtils
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.viewmodel.OTPViewModel
@@ -33,7 +31,7 @@ class OTPActivity : AppCompatActivity() {
     private lateinit var contact: String
     private lateinit var contactWithOutEncrypt: String
 
-    val value = GeneralUtils.decoderfun(Constants.SECRET_KEY)
+//    val value = GeneralUtils.decoderfun(Constants.SECRET_KEY)
 
     lateinit var otpViewModel: OTPViewModel
 
@@ -52,18 +50,19 @@ class OTPActivity : AppCompatActivity() {
 
     private fun getRegistrationDetail() {
 
-        firstName = Encrypt.encrypt(value,  intent.getStringExtra("first_name").toString()).toString()
-        lastName = Encrypt.encrypt(value,  intent.getStringExtra("last_name").toString()).toString()
-        email = Encrypt.encrypt(value,  intent.getStringExtra("email").toString()).toString()
-        password = Encrypt.encrypt(value,  intent.getStringExtra("password").toString()).toString()
-        contact = Encrypt.encrypt(value,  intent.getStringExtra("contact").toString()).toString()
+        firstName =  Encrypt.getEncrptedValue (  intent.getStringExtra("first_name").toString()).toString()
+        lastName =  Encrypt.getEncrptedValue (  intent.getStringExtra("last_name").toString()).toString()
+        email =  Encrypt.getEncrptedValue (  intent.getStringExtra("email").toString()).toString()
+        password =  Encrypt.getEncrptedValue (  intent.getStringExtra("password").toString()).toString()
+        contact =  Encrypt.getEncrptedValue (  intent.getStringExtra("contact").toString()).toString()
         contactWithOutEncrypt =  intent.getStringExtra("contact").toString()
         binding.customerPhoneNumber.setText(contactWithOutEncrypt)
 
         binding.generateOTP.setOnClickListener {
             if (contactWithOutEncrypt.substring(0, 1) == "9" && contactWithOutEncrypt.length == 10) {
-                otpViewModel.checkOTP(contactWithOutEncrypt)
-                getOTPResponse()
+//                otpViewModel.checkOTP(contactWithOutEncrypt)
+//                getOTPResponse()
+                startRegistration()
             } else {
                 binding.otpLayout.errorSnack(
                     "Please add valid phone number...",

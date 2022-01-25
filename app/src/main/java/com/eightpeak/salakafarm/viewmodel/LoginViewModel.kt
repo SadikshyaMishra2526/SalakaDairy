@@ -15,10 +15,9 @@ import com.eightpeak.salakafarm.utils.subutils.Event
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.Utils
 import com.eightpeak.salakafarm.views.addresslist.AddressListModel
+import com.eightpeak.salakafarm.views.home.products.GoogleLoginResponse
 import com.eightpeak.salakafarm.views.login.LoginResponse
-import com.eightpeak.salakafarm.views.register.RegisterResponse
 import kotlinx.coroutines.launch
-import okhttp3.ResponseBody
 import retrofit2.Response
 import java.io.IOException
 
@@ -40,8 +39,15 @@ class LoginViewModel(
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
                 val response = appRepository.loginUser(body)
-                Log.i("TAG", "login:login "+response)
-                _loginResponse.postValue(handlePicsResponse(response))
+                if(response.code()==401){
+                    _loginResponse.postValue(
+                        Event(Resource.Error(
+                            getApplication<Application>().getString(R.string.unauthorized),
+                        )))
+                }else{
+                    _loginResponse.postValue(handlePicsResponse(response))
+
+                }
             } else {
                 _loginResponse.postValue(Event(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection))))
             }
@@ -175,6 +181,67 @@ class LoginViewModel(
     }
 
     private fun handleAddressResponse(response: Response<AddressListModel>): Resource<AddressListModel> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+
+
+   val socialGoogle: MutableLiveData<Resource<GoogleLoginResponse>> = MutableLiveData()
+
+    fun socialGoogle(first_name: String,
+                     last_name: String,
+                     email: String,
+                     fcm_token: String,
+                     provider_id: String,
+                     avatar: String,
+                     phone: String) = viewModelScope.launch {
+        googleLogin(first_name,last_name,email,fcm_token,provider_id,avatar,phone)
+    }
+
+
+    private suspend fun googleLogin(first_name: String,
+                                    last_name: String,
+                                    email: String,
+                                    fcm_token: String,
+                                    provider_id: String,
+                                    avatar: String,
+                                    phone: String) {
+        socialGoogle.postValue(Resource.Loading())
+        try {
+            if (Utils.hasInternetConnection(getApplication<Application>())) {
+                val response = appRepository.googleLogin(first_name,last_name,email,fcm_token,provider_id,avatar,phone)
+                Log.i("TAG", "fetchUserAddress: $response")
+                socialGoogle.postValue(handleGoogleResponse(response))
+            } else {
+                socialGoogle.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+            }
+        } catch (t: Throwable) {
+            Log.i("TAG", "fetchUserAddress: "+t.localizedMessage)
+            when (t) {
+                is IOException -> socialGoogle.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.network_failure
+                        )
+                    )
+                )
+                else -> socialGoogle.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.conversion_error
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun handleGoogleResponse(response: Response<GoogleLoginResponse>): Resource<GoogleLoginResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)

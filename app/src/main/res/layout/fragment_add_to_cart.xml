@@ -52,7 +52,7 @@
             android:id="@+id/headerLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
             android:layout_gravity="center"
             android:drawableStart="@drawable/ic_baseline_shopping_cart_24"
             android:textColor="@color/main_color"
@@ -117,7 +117,7 @@
                         android:layout_height="@dimen/_40sdp"
                         android:contentDescription="TODO" />
                     <TextView
-                        android:text="There are no items in Cart"
+                        android:text="@string/there_are_no_items_in_cart"
                         android:layout_width="wrap_content"
                         android:textStyle="bold"
                         android:layout_marginTop="@dimen/_5sdp"
@@ -125,7 +125,7 @@
                     <Button
                         android:id="@+id/continue_shopping_empty"
                         android:layout_marginTop="@dimen/_5sdp"
-                        android:text="Continue"
+                        android:text="@string/continue_btn"
                         android:padding="@dimen/_5sdp"
                         android:textSize="13sp"
                         android:background="@color/tab_indicator_gray"
@@ -166,7 +166,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Just For You "
+                        android:text="@string/just_for_you"
                         android:textColor="@color/main_color"
                         android:textStyle="bold" />
                 </LinearLayout>

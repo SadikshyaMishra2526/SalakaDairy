@@ -63,7 +63,7 @@
                             android:layout_marginEnd="@dimen/_15sdp"
                             android:gravity="center"
                             android:textSize="@dimen/_10sdp"
-                            android:text="Estimated Time"
+                            android:text="@string/estimated_time"
                             android:textAllCaps="true"
                             android:textColor="@color/tab_indicator_gray" />
 
@@ -80,7 +80,7 @@
                             android:layout_marginEnd="@dimen/_15sdp"
                             android:gravity="center"
                             android:textSize="@dimen/_10sdp"
-                            android:text="#Order Id"
+                            android:text="@string/order_id"
                             android:textAllCaps="true"
                             android:textColor="@color/tab_indicator_gray" />
                     </LinearLayout>
@@ -97,7 +97,7 @@
                             android:layout_marginEnd="@dimen/_15sdp"
                             android:layout_marginBottom="@dimen/_15sdp"
                             android:gravity="center"
-                            android:text="30 mins"
+                            android:text="@string/_30_mins"
                             android:textAllCaps="true"
                             android:textColor="@color/sub_color"
                             android:textSize="@dimen/_8sdp"
@@ -128,7 +128,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_5sdp"
-                android:text="Track your Order Here"
+                android:text="@string/track_your_order_here"
                 android:textColor="@color/sub_color"
                 android:textStyle="bold" />
 
@@ -172,12 +172,12 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="New Order" />
+                                android:text="@string/new_order" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="New Order has been placed"
+                                android:text="@string/new_order_has_been_placed"
                                 android:textSize="@dimen/_7sdp" />
                         </LinearLayout>
                     </LinearLayout>
@@ -219,12 +219,12 @@
 
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Processing Order" />
+                                android:text="@string/processing_order" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Your order is in processing"
+                                android:text="@string/your_order_is_in_processing"
                                 android:textSize="@dimen/_7sdp" />
                         </LinearLayout>
                     </LinearLayout>
@@ -265,12 +265,12 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Completed" />
+                                android:text="@string/completed" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="New Order is processed and ready to ship."
+                                android:text="@string/new_order_is_processed_and_ready_to_ship"
                                 android:textSize="@dimen/_7sdp" />
                         </LinearLayout>
                     </LinearLayout>
@@ -314,12 +314,12 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Cancelled" />
+                                android:text="@string/cancelled" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="New Order has been placed"
+                                android:text="@string/new_order_has_been_placed"
                                 android:textSize="@dimen/_7sdp" />
                         </LinearLayout>
                     </LinearLayout>
@@ -351,7 +351,7 @@
                     android:padding="@dimen/_5sdp">
                     <TextView
                         android:layout_width="wrap_content"
-                        android:text="Employee's Details"
+                        android:text="@string/employee_s_details"
                         android:textSize="@dimen/_13sdp"
                         android:textColor="@color/sub_color"
                         android:textStyle="bold"
@@ -368,7 +368,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:text="Employee Image:-"
+                            android:text="@string/employee_image"
                             android:textColor="@color/sub_color"
                             android:textSize="@dimen/_10sdp"
                             android:textStyle="bold" />
@@ -392,7 +392,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:text="Employee Name:-"
+                            android:text="@string/employee_name"
                             android:textColor="@color/sub_color"
                             android:textSize="@dimen/_10sdp"
                             android:textStyle="bold" />
@@ -419,7 +419,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:text="Contact No.:"
+                            android:text="@string/contact_no"
                             android:textColor="@color/sub_color"
                             android:textSize="@dimen/_10sdp"
                             android:textStyle="bold" />
@@ -446,7 +446,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:text="Gender:"
+                            android:text="@string/gender"
                             android:textColor="@color/sub_color"
                             android:textSize="@dimen/_10sdp"
                             android:textStyle="bold" />
@@ -473,7 +473,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:text="Employee's Email :"
+                            android:text="@string/employee_s_email"
                             android:textColor="@color/sub_color"
                             android:textSize="@dimen/_10sdp"
                             android:textStyle="bold" />

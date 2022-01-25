@@ -156,13 +156,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
-                        android:text="There are no items in Wishlist"
+                        android:text="@string/there_are_no_items_in_wishlist"
                         android:textStyle="bold" />
 
                     <Button
                         android:id="@+id/continue_shopping_empty"
                         android:layout_marginTop="@dimen/_5sdp"
-                        android:text="Continue"
+                        android:text="@string/continue_btn"
                         android:padding="@dimen/_5sdp"
                         android:textSize="13sp"
                         android:background="@color/tab_indicator_gray"

@@ -2,169 +2,154 @@ package com.eightpeak.salakafarm.views.home.products.productbyid
 
 import com.google.gson.annotations.SerializedName
 
-class ProductByIdModel
-    (
-    @SerializedName("id") val id: Int?=null,
-    @SerializedName("sku") val sku: String?=null,
-    @SerializedName("upc") val upc: String?=null,
-    @SerializedName("ean") val ean: String?=null,
-    @SerializedName("jan") val jan: String?=null,
-    @SerializedName("isbn") val isbn: String?=null,
-    @SerializedName("mpn") val mpn: String?=null,
-    @SerializedName("image") val image: String?=null,
-    @SerializedName("brand_id") val brand_id: Int?=null,
-    @SerializedName("supplier_id") val supplier_id: Int?=null,
-    @SerializedName("price") val price: Int?=null,
-    @SerializedName("cost") val cost: Int?=null,
-    @SerializedName("stock") val stock: Int?=null,
-    @SerializedName("sold") val sold: Int?=null,
-    @SerializedName("minimum") val minimum: Int?=null,
-    @SerializedName("weight_class") val weight_class: String?=null,
-    @SerializedName("weight") val weight: Int?=null,
-    @SerializedName("length_class") val length_class: String?=null,
-    @SerializedName("length") val length: Int?=null,
-    @SerializedName("width") val width: Int?=null,
-    @SerializedName("height") val height: Int?=null,
-    @SerializedName("kind") val kind: Int?=null,
-    @SerializedName("property") val property: String?=null,
-    @SerializedName("tax_id") val tax_id: String?=null,
-    @SerializedName("status") val status: Int?=null,
-    @SerializedName("sort") val sort: Int?=null,
-    @SerializedName("view") val view: Int?=null,
-    @SerializedName("alias") val alias: String?=null,
-    @SerializedName("date_lastview") val date_lastview: String?=null,
-    @SerializedName("date_available") val date_available: String?=null,
-    @SerializedName("created_at") val created_at: String?=null,
-    @SerializedName("updated_at") val updated_at: String?=null,
-    @SerializedName("productRelation") val productRelation: List<ProductRelation>?=null,
-    @SerializedName("images") val images: List<Images>?=null,
-    @SerializedName("descriptions") val descriptions: List<Descriptions>?=null,
-    @SerializedName("promotion_price") val promotion_price: Promotion_price?=null,
-    @SerializedName("attributes") val attributes: List<Attributes>?=null,
-    @SerializedName("categories") val categories: List<Categories>?=null,
-    @SerializedName("average_rating") val average_rating: Float?=null,
-    @SerializedName("no_of_rating") val no_of_rating: String
+class ProductByIdModel(
+    @SerializedName("id") val id : Int,
+    @SerializedName("sku") val sku : String,
+    @SerializedName("upc") val upc : String,
+    @SerializedName("ean") val ean : String,
+    @SerializedName("jan") val jan : String,
+    @SerializedName("isbn") val isbn : String,
+    @SerializedName("mpn") val mpn : String,
+    @SerializedName("image") val image : String,
+    @SerializedName("brand_id") val brand_id : Int,
+    @SerializedName("supplier_id") val supplier_id : Int,
+    @SerializedName("price") val price : Int,
+    @SerializedName("cost") val cost : Int,
+    @SerializedName("stock") val stock : Int,
+    @SerializedName("sold") val sold : Int,
+    @SerializedName("minimum") val minimum : Int,
+    @SerializedName("weight_class") val weight_class : String,
+    @SerializedName("weight") val weight : Int,
+    @SerializedName("length_class") val length_class : String,
+    @SerializedName("length") val length : Int,
+    @SerializedName("width") val width : Int,
+    @SerializedName("height") val height : Int,
+    @SerializedName("kind") val kind : Int,
+    @SerializedName("property") val property : String,
+    @SerializedName("tax_id") val tax_id : Int,
+    @SerializedName("status") val status : Int,
+    @SerializedName("sort") val sort : Int,
+    @SerializedName("view") val view : Int,
+    @SerializedName("alias") val alias : String,
+    @SerializedName("date_lastview") val date_lastview : String,
+    @SerializedName("date_available") val date_available : String,
+    @SerializedName("created_at") val created_at : String,
+    @SerializedName("updated_at") val updated_at : String,
+    @SerializedName("average_rating") val average_rating : Double,
+    @SerializedName("no_of_rating") val no_of_rating : Int,
+    @SerializedName("productRelation") val productRelation : List<ProductRelation>,
+    @SerializedName("images") val images : List<Images>,
+    @SerializedName("descriptions") val descriptions : List<Descriptions>,
+    @SerializedName("categories_description") val categories_description : List<Categories_description>,
+    @SerializedName("promotion_price") val promotion_price : Promotion_price,
+    @SerializedName("brand") val brand : String,
+    @SerializedName("attributes") val attributes : List<String>,
+    @SerializedName("categories") val categories : List<Categories>
+
+) {
+    override fun toString(): String {
+        return "ProductByIdModel(id=$id, sku='$sku', upc='$upc', ean='$ean', jan='$jan', isbn='$isbn', mpn='$mpn', image='$image', brand_id=$brand_id, supplier_id=$supplier_id, price=$price, cost=$cost, stock=$stock, sold=$sold, minimum=$minimum, weight_class='$weight_class', weight=$weight, length_class='$length_class', length=$length, width=$width, height=$height, kind=$kind, property='$property', tax_id=$tax_id, status=$status, sort=$sort, view=$view, alias='$alias', date_lastview='$date_lastview', date_available='$date_available', created_at='$created_at', updated_at='$updated_at', average_rating=$average_rating, no_of_rating=$no_of_rating, productRelation=$productRelation, images=$images, descriptions=$descriptions, categories_description=$categories_description, promotion_price=$promotion_price, brand='$brand', attributes=$attributes, categories=$categories)"
+    }
+}
+
+data class ProductRelation (
+
+    @SerializedName("id") val id : Int,
+    @SerializedName("sku") val sku : String,
+    @SerializedName("upc") val upc : String,
+    @SerializedName("ean") val ean : String,
+    @SerializedName("jan") val jan : String,
+    @SerializedName("isbn") val isbn : String,
+    @SerializedName("mpn") val mpn : String,
+    @SerializedName("image") val image : String,
+    @SerializedName("brand_id") val brand_id : Int,
+    @SerializedName("supplier_id") val supplier_id : Int,
+    @SerializedName("price") val price : Int,
+    @SerializedName("cost") val cost : Int,
+    @SerializedName("stock") val stock : Int,
+    @SerializedName("sold") val sold : Int,
+    @SerializedName("minimum") val minimum : Int,
+    @SerializedName("weight_class") val weight_class : String,
+    @SerializedName("weight") val weight : Int,
+    @SerializedName("length_class") val length_class : String,
+    @SerializedName("length") val length : Int,
+    @SerializedName("width") val width : Int,
+    @SerializedName("height") val height : Int,
+    @SerializedName("kind") val kind : Int,
+    @SerializedName("property") val property : String,
+    @SerializedName("tax_id") val tax_id : Int,
+    @SerializedName("status") val status : Int,
+    @SerializedName("sort") val sort : Int,
+    @SerializedName("view") val view : Int,
+    @SerializedName("alias") val alias : String,
+    @SerializedName("date_lastview") val date_lastview : String,
+    @SerializedName("date_available") val date_available : String,
+    @SerializedName("created_at") val created_at : String,
+    @SerializedName("updated_at") val updated_at : String,
+    @SerializedName("average_rating") val average_rating : Double,
+    @SerializedName("no_of_rating") val no_of_rating : Int,
+    @SerializedName("name") val name : String,
+    @SerializedName("keyword") val keywordword : String,
+    @SerializedName("description") val description : String,
+    @SerializedName("promotion_price") val promotion_price : Promotion_price,
+    @SerializedName("stores") val stores : List<String>,
+    @SerializedName("descriptions") val descriptions : List<Descriptions>
 )
 
-data class Attributes(
 
-    @SerializedName("id") val id: Int?=null,
-    @SerializedName("name") val name: String?=null,
-    @SerializedName("attribute_group_id") val attribute_group_id: Int?=null,
-    @SerializedName("product_id") val product_id: Int?=null,
-    @SerializedName("add_price") val add_price: Int?=null,
-    @SerializedName("sort") val sort: Int?=null,
-    @SerializedName("status") val status: Int
+data class Categories (
+
+    @SerializedName("id") val id : Int,
+    @SerializedName("image") val image : String,
+    @SerializedName("alias") val alias : String,
+    @SerializedName("parent") val parent : Int,
+    @SerializedName("top") val top : Int,
+    @SerializedName("status") val status : Int,
+    @SerializedName("sort") val sort : Int,
+    @SerializedName("pivot") val pivot : Pivot
 )
 
-data class Images(
-    @SerializedName("id") val id: Int?=null,
-    @SerializedName("image") val image: String?=null,
-    @SerializedName("product_id") val product_id: Int
+data class Promotion_price (
+
+    @SerializedName("product_id") val product_id : Int,
+    @SerializedName("price_promotion") val price_promotion : Int,
+    @SerializedName("date_start") val date_start : String,
+    @SerializedName("date_end") val date_end : String,
+    @SerializedName("status_promotion") val status_promotion : Int,
+    @SerializedName("created_at") val created_at : String,
+    @SerializedName("updated_at") val updated_at : String
 )
 
-data class Promotion_price(
-    @SerializedName("product_id") val product_id: Int?=null,
-    @SerializedName("price_promotion") val price_promotion: String?=null,
-    @SerializedName("date_start") val date_start: String?=null,
-    @SerializedName("date_end") val date_end: String?=null,
-    @SerializedName("status_promotion") val status_promotion: Int?=null,
-    @SerializedName("created_at") val created_at: String?=null,
-    @SerializedName("updated_at") val updated_at: String
+
+data class Pivot (
+
+    @SerializedName("product_id") val product_id : Int,
+    @SerializedName("category_id") val category_id : Int
+)
+data class Descriptions (
+
+    @SerializedName("category_id") val category_id : Int,
+    @SerializedName("lang") val lang : String,
+    @SerializedName("title") val title : String,
+    @SerializedName("keyword") val keywordword : String,
+    @SerializedName("description") val description : String
 )
 
-data class Descriptions(
-    @SerializedName("product_id") val product_id: Int?=null,
-    @SerializedName("lang") val lang: String?=null,
-    @SerializedName("name") val name: String?=null,
-    @SerializedName("keyword") val keywordword: String?=null,
-    @SerializedName("description") val description: String?=null,
-    @SerializedName("content") val content: String
+data class Categories_description (
+
+    @SerializedName("id") val id : Int,
+    @SerializedName("image") val image : String,
+    @SerializedName("alias") val alias : String,
+    @SerializedName("parent") val parent : Int,
+    @SerializedName("top") val top : Int,
+    @SerializedName("status") val status : Int,
+    @SerializedName("sort") val sort : Int,
+    @SerializedName("pivot") val pivot : Pivot,
+    @SerializedName("descriptions") val descriptions : List<Descriptions>
 )
+data class Images (
 
-data class Pivot(
-
-    @SerializedName("product_id") val product_id: Int?=null,
-    @SerializedName("category_id") val category_id: Int
-)
-
-data class Stores(
-
-    @SerializedName("id") val id: Int?=null,
-    @SerializedName("logo") val logo: String?=null,
-    @SerializedName("icon") val icon: String?=null,
-    @SerializedName("phone") val phone: Int?=null,
-    @SerializedName("long_phone") val long_phone: String?=null,
-    @SerializedName("email") val email: String?=null,
-    @SerializedName("time_active") val time_active: String?=null,
-    @SerializedName("address") val address: String?=null,
-    @SerializedName("office") val office: String?=null,
-    @SerializedName("warehouse") val warehouse: String?=null,
-    @SerializedName("template") val template: String?=null,
-    @SerializedName("domain") val domain: String?=null,
-    @SerializedName("partner") val partner: Int?=null,
-    @SerializedName("code") val code: String?=null,
-    @SerializedName("language") val language: String?=null,
-    @SerializedName("timezone") val timezone: String?=null,
-    @SerializedName("currency") val currency: String?=null,
-    @SerializedName("status") val status: Int?=null,
-    @SerializedName("active") val active: Int?=null,
-    @SerializedName("pivot") val pivot: Pivot
-)
-
-data class ProductRelation(
-
-    @SerializedName("id") val id: Int?=null,
-    @SerializedName("sku") val sku: String?=null,
-    @SerializedName("upc") val upc: String?=null,
-    @SerializedName("ean") val ean: String?=null,
-    @SerializedName("jan") val jan: String?=null,
-    @SerializedName("isbn") val isbn: String?=null,
-    @SerializedName("mpn") val mpn: String?=null,
-    @SerializedName("image") val image: String?=null,
-    @SerializedName("brand_id") val brand_id: Int?=null,
-    @SerializedName("supplier_id") val supplier_id: Int?=null,
-    @SerializedName("price") val price: Int?=null,
-    @SerializedName("cost") val cost: Int?=null,
-    @SerializedName("stock") val stock: Int?=null,
-    @SerializedName("sold") val sold: Int?=null,
-    @SerializedName("minimum") val minimum: Int?=null,
-    @SerializedName("weight_class") val weight_class: String?=null,
-    @SerializedName("weight") val weight: Int?=null,
-    @SerializedName("length_class") val length_class: String?=null,
-    @SerializedName("length") val length: Int?=null,
-    @SerializedName("width") val width: Int?=null,
-    @SerializedName("height") val height: Int?=null,
-    @SerializedName("kind") val kind: Int?=null,
-    @SerializedName("property") val property: String?=null,
-    @SerializedName("tax_id") val tax_id: String?=null,
-    @SerializedName("status") val status: Int?=null,
-    @SerializedName("sort") val sort: Int?=null,
-    @SerializedName("view") val view: Int?=null,
-    @SerializedName("alias") val alias: String?=null,
-    @SerializedName("date_lastview") val date_lastview: String?=null,
-    @SerializedName("date_available") val date_available: String?=null,
-    @SerializedName("created_at") val created_at: String?=null,
-    @SerializedName("updated_at") val updated_at: String?=null,
-    @SerializedName("name") val name: String?=null,
-    @SerializedName("keyword") val keywordword: String?=null,
-    @SerializedName("description") val description: String?=null,
-    @SerializedName("promotion_price") val promotion_price: Promotion_price?=null,
-    @SerializedName("stores") val stores: List<Stores>?=null,
-    @SerializedName("descriptions") val descriptions: List<Descriptions>?=null,
-
-    @SerializedName("average_rating") val average_rating: Float?=null,
-    @SerializedName("no_of_rating") val no_of_rating: String
-)
-
-data class Categories(
-
-    @SerializedName("id") val id: Int?=null,
-    @SerializedName("image") val image: String?=null,
-    @SerializedName("alias") val alias: String?=null,
-    @SerializedName("parent") val parent: Int?=null,
-    @SerializedName("top") val top: Int?=null,
-    @SerializedName("status") val status: Int?=null,
-    @SerializedName("sort") val sort: Int?=null,
-    @SerializedName("pivot") val pivot: Pivot
+    @SerializedName("id") val id : Int,
+    @SerializedName("image") val image : String,
+    @SerializedName("product_id") val product_id : Int
 )

@@ -65,6 +65,7 @@ class SubscriptionAdapter(private val onClickListener: (View, DeliveryHistory) -
             val dayOnly: Array<String> = dateList[2].split("\n".toRegex()).toTypedArray()
             val today=Integer.parseInt(dayOnly[0])
             date_item.text = dateDetails.date.toString()
+            date_eng.text = dateDetails.date_eng.toString()
 
                if (dateDetails.alter_status == 3) {
                     alter_status.visibility = View.GONE
@@ -76,11 +77,7 @@ class SubscriptionAdapter(private val onClickListener: (View, DeliveryHistory) -
                     alter_status.text = "Cancelled"
                    date_item.setTextColor(Color.RED)
                    alter_status.setTextColor(Color.RED)
-                } else if (dateDetails.alter_status == 0) {
-                   alter_status.text = "-"+dateDetails.alter_qty+" litre"
-                    alter_status.setTextColor(Color.BLUE)
-                   date_item.setTextColor(Color.BLUE)
-                }else if (dateDetails.alter_status == null) {
+                } else if (dateDetails.alter_status == null) {
                    alter_status.visibility = View.GONE
                 }
 
@@ -101,6 +98,7 @@ class SubscriptionAdapter(private val onClickListener: (View, DeliveryHistory) -
                     sub_item.setBackgroundColor(resources.getColor(R.color.sub_color_lighter))
                 }
             } else if (dateDetails.date == today) {
+
                 sub_item.setBackgroundColor(resources.getColor(R.color.yellow_lighter))
                 if (userPrefManager.deliveryPeriod == 2) {
                     if(dateDetails.delivery_count==1){
@@ -110,11 +108,16 @@ class SubscriptionAdapter(private val onClickListener: (View, DeliveryHistory) -
                         evening_delivery.visibility = View.VISIBLE
                         sub_item.setBackgroundColor(resources.getColor(R.color.sub_color_lighter))
                     }
-                }else if(userPrefManager.deliveryPeriod == 1){
-                    morning_delivery.visibility = View.VISIBLE
-                }else{
-                    morning_delivery.visibility = View.GONE
+                }else if(userPrefManager.deliveryPeriod == 1||userPrefManager.deliveryPeriod == 0){
+                    if(dateDetails.delivery_count==0){
+                        morning_delivery.visibility = View.GONE
+                     }else{
+                        sub_item.setBackgroundColor(resources.getColor(R.color.sub_color_lighter))
+                        morning_delivery.visibility = View.VISIBLE
+
+                    }
                 }
+
             } else if (dateDetails.date > today) {
                 sub_item.setBackgroundColor(resources.getColor(R.color.white))
                 holder.itemView.setOnClickListener { view ->

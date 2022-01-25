@@ -5,6 +5,7 @@ import com.eightpeak.salakafarm.serverconfig.RetrofitInstance
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.http.Field
 
 class AppRepository {
 
@@ -94,8 +95,13 @@ class AppRepository {
     suspend fun getAddressList(tokenManager: TokenManager) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).getAddressList()
 
-    suspend fun getUserProfile(tokenManager: TokenManager, body: RequestBodies.UserProfile) =
-        RetrofitInstance.useApiWithAccessToken(tokenManager).getUserProfile(body)
+    suspend fun getUserProfile(tokenManager: TokenManager,
+                               first_name: RequestBody,
+                               last_name: RequestBody,
+                               sex: RequestBody,
+                               birthday: RequestBody,
+                               avatar: MultipartBody.Part) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).getUserProfile(first_name,last_name,sex,birthday,avatar)
 
 
     suspend fun updateAddressList(
@@ -136,6 +142,9 @@ class AppRepository {
 
     suspend fun addNewAddress(tokenManager: TokenManager, body: RequestBodies.AddAddress) =
         RetrofitInstance.useApiWithAccessToken(tokenManager).addNewAddress(body)
+
+    suspend fun editAddress(tokenManager: TokenManager, body: RequestBodies.EditAddress) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).editAddress(body)
 
 
     suspend fun deleteAddress(tokenManager: TokenManager, addressId: String) =
@@ -194,5 +203,23 @@ class AppRepository {
 
     suspend fun getGallery() =
         RetrofitInstance.useApiWithoutToken.getGallery()
+
+    suspend fun addContactUs(body: RequestBodies.AddContactUs) =
+        RetrofitInstance.useApiWithoutToken.contactUs(body)
+
+    suspend fun logout(tokenManager:TokenManager) =
+        RetrofitInstance.useApiWithAccessToken(tokenManager).logout()
+
+    suspend fun forgotPassword(forgotPassword:String) =
+        RetrofitInstance.useApiWithoutToken.forgotPassword(forgotPassword)
+
+    suspend fun googleLogin(first_name: String,
+                            last_name: String,
+                            email: String,
+                            fcm_token: String,
+                            provider_id: String,
+                            avatar: String,
+                            phone: String) =
+        RetrofitInstance.useApiWithoutToken.googleLogin(first_name,last_name,email,fcm_token,provider_id,avatar,phone)
 
 }

@@ -21,7 +21,7 @@ import com.eightpeak.salakafarm.viewmodel.SubscriptionViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.google.android.material.snackbar.Snackbar
 
-class ViewSubscriptionOrderHistory  : AppCompatActivity() {
+class ViewSubscriptionOrderHistory : AppCompatActivity() {
     private lateinit var binding: LayoutSubscriptionOrderHistoryBinding
     private lateinit var viewModel: SubscriptionViewModel
     lateinit var userPrefManager: UserPrefManager
@@ -40,7 +40,7 @@ class ViewSubscriptionOrderHistory  : AppCompatActivity() {
         )
         binding = LayoutSubscriptionOrderHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
-      binding.header.text="Subscription History"
+        binding.header.text = "Subscription History"
         binding.returnHome.setOnClickListener { finish() }
         userPrefManager = UserPrefManager(this)
 
@@ -71,16 +71,18 @@ class ViewSubscriptionOrderHistory  : AppCompatActivity() {
         binding.subOrderHistoryRecycler.isFocusable = false
         binding.subOrderHistoryRecycler.adapter = historyAdapter
     }
-    private fun getPageDetails() {
-        val historyDate= RequestBodies.SubHistoryList("2021-12-25","2022-01-30")
 
-        tokenManager?.let { viewModel.getSubHistory(it,historyDate) }
+    private fun getPageDetails() {
+        val startDate = intent.getStringExtra("start")
+        val endDate = intent.getStringExtra("end")
+        val historyDate =  RequestBodies.SubHistoryList(startDate!!, endDate!!)
+        tokenManager?.let { viewModel.getSubHistory(it, historyDate) }
         viewModel.subHistory.observe(this, Observer { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { history ->
-                        if(history.moreInfo!!.isNotEmpty()){
+                        if (history.moreInfo!!.isNotEmpty()) {
                             historyAdapter?.differ?.submitList(history.moreInfo)
                             binding.subOrderHistoryRecycler.adapter = historyAdapter
                         }

@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.eightpeak.salakafarm.databinding.FragmentProductListBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.viewmodel.ProductListViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
@@ -25,6 +24,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.eightpeak.salakafarm.App
 import com.eightpeak.salakafarm.R
+import com.eightpeak.salakafarm.databinding.FragmentProductListBinding
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.subutils.*

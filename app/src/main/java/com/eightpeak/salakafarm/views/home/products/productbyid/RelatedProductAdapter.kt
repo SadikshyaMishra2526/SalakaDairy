@@ -54,7 +54,7 @@ class RelatedProductAdapter : RecyclerView.Adapter<RelatedProductAdapter.Product
         val categoriesItem = differ.currentList[position]
         holder.itemView.apply {
             product_thumbnail.load(EndPoints.BASE_URL + categoriesItem.image)
-            if(categoriesItem.stock?.equals(0) == true){
+            if(categoriesItem.stock.equals(0)){
                 out_of_stock.visibility=View.GONE
             }else{
                 out_of_stock.visibility=View.VISIBLE
@@ -85,35 +85,35 @@ class RelatedProductAdapter : RecyclerView.Adapter<RelatedProductAdapter.Product
                 rating_5.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
             }
 
-            if (categoriesItem.descriptions!!.isNotEmpty()) {
-                if (userPrefManager.language.equals("ne")) {
-                    product_name.text = categoriesItem?.descriptions[1].name
-
-                    if(categoriesItem.promotion_price!=null){
-                        product_price_discount.text= GeneralUtils.getUnicodeNumber(categoriesItem.price.toString())
-                        product_price_discount.paintFlags = product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                        product_price.text =
-                            context.getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(categoriesItem.promotion_price?.price_promotion.toString())
-                    }else{
-                        product_price.text =
-                            context.getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(categoriesItem.price.toString())
-                    }
-
-                } else {
-                    product_name.text = categoriesItem?.descriptions?.get(0)?.name
-                    Log.i("TAG", "onBindViewHolder: "+categoriesItem.promotion_price?.price_promotion)
-                    if(categoriesItem.promotion_price==null){
-                        product_price.text =
-                            context.getString(R.string.rs) + categoriesItem.price.toString()
-                    }else{
-
-                        product_price_discount.text=categoriesItem.price.toString()
-                        product_price_discount.paintFlags = product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                        product_price.text =
-                            context.getString(R.string.rs) + categoriesItem.promotion_price?.price_promotion.toString()
-                    }
-                }
-            }
+//            if (categoriesItem.descriptions!!.isNotEmpty()) {
+//                if (userPrefManager.language.equals("ne")) {
+//                    product_name.text = categoriesItem?.descriptions[1].name
+//
+//                    if(categoriesItem.promotion_price!=null){
+//                        product_price_discount.text= GeneralUtils.getUnicodeNumber(categoriesItem.price.toString())
+//                        product_price_discount.paintFlags = product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+//                        product_price.text =
+//                            context.getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(categoriesItem.promotion_price?.price_promotion.toString())
+//                    }else{
+//                        product_price.text =
+//                            context.getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(categoriesItem.price.toString())
+//                    }
+//
+//                } else {
+//                    product_name.text = categoriesItem?.descriptions?.get(0)?.name
+//                    Log.i("TAG", "onBindViewHolder: "+categoriesItem.promotion_price?.price_promotion)
+//                    if(categoriesItem.promotion_price==null){
+//                        product_price.text =
+//                            context.getString(R.string.rs) + categoriesItem.price.toString()
+//                    }else{
+//
+//                        product_price_discount.text=categoriesItem.price.toString()
+//                        product_price_discount.paintFlags = product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+//                        product_price.text =
+//                            context.getString(R.string.rs) + categoriesItem.promotion_price?.price_promotion.toString()
+//                    }
+//                }
+//            }
 
 
             bt_add_to_cart.setOnClickListener {

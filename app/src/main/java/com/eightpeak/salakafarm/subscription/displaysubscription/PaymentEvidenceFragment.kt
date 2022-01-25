@@ -3,7 +3,9 @@ package com.eightpeak.salakafarm.subscription.displaysubscription
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -30,13 +32,15 @@ import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import java.io.File
 import java.io.FileNotFoundException
+import android.provider.MediaStore
+
+
+
 
 
 class PaymentEvidenceFragment : BottomSheetDialogFragment() {
 
     private val RESULT_LOAD_IMG = 101
-    private val CAMERA_REQUEST = 1888
-    private val MY_CAMERA_PERMISSION_CODE = 100
 
     private var _binding: FragmentPaymentEvidenceBinding? = null
     private val binding get() = _binding!!
@@ -104,7 +108,6 @@ class PaymentEvidenceFragment : BottomSheetDialogFragment() {
 
         binding.evidencePhoto.setOnClickListener(View.OnClickListener {
             val photoPickerIntent = Intent(Intent.ACTION_PICK)
-//            photoPickerIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
             photoPickerIntent.type = "image/*"
             startActivityForResult(
                 photoPickerIntent,
@@ -126,10 +129,10 @@ class PaymentEvidenceFragment : BottomSheetDialogFragment() {
                 val imageStream = activity?.contentResolver?.openInputStream(imageUri!!)
                 val selectedImage = BitmapFactory.decodeStream(imageStream)
                     binding.evidencePhoto.setImageBitmap(selectedImage)
-                    val file= File(imageUri!!.path)
+                    val file= File(imageUri?.let { getRealPathFromURI(it) })
                 Log.i("TAG", "onActivityResult: "+file.absolutePath)
 //
-                val requestFile: RequestBody = getFile(file)?.let {
+                val requestFile: RequestBody = file.let {
                     RequestBody.create("multipart/form-data".toMediaTypeOrNull(),
                         it
                     )
@@ -190,7 +193,19 @@ class PaymentEvidenceFragment : BottomSheetDialogFragment() {
             Toast.makeText(requireContext(), "Please Choose your image", Toast.LENGTH_LONG).show()
         }
     }
-
+    private fun getRealPathFromURI(contentURI: Uri): String? {
+        val result: String
+        val cursor: Cursor? = requireActivity().contentResolver.query(contentURI, null, null, null, null)
+        if (cursor == null) {
+            result = contentURI.getPath().toString()
+        } else {
+            cursor.moveToFirst()
+            val idx: Int = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+            result = cursor.getString(idx)
+            cursor.close()
+        }
+        return result
+    }
     private fun hideProgressBar() {
         binding.progress.visibility = View.GONE
     }

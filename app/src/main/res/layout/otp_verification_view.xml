@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="204dp"
-        android:text="Enter Verification Code"
+        android:text="@string/enter_verification_code"
         android:textColor="@color/white"
         android:textSize="@dimen/_20sdp"
         android:textStyle="bold"

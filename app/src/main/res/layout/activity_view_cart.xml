@@ -151,7 +151,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Just For You "
+                        android:text="@string/just_for_you"
                         android:textColor="@color/main_color"
                         android:textStyle="bold" />
                 </LinearLayout>

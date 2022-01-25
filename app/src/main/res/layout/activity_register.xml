@@ -44,7 +44,6 @@
                     android:layout_marginStart="@dimen/_30sdp"
                     android:layout_marginEnd="@dimen/_30sdp"
                    android:layout_marginTop="@dimen/_5sdp"
-                    android:text="Sadikshya"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     tools:layout_editor_absoluteY="269dp"
@@ -63,13 +62,11 @@
                    android:layout_marginTop="@dimen/_5sdp"
                     android:hint="@string/last_name"
                     android:inputType="textEmailAddress"
-
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     tools:layout_editor_absoluteY="269dp"
                     app:layout_constraintTop_toBottomOf="@+id/et_first_name"
-                    android:maxLines="1"
-                    android:text="Mishra" />
+                    android:maxLines="1"/>
 
 
                 <EditText
@@ -80,7 +77,6 @@
                     android:hint="@string/email"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
-                    android:text="sadikshyamishra@gmail.com"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     tools:layout_editor_absoluteY="269dp"
@@ -107,7 +103,6 @@
                         android:layout_alignStart="@+id/address_second_img"
                         android:hint="@string/password"
                         android:gravity="center"
-                        android:text="123123"
                         android:inputType="textPassword"
                         android:maxLines="1"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -130,9 +125,7 @@
                     android:gravity="center"
                     android:hint="@string/contact"
                     android:inputType="textEmailAddress"
-                    android:text="9842554500"
                     android:maxLines="1"
-
                     android:layout_marginStart="@dimen/_30sdp"
                     android:layout_marginEnd="@dimen/_30sdp"
                    android:layout_marginTop="@dimen/_5sdp"
@@ -225,6 +218,7 @@
                 <ImageView
                     android:id="@+id/fb"
                     android:layout_width="wrap_content"
+                    android:visibility="gone"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/imagecontent"
                     app:srcCompat="@drawable/ic_facebook" />

@@ -9,6 +9,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 
 import com.eightpeak.salakafarm.R;
+import com.eightpeak.salakafarm.views.home.ui.user_profile.Encrypt;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
@@ -108,4 +109,6 @@ public class GeneralUtils {
         Log.i("TAG", "decoderfun: "+enval);
         return Base64.decode(enval.getBytes(), Base64.DEFAULT);
     }
+
+
 }

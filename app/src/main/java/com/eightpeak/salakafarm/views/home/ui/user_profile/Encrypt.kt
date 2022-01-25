@@ -2,6 +2,8 @@ package com.eightpeak.salakafarm.views.home.ui.user_profile
 
 
 import android.util.Base64
+import com.eightpeak.salakafarm.utils.GeneralUtils
+import com.eightpeak.salakafarm.views.home.ui.user_profile.Encrypt.encrypt
 import com.google.android.gms.common.util.Hex
 import com.google.gson.Gson
 import org.apache.commons.codec.binary.Hex.encodeHex
@@ -16,6 +18,12 @@ import javax.crypto.spec.SecretKeySpec
 
 
 object Encrypt {
+
+    fun getEncrptedValue(value: String?): String? {
+        val SECRET_KEY = "L+poNDg7gEEwUVOfHPAmYlgmmHilt9GgpAEF44Dgb64="
+        val value1 = GeneralUtils.decoderfun(SECRET_KEY)
+        return encrypt(value1, value!!)
+    }
 
     fun encrypt(keyValue: ByteArray?, plaintext: String): String? {
         val key: Key = SecretKeySpec(keyValue, "AES")

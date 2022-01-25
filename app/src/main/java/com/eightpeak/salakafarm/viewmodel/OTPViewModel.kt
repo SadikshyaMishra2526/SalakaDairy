@@ -142,8 +142,14 @@ class OTPViewModel  (
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
                 val response = appRepository.registerUser(body)
-                Log.i("TAG", "register: "+response.body())
-                _registerResponse.postValue(handleRegisterResponse(response))
+                if(response.code()==401){
+
+                    Log.i("TAG", "register: "+response.body())
+                }else{
+
+                    _registerResponse.postValue(handleRegisterResponse(response))
+                }
+
             } else {
                 _registerResponse.postValue(
                     Event(

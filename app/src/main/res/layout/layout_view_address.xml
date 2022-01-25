@@ -19,7 +19,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/_10sdp"
                 android:gravity="center"
-                android:text="Your Address List"
+                android:text="@string/your_address_list"
                 android:textColor="@color/sub_color"
                 android:textSize="@dimen/_15sdp" />
 

@@ -1,5 +1,6 @@
 package com.eightpeak.salakafarm.serverconfig
 
+import android.net.Uri
 import retrofit2.http.Field
 
 
@@ -68,13 +69,6 @@ object RequestBodies {
     )
 
 
-    data class UserProfile(
-        val first_name: String,
-        val last_name: String,
-        val sex: String,
-        val birthday: String
-    )
-
     data class UpdateAddressList(
         val first_name: String,
         val last_name: String,
@@ -125,9 +119,37 @@ object RequestBodies {
         val lng: String
     )
 
+    data class EditAddress(
+        val address1: String,
+        val address2: String,
+        val address3: String,
+        val phone: String,
+        val id: String
+    )
+
     data class SubHistoryList(
         val from: String,
         val to: String
     )
+
+    data class AddContactUs(
+        val name: String,
+        val phone: String,
+        val email: String,
+        val title: String,
+        val content: String
+    )
+
+
+
+
+
+
+
+
+
+
+
+
 }
 

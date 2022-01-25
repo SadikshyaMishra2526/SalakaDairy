@@ -17,9 +17,10 @@ data class RegisterResponse (
 	@SerializedName("address_id") val address_id : Int,
 	@SerializedName("name") val name : String,
 
-	@SerializedName("error") val error : String,
+	@SerializedName("error") val error : Int,
 	@SerializedName("msg") val msg : String,
-	@SerializedName("detail") val detail : String
+	@SerializedName("detail") val detail : String,
+	@SerializedName("message") val message : String
 
 ) {
 	override fun toString(): String {

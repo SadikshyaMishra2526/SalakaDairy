@@ -6,6 +6,7 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -51,7 +52,7 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
         binding.headerTitle.text = getString(R.string.track_your_subscription)
         binding.returnHome.setOnClickListener { finish() }
         userPrefManager = UserPrefManager(this)
-
+        Log.i("TAG", "onCreate: " +intent.getStringExtra("title"))
         init()
         setContentView(binding.root)
 
@@ -84,7 +85,6 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
     }
 
     private fun openActivity(view: View, category: DeliveryHistory) {
-        Log.i("TAG", "openActivity: " + category)
         val args = Bundle()
         args.putString(
             Constants.SUBSCRIPTION_ID,
@@ -94,7 +94,7 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
             Constants.QUANTITY,
             subscriptionDetailsModel?.subscription?.unit_per_day.toString()
         )
-        args.putString(Constants.ALTER_DAY, "2022-01-${category.date}")
+        args.putString(Constants.ALTER_DAY, category.date_eng)
         val bottomSheet = AddAlterationDisplay()
         bottomSheet.arguments = args
         bottomSheet.show(
@@ -110,12 +110,21 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
-//                        if(picsResponse.error.equals("1")){
-//
-//                        }else{
+                        Log.i("TAG", "getCustomerSubscription: "+picsResponse.message)
+
+                        if(picsResponse.error!=null&&picsResponse.error == "1"){
+                            userPrefManager.subscriptionStatus=false
+                            binding.subscriptionDetails.errorSnack(picsResponse.message, Snackbar.LENGTH_LONG)
+                            binding.subscriptionDetails.visibility=View.GONE
+                            val handler = Handler()
+                            handler.postDelayed({
+                                finish()
+                            }, 1000)
+                        }else{
+                            binding.subscriptionDetails.visibility=View.VISIBLE
                             displaySubscriptionDetails(picsResponse)
 
-//                        }
+                        }
                     }
                 }
 
@@ -143,10 +152,10 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
         binding.subscriptionExpire.text = ad.convertDate(subscriptionDetails.subscription.expiration_time)
         binding.subscriberPackageName.text = subscription.sub_package.name.toString()
         binding.subscriptionRemaining.text =
-            subscription.remaining_quantity.toString() + "/" + subscription.subscribed_total_amount.toString()
+            subscription.remaining_quantity.toString() + "/" + subscription.total_quantity.toString()
         binding.paymentVia.text = subscription.mode
         binding.remainingDays.text = subscription.remaining_quantity.toString()
-        binding.unitPerDay.text = subscription.unit_per_day.toString()
+        binding.unitPerDay.text = subscription.unit_per_day.toString()+" litre"
          binding.subscriberBranch.text = subscription.branch.name
         binding.subscriptionAddress.text = subscription.address.address1
 //for notification topic
@@ -187,7 +196,7 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
             binding.warningMessage.visibility = View.VISIBLE
         } else if (subscription.mode == "esewa") {
 
-        } else if (subscription.mode == "cashondelivery") {
+        } else if (subscription.mode == "Cash on Delivery") {
             binding.warningMessage.text =
                 "Subscription needs to be validated to start. You can pay our employee when he/she delivers your first subscription..."
         }
@@ -240,6 +249,8 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
         }
         binding.viewSubscriptionHistory.setOnClickListener {
            val intent= Intent(this@DisplaySubscriptionDetails, ViewSubscriptionOrderHistory::class.java)
+            intent.putExtra("start", subscriptionDetailsModel!!.subscription.starting_date)
+            intent.putExtra("end", subscriptionDetailsModel!!.subscription.expiration_time)
             startActivity(intent)
             finish()
 
@@ -314,6 +325,7 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
         startActivity(mainActivity)
         finish()
     }
+
     private fun pushNotificationService(branchId: Int?) {
         var topic=branchId.toString()+"_customers"
         FirebaseMessaging.getInstance().subscribeToTopic(topic)

@@ -60,7 +60,7 @@
                     <TextView
                         android:id="@+id/order_delivered_by"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/_25sdp"
                         android:padding="@dimen/_5sdp"
                         android:selectAllOnFocus="true"
                         android:textSize="@dimen/_10sdp" />

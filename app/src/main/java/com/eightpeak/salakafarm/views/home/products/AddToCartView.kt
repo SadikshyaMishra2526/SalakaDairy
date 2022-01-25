@@ -80,10 +80,10 @@ class AddToCartView : BottomSheetDialogFragment() {
                         binding.productThumbnail.load(BASE_URL + picsResponse.image)
                         if (userPrefManager?.language == "ne") {
 
-                            binding.productName.text = picsResponse.descriptions?.get(1)?.name ?: "not found"
+                            binding.productName.text = picsResponse.productRelation?.get(0)?.descriptions[1].title
                         } else {
 
-                            binding.productName.text = picsResponse.descriptions?.get(0)?.name?: "not found"
+                            binding.productName.text = picsResponse.productRelation?.get(0)?.descriptions[0].title
                         }
                         getData(picsResponse)
                     }
@@ -117,15 +117,15 @@ class AddToCartView : BottomSheetDialogFragment() {
                 binding.productQuantity.text = quantity.toString()
             }
         }
-        if (picsResponse.attributes!!?.isNotEmpty() == true) {
-            Log.i("TAG", "getData: " + picsResponse.attributes[0].name)
-            var attribute = ""
-            for (i in picsResponse.attributes.indices) {
-                attribute = attribute + " " + picsResponse.attributes[i].name + " , "
-
-            }
-            binding.attribute.text = "Attributes :-" + attribute
-        }
+//        if (picsResponse.attributes!!?.isNotEmpty() == true) {
+//            Log.i("TAG", "getData: " + picsResponse.attributes[0].name)
+//            var attribute = ""
+//            for (i in picsResponse.attributes.indices) {
+//                attribute = attribute + " " + picsResponse.attributes[i].name + " , "
+//
+//            }
+//            binding.attribute.text = "Attributes :-" + attribute
+//        }
 
         binding.btAddToCart.setOnClickListener {
             tokenManager?.let { it1 ->

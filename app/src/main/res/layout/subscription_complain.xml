@@ -44,7 +44,7 @@
                 android:textColor="@color/sub_color"
                 android:textSize="@dimen/_12sdp"
                 android:textStyle="bold"
-                android:text="Subscription Complain Box" />
+                android:text="@string/subscription_complain_box" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -67,14 +67,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Note !!!"
+                        android:text="@string/note"
                         android:textColor="@color/sub_color" />
 
                     <TextView
                         android:id="@+id/warning_message"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Milk needs to be boiled within half hour after received. Your complain will be valid if send within half hour."
+                        android:text="@string/milk_needs_to_be_boiled_within_half_hour_after_received_your_complain_will_be_valid_if_send_within_half_hour"
                         android:textColor="@color/red"
                         android:textSize="@dimen/_9sdp" />
                 </LinearLayout>
@@ -126,7 +126,7 @@
                     android:layout_height="@dimen/_80sdp"
                     android:background="@drawable/background_edit_text_bottom"
                     android:gravity="left|center"
-                    android:hint=" Description"
+                    android:hint="@string/contact"
                     android:inputType="textMultiLine"
                     android:textSize="@dimen/_12sdp" />
 
@@ -140,7 +140,7 @@
                     android:background="@drawable/capsule"
                     android:backgroundTint="@color/main_color"
                     android:gravity="center"
-                    android:text="Submit"
+                    android:text="@string/submit"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_15sdp" />
 

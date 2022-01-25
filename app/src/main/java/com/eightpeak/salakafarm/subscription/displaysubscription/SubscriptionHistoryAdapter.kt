@@ -45,7 +45,7 @@ class SubscriptionHistoryAdapter() : RecyclerView.Adapter<SubscriptionHistoryAda
         val subscriptionHistory = differ.currentList[position]
         holder.itemView.apply {
             if (subscriptionHistory != null) {
-               history_date.text=subscriptionHistory.date
+               history_date.text=subscriptionHistory.date_nep+" ("+subscriptionHistory.date+")"
                 Log.i("TAG", "onBindViewHolder: "+subscriptionHistory.deliveryAlter?.size)
 
                    if(subscriptionHistory.deliveryAlter==null){

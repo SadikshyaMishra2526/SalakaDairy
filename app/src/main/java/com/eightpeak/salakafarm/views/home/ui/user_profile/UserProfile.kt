@@ -5,8 +5,13 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.database.Cursor
+import android.graphics.BitmapFactory
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.provider.MediaStore
 import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
@@ -42,22 +47,31 @@ import android.widget.Toast
 
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import coil.api.load
 import com.eightpeak.salakafarm.databinding.ActivityUserProfileBinding
+import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
 import com.eightpeak.salakafarm.views.home.address.AddressModification
 import com.eightpeak.salakafarm.utils.GeneralUtils
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.addAddressSnack
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.utils.subutils.showSnack
+import com.eightpeak.salakafarm.views.home.address.EditAddress
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
+import java.io.FileNotFoundException
 
 class UserProfile : AppCompatActivity() {
 
     private lateinit var userPrefManager: UserPrefManager
     private var _binding: ActivityUserProfileBinding? = null
 
+    private val RESULT_LOAD_IMG = 101
     private lateinit var binding: ActivityUserProfileBinding
     private lateinit var viewModel: UserProfileViewModel
-
+    private lateinit var profilePicture: MultipartBody.Part
     var dateSelected: Calendar = Calendar.getInstance()
 
     var value1: ByteArray = GeneralUtils.decoderfun(Constants.SECRET_KEY)
@@ -89,7 +103,17 @@ class UserProfile : AppCompatActivity() {
         binding.userName.text = userPrefManager.firstName + " " + userPrefManager.lastName
         binding.userEmail.text = userPrefManager.email
         binding.userPhone.text = userPrefManager.contactNo
+        if(userPrefManager.avatar.length>5){
+            if(userPrefManager.avatar.contains("https://")){
+                binding.customerAvatar.load(userPrefManager.avatar)
+            }else{
+                binding.customerAvatar.load(BASE_URL+userPrefManager.avatar)
+            }
 
+        }else{
+            binding.customerAvatar.load("https://salakafarm.com/public/data/logo/Untitled.png")
+
+        }
         dialog = Dialog(this)
 
         binding.userLogout.setOnClickListener {
@@ -98,16 +122,22 @@ class UserProfile : AppCompatActivity() {
             builder.setMessage(R.string.logout_msg)
             builder.setPositiveButton(R.string.logout,
                 DialogInterface.OnClickListener { _, _ ->
-                    userPrefManager.clearData()
-                    tokenManager?.deleteToken()
-                    startActivity(Intent(this@UserProfile, HomeActivity::class.java))
-                    finish()
+                    viewModel.requestLogout(tokenManager!!)
+                     getLogoutResponse()
+
+                    val handler = Handler()
+                    handler.postDelayed({
+                        userPrefManager.clearData()
+                        tokenManager?.deleteToken()
+                        startActivity(Intent(this@UserProfile, HomeActivity::class.java))
+                        finish()
+                    }, 2000)
+
                 })
             builder.setNegativeButton(R.string.cancel, null)
 
             val dialog = builder.create()
             dialog.show()
-
 
 
 ////            for google signout
@@ -117,8 +147,6 @@ class UserProfile : AppCompatActivity() {
 //                        // ...
 //                    }
 //                })
-
-
 
 
         }
@@ -159,12 +187,12 @@ class UserProfile : AppCompatActivity() {
             startActivity(intent)
 
         }
-         binding.addAddresses.setOnClickListener {
-             val intent = Intent(this@UserProfile, AddressModification::class.java)
+        binding.addAddresses.setOnClickListener {
+            val intent = Intent(this@UserProfile, AddressModification::class.java)
 //              intent.putExtra(Constants.ORDER_STATUS, orderHistory.orderlist[i].status.toString())
-             startActivity(intent)
+            startActivity(intent)
 
-         }
+        }
         binding.editAddress.setOnClickListener {
             dialog!!.show()
         }
@@ -174,6 +202,31 @@ class UserProfile : AppCompatActivity() {
 
     }
 
+    private fun getLogoutResponse() {
+
+        viewModel.logout.observe(this, Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let {
+                        Log.i("TAG", "getDeleteResponse: " + response)
+                    }
+                }
+
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let { message ->
+
+                        binding.userProfileView.errorSnack(message, Snackbar.LENGTH_LONG)
+                    }
+                }
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+            }
+        })
+    }
+
     private fun getAddressList() {
         tokenManager?.let { it1 -> viewModel.getUserAddressList(it1) }
         var addressListString = ""
@@ -181,14 +234,14 @@ class UserProfile : AppCompatActivity() {
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
-                    response.data?.let { picsResponse ->
-                        if(picsResponse.address_list.isNotEmpty()){
-                            viewAddressList(picsResponse)
-                            binding.customerDefaultAddress.text=addressListString+
-                                    picsResponse.address_list[0].address1 + " " + picsResponse.address_list[0].address2 + " Nepal" + "\n"
-                            for (i in picsResponse.address_list.indices) {
-                                addressListString =addressListString+
-                                        picsResponse.address_list[i].address1 + " " + picsResponse.address_list[i].address2 + " Nepal" + "\n"
+                    response.data?.let { addresses ->
+                        if (addresses.address_list.isNotEmpty()) {
+                            viewAddressList(addresses)
+                            binding.customerDefaultAddress.text =
+                                addressListString + addresses.address_list[0].address1 + " " + addresses.address_list[0].address2 + " Nepal" + "\n"
+                            for (i in addresses.address_list.indices) {
+                                addressListString = addressListString +
+                                        addresses.address_list[i].address1 + " " + addresses.address_list[i].address2 + " Nepal" + "\n"
                             }
                             userPrefManager.addressList = addressListString
                         }
@@ -228,26 +281,35 @@ class UserProfile : AppCompatActivity() {
                 val addressListItemDelete = itemView.findViewById<ImageView>(R.id.delete_address)
                 addressListItem.text = i.address1 + ", " + i.address2 + ", Nepal"
                 addressListItemEdit.setOnClickListener {
-
+                    val intentEditAddress = Intent(this@UserProfile, EditAddress::class.java)
+                    intentEditAddress.putExtra("address1", i.address1)
+                    intentEditAddress.putExtra("address2", i.address2)
+                    intentEditAddress.putExtra("address3", i.address3)
+                    intentEditAddress.putExtra("contact", i.phone)
+                    intentEditAddress.putExtra("addressId", i.id.toString())
+                    Log.i("TAG", "viewAddressList: " + i.id.toString())
+                    dialog?.dismiss()
+                    startActivity(intentEditAddress)
                 }
-                Log.i("TAG", "viewAddressList: "+i.id.toString())
-                addressListItemDelete.setOnClickListener {
-                    tokenManager?.let { it1 ->
-                        viewModel.deleteAddressDetails(
-                            it1,
-                            i.id.toString()
-                        )
-                    }
-                    getDeleteResponse()
-                }
-
+//                addressListItemDelete.setOnClickListener {
+//                    tokenManager?.let { it1 ->
+//                        viewModel.deleteAddressDetails(
+//                            it1,
+//                            i.id.toString()
+//                        )
+//                    }
+//                    getDeleteResponse()
+//                }
                 fetchAddressList?.addView(itemView)
             }
-
             dialog?.setCanceledOnTouchOutside(true)
 
-        }else{
-            binding.userProfileView.addAddressSnack(this@UserProfile,"Address List Empty,Please add your address", Snackbar.LENGTH_LONG)
+        } else {
+            binding.userProfileView.addAddressSnack(
+                this@UserProfile,
+                "Address List Empty,Please add your address",
+                Snackbar.LENGTH_LONG
+            )
         }
     }
 
@@ -259,7 +321,7 @@ class UserProfile : AppCompatActivity() {
                     hideProgressBar()
                     response.data?.let {
                         dialog?.show()
-                        Log.i("TAG", "getDeleteResponse: "+response)
+                        Log.i("TAG", "getDeleteResponse: " + response)
                     }
                 }
 
@@ -320,13 +382,13 @@ class UserProfile : AppCompatActivity() {
         dialog: Dialog
     ) {
         val encrOldPassword: String? = Encrypt.encrypt(value1, oldPasswordString)
-        val encrNewPassword: String?  = Encrypt.encrypt(value1, newPasswordString)
-            if (encrNewPassword?.length!! >6&&encrOldPassword != null) {
-                val body =
-                    RequestBodies.UpdatePassword(encrOldPassword,encrNewPassword)
-                tokenManager?.let { it1 -> viewModel.updatePasswordDetails(it1, body) }
+        val encrNewPassword: String? = Encrypt.encrypt(value1, newPasswordString)
+        if (encrNewPassword?.length!! > 6 && encrOldPassword != null) {
+            val body =
+                RequestBodies.UpdatePassword(encrOldPassword, encrNewPassword)
+            tokenManager?.let { it1 -> viewModel.updatePasswordDetails(it1, body) }
 
-            }
+        }
 
 
         viewModel.updatePassword.observe(this, Observer { response ->
@@ -335,11 +397,17 @@ class UserProfile : AppCompatActivity() {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
                         dialog.dismiss()
-                        var res=response.data.error
-                        if(res>0){
-                            binding.userProfileView.errorSnack(response.data.message, Snackbar.LENGTH_LONG)
-                        }else{
-                            binding.userProfileView.showSnack(response.data.message, Snackbar.LENGTH_LONG)
+                        var res = response.data.error
+                        if (res > 0) {
+                            binding.userProfileView.errorSnack(
+                                response.data.message,
+                                Snackbar.LENGTH_LONG
+                            )
+                        } else {
+                            binding.userProfileView.showSnack(
+                                response.data.message,
+                                Snackbar.LENGTH_LONG
+                            )
 
                         }
                     }
@@ -371,6 +439,15 @@ class UserProfile : AppCompatActivity() {
         val userDoB = dialog.findViewById<TextView>(R.id.customer_DOB)
         val btnSummit = dialog.findViewById<Button>(R.id.continuebtn)
         val btnCancel = dialog.findViewById<Button>(R.id.cancel)
+        val customerAvatar = dialog.findViewById<ImageView>(R.id.customer_avatar)
+        customerAvatar.setOnClickListener {
+            val photoPickerIntent = Intent(Intent.ACTION_PICK)
+            photoPickerIntent.type = "image/*"
+            startActivityForResult(
+                photoPickerIntent,
+                RESULT_LOAD_IMG
+            )
+        }
         btnCancel.setOnClickListener { dialog.dismiss() }
         userDoB.setOnClickListener {
             val newCalendar = dateSelected
@@ -389,30 +466,31 @@ class UserProfile : AppCompatActivity() {
             Log.i("TAG", "onCreate: " + dateSelected.time)
 
         }
-         firstName.setText(userPrefManager.firstName)
-         lastName.setText(userPrefManager.lastName)
+        firstName.setText(userPrefManager.firstName)
+        lastName.setText(userPrefManager.lastName)
 
 
         btnSummit.setOnClickListener {
-            val userGender = dialog.findViewById<RadioGroup>(R.id.customer_gender).checkedRadioButtonId
+            val userGender =
+                dialog.findViewById<RadioGroup>(R.id.customer_gender).checkedRadioButtonId
             val gender = dialog.findViewById<View>(userGender) as RadioButton
 
             val name = firstName.text.toString()
             val email = lastName.text.toString()
             val dob = userDoB.text.toString()
-            val genderString =gender.text.toString()
-            if(dob.isNotEmpty()){
-                if(userGender!=null){
-                    changeUserProfile(name, email, dob, genderString,dialog)
-                }else{
-                    changeUserProfile(name, email, dob, "",dialog)
+            val genderString = gender.text.toString()
+            if (dob.isNotEmpty()) {
+                if (userGender != null) {
+                    changeUserProfile(name, email, dob, genderString, profilePicture, dialog)
+                } else {
+                    changeUserProfile(name, email, dob, "", profilePicture, dialog)
                 }
-            }else{
+            } else {
 
-                if(genderString.isNotEmpty()){
-                    changeUserProfile(name, email, "", genderString,dialog)
-                }else{
-                    changeUserProfile(name, email, "", "",dialog)
+                if (genderString.isNotEmpty()) {
+                    changeUserProfile(name, email, "", genderString, profilePicture, dialog)
+                } else {
+                    changeUserProfile(name, email, "", "", profilePicture, dialog)
                 }
             }
             GeneralUtils.hideKeyboard(this)
@@ -421,24 +499,78 @@ class UserProfile : AppCompatActivity() {
         dialog.show()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == AppCompatActivity.RESULT_OK) {
+            try {
+                val imageUri = data?.data
+                val imageStream = contentResolver?.openInputStream(imageUri!!)
+                val selectedImage = BitmapFactory.decodeStream(imageStream)
+                val customerAvatar = dialog?.findViewById<ImageView>(R.id.customer_avatar)
+                customerAvatar?.setImageBitmap(selectedImage)
+                val file = File(imageUri?.let { getRealPathFromURI(it) })
+//
+                val requestFile: RequestBody = file.let {
+                    RequestBody.create(
+                        "multipart/form-data".toMediaTypeOrNull(),
+                        it
+                    )
+                }!!
+
+                profilePicture = MultipartBody.Part
+                    .createFormData("avatar", file.name, requestFile)
+
+
+            } catch (e: FileNotFoundException) {
+                e.printStackTrace()
+                Toast.makeText(this@UserProfile, "Something went wrong", Toast.LENGTH_LONG).show()
+            }
+        } else {
+            Toast.makeText(this@UserProfile, "Please Choose your image", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun getRealPathFromURI(contentURI: Uri): String? {
+        val result: String
+        val cursor: Cursor? = contentResolver.query(contentURI, null, null, null, null)
+        if (cursor == null) {
+            result = contentURI.path.toString()
+        } else {
+            cursor.moveToFirst()
+            val idx: Int = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+            result = cursor.getString(idx)
+            cursor.close()
+        }
+        return result
+    }
+
     private fun changeUserProfile(
         name: String,
         email: String,
         dob: String,
-        gender: String?,
+        gender: String,
+        profilePicture: MultipartBody.Part,
         dialog: Dialog
     ) {
-        val body = gender?.let {
-            RequestBodies.UserProfile(
-                name, email, dob, gender
+        val customerName: RequestBody = RequestBody.create(
+            MultipartBody.FORM, name
+        )
+        val customerEmail: RequestBody = RequestBody.create(
+            MultipartBody.FORM, email
+        )
+        val customerDOB: RequestBody = RequestBody.create(
+            MultipartBody.FORM, dob
+        )
+        val customerGender: RequestBody = gender?.let {
+            RequestBody.create(
+                MultipartBody.FORM, it
             )
-
-
         }
+
         tokenManager?.let { it1 ->
-            if (body != null) {
-                viewModel.getUserProfileDetails(it1, body)
-            }
+
+            viewModel.getUserProfileDetails(it1, customerName,customerEmail,customerDOB,customerGender,profilePicture)
+
         }
 
         viewModel.userProfileDetails.observe(this, Observer { response ->
@@ -448,7 +580,7 @@ class UserProfile : AppCompatActivity() {
                     response.data?.let {
                         dialog.dismiss()
                         getUserDetails()
-                        Log.i("TAG", "changeUserProfile: "+response.data)
+                        Log.i("TAG", "changeUserProfile: " + response.data)
                     }
                 }
 
@@ -467,6 +599,7 @@ class UserProfile : AppCompatActivity() {
             }
         })
     }
+
     private fun getUserDetails() {
         tokenManager?.let { viewModel.userDetailsUser(it) }
         viewModel.userDetailsResponse.observe(this, Observer { event ->
@@ -476,11 +609,12 @@ class UserProfile : AppCompatActivity() {
                         hideProgressBar()
                         response.data?.let { loginResponse ->
                             Log.i("TAG", "loginResponse i m here: $loginResponse")
-                            userPrefManager.firstName=loginResponse.first_name
-                            userPrefManager.lastName=loginResponse.last_name
-                            userPrefManager.contactNo= loginResponse.phone.toString()
-                            userPrefManager.email=loginResponse.email
-                            binding.userName.text = loginResponse.first_name + " " + loginResponse.last_name
+                            userPrefManager.firstName = loginResponse.first_name
+                            userPrefManager.lastName = loginResponse.last_name
+                            userPrefManager.contactNo = loginResponse.phone.toString()
+                            userPrefManager.email = loginResponse.email
+                            binding.userName.text =
+                                loginResponse.first_name + " " + loginResponse.last_name
                             binding.userEmail.text = loginResponse.email
                             binding.userPhone.text = loginResponse.phone
 

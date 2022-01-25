@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -61,25 +62,25 @@ class CategoriesByIdAdapter : RecyclerView.Adapter<CategoriesByIdAdapter.Categor
             val rating: Int? = categoriesItem.average_rating?.roundToInt()
             rated_by.text = "("+categoriesItem.no_of_rating+") "
             if(rating==1){
-                rating_1.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+                rating_1.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
             }else if(rating==2){
-                rating_1.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
-                rating_2.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+                rating_1.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
+                rating_2.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
             }else if(rating==3){
-                rating_1.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
-                rating_2.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
-                rating_3.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+                rating_1.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
+                rating_2.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
+                rating_3.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
             }else if(rating==4){
-                rating_1.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
-                rating_2.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
-                rating_3.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
-                rating_4.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+                rating_1.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
+                rating_2.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
+                rating_3.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
+                rating_4.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
             }else if(rating==5){
-                rating_1.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
-                rating_2.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
-                rating_3.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
-                rating_4.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
-                rating_5.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_star_rate_24))
+                rating_1.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
+                rating_2.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
+                rating_3.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
+                rating_4.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
+                rating_5.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
             }
 
 
@@ -90,7 +91,7 @@ class CategoriesByIdAdapter : RecyclerView.Adapter<CategoriesByIdAdapter.Categor
                 if (userPrefManager.language.equals("ne")) {
                     product_name.text = categoriesItem.descriptions[1].name
 
-                    if(categoriesItem.promotion_price.price_promotion != "0"){
+                    if(categoriesItem.promotion_price.price_promotion != null){
                         product_price_discount.text= GeneralUtils.getUnicodeNumber(categoriesItem.price.toString())
                         product_price_discount.paintFlags = product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                         product_price.text =

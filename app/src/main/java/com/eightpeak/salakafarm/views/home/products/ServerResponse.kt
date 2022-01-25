@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 data class ServerResponse (
 
+    @SerializedName("error") val error : Int,
+    @SerializedName("message") val message : String,
+
     @SerializedName("id") val id : Int,
     @SerializedName("product_id") val product_id : Int,
     @SerializedName("customer_id") val customer_id : Int,
@@ -28,4 +31,18 @@ data class UpdatePasswordResponse(
 data class UserProfileResponse(
     @SerializedName("error") val error : Int,
     @SerializedName("message") val message : String,
+)
+
+data class UserAddressEdit(
+    @SerializedName("error") val error : Int,
+    @SerializedName("message") val message : String,
+)
+
+class GoogleLoginResponse (
+    @SerializedName("success") val success : Success,
+    @SerializedName("error") val error : Int,
+    @SerializedName("message") val message : String,
+)
+data class Success (
+    @SerializedName("token") val token : String
 )

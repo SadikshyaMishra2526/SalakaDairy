@@ -8,7 +8,9 @@ class EndPoints {
         const val REGISTER = "api/auth/create"
         const val LOGIN = "api/auth/login"
         const val CUSTOMER_INFORMATION = "api/auth/user"
-        const val LOGOUT = "api/auth/logout"
+        const val LOGOUT = "api/logout_user"
+        const val FORGOT_PASSWORD = "api/auth/forgot_password_reset_link"
+        const val GOOGLE_LOGIN = "api/auth/login_customer_through_google"
         const val SLIDER = "api/banners"
 
         //customer token
@@ -18,10 +20,6 @@ class EndPoints {
         //categories
         const val CATEGORIES_LIST = "api/categories"
         const val CATEGORIES_VIA_ID = "api/categories/{id}"
-
-        //        products
-        const val BRAND_LIST = "api/brands"
-        const val BRAND_VIA_ID = "api/products/{id}"
 
         //      products
         const val PRODUCT_LIST = "api/products"
@@ -83,6 +81,7 @@ class EndPoints {
         const val DELETE_ADDRESS = "api/delete_address"
 
         const val ADD_ADDRESS = "api/add_new_address"
+        const val EDIT_ADDRESS = "api/update_address_list"
         const val  GET_EMPLOYEE_LATLNG= "api/get_employee_latlng"
         const val  ADD_ALTERATION= "api/sub_alter"
 
@@ -95,5 +94,10 @@ const val GET_GALLERY = "api/get_gallery"
 
         const val VERIFY_OPT = "api/verify_otp"
         const val GENERATE_NEW_OTP = "api/generate_new_opt"
+        const val CONTACT_US = "api/post_contact_us"
+
+        const val CHANNEL_ID="channel_id"
+        const val CHANNEL_NAME="channel name"
+        const val CHANNEL_desc="channel desc"
     }
 }

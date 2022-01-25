@@ -10,7 +10,11 @@ import com.eightpeak.salakafarm.databinding.FragmentSettingsBinding
 
 import androidx.lifecycle.Observer
 import android.app.Dialog
+import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.net.Uri
+import android.text.util.Linkify
+import android.util.Log
 import android.view.Window
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -37,6 +41,16 @@ import com.eightpeak.salakafarm.views.splash.SplashActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_add_to_cart.*
 import java.util.*
+import android.widget.Toast
+import android.content.pm.PackageManager
+
+import android.content.pm.ResolveInfo
+
+
+
+
+
+
 
 
 class SettingsFragment : Fragment() {
@@ -128,7 +142,7 @@ class SettingsFragment : Fragment() {
         }
         binding.contactUs.setOnClickListener {
 
-            showDialogContactUs(",,,")
+            showDialogContactUs()
         }
         getLanguageChange()
         setupViewModel()
@@ -139,25 +153,75 @@ class SettingsFragment : Fragment() {
         val factory = ViewModelProviderFactory(requireActivity().application, repository)
         viewModel = ViewModelProvider(this, factory).get(GetResponseViewModel::class.java)
     }
-    private fun showDialogContactUs(msg: String?) {
+    private fun showDialogContactUs() {
         val dialog = Dialog(requireActivity())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(true)
         dialog.setContentView(R.layout.fragment_contact_us)
         val customerName = dialog.findViewById<EditText>(R.id.editTextName)
+        val customerContact = dialog.findViewById<EditText>(R.id.editTextContact)
+        val customerEmail = dialog.findViewById<EditText>(R.id.editTextEmail)
         val customerSubject = dialog.findViewById<EditText>(R.id.edtSubject)
         val customerDescription = dialog.findViewById<EditText>(R.id.edtDescription)
         val btSummit = dialog.findViewById<Button>(R.id.btSummit)
 
-        customerName.setText(userPrefManager.firstName+" "+userPrefManager.lastName)
-        btSummit.setOnClickListener {
+        val companyFacebook = dialog.findViewById<ImageView>(R.id.company_facebook)
+        val companyYoutube = dialog.findViewById<ImageView>(R.id.company_youtube)
+        val companyInstagram = dialog.findViewById<ImageView>(R.id.company_instagram)
+        Linkify.addLinks(customerContact, Linkify.PHONE_NUMBERS)
 
-            if(customerSubject.text.isNotEmpty() && customerDescription.text.isNotEmpty()){
-            val body = RequestBodies.AddComplain(
-                customerSubject.text.toString(),customerDescription.text.toString())
-            tokenManager?.let { viewModel.addComplain(it,body ) }
-            getAddComplainResponse(dialog)
+        companyFacebook.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse("https://www.facebook.com/salakaorganic")
+
+            val packageManager: PackageManager = requireActivity().packageManager
+            val list = packageManager.queryIntentActivities(
+                intent,
+                PackageManager.MATCH_DEFAULT_ONLY
+            )
+            if (list.size == 0) {
+                val urlBrowser = "https://www.facebook.com/salakaorganic"
+                intent.data = Uri.parse(urlBrowser)
+            }
+            startActivity(intent)
         }
+        companyYoutube.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse("https://www.youtube.com/channel/UCIx6fxkutSyo-I6KxsSV8zg")
+
+            val packageManager: PackageManager = requireActivity().packageManager
+            val list = packageManager.queryIntentActivities(
+                intent,
+                PackageManager.MATCH_DEFAULT_ONLY
+            )
+            if (list.size == 0) {
+                val urlBrowser = "https://www.youtube.com/channel/UCIx6fxkutSyo-I6KxsSV8zg"
+                intent.data = Uri.parse(urlBrowser)
+            }
+            startActivity(intent)
+        }
+
+        companyInstagram.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse("https://www.instagram.com/salaka.milk/")
+            val packageManager: PackageManager = requireActivity().packageManager
+            val list = packageManager.queryIntentActivities(
+                intent,
+                PackageManager.MATCH_DEFAULT_ONLY
+            )
+            if (list.size == 0) {
+                val urlBrowser = "https://www.instagram.com/salaka.milk/"
+                intent.data = Uri.parse(urlBrowser)
+            }
+            startActivity(intent)
+        }
+
+        btSummit.setOnClickListener {
+            if(customerSubject.text.isNotEmpty() && customerDescription.text.isNotEmpty()){
+            val body = RequestBodies.AddContactUs(customerName.text.toString(),customerContact.text.toString(),customerEmail.text.toString(),customerSubject.text.toString(),customerDescription.text.toString())
+            tokenManager?.let { viewModel.addContactUs(body)}
+            getAddComplainResponse(dialog)
+           }
         }
 
         dialog.show()
@@ -172,7 +236,7 @@ class SettingsFragment : Fragment() {
                         Toast.makeText(context,"We got your complain..We will get back to you as soon as possible",Toast.LENGTH_SHORT).show()
                        dialog.dismiss()
 
-                            }
+                   }
                 }
 
                 is Resource.Error -> {

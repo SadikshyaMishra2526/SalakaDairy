@@ -81,7 +81,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="8dp"
-            android:text="Product Name"
             android:textColor="@color/main_color"
             android:textSize="@dimen/_10sdp"
             android:textStyle="bold"

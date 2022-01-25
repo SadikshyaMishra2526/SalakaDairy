@@ -1,6 +1,5 @@
 package com.eightpeak.salakafarm.views.home.categories.categoriesbyid
 
-import com.eightpeak.salakafarm.views.home.products.productbyid.Promotion_price
 import com.google.gson.annotations.SerializedName
 
 data class CategoriesByIdModel(

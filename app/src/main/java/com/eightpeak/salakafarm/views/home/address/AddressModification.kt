@@ -27,6 +27,7 @@ import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.viewmodel.UserProfileViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
+import com.eightpeak.salakafarm.views.home.ui.user_profile.Encrypt
 
 import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener
 import com.google.android.material.snackbar.Snackbar
@@ -59,18 +60,41 @@ class AddressModification:AppCompatActivity() , OnMapReadyCallback,
             )
         )
         userPrefManager = UserPrefManager(this)
-init()
+
+        init()
 
         binding.addAddress.setOnClickListener {
-            Toast.makeText(this@AddressModification,"dsddsd",Toast.LENGTH_SHORT).show()
             if(binding.address1.text!=null){
             val address1 :String=binding.address1.text.toString()
             val address2 :String=binding.address2.text.toString()
             val address3 :String=binding.address3.text.toString()
             val contact :String=binding.phone.text.toString()
-            val addressBody= RequestBodies.AddAddress(address1,address2,address3,contact,latestLat.toString(),latestLng.toString())
+            val addressBody= Encrypt.getEncrptedValue ( address1)?.let { it1 ->
+                Encrypt.getEncrptedValue ( address2)?.let { it2 ->
+                    Encrypt.getEncrptedValue ( address3)?.let { it3 ->
+                        Encrypt.getEncrptedValue (  contact)?.let { it4 ->
+                            Encrypt.getEncrptedValue ( latestLat.toString())?.let { it5 ->
+                                Encrypt.getEncrptedValue ( latestLng.toString())?.let { it6 ->
+                                    RequestBodies.AddAddress(
+                                        it1,
+                                        it2,
+                                        it3,
+                                        it4,
+                                        it5,
+                                        it6
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
-            tokenManager?.let { viewModel.addNewAddressDetails(it,addressBody) }
+            tokenManager?.let {
+                if (addressBody != null) {
+                    viewModel.addNewAddressDetails(it,addressBody)
+                }
+            }
                 viewModel.addNewAddress.observe(this, Observer { response ->
                     when (response) {
                         is Resource.Success -> {

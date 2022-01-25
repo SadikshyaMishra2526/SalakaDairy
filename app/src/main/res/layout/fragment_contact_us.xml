@@ -3,13 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:background="@color/main_color">
+    android:layout_gravity="center">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/main_color"
+        android:background="@color/sub_color"
         android:orientation="vertical">
 
         <LinearLayout
@@ -21,9 +20,9 @@
 
             <ImageView
                 android:layout_width="150dp"
-                android:layout_height="80dp"
+                android:layout_height="70dp"
                 android:layout_gravity="center"
-                android:layout_margin="@dimen/_10sdp"
+                android:layout_margin="@dimen/_5sdp"
                 android:src="@drawable/logo" />
 
             <LinearLayout
@@ -35,17 +34,23 @@
                 <TextView
                     android:layout_width="110dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/sub_color"
+                    android:textStyle="bold"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:text="@string/company_name" />
 
                 <TextView
                     android:id="@+id/mob"
                     android:layout_width="110dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/sub_color"
                     android:layout_height="wrap_content"
                     android:text="@string/telephone_n9808608666" />
 
                 <TextView
                     android:layout_width="110dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/sub_color"
                     android:layout_height="wrap_content"
                     android:text="@string/opening_times_n7_am_8_pm" />
             </LinearLayout>
@@ -59,14 +64,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_15sdp"
                 android:orientation="vertical">
 
                 <RelativeLayout
-                    android:id="@+id/old_password_layout"
+                    android:id="@+id/person_name_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
+                  android:layout_marginTop="@dimen/_3sdp"
                     android:orientation="horizontal">
 
                     <EditText
@@ -74,8 +78,45 @@
                         style="@style/modifiedEditText"
                         android:layout_alignParentEnd="true"
                         android:gravity="center"
-                        android:hint="Name"
-                        android:inputType="text"
+                        android:hint="@string/name"
+                        android:inputType="textCapWords"
+                        android:maxLines="1"
+                        android:textSize="@dimen/_12sdp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/person_contact_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                  android:layout_marginTop="@dimen/_3sdp"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/editTextContact"
+                        style="@style/modifiedEditText"
+                        android:layout_alignParentEnd="true"
+                        android:gravity="center"
+                        android:hint="@string/contact"
+                        android:inputType="number"
+                        android:maxLines="1"
+                        android:textSize="@dimen/_12sdp" />
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/person_email_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                  android:layout_marginTop="@dimen/_3sdp"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/editTextEmail"
+                        style="@style/modifiedEditText"
+                        android:layout_alignParentEnd="true"
+                        android:gravity="center"
+                        android:hint="@string/email"
+                        android:inputType="textEmailAddress"
                         android:maxLines="1"
                         android:textSize="@dimen/_12sdp" />
 
@@ -85,7 +126,7 @@
                     android:id="@+id/edtSubject_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
+                  android:layout_marginTop="@dimen/_3sdp"
                     android:orientation="horizontal">
 
                     <EditText
@@ -93,8 +134,8 @@
                         style="@style/modifiedEditText"
                         android:layout_alignParentEnd="true"
                         android:gravity="center"
-                        android:hint="Subject"
-                        android:inputType="text"
+                        android:hint="@string/subject"
+                        android:inputType="textCapWords"
                         android:maxLines="1"
                         android:textSize="@dimen/_12sdp" />
 
@@ -104,30 +145,71 @@
                     android:id="@+id/edtDescription_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/edit_view"
+                  android:layout_marginTop="@dimen/_3sdp"
                     android:orientation="horizontal">
 
                     <EditText
                         android:id="@+id/edtDescription"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_80sdp"
-                        android:hint="Description"
+                        style="@style/modifiedEditText"
+                        android:layout_height="@dimen/_100sdp"
+                        android:gravity="center"
+                        android:hint="@string/description"
                         android:inputType="textMultiLine"
                         android:textSize="@dimen/_12sdp" />
-
-
                 </RelativeLayout>
 
 
                 <Button
                     android:id="@+id/btSummit"
                     style="@style/loginButton"
-                    android:layout_width="120dp"
+                    android:layout_width="250dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:text="Submit" />
+                    android:text="@string/submit" />
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@color/tab_indicator_gray" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:orientation="horizontal">
+                <TextView
+                    android:text="@string/follow_us_on"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:padding="@dimen/_5sdp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
+                    android:textColor="@color/sub_color"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <ImageView
+                    android:id="@+id/company_facebook"
+                    android:layout_width="@dimen/_45sdp"
+                    android:src="@drawable/facebook"
+                    android:layout_height="@dimen/_45sdp"
+                    android:padding="@dimen/_5sdp"
+                    android:text="@string/company_name" />
+                <ImageView
+                    android:id="@+id/company_youtube"
+                    android:layout_width="@dimen/_45sdp"
+                    android:src="@drawable/youtube"
+                    android:padding="@dimen/_5sdp"
+                    android:layout_height="@dimen/_45sdp"
+                    />
+                <ImageView
+                    android:id="@+id/company_instagram"
+                    android:layout_width="@dimen/_45sdp"
+                    android:src="@drawable/insta"
+                    android:padding="@dimen/_10sdp"
+                    android:layout_height="@dimen/_45sdp"/>
 
 
             </LinearLayout>

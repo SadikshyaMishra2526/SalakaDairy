@@ -188,13 +188,29 @@
                     </androidx.cardview.widget.CardView>
 
                 </RelativeLayout>
-
+                   <LinearLayout
+                       android:orientation="horizontal"
+                       android:id="@+id/product_categories_layout"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       app:layout_constraintEnd_toEndOf="parent"
+                       app:layout_constraintStart_toStartOf="parent"
+                       app:layout_constraintTop_toBottomOf="@+id/product_image_layout" >
+                       <ImageView
+                           android:id="@+id/category_thumbnail"
+                           android:layout_width="@dimen/_30sdp"
+                           android:layout_height="@dimen/_30sdp"/>
+                       <TextView
+                           android:id="@+id/category_name"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"/>
+                   </LinearLayout>
                 <TextView
                     android:id="@+id/product_details_sku"
                     style="@style/product_view_design"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/product_image_layout" />
+                    app:layout_constraintTop_toBottomOf="@+id/product_categories_layout" />
                 <LinearLayout
 
                     android:id="@+id/rating_layout"
@@ -266,11 +282,6 @@
                         android:layout_height="wrap_content" />
 
                     <TextView
-                        android:id="@+id/product_brand"
-                        android:layout_width="wrap_content"
-                        android:layout_marginStart="@dimen/_5sdp"
-                        android:layout_height="wrap_content" />
-                    <TextView
                         android:id="@+id/product_category"
                         android:layout_width="wrap_content"
                         android:layout_marginStart="@dimen/_5sdp"
@@ -325,7 +336,7 @@
                     android:layout_height="wrap_content">
                     <TextView
                         android:layout_width="wrap_content"
-                        android:text="Rating and Review"
+                        android:text="@string/rating_and_review"
                         android:textColor="@color/sub_color"
                         android:textStyle="bold"
                         android:textSize="@dimen/_9sdp"

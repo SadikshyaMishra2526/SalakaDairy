@@ -17,8 +17,11 @@ import com.eightpeak.salakafarm.utils.subutils.Utils
 import com.eightpeak.salakafarm.views.addresslist.AddressListModel
 import com.eightpeak.salakafarm.views.home.products.ServerResponse
 import com.eightpeak.salakafarm.views.home.products.UpdatePasswordResponse
+import com.eightpeak.salakafarm.views.home.products.UserAddressEdit
 import com.eightpeak.salakafarm.views.home.products.UserProfileResponse
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import java.io.IOException
 
@@ -77,16 +80,24 @@ private val appRepository: AppRepository
 
     val userProfileDetails: MutableLiveData<Resource<UserProfileResponse>> = MutableLiveData()
 
-     fun getUserProfileDetails(token:TokenManager,body: RequestBodies.UserProfile) = viewModelScope.launch {
-        fetchUserDetails(token,body)
+     fun getUserProfileDetails(token:TokenManager, first_name: RequestBody,
+                               last_name: RequestBody,
+                               sex: RequestBody,
+                               birthday: RequestBody,
+                               avatar: MultipartBody.Part) = viewModelScope.launch {
+        fetchUserDetails(token,first_name,last_name,sex,birthday,avatar)
     }
 
-    private suspend fun fetchUserDetails(token: TokenManager,body: RequestBodies.UserProfile) {
+    private suspend fun fetchUserDetails(token: TokenManager,  first_name: RequestBody,
+                                         last_name: RequestBody,
+                                         sex: RequestBody,
+                                         birthday: RequestBody,
+                                         avatar: MultipartBody.Part) {
         userProfileDetails.postValue(Resource.Loading())
 
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
-                val response = appRepository.getUserProfile(token,body)
+                val response = appRepository.getUserProfile(token,first_name,last_name,sex,birthday,avatar)
                 Log.i("TAG", "fetchPics: $response")
 
                 userProfileDetails.postValue(handleUserProfileResponse(response))
@@ -271,6 +282,52 @@ private val appRepository: AppRepository
     }
 
 
+ val editAddress: MutableLiveData<Resource<UserAddressEdit>> = MutableLiveData()
+
+     fun editAddressDetails(token:TokenManager,body: RequestBodies.EditAddress) = viewModelScope.launch {
+        editAddress(token,body)
+    }
+
+    private suspend fun editAddress(token: TokenManager , body: RequestBodies.EditAddress) {
+        editAddress.postValue(Resource.Loading())
+        try {
+            if (Utils.hasInternetConnection(getApplication<Application>())) {
+                val response = appRepository.editAddress(token,body)
+                Log.i("TAG", "editAddress: +$response")
+                editAddress.postValue(handleEditAddressDetailsResponse(response))
+            } else {
+                editAddress.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+            }
+        } catch (t: Throwable) {
+            when (t) {
+                is IOException -> editAddress.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.network_failure
+                        )
+                    )
+                )
+                else -> editAddress.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.conversion_error
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun handleEditAddressDetailsResponse(response: Response<UserAddressEdit>): Resource<UserAddressEdit> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+
 //    delete existing address
 val deleteAddress: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
 
@@ -372,4 +429,51 @@ val deleteAddress: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
         return Event(Resource.Error(response.message()))
     }
 
+
+//    logout
+
+    val logout: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
+
+    fun requestLogout(token:TokenManager) = viewModelScope.launch {
+        requestLogoutResponse(token)
+    }
+
+    private suspend fun requestLogoutResponse(token: TokenManager) {
+        logout.postValue(Resource.Loading())
+        try {
+            if (Utils.hasInternetConnection(getApplication<Application>())) {
+                val response = appRepository.logout(token)
+                Log.i("TAG", "logoutlogoutlogoutlogout: $response")
+                logout.postValue(handleLogoutResponse(response))
+            } else {
+                logout.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+            }
+        } catch (t: Throwable) {
+            Log.i("TAG", "logoutlogout: "+t.localizedMessage)
+            when (t) {
+                is IOException -> logout.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.network_failure
+                        )
+                    )
+                )
+                else -> userAddressList.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.conversion_error
+                        )
+                    )
+                )
+            }
+        }
+    }
+    private fun handleLogoutResponse(response: Response<ServerResponse>): Resource<ServerResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
 }

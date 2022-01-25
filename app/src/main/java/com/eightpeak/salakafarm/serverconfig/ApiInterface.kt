@@ -2,6 +2,7 @@ package com.eightpeak.salakafarm.serverconfig
 
 import DisplaySubscriptionModel
 import UserProfileModel
+import android.net.Uri
 import com.eightpeak.salakafarm.utils.EndPoints
 import com.eightpeak.salakafarm.serverconfig.network.AccessToken
 import com.eightpeak.salakafarm.subscription.attributes.BranchModel
@@ -157,12 +158,6 @@ interface ApiInterface {
     @GET(EndPoints.GET_CHECKOUT_DETAILS)
     suspend fun getCheckoutDetails(): Response<CheckOutModel>
 
-    //user info update
-    @POST(UPDATE_USER_INFO)
-    suspend fun getUserProfile(
-        @Body body: RequestBodies.UserProfile
-    ): Response<UserProfileResponse>
-
 
     @POST(UPDATE_ADDRESS_LIST)
     suspend fun updateAddressList(
@@ -214,6 +209,10 @@ interface ApiInterface {
     suspend fun addNewAddress(@Body body: RequestBodies.AddAddress): Response<ServerResponse>
 
 
+    @POST(EndPoints.EDIT_ADDRESS)
+    suspend fun editAddress(@Body body: RequestBodies.EditAddress): Response<UserAddressEdit>
+
+
     @FormUrlEncoded
     @POST(EndPoints.DELETE_ADDRESS)
     suspend fun deleteAddress(@Field("id") addressId: String): Response<ServerResponse>
@@ -250,6 +249,18 @@ interface ApiInterface {
         @Part screenshot: MultipartBody.Part
     ): Response<ServerResponse>
 
+
+    @Multipart
+    @POST(UPDATE_USER_INFO)
+    suspend fun getUserProfile(
+        @Part("first_name") first_name: RequestBody,
+        @Part("last_name") last_name: RequestBody,
+        @Part("sex") sex: RequestBody,
+        @Part("birthday") birthday: RequestBody,
+        @Part avatar: MultipartBody.Part
+    ): Response<UserProfileResponse>
+
+
     @FormUrlEncoded
     @POST(EndPoints.GET_RATE)
     suspend fun getRate(@Field("product_id") addressId: String): Response<ProductRatingModel>
@@ -266,11 +277,38 @@ interface ApiInterface {
 
     @FormUrlEncoded
     @POST(EndPoints.VERIFY_OPT)
-    suspend fun verifyOTP(@Field("phone") phone: String,@Field("otp") otp: String): Response<ServerResponse>
+    suspend fun verifyOTP(
+        @Field("phone") phone: String,
+        @Field("otp") otp: String
+    ): Response<ServerResponse>
 
 
     @GET(EndPoints.GET_GALLERY)
     suspend fun getGallery(): Response<GalleryListModel>
 
+
+    @POST(EndPoints.CONTACT_US)
+    suspend fun contactUs(@Body body: RequestBodies.AddContactUs): Response<ServerResponse>
+
+
+    @POST(EndPoints.LOGOUT)
+    suspend fun logout(): Response<ServerResponse>
+
+    @FormUrlEncoded
+    @POST(EndPoints.FORGOT_PASSWORD)
+    suspend fun forgotPassword(@Field("email") email: String): Response<ServerResponse>
+
+    //    @POST(EndPoints.GOOGLE_LOGIN)
+//    suspend fun googleLogin(@Body body:RequestBodies.GoogleLogin): Response<GoogleLoginResponse>
+    @FormUrlEncoded
+    @POST(EndPoints.GOOGLE_LOGIN)
+    suspend fun googleLogin(
+        @Field("first_name") first_name: String,
+        @Field("last_name") last_name: String,
+        @Field("email") email: String,
+        @Field("fcm_token") fcm_token: String,
+        @Field("provider_id") provider_id: String,
+        @Field("avatar") avatar: String,
+        @Field("phone") phone: String): Response<GoogleLoginResponse>
 
 }

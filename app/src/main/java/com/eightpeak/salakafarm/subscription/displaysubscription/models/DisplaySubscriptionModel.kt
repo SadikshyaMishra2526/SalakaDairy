@@ -82,5 +82,6 @@ data class DeliveryHistory(
     @SerializedName("delivery_count") val delivery_count: Int? = null,
     @SerializedName("alter_status") val alter_status: Int? = null,
     @SerializedName("alter_qty") val alter_qty: Int? = null,
-    @SerializedName("alter_peroid") val alter_peroid: Int? = null
+    @SerializedName("alter_peroid") val alter_peroid: Int? = null,
+    @SerializedName("date_eng") val date_eng: String? = null
 )

@@ -1,29 +1,28 @@
 package com.eightpeak.salakafarm.views.login
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.databinding.ActivityLoginBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.RequestBodies
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
-import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.Constants.Companion.TOKEN_PREF
 import com.eightpeak.salakafarm.utils.GeneralUtils
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.LoginViewModel
-import com.eightpeak.salakafarm.viewmodel.SliderViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.home.HomeActivity
 import com.eightpeak.salakafarm.views.register.RegisterActivity
@@ -34,16 +33,29 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
-import com.google.firebase.installations.FirebaseInstallations
 import com.google.firebase.messaging.FirebaseMessaging
-import kotlinx.android.synthetic.main.activity_login.*
-import java.lang.Exception
-import javax.crypto.Cipher.SECRET_KEY
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import androidx.core.app.ActivityCompat.startActivityForResult
 import com.google.android.gms.common.api.ApiException
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.FacebookException
+
+import com.facebook.login.LoginResult
+
+import com.facebook.FacebookCallback
+
+
+import com.facebook.login.widget.LoginButton
+import java.util.*
+import com.facebook.login.LoginManager
+
+import com.facebook.CallbackManager
+import androidx.fragment.app.Fragment
+import com.eightpeak.salakafarm.R
+import com.eightpeak.salakafarm.views.forgotpassword.ForgotPassword
+
 
 class LoginActivity : AppCompatActivity() {
     lateinit var loginViewModel: LoginViewModel
@@ -52,7 +64,9 @@ class LoginActivity : AppCompatActivity() {
     private var tokenManager: TokenManager? = null
   private var mGoogleSignInClient: GoogleSignInClient? = null
   private val  RC_SIGN_IN: Int = 100
-
+    private var saveLogin: Boolean? = null
+    private  var callbackManager:CallbackManager?=null
+    private val EMAIL = "email"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -65,24 +79,78 @@ class LoginActivity : AppCompatActivity() {
             val mainActivity = Intent(this@LoginActivity, RegisterActivity::class.java)
             startActivity(mainActivity)
         }
+        binding.forgetPassword.setOnClickListener {
+            val mainActivity = Intent(this@LoginActivity, ForgotPassword::class.java)
+            startActivity(mainActivity)
+
+        }
+       binding.signUp.visibility=View.VISIBLE
+        val loginPreferences:SharedPreferences? = getSharedPreferences("loginPrefs", MODE_PRIVATE)
+        saveLogin = loginPreferences?.getBoolean("saveLogin", false)
+        if (saveLogin == true) {
+            binding.etEmail.setText(loginPreferences?.getString("username", ""))
+            binding.etPassword.setText(loginPreferences?.getString("password", ""))
+            binding.rememberMe.isChecked = true
+        }
+
+
         googleLogin()
         getFCMToken()
         init()
     }
 
+    private fun addFacebookLogin() {
+
+        LoginManager.getInstance().logInWithReadPermissions(this, listOf("public_profile","name","email"));
+        callbackManager = CallbackManager.Factory.create()
+
+
+        LoginManager.getInstance().registerCallback(callbackManager,
+            object : FacebookCallback<LoginResult?> {
+                override fun onSuccess(loginResult: LoginResult?) {
+                    // App code
+                }
+
+                override fun onCancel() {
+                    // App code
+                }
+
+                override fun onError(exception: FacebookException) {
+                    // App code
+                }
+            })
+      val  loginButton = findViewById<View>(R.id.login_button) as LoginButton
+        loginButton.setReadPermissions(listOf(EMAIL))
+        // If you are using in a fragment, call loginButton.setFragment(this);
+
+        // Callback registration
+        // If you are using in a fragment, call loginButton.setFragment(this);
+
+        // Callback registration
+        loginButton.registerCallback(callbackManager, object : FacebookCallback<LoginResult?> {
+            override fun onSuccess(loginResult: LoginResult?) {
+                // App code
+            }
+
+            override fun onCancel() {
+                // App code
+            }
+
+            override fun onError(exception: FacebookException) {
+                // App code
+            }
+        })
+    }
+
     private fun googleLogin() {
-        // Configure sign-in to request the user's ID, email address, and basic
-// profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        // Configure sign-in to request the user's ID, email address, and basic
-// profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
             .build()
-        // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-        val signInButton = findViewById<SignInButton>(R.id.sign_in_button)
-        signInButton.setSize(SignInButton.SIZE_STANDARD)
+        val signInButton = findViewById<ImageView>(R.id.sign_in_button)
+//        signInButton.setSize(SignInButton.SIZE_STANDARD)
         val account = GoogleSignIn.getLastSignedInAccount(this)
+
         signInButton.setOnClickListener {
             signIn()
         }
@@ -93,7 +161,11 @@ class LoginActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        callbackManager!!.onActivityResult(requestCode, resultCode, data);
+
+
         super.onActivityResult(requestCode, resultCode, data)
+
 
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
@@ -108,23 +180,67 @@ class LoginActivity : AppCompatActivity() {
             val account = completedTask.getResult(ApiException::class.java)
             val acct = GoogleSignIn.getLastSignedInAccount(this)
             if (acct != null) {
-                val personName = acct.displayName
+                val personName = Encrypt.getEncrptedValue(acct.displayName)
                 val personGivenName = acct.givenName
                 val personFamilyName = acct.familyName
-                val personEmail = acct.email
-                val personId = acct.id
-                val personPhoto: Uri? = acct.photoUrl
-                Log.i("TAG", "handleSignInResult: "+personEmail+" "+personName)
-                Toast.makeText(this,"handleSignInResult: "+personEmail+" "+personName,Toast.LENGTH_SHORT).show()
-            }
-//            updateUI(account)
-        } catch (e: ApiException) {
-            Toast.makeText(this,"signInResult:failed message=" + e.message+" "+e.localizedMessage+" "+e.cause,Toast.LENGTH_SHORT).show()
+                val personEmail = Encrypt.getEncrptedValue(acct.email)
+                val personId =Encrypt.getEncrptedValue( acct.id)
+                val personPhoto: String? =  acct.photoUrl.toString()
+                val name: Array<String>? = personName?.split(" ".toRegex())?.toTypedArray()
 
+                    if (personId != null) {
+                        name?.get(0)?.let {
+                            if (personEmail != null) {
+                                Encrypt.getEncrptedValue( personName)?.let { it1 ->
+                                    Encrypt.getEncrptedValue(personFamilyName)?.let { it2 ->
+                                        Encrypt.getEncrptedValue("")?.let { it3 ->
+                                            loginViewModel.socialGoogle(
+                                                it1,
+                                                it2,personEmail,userPrefManager.fcmToken,personId,personPhoto.toString(),
+                                                it3
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    getGoogleLoginResponse()
+                }
+            }
+        } catch (e: ApiException) {
+            Toast.makeText(this,"SignIn:failed message=" + e.message+" "+e.localizedMessage+" "+e.cause,Toast.LENGTH_SHORT).show()
             Log.w("TAG", "signInResult:failed message=" + e.message+" "+e.localizedMessage+" "+e.cause)
-//            updateUI(null)
         }
     }
+
+    private fun getGoogleLoginResponse() {
+        loginViewModel.socialGoogle.observe(this, Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let { picsResponse ->
+                        Log.i("TAG", "getGoogleLoginResponse: "+response.data.success.token)
+                        userPrefManager.subscriptionStatus=false
+                        tokenManager?.saveToken(response.data.success.token)
+                        getUserDetails()
+                        getUserAddress()
+                    }
+                }
+
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let { message ->
+                        binding.loginView.errorSnack(message, Snackbar.LENGTH_LONG)
+                    }
+                }
+
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+            }
+        })
+    }
+
     private fun init() {
         val repository = AppRepository()
         val factory = ViewModelProviderFactory(application, repository)
@@ -133,32 +249,45 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun onLoginClick(view: View) {
-        val value1 = GeneralUtils.decoderfun(Constants.SECRET_KEY)
-        val email = et_email.text.toString()
-        val password = et_password.text.toString()
-
-
-        //TODO
-//        userPrefManager.subscriptionStatus = true
-//        tokenManager?.saveToken("eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiMGQ4NjFiOTlhMDk1Mzg5MzRjZjliYmUwY2NkM2RkMjVjMzQ2NzM0ZjljOTNjYWZjNDE2NDllM2NmYjZkNmU1NzcxYzIxMzc2NTg2YmEyNzQiLCJpYXQiOjE2NDIwMzU0NjQuODQ3Njk1LCJuYmYiOjE2NDIwMzU0NjQuODQ3NywiZXhwIjoxNjU3NjczODY0LjczMjAzNSwic3ViIjoiMjciLCJzY29wZXMiOltdfQ.QxHWK7-rbNNaYiqqpe9RxlmzyXx7vyEChajRVUB-MKrmwWgNgsLpYX4PuG7RwCpzjkaQ4y8lulEgPaevt_zZy9GZXscU_0EdzUGH_m35Er3WVK-B6e7Qhu4Yr-wBqg26tfDaZDcPjp2aqlWhMkEUwiyTM8W3da-S1hQz6efPuGst_vdDpXgJD7uFljjvFyBSmjeNqo427OS3pbywvObTTec93-yUs3uAk6clUAAIzCImc90rw53UWdb_lBjmljNdv_ow0a9x8zzwuYZAOmVybQ0znTKa0nFZzN117K26xJ8HUVFk7MrYhX4DSlMBEAj8qNskQ_1UJwmnYAeMjutMLDI7VOvxA_hFO2p_o0nr8Aqn-Ud1gREFHE8V-kgkpMJPdVsyHOKlti8CbAJEhDCzyq5XjJmB0g9N9GkBZGVCPEUYMlMrV333MC05A_UT6Hsd-pCDP2PH3GB4MvbA8SzlO4JXK7xVG8UOjdJy_CSyOyIFTC1S4jy-N9Zbukd-V9Qz8hABuo_ESKoAAg0IiqFyfCvhV6KLkWdan7SG06W3Mvla9AXFUqyh7JlSl5czrODqexkGh_3QZEcxqvWRzKBGJV0YPeuQGYJzFCY34vbhYVBaMFDWfrdOQ6rOJLJgomjZ61-jq-gxNbGMgyPuwIkdCr2MwhbTRglZ0zigncOoTxo")
-//        getUserDetails()
-//        getUserAddress()
-
-
+        val email = binding.etEmail.text.toString()
+        val password =  binding.etPassword.text.toString()
+        GeneralUtils.hideKeyboard(this)
         if (email.isNotEmpty() && password.isNotEmpty()) {
-//            val body = Encrypt.encrypt(value1, email)?.let {
-//                Encrypt.encrypt(value1, password)?.let { it1 ->
-//                    RequestBodies.LoginBody(
-//                        it,
-//                        it1,
-//                        "1",
-//                        userPrefManager.fcmToken
-//                    )
-//                }
-//            }
 
-            val body =  RequestBodies.LoginBody(email,password,"1",userPrefManager.fcmToken)
-            loginViewModel.loginUser(body)
+            val loginPreferences:SharedPreferences? = getSharedPreferences("loginPrefs", MODE_PRIVATE)
+            var loginPrefsEditor: SharedPreferences.Editor? = null
+            loginPrefsEditor = loginPreferences?.edit()
+
+            if ( binding.rememberMe.isChecked) {
+                loginPrefsEditor?.putBoolean("saveLogin", true)
+                loginPrefsEditor?.putString("username",   binding.etEmail.text.toString())
+                loginPrefsEditor?.putString("password",   binding.etPassword.text.toString())
+                loginPrefsEditor?.apply()
+            } else {
+                loginPrefsEditor?.clear()
+                loginPrefsEditor?.apply()
+            }
+
+
+
+
+
+
+
+            val body = Encrypt.getEncrptedValue(email)?.let {
+                Encrypt.getEncrptedValue (password)?.let { it1 ->
+                    RequestBodies.LoginBody(
+                        it,
+                        it1,
+                        "1",
+                        userPrefManager.fcmToken
+                    )
+                }
+            }
+
+            if (body != null) {
+                loginViewModel.loginUser(body)
+            }
             loginViewModel.loginResponse.observe(this, Observer { event ->
                 event.getContentIfNotHandled()?.let { response ->
                     when (response) {
@@ -178,7 +307,7 @@ class LoginActivity : AppCompatActivity() {
                         is Resource.Error -> {
                             hideProgressBar()
                             response.message?.let { message ->
-                                progress.errorSnack(message, Snackbar.LENGTH_LONG)
+                                binding.progress.errorSnack(message, Snackbar.LENGTH_LONG)
                             }
                         }
 
@@ -188,6 +317,8 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
             })
+        }else{
+
         }
     }
 
@@ -232,11 +363,12 @@ class LoginActivity : AppCompatActivity() {
                     is Resource.Success -> {
                         hideProgressBar()
                         response.data?.let { loginResponse ->
-                            Log.i("TAG", "loginResponse i m here: $loginResponse")
+                            Log.i("TAG", "loginResponse i m here: "+loginResponse)
                             userPrefManager.firstName = loginResponse.first_name
                             userPrefManager.lastName = loginResponse.last_name
                             userPrefManager.contactNo = loginResponse.phone.toString()
                             userPrefManager.email = loginResponse.email
+                            userPrefManager.avatar = loginResponse.avatar
 
                             val mainActivity = Intent(this@LoginActivity, HomeActivity::class.java)
                             startActivity(mainActivity)
@@ -247,7 +379,7 @@ class LoginActivity : AppCompatActivity() {
                     is Resource.Error -> {
                         hideProgressBar()
                         response.message?.let { message ->
-                            progress.errorSnack(message, Snackbar.LENGTH_LONG)
+                            binding.progress.errorSnack(message, Snackbar.LENGTH_LONG)
                         }
                     }
 
@@ -257,7 +389,6 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         })
-
     }
 
 
@@ -268,11 +399,11 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun hideProgressBar() {
-        progress.visibility = View.GONE
+        binding.progress.visibility = View.GONE
     }
 
     private fun showProgressBar() {
-        progress.visibility = View.VISIBLE
+        binding.progress.visibility = View.VISIBLE
     }
 
     private fun getFCMToken() {
@@ -287,7 +418,7 @@ class LoginActivity : AppCompatActivity() {
             // Get new FCM registration token
             val token = task.result.toString()
             userPrefManager.fcmToken = token
-            Log.i("TAG", "getFCMToken: $token")
+            Log.i("TAG", "getFCMToken: "+task.result.toString())
 
         })
 

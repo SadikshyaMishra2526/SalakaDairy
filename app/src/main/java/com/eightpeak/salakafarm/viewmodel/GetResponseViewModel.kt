@@ -475,7 +475,7 @@ val deleteWishlistById: MutableLiveData<Resource<ServerResponse>> = MutableLiveD
 
 
 
-    //    delete wishlist
+    //    addComplain
     val addComplain: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
 
     fun addComplain(tokenManager: TokenManager,body: RequestBodies.AddComplain) = viewModelScope.launch {
@@ -665,4 +665,105 @@ val getGalleryDetails: MutableLiveData<Resource<GalleryListModel>> = MutableLive
         }
         return Resource.Error(response.message())
     }
+
+
+
+
+
+//    add Contact Us
+    val contactUs: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
+
+    fun addContactUs(body: RequestBodies.AddContactUs) = viewModelScope.launch {
+        addContactUsData(body)
+    }
+    private suspend fun addContactUsData(body: RequestBodies.AddContactUs) {
+        addComplain.postValue(Resource.Loading())
+        try {
+            if (Utils.hasInternetConnection(getApplication<Application>())) {
+                val response = appRepository.addContactUs(body)
+                Log.i("TAG", "fetchPics: $response")
+                addComplain.postValue(handleAddContactUsResponse(response))
+            } else {
+                addComplain.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+            }
+        } catch (t: Throwable) {
+            Log.i("TAG", "fetchPics: "+t.localizedMessage)
+            when (t) {
+                is IOException -> addComplain.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.network_failure
+                        )
+                    )
+                )
+                else -> addComplain.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.conversion_error
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun handleAddContactUsResponse(response: Response<ServerResponse>): Resource<ServerResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+//forgot password
+
+
+    //    add Contact Us
+    val forgotPassword: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
+
+    fun forgotPassword(email: String) = viewModelScope.launch {
+        forgotPasswordView(email)
+    }
+    private suspend fun forgotPasswordView(email: String) {
+        forgotPassword.postValue(Resource.Loading())
+        try {
+            if (Utils.hasInternetConnection(getApplication<Application>())) {
+                val response = appRepository.forgotPassword(email)
+                Log.i("TAG", "fetchPics: $response")
+                forgotPassword.postValue(handleForgotPasswordResponse(response))
+            } else {
+                forgotPassword.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+            }
+        } catch (t: Throwable) {
+            Log.i("TAG", "fetchPics: "+t.localizedMessage)
+            when (t) {
+                is IOException -> forgotPassword.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.network_failure
+                        )
+                    )
+                )
+                else -> forgotPassword.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.conversion_error
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun handleForgotPasswordResponse(response: Response<ServerResponse>): Resource<ServerResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+
 }

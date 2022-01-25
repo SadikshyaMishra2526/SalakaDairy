@@ -24,6 +24,7 @@
             android:id="@+id/progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -34,12 +35,13 @@
             android:layout_width="@dimen/_200sdp"
             android:layout_gravity="center"
             android:src="@drawable/statement"
-            android:layout_height="@dimen/_300sdp"/>
+            android:layout_height="@dimen/_200sdp"/>
         <Button
             android:id="@+id/submit_evidence"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
-            android:text="Submit Payment ScreenShot"
+            android:layout_margin="@dimen/_5sdp"
+            android:text="@string/submit_payment_screenshot"
             android:layout_height="wrap_content"/>
     </LinearLayout>
 

@@ -16,4 +16,7 @@ interface NotificationDao {
 
     @Query("SELECT * FROM notification_details ORDER BY id ASC")
     fun getAllDetailsOfLog():LiveData<List<NotificationDetails>>
+
+    @Query("DELETE FROM notification_details WHERE id = :userId")
+    fun deleteByUserId(userId: String)
 }

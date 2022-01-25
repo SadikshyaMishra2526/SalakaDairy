@@ -45,6 +45,10 @@ class ConfirmOrderActivity : AppCompatActivity() {
     private val REQUEST_CODE_PAYMENT = 1
     private var eSewaConfiguration: ESewaConfiguration? = null
 
+
+    private var shippingId: String? = null
+    private var totalCost: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -62,23 +66,12 @@ class ConfirmOrderActivity : AppCompatActivity() {
         userPrefManager = UserPrefManager(this)
         binding = ActivityConfirmOrderBinding.inflate(layoutInflater)
 
-       var selectedPaymentMethod = intent.getStringExtra("payment_option").toString()
-        Log.i("TAG", "onCreate: "+selectedPaymentMethod)
-        if(selectedPaymentMethod=="Cash"){
-            binding.paymentStatus.load(R.drawable.cod)
 
-        }else if(selectedPaymentMethod=="Esewa"){
-            binding.placeOrderEsewa.setOnClickListener {
-                makePayment("232")
-
-            }
-        }
         setupViewModel()
         setContentView(binding.root)
-//        binding.payByEsewa.setOnClickListener {
-//            makePayment("10")
-//        }
-        binding.header.text = "Your Order Details"
+        binding.header.text = getString(R.string.your_order_details)
+
+
     }
 
     private fun setupViewModel() {
@@ -101,12 +94,26 @@ class ConfirmOrderActivity : AppCompatActivity() {
                         addViewShippingAddress(picsResponse.order_details.shippingAddress)
                         addCartDetails(picsResponse.order_details.cartItem)
                         addTotalPrice(picsResponse.order_details.dataTotal)
-                        binding.placeOrder.setOnClickListener {
-                            val random: Int = Random().nextInt(61) + 20
-                            val body = RequestBodies.AddOrder(random.toString(), "dsfs", "1000","119", "119")
-                            tokenManager?.let { it1 -> viewModel.addOrder(it1,body) }
-                            getOrderResponse()
+//                        shippingId=picsResponse.order_details.shippingAddress
 
+                        val selectedPaymentMethod = intent.getStringExtra("payment_option").toString()
+                        if(selectedPaymentMethod=="Cash"){
+                            binding.placeOrderEsewa.visibility=View.GONE
+                            binding.paymentStatus.load(R.drawable.cod)
+                            binding.placeOrder.setOnClickListener {
+                                val random: Int = Random().nextInt(61) + 20
+                                val body = RequestBodies.AddOrder("null", "null", "1000","119", "119")
+                                tokenManager?.let { it1 -> viewModel.addOrder(it1,body) }
+                                getOrderResponse()
+                            }
+                        }else if(selectedPaymentMethod=="Esewa"){
+                            binding.placeOrder.visibility=View.GONE
+                            binding.placeOrderEsewa.visibility=View.VISIBLE
+                            binding.paymentStatus.load(R.drawable.esewa)
+                            binding.placeOrderEsewa.setOnClickListener {
+                                makePayment("232")
+
+                            }
                         }
                     }
                 }
@@ -174,6 +181,7 @@ class ConfirmOrderActivity : AppCompatActivity() {
             } else {
                 totalPriceCard.visibility = View.GONE
             }
+
             binding.priceTotal.addView(itemView)
         }
     }

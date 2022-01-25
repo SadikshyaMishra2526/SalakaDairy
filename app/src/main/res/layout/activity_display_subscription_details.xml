@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/subscription_details"
     android:layout_width="match_parent"
+    android:visibility="gone"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -77,7 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:text="Note !!!"
+                    android:text="@string/note"
                     android:layout_width="wrap_content"
                     android:layout_gravity="center"
                     android:textColor="@color/sub_color"
@@ -85,7 +86,7 @@
                 <TextView
 
                     android:textSize="@dimen/_9sdp"
-                    android:text="Subscription needs to be validated to start. If you want to pay via QR or Online Banking.. Please upload your payment statement in the end of this page and wait for approval..."
+                    android:text="@string/subscription_needs_to_be_validated_to_start_if_you_want_to_pay_via_qr_or_online_banking_please_upload_your_payment_statement_in_the_end_of_this_page_and_wait_for_approval"
                     android:id="@+id/warning_message"
                     android:textColor="@color/red"
                     android:layout_width="match_parent"
@@ -252,13 +253,13 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="M : Morning"
+                        android:text="@string/m_morning"
                         android:textSize="@dimen/_10sdp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="E : Evening"
+                        android:text="@string/e_evening"
                         android:textSize="@dimen/_10sdp" />
                 </LinearLayout>
 
@@ -276,19 +277,19 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Red : Cancelled"
+                        android:text="@string/red_cancelled"
                         android:textSize="@dimen/_10sdp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Green : Delivered"
+                        android:text="@string/green_delivered"
                         android:textSize="@dimen/_10sdp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Yellow : In Progress"
+                        android:text="@string/yellow_in_progress"
                         android:textSize="@dimen/_10sdp" />
 
                 </LinearLayout>
@@ -578,7 +579,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:text="Add Evidence"
+                            android:text="@string/add_evidence"
                             android:textColor="@color/sub_color"
                             android:textSize="@dimen/_10sdp"
                             android:textStyle="bold" />
@@ -587,7 +588,7 @@
                             android:id="@+id/add_evidence"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="Add Evidence"
+                            android:text="@string/add_evidence"
                             android:layout_weight="2" />
                     </LinearLayout>
                 </LinearLayout>
@@ -628,7 +629,7 @@
                     android:id="@+id/add_complain_to_subscription"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_50sdp"
-                    android:text="Complain Box"
+                    android:text="@string/complain_box"
                     android:textSize="@dimen/_10sdp" />
             </LinearLayout>
 

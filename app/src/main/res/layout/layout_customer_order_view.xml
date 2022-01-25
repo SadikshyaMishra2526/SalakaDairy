@@ -69,7 +69,7 @@
             android:textSize="@dimen/_9sdp"
             android:layout_height="wrap_content"
             android:textColor="@color/sub_color"
-            android:text="Track Order"
+            android:text="@string/track_order"
             android:background="@drawable/edit_view"
             android:padding="@dimen/_10sdp"/>
         <View
@@ -84,7 +84,7 @@
             android:textColor="@color/sub_color"
             android:background="@drawable/edit_view"
             android:padding="@dimen/_10sdp"
-            android:text="View Details" />
+            android:text="@string/view_details" />
     </LinearLayout>
 </LinearLayout>
 

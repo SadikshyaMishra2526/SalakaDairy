@@ -53,6 +53,8 @@ public class UserPrefManager {
 
     private static final String BANK_NAME= "bank_name";
     private static final String DELIVERY_PERIOD= "delivery_period";
+    private static final String AVATAR= "avatar";
+    private static final String SUBSCRIPTION_SELECTED= "subscription_selected";
 
 
     public UserPrefManager(Context context) {
@@ -118,14 +120,14 @@ public class UserPrefManager {
         return userPref.getString(USER_CONTACT_NO, DEFAULT);
     }
 
-//  public  void setUserCountry(String language) {
-//        userPrefEditor.putString(USER_COUNTRY, language);
-//        userPrefEditor.commit();
-//    }
-//
-//    public String getUserCountry() {
-//        return userPref.getString(USER_COUNTRY, DEFAULT);
-//    }
+  public  void setAvatar(String avatar) {
+        userPrefEditor.putString(AVATAR, avatar);
+        userPrefEditor.commit();
+    }
+
+    public String getAvatar() {
+        return userPref.getString(AVATAR, DEFAULT);
+    }
 //
 //
 //
@@ -257,6 +259,16 @@ public class UserPrefManager {
 
     public String getAccountHolderName() {
         return userPref.getString(ACC_HOLDER_NAME, DEFAULT);
+    }
+
+
+ public  void setSelectedPackage(Integer id) {
+        userPrefEditor.putInt(SUBSCRIPTION_SELECTED, id);
+        userPrefEditor.commit();
+    }
+
+    public Integer getSelectedPackage() {
+        return userPref.getInt(SUBSCRIPTION_SELECTED, 0);
     }
 
 

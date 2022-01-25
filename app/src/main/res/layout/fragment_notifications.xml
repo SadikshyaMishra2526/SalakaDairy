@@ -25,7 +25,7 @@
             android:layout_gravity="center"
             android:textColor="@color/main_color"
             android:textSize="@dimen/_13sdp"
-            android:text=" Notifications"
+            android:text="@string/notifications"
             android:textStyle="bold"
             app:drawableStartCompat="@drawable/ic_baseline_notifications_24" />
 
@@ -52,31 +52,10 @@
         app:layout_constraintTop_toBottomOf="@+id/header_layout">
 
         <LinearLayout
+            android:id="@+id/notificationList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"/>
 
-            <include layout="@layout/notification_items" />
-
-            <include layout="@layout/notification_items" />
-
-            <include layout="@layout/notification_items" />
-
-            <include layout="@layout/notification_items" />
-
-            <include layout="@layout/notification_items" />
-
-            <include layout="@layout/notification_items" />
-
-            <include layout="@layout/notification_items" />
-
-            <include layout="@layout/notification_items" />
-
-            <include layout="@layout/notification_items" />
-
-            <include layout="@layout/notification_items" />
-
-            <include layout="@layout/notification_items" />
-        </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>
