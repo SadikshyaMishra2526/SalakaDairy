@@ -44,17 +44,27 @@
         android:id="@+id/products_details_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.021">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_shopping_cart_24" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/headerLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
             android:layout_gravity="center"
-            android:drawableStart="@drawable/ic_baseline_shopping_cart_24"
+            android:layout_marginStart="@dimen/_10sdp"
             android:textColor="@color/main_color"
             android:textSize="@dimen/_13sdp"
             android:textStyle="bold" />
@@ -74,11 +84,11 @@
             android:textColor="@color/main_color"
             android:textSize="@dimen/_13sdp"
             android:textStyle="bold"
+            app:drawableEndCompat="@drawable/ic_arrow_forward_black_24dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:drawableEndCompat="@drawable/ic_arrow_forward_black_24dp" />
+            app:layout_constraintStart_toStartOf="parent" />
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
@@ -86,9 +96,9 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/_10sdp"
         android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_50sdp"
         android:backgroundTint="@color/white"
         app:cardCornerRadius="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_50sdp"
         app:layout_constraintTop_toBottomOf="@+id/products_details_title">
 
         <androidx.core.widget.NestedScrollView
@@ -99,41 +109,46 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <LinearLayout
                     android:id="@+id/ifEmpty"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:gravity="center"
-                    android:visibility="gone"
+                    android:orientation="vertical"
                     android:padding="@dimen/_10sdp"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/scrollView">
+
                     <ImageView
-                        android:src="@drawable/cart_empty"
                         android:layout_width="@dimen/_40sdp"
                         android:layout_height="@dimen/_40sdp"
-                        android:contentDescription="TODO" />
+                        android:contentDescription="TODO"
+                        android:src="@drawable/cart_empty" />
+
                     <TextView
-                        android:text="@string/there_are_no_items_in_cart"
                         android:layout_width="wrap_content"
-                        android:textStyle="bold"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
-                        android:layout_height="wrap_content"/>
+                        android:text="@string/there_are_no_items_in_cart"
+                        android:textStyle="bold" />
+
                     <Button
                         android:id="@+id/continue_shopping_empty"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:text="@string/continue_btn"
-                        android:padding="@dimen/_5sdp"
-                        android:textSize="13sp"
-                        android:background="@color/tab_indicator_gray"
-                        android:textColor="@color/white"
                         android:layout_width="@dimen/_100sdp"
-                        android:layout_height="@dimen/_30sdp"/>
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@color/tab_indicator_gray"
+                        android:padding="@dimen/_5sdp"
+                        android:text="@string/continue_btn"
+                        android:textColor="@color/white"
+                        android:textSize="13sp" />
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/view_cart_list"
                     android:layout_width="match_parent"
@@ -145,13 +160,14 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.0" />
+
                 <LinearLayout
                     android:id="@+id/linearLayout2"
                     android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_height="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/product_low_design"
+                    android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
@@ -176,13 +192,13 @@
                     android:id="@+id/productRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_80sdp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/products_title"
                     app:layout_constraintVertical_bias="0.0"
-                    android:layout_marginBottom="@dimen/_80sdp"
                     app:snapGravity="start" />
 
             </LinearLayout>
@@ -190,7 +206,7 @@
     </androidx.cardview.widget.CardView>
 
 
-      <ProgressBar
+    <ProgressBar
         android:id="@+id/progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -83,7 +83,8 @@
         <activity
             android:name=".views.welcomeActivity.IntroActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".views.home.HomeActivity" />
+        <activity android:name=".views.home.HomeActivity"
+          />
         <activity
             android:name=".views.login.LoginActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"

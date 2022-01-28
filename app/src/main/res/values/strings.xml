@@ -284,6 +284,14 @@
     <string name="milk_needs_to_be_boiled_within_half_hour_after_received_your_complain_will_be_valid_if_send_within_half_hour">Milk needs to be boiled within half hour after received. Your complain will be valid if send within half hour.</string>
     <string name="submit">Submit</string>
     <string name="subscription_complain_box">Subscription Complain Box</string>
+    <string name="product_description">Product Description</string>
+    <string name="quality_products">Quality Products</string>
+    <string name="intro1">\" Ensuring your products are of high quality.\n Fulfilling everyone\'s Good quality needs.\"</string>
+    <string name="fast_delivery">Fast Delivery</string>
+    <string name="intro2">We bring the store to your door.\n Save your precious time</string>
+    <string name="easy_payment">Easy Payment</string>
+    <string name="intro3">The greatest journey of online shop. \n Life is hard enough already. Let us make it a little easier.</string>
+    <string name="calender">Calender</string>
 
     <string-array name="nepdays">
         <item>01</item>

@@ -28,12 +28,12 @@
         android:layout_marginBottom="16dp"
         android:textSize="@dimen/_13sdp"
         android:textStyle="bold"
-        android:drawableTint="@color/sub_color"
         android:text="@string/next"
         android:textColor="@color/sub_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:drawableEndCompat="@drawable/ic_arrow_forward_black_24dp" />
+        app:drawableEndCompat="@drawable/ic_arrow_forward_black_24dp"
+        app:drawableTint="@color/sub_color" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_indicator"

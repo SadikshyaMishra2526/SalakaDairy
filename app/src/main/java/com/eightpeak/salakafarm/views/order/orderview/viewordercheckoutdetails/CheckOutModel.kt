@@ -58,6 +58,7 @@ data class DataTotal (
 )
 data class ShippingAddress (
 
+    @SerializedName("id") val id : Int,
     @SerializedName("first_name") val first_name : String,
     @SerializedName("last_name") val last_name : String,
     @SerializedName("first_name_kana") val first_name_kana : String,

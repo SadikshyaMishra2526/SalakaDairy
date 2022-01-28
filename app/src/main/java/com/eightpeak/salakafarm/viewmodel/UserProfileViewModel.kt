@@ -41,7 +41,7 @@ private val appRepository: AppRepository
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
                 val response = appRepository.getAddressList(token)
-                Log.i("TAG", "fetchUserAddress: "+response)
+                Log.i("TAG", "fetchUserAddress: $response")
                 userAddressList.postValue(handleAddressResponse(response))
             } else {
                 userAddressList.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))

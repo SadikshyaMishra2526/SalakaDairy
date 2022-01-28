@@ -219,9 +219,9 @@ class LoginActivity : AppCompatActivity() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
-                        Log.i("TAG", "getGoogleLoginResponse: "+response.data.success.token)
-                        userPrefManager.subscriptionStatus=false
-                        tokenManager?.saveToken(response.data.success.token)
+                        Log.i("TAG", "getGoogleLoginResponse: "+picsResponse.access_token)
+                        userPrefManager.subscriptionStatus=picsResponse.subscription
+                        tokenManager?.saveToken(picsResponse.access_token)
                         getUserDetails()
                         getUserAddress()
                     }

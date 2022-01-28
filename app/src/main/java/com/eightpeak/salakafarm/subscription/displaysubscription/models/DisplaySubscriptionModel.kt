@@ -1,3 +1,7 @@
+package com.eightpeak.salakafarm.subscription.displaysubscription.models
+
+
+
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
@@ -43,7 +47,7 @@ data class Subscription(
     @SerializedName("account_number") val account_number: String,
     @SerializedName("bank") val bank: String,
     @SerializedName("screenshot") val screenshot: String,
-    @SerializedName("deliveryHistory") val deliveryHistory: List<DeliveryHistory>,
+    @SerializedName("deliveryHistory") val deliveryHistory: List<DeliveryHistoryDisplay>,
     @SerializedName("expiration_day_remaining") val expiration_day_remaining: Int,
     @SerializedName("expiration_time") val expiration_time: String,
     @SerializedName("address") val address: Address,
@@ -76,7 +80,7 @@ data class Address(
     @SerializedName("lng") val lng: Double
 )
 
-data class DeliveryHistory(
+data class DeliveryHistoryDisplay(
 
     @SerializedName("date") val date: Int? = null,
     @SerializedName("delivery_count") val delivery_count: Int? = null,

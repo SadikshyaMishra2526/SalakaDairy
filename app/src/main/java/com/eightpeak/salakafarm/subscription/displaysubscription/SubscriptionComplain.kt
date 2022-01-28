@@ -38,7 +38,6 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.subscription_complain.*
 
 class SubscriptionComplain  : BottomSheetDialogFragment() {
 

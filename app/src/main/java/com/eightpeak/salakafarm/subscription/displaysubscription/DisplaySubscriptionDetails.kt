@@ -1,7 +1,5 @@
 package com.eightpeak.salakafarm.subscription.displaysubscription
 
-import DeliveryHistory
-import DisplaySubscriptionModel
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
@@ -29,6 +27,10 @@ import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.home.HomeActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.messaging.FirebaseMessaging
+import android.app.ProgressDialog
+import com.eightpeak.salakafarm.subscription.displaysubscription.models.DeliveryHistoryDisplay
+import com.eightpeak.salakafarm.subscription.displaysubscription.models.DisplaySubscriptionModel
+
 
 class DisplaySubscriptionDetails : AppCompatActivity() {
     private lateinit var binding: ActivityDisplaySubscriptionDetailsBinding
@@ -52,7 +54,8 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
         binding.headerTitle.text = getString(R.string.track_your_subscription)
         binding.returnHome.setOnClickListener { finish() }
         userPrefManager = UserPrefManager(this)
-        Log.i("TAG", "onCreate: " +intent.getStringExtra("title"))
+
+
         init()
         setContentView(binding.root)
 
@@ -84,7 +87,7 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
         setupViewModel()
     }
 
-    private fun openActivity(view: View, category: DeliveryHistory) {
+    private fun openActivity(view: View, category: DeliveryHistoryDisplay) {
         val args = Bundle()
         args.putString(
             Constants.SUBSCRIPTION_ID,
@@ -104,14 +107,18 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
     }
 
     private fun getCustomerSubscription() {
+        val pd = ProgressDialog(this@DisplaySubscriptionDetails)
+        pd.setMessage("PLease wait..fetching your subscription details")
+        pd.show()
         tokenManager?.let { it1 -> viewModel.fetchCustomerSubscription(it1) }
         viewModel.getCustomerSubscription.observe(this, Observer { response ->
             when (response) {
                 is Resource.Success -> {
+                    pd.dismiss()
+
                     hideProgressBar()
                     response.data?.let { picsResponse ->
                         Log.i("TAG", "getCustomerSubscription: "+picsResponse.message)
-
                         if(picsResponse.error!=null&&picsResponse.error == "1"){
                             userPrefManager.subscriptionStatus=false
                             binding.subscriptionDetails.errorSnack(picsResponse.message, Snackbar.LENGTH_LONG)
@@ -129,6 +136,7 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
                 }
 
                 is Resource.Error -> {
+                    pd.dismiss()
                     hideProgressBar()
                     response.message?.let { message ->
                         binding.subscriptionDetails.errorSnack(message, Snackbar.LENGTH_LONG)
@@ -136,6 +144,7 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
                 }
 
                 is Resource.Loading -> {
+                    pd.show()
                     showProgressBar()
                 }
             }
@@ -252,8 +261,6 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
             intent.putExtra("start", subscriptionDetailsModel!!.subscription.starting_date)
             intent.putExtra("end", subscriptionDetailsModel!!.subscription.expiration_time)
             startActivity(intent)
-            finish()
-
         }
         binding.addEvidence.setOnClickListener {
             val args = Bundle()
@@ -299,8 +306,8 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
         })
     }
 
-    private fun addSubscriptionDate(subscriptionDetails: List<DeliveryHistory>) {
-        val deliveryHistory: List<DeliveryHistory> = subscriptionDetails
+    private fun addSubscriptionDate(subscriptionDetails: List<DeliveryHistoryDisplay>) {
+        val deliveryHistory: List<DeliveryHistoryDisplay> = subscriptionDetails
         subscriptionAdapter!!.differ.submitList(deliveryHistory)
         binding.displaySubscriptionDates.adapter = subscriptionAdapter
         binding.displaySubscriptionDates.setItemViewCacheSize(subscriptionDetails.size)

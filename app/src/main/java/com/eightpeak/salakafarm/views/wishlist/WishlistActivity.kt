@@ -172,6 +172,8 @@ class WishlistActivity : AppCompatActivity() {
                     dialog.show()
                 }
 
+                categorySKU.text = wishlist[i].products_with_description.sku
+                productPrice.text = wishlist[i].products_with_description.price.toString()
                      if(userPrefManager.language.equals("ne")){
                         productName.text = wishlist[i].products_with_description.descriptions[1].name
                     }else{

@@ -98,11 +98,17 @@ class ConfirmOrderActivity : AppCompatActivity() {
 
                         val selectedPaymentMethod = intent.getStringExtra("payment_option").toString()
                         if(selectedPaymentMethod=="Cash"){
+                            var totalPrice=""
                             binding.placeOrderEsewa.visibility=View.GONE
                             binding.paymentStatus.load(R.drawable.cod)
                             binding.placeOrder.setOnClickListener {
-                                val random: Int = Random().nextInt(61) + 20
-                                val body = RequestBodies.AddOrder("null", "null", "1000","119", "119")
+                              for(i in picsResponse.order_details.dataTotal) {
+
+                                  if(i.title=="total"){
+                                      totalPrice=i.text
+                                  }
+                              }
+                                val body = RequestBodies.AddOrder("null", "null", "137", "137")
                                 tokenManager?.let { it1 -> viewModel.addOrder(it1,body) }
                                 getOrderResponse()
                             }
@@ -134,15 +140,15 @@ class ConfirmOrderActivity : AppCompatActivity() {
     }
 
     private fun getOrderResponse() {
-        viewModel.checkoutResponse.observe(this, Observer { response ->
+        viewModel.addOrder.observe(this, Observer { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
-
                     response.data?.let { picsResponse ->
-                        Toast.makeText(this@ConfirmOrderActivity," Order has successfully placed!!! ",Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(this@ConfirmOrderActivity,OrderHistory::class.java))
-                        finish()
+                        Log.i("TAG", "getOrderResponse: "+picsResponse)
+//                        Toast.makeText(this@ConfirmOrderActivity," Order has successfully placed!!! ",Toast.LENGTH_SHORT).show()
+//                        startActivity(Intent(this@ConfirmOrderActivity,OrderHistory::class.java))
+//                        finish()
                     }
                 }
 

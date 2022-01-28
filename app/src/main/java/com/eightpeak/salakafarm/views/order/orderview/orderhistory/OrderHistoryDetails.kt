@@ -138,7 +138,7 @@ class OrderHistoryDetails : Fragment() {
        binding.customerPhone.text=orderDetails.phone
        binding.customerAddress.text=orderDetails.address1+" "+orderDetails.address2
 
-        binding.paymentStatus.text=getString(R.string.payment_status)+"\n"+orderDetails.payment_status.name
+//        binding.paymentStatus.text=getString(R.string.payment_status)+"\n"+orderDetails.payment_status.name
         binding.orderStatus.text=getString(R.string.order_status)+" \n"+orderDetails.order_status.name
         binding.paymentType.text=getString(R.string.shipping_status)+" \n"+orderDetails.shipping_method
         binding.orderDate.text=getString(R.string.order_at)+" \n"+orderDetails.created_at

@@ -2,11 +2,9 @@ package com.eightpeak.salakafarm.views.home.products
 
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.eightpeak.salakafarm.database.UserPrefManager
@@ -24,12 +22,9 @@ import com.eightpeak.salakafarm.databinding.FragmentAddToCartViewBinding
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
-import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdModel
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
-import com.eightpeak.salakafarm.utils.subutils.notLoginWarningSnack
 import com.eightpeak.salakafarm.utils.subutils.successAddToCartSnack
-import com.eightpeak.salakafarm.views.home.HomeActivity
-import kotlinx.android.synthetic.main.fragment_add_to_cart_view.view.*
+import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdModel
 
 class AddToCartView : BottomSheetDialogFragment() {
     private var _binding: FragmentAddToCartViewBinding? = null
@@ -54,7 +49,7 @@ class AddToCartView : BottomSheetDialogFragment() {
             )
         )
         setupViewModel()
-        return root.add_to_cart_view
+        return root.rootView
     }
 
 
@@ -79,11 +74,11 @@ class AddToCartView : BottomSheetDialogFragment() {
                     response.data?.let { picsResponse ->
                         binding.productThumbnail.load(BASE_URL + picsResponse.image)
                         if (userPrefManager?.language == "ne") {
-
-                            binding.productName.text = picsResponse.productRelation?.get(0)?.descriptions[1].title
+                            binding.categoriesName.text= picsResponse?.categories_description[0].descriptions[1].name
+                            binding.productName.text = picsResponse?.descriptions[1].main_name
                         } else {
-
-                            binding.productName.text = picsResponse.productRelation?.get(0)?.descriptions[0].title
+                            binding.categoriesName.text= picsResponse?.categories_description[0].descriptions[0].name
+                            binding.productName.text = picsResponse.descriptions[0].main_name
                         }
                         getData(picsResponse)
                     }
@@ -117,15 +112,14 @@ class AddToCartView : BottomSheetDialogFragment() {
                 binding.productQuantity.text = quantity.toString()
             }
         }
-//        if (picsResponse.attributes!!?.isNotEmpty() == true) {
-//            Log.i("TAG", "getData: " + picsResponse.attributes[0].name)
-//            var attribute = ""
-//            for (i in picsResponse.attributes.indices) {
-//                attribute = attribute + " " + picsResponse.attributes[i].name + " , "
-//
-//            }
-//            binding.attribute.text = "Attributes :-" + attribute
-//        }
+        if (picsResponse.attributes!!?.isNotEmpty() == true) {
+            var attribute = ""
+            for (i in picsResponse.attributes.indices) {
+//                attribute = attribute + " " + picsResponse.attributes[i] + " , "
+
+            }
+            binding.attribute.text = "Attributes :-" + attribute
+        }
 
         binding.btAddToCart.setOnClickListener {
             tokenManager?.let { it1 ->
@@ -147,9 +141,7 @@ class AddToCartView : BottomSheetDialogFragment() {
                         binding.addToCartView.visibility=View.GONE
                         val handler = Handler()
                         handler.postDelayed({
-                            dismiss()
-
-                                            }, 2000)
+                            dismiss() }, 1000)
 //                        Toast.makeText(
 //                            requireContext(),
 //                            "Successfully added to cart!!!",

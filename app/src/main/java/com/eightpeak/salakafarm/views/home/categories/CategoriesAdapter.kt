@@ -5,6 +5,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +18,6 @@ import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
 import com.eightpeak.salakafarm.views.home.categories.categoriesbyid.CategoriesByIdActivity
-import kotlinx.android.synthetic.main.categories_item.view.*
 
 class CategoriesAdapter : RecyclerView.Adapter<CategoriesAdapter.CategoriesViewHolder>() {
     lateinit var userPrefManager: UserPrefManager
@@ -53,13 +55,18 @@ class CategoriesAdapter : RecyclerView.Adapter<CategoriesAdapter.CategoriesViewH
 
         holder.itemView.apply {
 
-            categories_thumbnail.load(BASE_URL+categoriesItem.image)
+            val categoriesThumbnail = findViewById<ImageView>(R.id.categories_thumbnail)
+    val categoriesName = findViewById<TextView>(R.id.categories_name)
+            val categoriesById = findViewById<ConstraintLayout>(R.id.categories_by_id)
+
+
+            categoriesThumbnail.load(BASE_URL+categoriesItem.image)
             if (userPrefManager.language.equals("ne")) {
-                categories_name.text = categoriesItem.descriptions[1].title
+                categoriesName.text = categoriesItem.descriptions[1].title
             }else{
-                categories_name.text = categoriesItem.descriptions[0].title
+                categoriesName.text = categoriesItem.descriptions[0].title
             }
-            categories_by_id.setOnClickListener {
+            categoriesById.setOnClickListener {
                 val intent = Intent(context, CategoriesByIdActivity::class.java)
                 intent.putExtra(Constants.CATEGORIES_ID,categoriesItem.id.toString())
                 context.startActivity(intent)

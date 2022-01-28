@@ -39,10 +39,15 @@ data class UserAddressEdit(
 )
 
 class GoogleLoginResponse (
-    @SerializedName("success") val success : Success,
-    @SerializedName("error") val error : Int,
-    @SerializedName("message") val message : String,
-)
+    @SerializedName("error") val error : String,
+    @SerializedName("subscription") val subscription : Boolean,
+    @SerializedName("access_token") val access_token : String,
+    @SerializedName("token_type") val token_type : String,
+    @SerializedName("expires_at") val expires_at : String)
 data class Success (
     @SerializedName("token") val token : String
+)
+
+data class OrderResponse (
+    @SerializedName("orderID") val orderID : String
 )

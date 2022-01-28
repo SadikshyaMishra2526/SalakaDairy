@@ -3,6 +3,7 @@ package com.eightpeak.salakafarm.views.home.ui.home
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.drawable.shapes.Shape
 import android.location.Geocoder
 import android.os.Bundle
 import android.os.Handler
@@ -17,7 +18,6 @@ import androidx.fragment.app.Fragment
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.databinding.FragmentHomeBinding
-import com.eightpeak.salakafarm.date.AD
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.subscription.SubscriptionActivity
 import com.eightpeak.salakafarm.subscription.displaysubscription.DisplaySubscriptionDetails
@@ -37,7 +37,6 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
-import java.lang.Exception
 import java.util.*
 
 class HomeFragment : Fragment(), OnMapReadyCallback,
@@ -118,7 +117,35 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
         setUpProductFragment()
         return root
     }
-
+//    private fun showCase() {
+//        val DEFAULT_SHAPE: Shape = RectangleShape(20, 20)
+//        val config = ShowcaseConfig()
+//        config.setShape(DEFAULT_SHAPE)
+//        config.setDelay(400)
+//        val sequence = MaterialShowcaseSequence(this, "101")
+//        sequence.setConfig(config)
+//        sequence.addSequenceItem(
+//            mTotalShow,
+//            "Shows number of data entered in the device", "GOT IT"
+//        )
+//        sequence.addSequenceItem(
+//            mDownloadView,
+//            "Please Click Download for initial setup", "GOT IT"
+//        )
+//        sequence.addSequenceItem(
+//            mRegistrationView,
+//            "Please Click Household Registration for collecting data", "GOT IT"
+//        )
+//        sequence.addSequenceItem(
+//            mEditView,
+//            "Edit is used for modification of collected data", "GOT IT"
+//        )
+//        sequence.addSequenceItem(
+//            mUploadView,
+//            "Upload is used for pushing data to server", "GOT IT"
+//        )
+//        sequence.start()
+//    }
     private fun setUpSliderFragment() {
         val managerSlider = childFragmentManager
         val fragmentSlider: Fragment = SliderFragment()

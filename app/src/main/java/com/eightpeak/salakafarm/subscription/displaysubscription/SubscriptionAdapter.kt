@@ -1,15 +1,12 @@
 package com.eightpeak.salakafarm.subscription.displaysubscription
 
-import DeliveryHistory
-import android.content.Intent
 import android.graphics.Color
-import android.graphics.Paint
-import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentActivity
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -17,25 +14,23 @@ import com.eightpeak.salakafarm.App
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.date.AD
-import com.eightpeak.salakafarm.utils.Constants
+import com.eightpeak.salakafarm.subscription.displaysubscription.models.DeliveryHistoryDisplay
 import com.eightpeak.salakafarm.utils.GeneralUtils
-import kotlinx.android.synthetic.main.categories_item.view.*
-import kotlinx.android.synthetic.main.subscription_date_item.view.*
 
-class SubscriptionAdapter(private val onClickListener: (View, DeliveryHistory) -> Unit) :
+class SubscriptionAdapter(private val onClickListener: (View, DeliveryHistoryDisplay) -> Unit) :
     RecyclerView.Adapter<SubscriptionAdapter.DataListViewHolder>() {
 
     inner class DataListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    private val differCallback = object : DiffUtil.ItemCallback<DeliveryHistory>() {
+    private val differCallback = object : DiffUtil.ItemCallback<DeliveryHistoryDisplay>() {
 
-        override fun areItemsTheSame(oldItem: DeliveryHistory, newItem: DeliveryHistory): Boolean {
+        override fun areItemsTheSame(oldItem: DeliveryHistoryDisplay, newItem: DeliveryHistoryDisplay): Boolean {
             return oldItem.date == newItem.date
         }
 
         override fun areContentsTheSame(
-            oldItem: DeliveryHistory,
-            newItem: DeliveryHistory
+            oldItem: DeliveryHistoryDisplay,
+            newItem: DeliveryHistoryDisplay
         ): Boolean {
             return oldItem == newItem
         }
@@ -59,67 +54,74 @@ class SubscriptionAdapter(private val onClickListener: (View, DeliveryHistory) -
          val ad= AD()
         holder.itemView.apply {
 
+            val dateItem = findViewById<TextView>(R.id.date_item)
+            val dateEng = findViewById<TextView>(R.id.date_eng)
+            val alterStatus = findViewById<TextView>(R.id.alter_status)
+            val subItem = findViewById<LinearLayout>(R.id.sub_item)
+            val morningDelivery = findViewById<ImageView>(R.id.morning_delivery)
+            val eveningDelivery = findViewById<ImageView>(R.id.evening_delivery)
+
             var todayDate: String = ad.convertDate(GeneralUtils.getTodayDate())
             // TODO Auto-generated method stub
             val dateList: Array<String> = todayDate.split("-".toRegex()).toTypedArray()
             val dayOnly: Array<String> = dateList[2].split("\n".toRegex()).toTypedArray()
             val today=Integer.parseInt(dayOnly[0])
-            date_item.text = dateDetails.date.toString()
-            date_eng.text = dateDetails.date_eng.toString()
+            dateItem.text = dateDetails.date.toString()
+            dateEng.text = dateDetails.date_eng.toString()
 
                if (dateDetails.alter_status == 3) {
-                    alter_status.visibility = View.GONE
+                    alterStatus.visibility = View.GONE
                 } else if (dateDetails.alter_status == 2) {
-                    alter_status.text = "+"+dateDetails.alter_qty+" litre"
-                    alter_status.setTextColor(Color.GREEN)
-                   date_item.setTextColor(Color.GREEN)
+                    alterStatus.text = "+"+dateDetails.alter_qty+" litre"
+                    alterStatus.setTextColor(Color.GREEN)
+                   dateItem.setTextColor(Color.GREEN)
                 } else if (dateDetails.alter_status == 1) {
-                    alter_status.text = "Cancelled"
-                   date_item.setTextColor(Color.RED)
-                   alter_status.setTextColor(Color.RED)
+                    alterStatus.text = "Cancelled"
+                   dateItem.setTextColor(Color.RED)
+                   alterStatus.setTextColor(Color.RED)
                 } else if (dateDetails.alter_status == null) {
-                   alter_status.visibility = View.GONE
+                   alterStatus.visibility = View.GONE
                 }
 
             if (dateDetails.date!! < today) {
                 if (dateDetails.delivery_count == 0) {
-                    sub_item.setBackgroundColor(resources.getColor(R.color.tab_indicator_gray))
+                    subItem.setBackgroundColor(resources.getColor(R.color.tab_indicator_gray))
                 } else {
                     if (userPrefManager.deliveryPeriod == 2) {
                         if(dateDetails.delivery_count==1){
-                            morning_delivery.visibility = View.VISIBLE
+                            morningDelivery.visibility = View.VISIBLE
                         }else if(dateDetails.delivery_count==2){
-                            morning_delivery.visibility = View.VISIBLE
-                            evening_delivery.visibility = View.VISIBLE
+                            morningDelivery.visibility = View.VISIBLE
+                            eveningDelivery.visibility = View.VISIBLE
                         }
                     }else{
-                        morning_delivery.visibility = View.VISIBLE
+                        morningDelivery.visibility = View.VISIBLE
                     }
-                    sub_item.setBackgroundColor(resources.getColor(R.color.sub_color_lighter))
+                    subItem.setBackgroundColor(resources.getColor(R.color.sub_color_lighter))
                 }
             } else if (dateDetails.date == today) {
 
-                sub_item.setBackgroundColor(resources.getColor(R.color.yellow_lighter))
+                subItem.setBackgroundColor(resources.getColor(R.color.yellow_lighter))
                 if (userPrefManager.deliveryPeriod == 2) {
                     if(dateDetails.delivery_count==1){
-                        morning_delivery.visibility = View.VISIBLE
+                        morningDelivery.visibility = View.VISIBLE
                     }else if(dateDetails.delivery_count==2){
-                        morning_delivery.visibility = View.VISIBLE
-                        evening_delivery.visibility = View.VISIBLE
-                        sub_item.setBackgroundColor(resources.getColor(R.color.sub_color_lighter))
+                        morningDelivery.visibility = View.VISIBLE
+                        eveningDelivery.visibility = View.VISIBLE
+                        subItem.setBackgroundColor(resources.getColor(R.color.sub_color_lighter))
                     }
                 }else if(userPrefManager.deliveryPeriod == 1||userPrefManager.deliveryPeriod == 0){
                     if(dateDetails.delivery_count==0){
-                        morning_delivery.visibility = View.GONE
+                        morningDelivery.visibility = View.GONE
                      }else{
-                        sub_item.setBackgroundColor(resources.getColor(R.color.sub_color_lighter))
-                        morning_delivery.visibility = View.VISIBLE
+                        subItem.setBackgroundColor(resources.getColor(R.color.sub_color_lighter))
+                        morningDelivery.visibility = View.VISIBLE
 
                     }
                 }
 
             } else if (dateDetails.date > today) {
-                sub_item.setBackgroundColor(resources.getColor(R.color.white))
+                subItem.setBackgroundColor(resources.getColor(R.color.white))
                 holder.itemView.setOnClickListener { view ->
                     onClickListener.invoke(view, dateDetails)
                 }

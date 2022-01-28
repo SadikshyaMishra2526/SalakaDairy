@@ -99,5 +99,8 @@ const val GET_GALLERY = "api/get_gallery"
         const val CHANNEL_ID="channel_id"
         const val CHANNEL_NAME="channel name"
         const val CHANNEL_desc="channel desc"
+
+
+        const val CONNECTION_TIME_OUT:Long = 5000
     }
 }

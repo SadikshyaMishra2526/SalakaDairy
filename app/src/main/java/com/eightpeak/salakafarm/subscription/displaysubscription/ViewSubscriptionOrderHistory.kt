@@ -14,6 +14,7 @@ import com.eightpeak.salakafarm.databinding.LayoutSubscriptionOrderHistoryBindin
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.RequestBodies
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
+import com.eightpeak.salakafarm.subscription.displaysubscription.models.MoreInfo1
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
@@ -83,6 +84,7 @@ class ViewSubscriptionOrderHistory : AppCompatActivity() {
                     hideProgressBar()
                     response.data?.let { history ->
                         if (history.moreInfo!!.isNotEmpty()) {
+
                             historyAdapter?.differ?.submitList(history.moreInfo)
                             binding.subOrderHistoryRecycler.adapter = historyAdapter
                         }

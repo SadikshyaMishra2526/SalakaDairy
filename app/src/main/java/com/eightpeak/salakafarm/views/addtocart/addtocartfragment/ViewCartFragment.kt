@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import coil.api.load
 import com.eightpeak.salakafarm.R
-import com.eightpeak.salakafarm.databinding.FragmentAddToCartBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
@@ -26,6 +25,7 @@ import kotlinx.android.synthetic.main.fragment_add_to_cart.*
 
 import android.view.*
 import android.widget.*
+import com.eightpeak.salakafarm.databinding.FragmentAddToCartBinding
 import com.eightpeak.salakafarm.views.home.HomeActivity
 import com.eightpeak.salakafarm.views.order.orderview.viewordercheckoutdetails.CheckoutDetailsView
 
@@ -54,7 +54,7 @@ class ViewCartFragment : Fragment() {
         )
          init()
 
-        binding.headerLayout.text=getString(R.string.cart)
+        binding.headerLayout.text=getString(R.string.shopping_cart)
         binding.proceedWithCheckout.setOnClickListener {
             startActivity(Intent(requireContext(), CheckoutDetailsView::class.java))
         }

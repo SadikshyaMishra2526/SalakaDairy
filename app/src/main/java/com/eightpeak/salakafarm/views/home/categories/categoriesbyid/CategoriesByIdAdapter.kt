@@ -104,7 +104,7 @@ class CategoriesByIdAdapter : RecyclerView.Adapter<CategoriesByIdAdapter.Categor
                 } else {
                     product_name.text = categoriesItem.descriptions[0].name
 
-                    if(categoriesItem.promotion_price.price_promotion!=null){
+                    if(categoriesItem.promotion_price!=null){
                         product_price_discount.text=categoriesItem.price.toString()
                         product_price_discount.paintFlags = product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                         product_price.text =

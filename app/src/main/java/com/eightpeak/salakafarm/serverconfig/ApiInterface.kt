@@ -1,8 +1,6 @@
 package com.eightpeak.salakafarm.serverconfig
 
-import DisplaySubscriptionModel
 import UserProfileModel
-import android.net.Uri
 import com.eightpeak.salakafarm.utils.EndPoints
 import com.eightpeak.salakafarm.serverconfig.network.AccessToken
 import com.eightpeak.salakafarm.subscription.attributes.BranchModel
@@ -10,6 +8,7 @@ import com.eightpeak.salakafarm.subscription.attributes.SubscriptionItemModel
 import com.eightpeak.salakafarm.subscription.attributes.SubscriptionPackageModel
 import com.eightpeak.salakafarm.subscription.attributes.SubscriptionResponse
 import com.eightpeak.salakafarm.subscription.displaysubscription.EmployeeTrackDetails
+import com.eightpeak.salakafarm.subscription.displaysubscription.models.DisplaySubscriptionModel
 import com.eightpeak.salakafarm.subscription.displaysubscription.models.SubscriptionHistoryModel
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.COMPARE_LIST_DETAILS
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.DELETE_CART
@@ -28,11 +27,11 @@ import com.eightpeak.salakafarm.views.addresslist.AddressListModel
 import com.eightpeak.salakafarm.views.comparelist.CompareResponse
 import com.eightpeak.salakafarm.views.home.categories.CategoriesModel
 import com.eightpeak.salakafarm.views.home.categories.categoriesbyid.CategoriesByIdModel
-import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdModel
 import com.eightpeak.salakafarm.views.home.slider.SliderModel
 import com.eightpeak.salakafarm.views.addtocart.addtocartfragment.CartResponse
 import com.eightpeak.salakafarm.views.gallery.GalleryListModel
 import com.eightpeak.salakafarm.views.home.products.*
+import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdModel
 import com.eightpeak.salakafarm.views.home.products.productbyid.ProductRatingModel
 import com.eightpeak.salakafarm.views.login.LoginResponse
 import com.eightpeak.salakafarm.views.order.orderview.orderhistory.OrderHistoryDetailsModel
@@ -203,7 +202,7 @@ interface ApiInterface {
 
 
     @POST(EndPoints.ADD_ORDER)
-    suspend fun addOrder(@Body body: RequestBodies.AddOrder): Response<ServerResponse>
+    suspend fun addOrder(@Body body: RequestBodies.AddOrder): Response<OrderResponse>
 
     @POST(EndPoints.ADD_ADDRESS)
     suspend fun addNewAddress(@Body body: RequestBodies.AddAddress): Response<ServerResponse>

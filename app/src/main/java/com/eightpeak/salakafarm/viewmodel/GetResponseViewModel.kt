@@ -36,7 +36,6 @@ class GetResponseViewModel (
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
                 val response =appRepository.getCartList(tokenManager)
-                Log.i("TAG", "fetchPics: "+appRepository.getCartList(tokenManager))
                 cartResponse.postValue(handleCartResponse(response))
             } else {
                 cartResponse.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))

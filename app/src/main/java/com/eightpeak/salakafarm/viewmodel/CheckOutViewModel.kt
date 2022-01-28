@@ -13,6 +13,7 @@ import com.eightpeak.salakafarm.subscription.attributes.BranchModel
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.Utils
 import com.eightpeak.salakafarm.views.addresslist.AddressListModel
+import com.eightpeak.salakafarm.views.home.products.OrderResponse
 import com.eightpeak.salakafarm.views.home.products.ServerResponse
 import com.eightpeak.salakafarm.views.order.orderview.viewordercheckoutdetails.CheckOutModel
 import kotlinx.coroutines.launch
@@ -122,7 +123,7 @@ class CheckOutViewModel (app: Application,
 
 
 
-    val addOrder: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
+    val addOrder: MutableLiveData<Resource<OrderResponse>> = MutableLiveData()
 
     fun addOrder(tokenManager: TokenManager,body:RequestBodies.AddOrder) = viewModelScope.launch {
         addOrderResponse(tokenManager,body)
@@ -133,12 +134,15 @@ class CheckOutViewModel (app: Application,
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
                 val response = appRepository.addOrder(tokenManager,body)
+
+                Log.i("TAG", "addOrderResponse:mathi "+response)
                 Log.i("TAG", "fetchPics: $response")
                 addOrder.postValue(handleAddOrderResponse(response))
             } else {
                 addOrder.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
             }
         } catch (t: Throwable) {
+            Log.i("TAG", "addOrderResponse:tala "+t.localizedMessage)
             when (t) {
                 is IOException -> addOrder.postValue(
                     Resource.Error(
@@ -158,7 +162,7 @@ class CheckOutViewModel (app: Application,
         }
     }
 
-    private fun handleAddOrderResponse(response: Response<ServerResponse>): Resource<ServerResponse> {
+    private fun handleAddOrderResponse(response: Response<OrderResponse>): Resource<OrderResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)

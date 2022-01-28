@@ -115,6 +115,7 @@ class CategoriesSeeAllActivity : AppCompatActivity() {
     }
 
     private fun getSelectedCategoryProducts(picsResponse: CategoriesModel) {
+        binding.categoriesListView.removeAllViews()
         for (i in picsResponse.data.indices) {
             val itemView: View =
                 LayoutInflater.from(this)
@@ -154,12 +155,15 @@ class CategoriesSeeAllActivity : AppCompatActivity() {
                     response.data?.let { picsResponse ->
                         if (picsResponse.products_with_description.isNotEmpty()) {
                             binding.categoriesNotFound.visibility = View.GONE
+
+                            binding.categoriesListByIdRecyclerView.visibility=View.VISIBLE
                             val categoriesByIdModel: List<Products_with_description> = picsResponse.products_with_description
                             categoriesByIdAdapter.differ.submitList(categoriesByIdModel)
                             binding.categoriesListByIdRecyclerView.adapter = categoriesByIdAdapter
 
 
                         } else {
+                            binding.categoriesListByIdRecyclerView.visibility=View.GONE
                             binding.categoriesNotFound.visibility = View.VISIBLE
                         }
 

@@ -60,6 +60,7 @@
          <ImageView
              android:id="@+id/page_thumbnail"
              android:layout_width="@dimen/_50sdp"
+             android:visibility="gone"
              android:layout_height="wrap_content"
              android:layout_gravity="center"/>
 

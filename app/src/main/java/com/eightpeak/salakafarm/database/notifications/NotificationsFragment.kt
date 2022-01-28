@@ -56,7 +56,7 @@ class NotificationsFragment : Fragment() {
 
                     notiTitle.setText(user[i].notification_title)
                     notiMessage.setText(user[i].notification_description)
-                    notiImage.load(user[i].notification_image)
+//                    notiImage.load(user[i].notification_image)
                     notiDate.setText(user[i].notification_date)
 
                     notiLayout.setOnClickListener {

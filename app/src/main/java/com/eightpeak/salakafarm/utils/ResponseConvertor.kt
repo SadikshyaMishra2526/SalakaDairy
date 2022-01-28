@@ -1,9 +1,9 @@
 package com.eightpeak.salakafarm.utils
 
-import DisplaySubscriptionModel
 import android.annotation.SuppressLint
 import android.util.Log
 import com.eightpeak.salakafarm.serverconfig.network.ApiClient
+import com.eightpeak.salakafarm.subscription.displaysubscription.models.DisplaySubscriptionModel
 import okhttp3.ResponseBody
 import retrofit2.Converter
 import java.io.IOException
@@ -26,20 +26,7 @@ object ResponseConvertor {
         return apiError
     }
 
-    fun convertSubscriptionViewModel(response: ResponseBody): DisplaySubscriptionModel? {
-        val converter: Converter<ResponseBody, DisplaySubscriptionModel> =
-            ApiClient.retrofitBuilder.build().responseBodyConverter(
-                DisplaySubscriptionModel::class.java, arrayOfNulls<Annotation>(0)
-            )
-        var displaySubscriptionModel: DisplaySubscriptionModel? = null
-        try {
-            displaySubscriptionModel = converter.convert(response)
-        } catch (e: IOException) {
-            Log.i("TAG", "convertSubscriptionViewModel: "+e.localizedMessage)
-            e.printStackTrace()
-        }
-        return displaySubscriptionModel
-    }
+
 
 
 

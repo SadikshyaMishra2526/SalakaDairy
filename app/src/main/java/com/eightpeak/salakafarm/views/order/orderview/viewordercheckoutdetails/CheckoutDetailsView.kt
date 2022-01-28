@@ -61,6 +61,15 @@ class CheckoutDetailsView : AppCompatActivity() {
         setContentView(binding.root)
 
 
+
+//        if (binding.paidByCash.isChecked || binding.paidByEsewa.isChecked ) {
+//            paymentOptionRatio = findViewById<View>(deliveryPeriodId) as RadioButton
+//            selectedDeliveryPeroid = deliveryPeriodRadio.text.toString()
+//        } else {
+//            binding.checkoutView.errorSnack(getString(R.string.please_select_delivery_shift), Snackbar.LENGTH_LONG)
+//        }
+
+
         binding.confirmOrder.setOnClickListener {
             if(total>1000){
                 val paymentOptionRatio = findViewById<RadioGroup>(R.id.payment_option).checkedRadioButtonId

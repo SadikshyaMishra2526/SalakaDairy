@@ -34,7 +34,6 @@ class CategoriesViewModel (app: Application,
         try {
             if (hasInternetConnection(getApplication<Application>())) {
                 val response = appRepository.getCategoriesList()
-                Log.i("TAG", "fetchPics: " + appRepository.getCategoriesList())
                 picsData.postValue(handlePicsResponse(response))
             } else {
                 picsData.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))

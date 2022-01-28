@@ -13,7 +13,12 @@ data class CategoriesByIdModel(
     @SerializedName("sort") val sort: Int?=null,
     @SerializedName("descriptions") val descriptions: List<Descriptions>?=null,
     @SerializedName("products_with_description") val products_with_description: List<Products_with_description>
-)
+
+) {
+    override fun toString(): String {
+        return "CategoriesByIdModel(id=$id, image=$image, alias=$alias, parent=$parent, top=$top, status=$status, sort=$sort, descriptions=$descriptions, products_with_description=$products_with_description)"
+    }
+}
 
 data class Products_with_description(
 
@@ -58,7 +63,7 @@ data class Products_with_description(
 
 data class Promotion_price(
     @SerializedName("product_id") val product_id: Int?=null,
-    @SerializedName("price_promotion") val price_promotion: Int?=null,
+    @SerializedName("price_promotion") val price_promotion: String?=null,
     @SerializedName("date_start") val date_start: String?=null,
     @SerializedName("date_end") val date_end: String?=null,
     @SerializedName("status_promotion") val status_promotion: Int?=null,
@@ -69,7 +74,7 @@ data class Promotion_price(
 data class Descriptions(
     @SerializedName("product_id") val product_id: Int?=null,
     @SerializedName("lang") val lang: String?=null,
-    @SerializedName("name") val name: String?=null,
+    @SerializedName("title") val name: String?=null,
     @SerializedName("keyword") val keywordword: String?=null,
     @SerializedName("description") val description: String?=null,
     @SerializedName("content") val content: String

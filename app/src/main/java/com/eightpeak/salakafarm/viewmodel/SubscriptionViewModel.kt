@@ -1,6 +1,5 @@
 package com.eightpeak.salakafarm.viewmodel
 
-import DisplaySubscriptionModel
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
@@ -14,6 +13,7 @@ import com.eightpeak.salakafarm.subscription.attributes.BranchModel
 import com.eightpeak.salakafarm.subscription.attributes.SubscriptionItemModel
 import com.eightpeak.salakafarm.subscription.attributes.SubscriptionPackageModel
 import com.eightpeak.salakafarm.subscription.attributes.SubscriptionResponse
+import com.eightpeak.salakafarm.subscription.displaysubscription.models.DisplaySubscriptionModel
 import com.eightpeak.salakafarm.subscription.displaysubscription.models.SubscriptionHistoryModel
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.Utils
@@ -43,10 +43,7 @@ class SubscriptionViewModel(
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
                 val response = appRepository.getBranchList(tokenManager)
-                Log.i(
-                    "TAG", "fetchPics: " +
-                            appRepository.getBranchList(tokenManager)
-                )
+
                 branchesResponse.postValue(handleBranchResponse(response))
             } else {
                 branchesResponse.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
@@ -95,10 +92,7 @@ class SubscriptionViewModel(
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
                 val response = appRepository.getSubscriptionItemList(tokenManager)
-                Log.i(
-                    "TAG",
-                    "getSubscriptionItemList: " + appRepository.getSubscriptionItemList(tokenManager)
-                )
+
                 subItemList.postValue(handleSubscriptionItemResponse(response))
 
             } else {
@@ -149,13 +143,7 @@ class SubscriptionViewModel(
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
                 val response = appRepository.getSubscriptionPackage(tokenManager, id)
-                Log.i(
-                    "TAG",
-                    "getSubscriptionPackageList: " + appRepository.getSubscriptionPackage(
-                        tokenManager,
-                        id
-                    )
-                )
+
                 subPackageList.postValue(handleSubscriptionPackageResponse(response))
 
             } else {

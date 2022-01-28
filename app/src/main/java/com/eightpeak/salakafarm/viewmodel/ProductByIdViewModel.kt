@@ -31,7 +31,6 @@ class ProductByIdViewModel (
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
                 val response = appRepository.getProductListById(id)
-                Log.i("TAG", "fetchPics: $response")
                 productDetailsById.postValue(handlePicsResponse(response))
             } else {
                 productDetailsById.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))

@@ -19,7 +19,6 @@ import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
 import com.smarteist.autoimageslider.SliderAnimations
 import com.smarteist.autoimageslider.SliderView
-import kotlinx.android.synthetic.main.fragment_home_slider.*
 import java.util.ArrayList
 
 class SliderFragment : Fragment() {
@@ -97,7 +96,7 @@ class SliderFragment : Fragment() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        rootLayout.errorSnack(message, Snackbar.LENGTH_LONG)
+                        binding.rootLayout.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 
                 }
