@@ -1,5 +1,6 @@
 package com.eightpeak.salakafarm.mapfunctions
 
+import android.app.Dialog
 import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
@@ -7,18 +8,24 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
+import com.eightpeak.salakafarm.App
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.subscription.attributes.Branches
+import com.eightpeak.salakafarm.subscription.displaysubscription.models.DeliveryHistoryDisplay
+import com.eightpeak.salakafarm.views.addresslist.AddressListModel
+import com.eightpeak.salakafarm.views.home.HomeActivity
 
-class EmployeeAdapter : RecyclerView.Adapter<EmployeeAdapter.ProductListViewHolder>() {
+class EmployeeAdapter(private val onClickListener: (View, Branches) -> Unit) : RecyclerView.Adapter<EmployeeAdapter.ProductListViewHolder>() {
 
     inner class ProductListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
@@ -54,11 +61,17 @@ class EmployeeAdapter : RecyclerView.Adapter<EmployeeAdapter.ProductListViewHold
             val branchAddress = findViewById<TextView>(R.id.branch_address)
             val branchContact = findViewById<TextView>(R.id.branch_contact)
             val branchSubscription = findViewById<TextView>(R.id.branch_subscription)
+            val branchLayout = findViewById<CardView>(R.id.branch_layout)
             branchName.text=branchDetails.name
             branchAddress.text=branchDetails.address
             branchContact.text=branchDetails.contact
             branchSubscription.text=branchDetails.sub_packages_count.toString()
-
+            branchLayout.setOnClickListener {
+                    view ->
+                onClickListener.invoke(view, branchDetails)
+            }
         }
     }
+
+
 }

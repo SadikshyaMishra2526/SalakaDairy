@@ -7,14 +7,14 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="sign_in">Sign In</string>
     <string name="email">Email</string>
-    <string name="password">Password</string>
+    <string name="password">\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020Password</string>
     <string name="address">Address</string>
     <string name="register">Registration</string>
     <string name="terms_conditions">I have read and agree to the <font color='#23a1d1' size="13">Terms &amp; Conditions</font></string>
     <string name="privacy_policy">I have read and agree to the<font color='#23a1d1' size="13">\u0020 Privacy Policy</font></string>
 
     <string name="use_other_methods">Use Other Methods</string>
-    <string name="forgot_password">Forgot Password</string>
+    <string name="forgot_password">Forgot Password?</string>
     <string name="remember_me">Remember Me</string>
     <string name="new_user_register_now">New User? Register Now</string>
     <string name="enter_your_mobile_number">Enter your mobile number</string>
@@ -42,7 +42,7 @@
     <string name="categories">Categories</string>
     <string name="see_all">See All</string>
 
-    <string name="payment_status">Payment Status</string>
+    <string name="payment_status">Payment Status:</string>
     <string name="order_status">Order Status</string>
     <string name="shipping_status">Shipping Status </string>
     <string name="order_at">Order At </string>
@@ -86,7 +86,7 @@
     <string name="processing">Processing</string>
     <string name="pending">Pending</string>
     <string name="complete">Complete</string>
-    <string name="track_your_order">Track Your Order</string>
+    <string name="track_your_order">Track Order</string>
     <string name="deliver_to">Deliver To :</string>
     <string name="by_bank_account">By Bank Account</string>
     <string name="by_qr">By QR</string>
@@ -161,8 +161,8 @@
     <string name="employee_s_email">Employee\'s Email :</string>
     <string name="subscription_started">Subscription Started</string>
     <string name="subscription_expires_at">Subscription Expires at</string>
-    <string name="view_history"> History</string>
-    <string name="delete_subscription">Cancel</string>
+    <string name="view_history">View History</string>
+    <string name="delete_subscription">Unsubscribe</string>
     <string name="customer_name">Customer Name:-</string>
     <string name="package_name">Package Name :</string>
     <string name="total_subscribed">Total Subscribed :</string>
@@ -178,7 +178,7 @@
     <string name="add_additional_subscription">Add additional Subscription</string>
     <string name="unsubscribe">Unsubscribe</string>
     <string name="cancel_sub_content">Do you want to cancel your subscription?</string>
-    <string name="unsubscribe_cancel_title">Cancel Subscription...</string>
+    <string name="unsubscribe_cancel_title"> Subscription</string>
     <string name="paid">Paid</string>
     <string name="unpaid">Unpaid</string>
     <string name="our_videoes">Our Videos</string>
@@ -286,12 +286,35 @@
     <string name="subscription_complain_box">Subscription Complain Box</string>
     <string name="product_description">Product Description</string>
     <string name="quality_products">Quality Products</string>
-    <string name="intro1">\" Ensuring your products are of high quality.\n Fulfilling everyone\'s Good quality needs.\"</string>
+    <string name="intro1">Ensuring your products are of high quality.\n Fulfilling everyone\'s Good quality needs.</string>
     <string name="fast_delivery">Fast Delivery</string>
     <string name="intro2">We bring the store to your door.\n Save your precious time</string>
     <string name="easy_payment">Easy Payment</string>
     <string name="intro3">The greatest journey of online shop. \n Life is hard enough already. Let us make it a little easier.</string>
     <string name="calender">Calender</string>
+    <string name="subscription_cancelled">Subscription Cancelled</string>
+    <string name="milk_added">Milk added</string>
+    <string name="branch_details">Branch Details</string>
+    <string name="branch_name">Branch Name:-</string>
+    <string name="branch_contact">Branch Contact :-</string>
+    <string name="branch_address">Branch Address:-</string>
+    <string name="account_holder">Account Holder:-</string>
+    <string name="account_num">Account Num:-</string>
+    <string name="sub_available">Sub. Available:-</string>
+    <string name="bank_qr">Bank QR:-</string>
+    <string name="sc_subdate">Add your subscription starting date here !!!</string>
+    <string name="got_it"><font color='#23a1d1' size="16">GOT IT</font></string>
+    <string name="sc_package">Choose your subscription package here !!!</string>
+    <string name="sc_period">Choose your delivery period here!!!</string>
+    <string name="sc_payment">Choose your payment method here !!!</string>
+    <string name="sc_unitPerDay">Add your per day subscription milk quantity here !!!</string>
+    <string name="sc_proceed">Proceed with your payment here !!!</string>
+    <string name="remaining_litre">Remaining Litre</string>
+    <string name="wait_for_payment">Subscription needs to be validated to start. You can pay our employee when he/she delivers your first subscription...</string>
+    <string name="no_notification_received">No Notification Received</string>
+    <string name="bank_account">Bank Account</string>
+    <string name="address_error">Please add Addresses first</string>
+    <string name="paid_warning">We have received your payment..Please wait for the verification!!!</string>
 
     <string-array name="nepdays">
         <item>01</item>

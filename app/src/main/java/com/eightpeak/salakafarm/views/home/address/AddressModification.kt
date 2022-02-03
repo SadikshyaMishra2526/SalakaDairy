@@ -31,8 +31,6 @@ import com.eightpeak.salakafarm.views.home.ui.user_profile.Encrypt
 
 import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_login.*
-import okhttp3.RequestBody
 
 
 class AddressModification:AppCompatActivity() , OnMapReadyCallback,
@@ -41,8 +39,8 @@ class AddressModification:AppCompatActivity() , OnMapReadyCallback,
     private var tokenManager: TokenManager? = null
     lateinit var userPrefManager: UserPrefManager
     private lateinit var mMap: GoogleMap
-    private  var latestLat: Double=0.0
-    private  var latestLng: Double=0.0
+    private var latestLat: Double = 0.0
+    private var latestLng: Double = 0.0
 
     private lateinit var viewModel: UserProfileViewModel
 
@@ -64,68 +62,10 @@ class AddressModification:AppCompatActivity() , OnMapReadyCallback,
         init()
 
         binding.addAddress.setOnClickListener {
-            if(binding.address1.text!=null){
-            val address1 :String=binding.address1.text.toString()
-            val address2 :String=binding.address2.text.toString()
-            val address3 :String=binding.address3.text.toString()
-            val contact :String=binding.phone.text.toString()
-            val addressBody= Encrypt.getEncrptedValue ( address1)?.let { it1 ->
-                Encrypt.getEncrptedValue ( address2)?.let { it2 ->
-                    Encrypt.getEncrptedValue ( address3)?.let { it3 ->
-                        Encrypt.getEncrptedValue (  contact)?.let { it4 ->
-                            Encrypt.getEncrptedValue ( latestLat.toString())?.let { it5 ->
-                                Encrypt.getEncrptedValue ( latestLng.toString())?.let { it6 ->
-                                    RequestBodies.AddAddress(
-                                        it1,
-                                        it2,
-                                        it3,
-                                        it4,
-                                        it5,
-                                        it6
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            tokenManager?.let {
-                if (addressBody != null) {
-                    viewModel.addNewAddressDetails(it,addressBody)
-                }
-            }
-                viewModel.addNewAddress.observe(this, Observer { response ->
-                    when (response) {
-                        is Resource.Success -> {
-                            hideProgressBar()
-                            response.data?.let { picsResponse ->
-                                finish()
-                                Log.i("TAG", "onCreate: addNewAddress")
-                            }
-                        }
-
-                        is Resource.Error -> {
-                            hideProgressBar()
-                            response.message?.let { message ->
-                                binding.addAddressDetails.errorSnack(message, Snackbar.LENGTH_LONG)
-                            }
-                        }
-
-                        is Resource.Loading -> {
-                            showProgressBar()
-                        }
-                    }
-                })
-        }else{
-                Toast.makeText(this@AddressModification,"Please add Addresses first",Toast.LENGTH_SHORT).show()
-
-            }}
+            addAddress()
+        }
     }
- fun onAddAddressClicked(){
 
-
-}
 
     private fun init() {
         val repository = AppRepository()
@@ -133,12 +73,14 @@ class AddressModification:AppCompatActivity() , OnMapReadyCallback,
         viewModel = ViewModelProvider(this, factory).get(UserProfileViewModel::class.java)
 
     }
-    override fun onMapReady(googleMap: GoogleMap) {
-        val sydney = LatLng(userPrefManager.currentLat.toDouble(), userPrefManager.currentLng.toDouble())
 
-        latestLat= userPrefManager.currentLat.toDouble()
-        latestLng= userPrefManager.currentLng.toDouble()
-        mMap=googleMap
+    override fun onMapReady(googleMap: GoogleMap) {
+        val sydney =
+            LatLng(userPrefManager.currentLat.toDouble(), userPrefManager.currentLng.toDouble())
+
+        latestLat = userPrefManager.currentLat.toDouble()
+        latestLng = userPrefManager.currentLng.toDouble()
+        mMap = googleMap
         var mark: Marker? = null
         mark = mMap.addMarker(
             MarkerOptions()
@@ -159,7 +101,7 @@ class AddressModification:AppCompatActivity() , OnMapReadyCallback,
         mark.showInfoWindow()
         mMap.moveCamera(center)
         mMap.animateCamera(zoom)
-       changelocation(mMap)
+        changelocation(mMap)
     }
 
     private fun changelocation(map: GoogleMap) {
@@ -178,8 +120,8 @@ class AddressModification:AppCompatActivity() , OnMapReadyCallback,
                     "System out",
                     "onMarkerDragEnd..." + arg0.position.latitude + "..." + arg0.position.longitude
                 )
-                latestLat= arg0.position.latitude
-                latestLng= arg0.position.longitude
+                latestLat = arg0.position.latitude
+                latestLng = arg0.position.longitude
                 map.animateCamera(CameraUpdateFactory.newLatLng(arg0.position))
             }
 
@@ -200,11 +142,75 @@ class AddressModification:AppCompatActivity() , OnMapReadyCallback,
         builder.show()
         return false
     }
+
     private fun hideProgressBar() {
-        progress.visibility = View.GONE
+        binding.progress.visibility = View.GONE
     }
 
     private fun showProgressBar() {
-        progress.visibility = View.VISIBLE
+        binding.progress.visibility = View.VISIBLE
+    }
+
+
+    private fun addAddress() {
+        if (binding.address1.text.toString().isNotEmpty() && binding.address2.text.toString().isNotEmpty() && binding.address3.text.toString().isNotEmpty() && binding.phone.text.toString().isNotEmpty()) {
+            val address1: String = binding.address1.text.toString()
+            val address2: String = binding.address2.text.toString()
+            val address3: String = binding.address3.text.toString()
+            val contact: String = binding.phone.text.toString()
+            val addressBody = Encrypt.getEncrptedValue(address1)?.let { it1 ->
+                Encrypt.getEncrptedValue(address2)?.let { it2 ->
+                    Encrypt.getEncrptedValue(address3)?.let { it3 ->
+                        Encrypt.getEncrptedValue(contact)?.let { it4 ->
+                            Encrypt.getEncrptedValue(latestLat.toString())?.let { it5 ->
+                                Encrypt.getEncrptedValue(latestLng.toString())?.let { it6 ->
+                                    RequestBodies.AddAddress(
+                                        it1,
+                                        it2,
+                                        it3,
+                                        it4,
+                                        it5,
+                                        it6
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            tokenManager?.let {
+                if (addressBody != null) {
+                    viewModel.addNewAddressDetails(it, addressBody)
+                }
+            }
+            viewModel.addNewAddress.observe(this, Observer { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        response.data?.let { picsResponse ->
+                            finish()
+                            Log.i("TAG", "onCreate: addNewAddress")
+                        }
+                    }
+
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        response.message?.let { message ->
+                            binding.addAddressDetails.errorSnack(message, Snackbar.LENGTH_LONG)
+                        }
+                    }
+
+                    is Resource.Loading -> {
+                        showProgressBar()
+                    }
+                }
+            })
+        } else {
+            binding.addAddressDetails.errorSnack(
+                getString(R.string.address_error),
+                Snackbar.LENGTH_LONG
+            )
+        }
     }
 }

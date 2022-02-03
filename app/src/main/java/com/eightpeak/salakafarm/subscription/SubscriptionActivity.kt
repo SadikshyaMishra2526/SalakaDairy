@@ -35,6 +35,10 @@ import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.addresslist.Address_list
 import com.eightpeak.salakafarm.views.addtocart.CartActivity
 import com.google.android.material.snackbar.Snackbar
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig
+import uk.co.deanwild.materialshowcaseview.shape.RectangleShape
+import uk.co.deanwild.materialshowcaseview.shape.Shape
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -162,7 +166,7 @@ class SubscriptionActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-
+        showCase()
     }
 
     private fun validateSubscription(): Boolean {
@@ -177,10 +181,6 @@ class SubscriptionActivity : AppCompatActivity() {
         }
         if (selectedSubscribedTotalAmount=="0") {
             binding.addSubscriptionLayout.errorSnack("Please Add Subscription Total", Snackbar.LENGTH_LONG)
-            validate = true
-        }
-        if (selectedSubscribedDiscount=="0") {
-            binding.addSubscriptionLayout.errorSnack("Please Add Subscription Discount!!!", Snackbar.LENGTH_LONG)
             validate = true
         }
         if (selectedSubscribedPrice=="0") {
@@ -492,18 +492,12 @@ class SubscriptionActivity : AppCompatActivity() {
 
 
             Log.i("TAG", "displayPackageList: " + userPrefManager.selectedPackage)
+
             if (subPackages.id==userPrefManager.packageSelected) {
                 selectSubPackage.setCardBackgroundColor(getColor(R.color.sub_color))
             } else {
                 selectSubPackage.setCardBackgroundColor(getColor(R.color.white))
             }
-
-
-
-
-
-
-
 
            val requiredQuantity= binding.unitPerDay.text.toString()
             selectedTotalQuantity = (Integer.parseInt(requiredQuantity)* subPackages.number_of_days).toString()
@@ -699,4 +693,41 @@ class SubscriptionActivity : AppCompatActivity() {
         }
         return index
     }
+
+    private fun showCase() {
+        val DEFAULT_SHAPE: Shape = RectangleShape(20, 20)
+        val config = ShowcaseConfig()
+        config.shape = DEFAULT_SHAPE
+        config.delay = 400
+        val sequence = MaterialShowcaseSequence(this, "102")
+        sequence.setConfig(config)
+
+        sequence.addSequenceItem(
+            binding.chooseSubscriptionDate,
+            getString(R.string.sc_subdate), getString(R.string.got_it)
+        )
+        sequence.addSequenceItem(
+            binding.layoutSubPackage,
+            getString(R.string.sc_package),  getString(R.string.got_it)
+        )
+        sequence.addSequenceItem(
+            binding.deliveryPeriod,
+            getString(R.string.sc_period),  getString(R.string.got_it)
+        )
+        sequence.addSequenceItem(
+            binding.paymentMethod,
+            getString(R.string.sc_payment),  getString(R.string.got_it)
+        )
+        sequence.addSequenceItem(
+            binding.quantityView,
+            getString(R.string.sc_unitPerDay),  getString(R.string.got_it)
+        )
+        sequence.addSequenceItem(
+            binding.proceedWithCheckout,
+            getString(R.string.sc_proceed),  getString(R.string.got_it)
+        )
+        sequence.start()
+    }
+
+
 }

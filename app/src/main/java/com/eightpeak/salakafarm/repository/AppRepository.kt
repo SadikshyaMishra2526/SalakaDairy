@@ -219,7 +219,8 @@ class AppRepository {
                             fcm_token: String,
                             provider_id: String,
                             avatar: String,
+                            provider: String,
                             phone: String) =
-        RetrofitInstance.useApiWithoutToken.googleLogin(first_name,last_name,email,fcm_token,provider_id,avatar,phone)
+        RetrofitInstance.useApiWithoutToken.googleLogin(first_name,last_name,email,fcm_token,provider_id,avatar,provider,phone)
 
 }

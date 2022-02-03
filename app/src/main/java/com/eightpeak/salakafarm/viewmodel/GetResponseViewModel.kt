@@ -15,6 +15,7 @@ import com.eightpeak.salakafarm.views.home.products.ServerResponse
 import com.eightpeak.salakafarm.views.addtocart.addtocartfragment.CartResponse
 import com.eightpeak.salakafarm.views.gallery.GalleryListModel
 import com.eightpeak.salakafarm.views.home.products.Data
+import com.eightpeak.salakafarm.views.home.products.ForgotPasswordResponse
 import com.eightpeak.salakafarm.views.pages.PageDetailsModel
 import com.eightpeak.salakafarm.views.popup.PopUpModel
 import com.eightpeak.salakafarm.views.wishlist.WishListResponse
@@ -719,7 +720,7 @@ val getGalleryDetails: MutableLiveData<Resource<GalleryListModel>> = MutableLive
 
 
     //    add Contact Us
-    val forgotPassword: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
+    val forgotPassword: MutableLiveData<Resource<ForgotPasswordResponse>> = MutableLiveData()
 
     fun forgotPassword(email: String) = viewModelScope.launch {
         forgotPasswordView(email)
@@ -755,7 +756,7 @@ val getGalleryDetails: MutableLiveData<Resource<GalleryListModel>> = MutableLive
         }
     }
 
-    private fun handleForgotPasswordResponse(response: Response<ServerResponse>): Resource<ServerResponse> {
+    private fun handleForgotPasswordResponse(response: Response<ForgotPasswordResponse>): Resource<ForgotPasswordResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)

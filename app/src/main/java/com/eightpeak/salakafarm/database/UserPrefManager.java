@@ -17,7 +17,7 @@ public class UserPrefManager {
     // shared pref mode
     private static final int PRIVATE_MODE = 0;
     // Shared preferences file name
-    public static final String PREF_NAME = "com-eightpeak-salakafarm-mds-shared-pref";
+    public static final String PREF_NAME = "com-eightpeak-salakafarm-mds-user-shared-pref";
     private static final String APP_LANGUAGE= "AppLanguage";
     private static final String MY_POSITION= "my_position";
     private static final String USER_FIRST_NAME= "user_first_name";

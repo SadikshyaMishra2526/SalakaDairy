@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.eightpeak.salakafarm.databinding.FragmentSettingsBinding
 
 import androidx.lifecycle.Observer
 import android.app.Dialog
@@ -23,13 +22,11 @@ import androidx.navigation.Navigation
 import com.eightpeak.salakafarm.App
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
-import com.eightpeak.salakafarm.databinding.ActivityCartBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.RequestBodies
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.subutils.Resource
-import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.viewmodel.GetResponseViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.comparelist.CompareListActivity
@@ -39,32 +36,20 @@ import com.eightpeak.salakafarm.views.pages.PageDetailsView
 import com.eightpeak.salakafarm.views.pages.videos.VideoViewActivity
 import com.eightpeak.salakafarm.views.splash.SplashActivity
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_add_to_cart.*
 import java.util.*
 import android.widget.Toast
 import android.content.pm.PackageManager
-
-import android.content.pm.ResolveInfo
-
-
-
-
-
-
+import com.eightpeak.salakafarm.databinding.FragmentSettingsBinding
+import com.eightpeak.salakafarm.mapfunctions.BranchActivity
+import com.eightpeak.salakafarm.utils.subutils.errorSnack
 
 
 class SettingsFragment : Fragment() {
 
     private lateinit var binding: FragmentSettingsBinding
-
-
     lateinit var userPrefManager: UserPrefManager
-
-
     private lateinit var viewModel: GetResponseViewModel
     private var _binding: FragmentSettingsBinding? = null
-
-
     private var tokenManager: TokenManager? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -87,7 +72,8 @@ class SettingsFragment : Fragment() {
         setLocal(requireActivity())
 
      binding.ourBranches.setOnClickListener {
-         view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.action_navigation_setting_to_mapsFragment) }
+         val intent = Intent(requireContext(), BranchActivity::class.java)
+         requireContext().startActivity(intent)
 
      }
 

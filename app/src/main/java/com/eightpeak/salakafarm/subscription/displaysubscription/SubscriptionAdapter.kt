@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -58,6 +59,7 @@ class SubscriptionAdapter(private val onClickListener: (View, DeliveryHistoryDis
             val dateEng = findViewById<TextView>(R.id.date_eng)
             val alterStatus = findViewById<TextView>(R.id.alter_status)
             val subItem = findViewById<LinearLayout>(R.id.sub_item)
+            val subDate = findViewById<CardView>(R.id.sub_date)
             val morningDelivery = findViewById<ImageView>(R.id.morning_delivery)
             val eveningDelivery = findViewById<ImageView>(R.id.evening_delivery)
 
@@ -66,17 +68,24 @@ class SubscriptionAdapter(private val onClickListener: (View, DeliveryHistoryDis
             val dateList: Array<String> = todayDate.split("-".toRegex()).toTypedArray()
             val dayOnly: Array<String> = dateList[2].split("\n".toRegex()).toTypedArray()
             val today=Integer.parseInt(dayOnly[0])
-            dateItem.text = dateDetails.date.toString()
-            dateEng.text = dateDetails.date_eng.toString()
+
+            if(userPrefManager.language.equals("ne")){
+                dateItem.text = GeneralUtils.getUnicodeNumber(dateDetails.date.toString())
+                dateEng.text =  GeneralUtils.getUnicodeNumber( dateDetails.date_eng.toString().substring(dateDetails.date_eng.toString().length -2))
+
+            }else{
+                dateItem.text = dateDetails.date.toString()
+                dateEng.text =  dateDetails.date_eng.toString().substring(dateDetails.date_eng.toString().length -2)
+            }
 
                if (dateDetails.alter_status == 3) {
                     alterStatus.visibility = View.GONE
                 } else if (dateDetails.alter_status == 2) {
-                    alterStatus.text = "+"+dateDetails.alter_qty+" litre"
+                    alterStatus.text = "+"+dateDetails.alter_qty+context.getString(R.string.litre)
                     alterStatus.setTextColor(Color.GREEN)
                    dateItem.setTextColor(Color.GREEN)
                 } else if (dateDetails.alter_status == 1) {
-                    alterStatus.text = "Cancelled"
+                    alterStatus.text = context.getString(R.string.cancelled)
                    dateItem.setTextColor(Color.RED)
                    alterStatus.setTextColor(Color.RED)
                 } else if (dateDetails.alter_status == null) {
@@ -85,19 +94,21 @@ class SubscriptionAdapter(private val onClickListener: (View, DeliveryHistoryDis
 
             if (dateDetails.date!! < today) {
                 if (dateDetails.delivery_count == 0) {
-                    subItem.setBackgroundColor(resources.getColor(R.color.tab_indicator_gray))
+                    subDate.setCardBackgroundColor(Color.GRAY)
+                    dateItem.setTextColor(resources.getColor(R.color.tab_indicator_gray))
+                    dateEng.setTextColor(resources.getColor(R.color.tab_indicator_gray))
                 } else {
                     if (userPrefManager.deliveryPeriod == 2) {
                         if(dateDetails.delivery_count==1){
                             morningDelivery.visibility = View.VISIBLE
+                            eveningDelivery.visibility = View.VISIBLE
                         }else if(dateDetails.delivery_count==2){
                             morningDelivery.visibility = View.VISIBLE
-                            eveningDelivery.visibility = View.VISIBLE
                         }
                     }else{
                         morningDelivery.visibility = View.VISIBLE
+
                     }
-                    subItem.setBackgroundColor(resources.getColor(R.color.sub_color_lighter))
                 }
             } else if (dateDetails.date == today) {
 
@@ -105,9 +116,10 @@ class SubscriptionAdapter(private val onClickListener: (View, DeliveryHistoryDis
                 if (userPrefManager.deliveryPeriod == 2) {
                     if(dateDetails.delivery_count==1){
                         morningDelivery.visibility = View.VISIBLE
+                        eveningDelivery.visibility = View.VISIBLE
                     }else if(dateDetails.delivery_count==2){
                         morningDelivery.visibility = View.VISIBLE
-                        eveningDelivery.visibility = View.VISIBLE
+//                        eveningDelivery.visibility = View.VISIBLE
                         subItem.setBackgroundColor(resources.getColor(R.color.sub_color_lighter))
                     }
                 }else if(userPrefManager.deliveryPeriod == 1||userPrefManager.deliveryPeriod == 0){
@@ -116,7 +128,6 @@ class SubscriptionAdapter(private val onClickListener: (View, DeliveryHistoryDis
                      }else{
                         subItem.setBackgroundColor(resources.getColor(R.color.sub_color_lighter))
                         morningDelivery.visibility = View.VISIBLE
-
                     }
                 }
 

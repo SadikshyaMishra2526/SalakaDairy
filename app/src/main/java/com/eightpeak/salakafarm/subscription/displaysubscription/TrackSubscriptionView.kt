@@ -1,6 +1,8 @@
 package com.eightpeak.salakafarm.subscription.displaysubscription
 
+import android.Manifest
 import android.app.AlertDialog
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.util.Linkify
@@ -9,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -37,7 +40,6 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_add_to_cart_view.view.*
 
 class TrackSubscriptionView : BottomSheetDialogFragment()
     ,OnMapReadyCallback,
@@ -82,7 +84,17 @@ class TrackSubscriptionView : BottomSheetDialogFragment()
         mMap = googleMap
         Log.i("TAG", "onMapReady: i m ready")
         getOrderDetail()
-
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
+        mMap.isMyLocationEnabled = true;
     }
     private fun getOrderDetail() {
         val mArgs = arguments

@@ -24,6 +24,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/delivery_history_view"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -49,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="@dimen/_70sdp"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_5sdp"
                         android:text="Delivered By:"
@@ -60,7 +61,7 @@
                     <TextView
                         android:id="@+id/order_delivered_by"
                         android:layout_width="wrap_content"
-                        android:layout_height="@dimen/_25sdp"
+                        android:layout_height="wrap_content"
                         android:padding="@dimen/_5sdp"
                         android:selectAllOnFocus="true"
                         android:textSize="@dimen/_10sdp" />
@@ -70,7 +71,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="@dimen/_70sdp"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_5sdp"
                         android:text="Quantity:"
@@ -86,12 +87,34 @@
                         android:selectAllOnFocus="true"
                         android:textSize="@dimen/_10sdp" />
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="@dimen/_70sdp"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5sdp"
+                        android:text="Delivered at:"
+                        android:textColor="@color/sub_color"
+                        android:textSize="@dimen/_10sdp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/delivered_at"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5sdp"
+                        android:selectAllOnFocus="true"
+                        android:textSize="@dimen/_10sdp" />
+                </LinearLayout>
 
             </LinearLayout>
 
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/delivery_alter_view"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
@@ -118,7 +141,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="@dimen/_70sdp"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_5sdp"
                         android:text="Alter Status:"
@@ -135,12 +158,12 @@
                         android:textSize="@dimen/_10sdp" />
                 </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/quantity_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <TextView
-
-                        android:layout_width="wrap_content"
+                        android:layout_width="@dimen/_70sdp"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_5sdp"
                         android:text="Quantity By:"
@@ -158,16 +181,17 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/alterDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <TextView
 
-                        android:layout_width="wrap_content"
+                        android:layout_width="@dimen/_70sdp"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_5sdp"
                         android:textColor="@color/sub_color"
-                        android:text="Alter Period:"
+                        android:text="Altered At:"
                         android:textSize="@dimen/_10sdp"
                         android:textStyle="bold" />
 

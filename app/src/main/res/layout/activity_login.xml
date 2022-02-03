@@ -52,8 +52,7 @@
             android:gravity="center"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
-            android:maxLines="1"
-           />
+            android:maxLines="1" />
 
     </RelativeLayout>
 
@@ -81,7 +80,8 @@
                 style="@style/modifiedEditText"
                 android:layout_alignStart="@+id/address_second_img"
                 android:gravity="center"
-                android:layout_gravity="center"
+                android:paddingStart="@dimen/_20sdp"
+                android:layout_gravity="left"
                 android:hint="@string/password"
                 android:inputType="textPassword"
                 android:maxLines="1" />
@@ -95,17 +95,17 @@
         android:id="@+id/remember_me_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_90sdp"
+        android:layout_marginTop="@dimen/_7sdp"
         app:layout_constraintBottom_toTopOf="@+id/forget_password"
         app:layout_constraintEnd_toStartOf="@+id/forget_password"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password">
 
         <CheckBox
             android:id="@+id/remember_me"
             android:layout_width="wrap_content"
-            android:layout_gravity="center"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             tools:layout_editor_absoluteX="26dp"
             tools:layout_editor_absoluteY="378dp" />
 

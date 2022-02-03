@@ -89,6 +89,7 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val navView: BottomNavigationView = binding.navView
@@ -121,22 +122,7 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback,
         checkPermissionsState()
         setupViewModel()
 
-        val notificationPreferences: SharedPreferences? = getSharedPreferences("notificationPrefs", MODE_PRIVATE)
-        val title = notificationPreferences?.getString("title", "")
-        val message = notificationPreferences?.getString("message", "")
-        val image = notificationPreferences?.getString("image", "")
-         if(title!!.isNotEmpty() && message!!.isNotEmpty() && image!!.isNotEmpty()){
-             val notificationDetails=NotificationDetails(0,title!!,message!!,image!!,GeneralUtils.getTodayDate())
-             viewModelNotification.addNotificationDetails(notificationDetails)
-             val loginPreferences:SharedPreferences? = getSharedPreferences("notificationPrefs", MODE_PRIVATE)
-             var loginPrefsEditor: SharedPreferences.Editor? = null
-             loginPrefsEditor = loginPreferences?.edit()
-             loginPrefsEditor?.putString("title",   "")
-             loginPrefsEditor?.putString("message",  "")
-             loginPrefsEditor?.putString("image",  "")
-             loginPrefsEditor?.apply()
 
-         }
 
     }
 
@@ -158,24 +144,22 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback,
         )
         tokenManager?.let { it1 -> viewModel.getPopUpBanner(it1) }
 
-        viewModel.getPopUp.observe(this, { response ->
+        viewModel.getPopUp.observe(this) { response ->
             when (response) {
                 is Resource.Success -> {
-
                     val status: Boolean = userPrefManager.popupBoolean
                     Log.i("TAG", "getPopUp: " + userPrefManager.popupBoolean)
                     if (status) {
                         response.data?.popup?.let { popupMessage(it.image) }
                     }
                 }
-
                 is Resource.Error -> {
                     response.message?.let { message ->
                         binding.container.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
                 }
             }
-        })
+        }
     }
 
 //    override fun onBackPressed() {
@@ -207,6 +191,26 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback,
     override fun onStop() {
         googleApiClient.disconnect()
         super.onStop()
+    }
+
+    override fun onResume() {
+        val notificationPreferences: SharedPreferences? = getSharedPreferences("notificationPrefs", MODE_PRIVATE)
+        val title = notificationPreferences?.getString("title", "")
+        val message = notificationPreferences?.getString("message", "")
+        val image = notificationPreferences?.getString("image", "")
+        if(title!!.isNotEmpty() && message!!.isNotEmpty() && image!!.isNotEmpty()){
+            val notificationDetails=NotificationDetails(0,title!!,message!!,image!!,GeneralUtils.getTodayDate())
+            viewModelNotification.addNotificationDetails(notificationDetails)
+            val loginPreferences:SharedPreferences? = getSharedPreferences("notificationPrefs", MODE_PRIVATE)
+            var loginPrefsEditor: SharedPreferences.Editor? = null
+            loginPrefsEditor = loginPreferences?.edit()
+            loginPrefsEditor?.putString("title",   "")
+            loginPrefsEditor?.putString("message",  "")
+            loginPrefsEditor?.putString("image",  "")
+            loginPrefsEditor?.apply()
+
+        }
+        super.onResume()
     }
 
     private fun getCurrentLocation() {
@@ -296,6 +300,8 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback,
                             "Cant load maps without all the permissions granted",
                             Toast.LENGTH_SHORT
                         ).show()
+                        checkPermissionsState()
+
                     } else {
 
                     }
@@ -305,6 +311,8 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback,
                         "Cant load maps without all the permissions granted",
                         Toast.LENGTH_SHORT
                     ).show()
+                    checkPermissionsState()
+
                 }
                 return
             }

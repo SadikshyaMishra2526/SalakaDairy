@@ -41,6 +41,7 @@ class CheckoutDetailsView : AppCompatActivity() {
     private var tokenManager: TokenManager? = null
     private var total:Int=0
 
+    private lateinit var paymentMethodRadio: RadioButton
     private  var selectedAddressId: String=""
     private  var selectedAddressName: String=""
 
@@ -61,38 +62,37 @@ class CheckoutDetailsView : AppCompatActivity() {
         setContentView(binding.root)
 
 
+        val deliveryPeriodId: Int = binding.paymentOption.checkedRadioButtonId
 
-//        if (binding.paidByCash.isChecked || binding.paidByEsewa.isChecked ) {
-//            paymentOptionRatio = findViewById<View>(deliveryPeriodId) as RadioButton
-//            selectedDeliveryPeroid = deliveryPeriodRadio.text.toString()
-//        } else {
-//            binding.checkoutView.errorSnack(getString(R.string.please_select_delivery_shift), Snackbar.LENGTH_LONG)
-//        }
 
 
         binding.confirmOrder.setOnClickListener {
-            if(total>1000){
-                val paymentOptionRatio = findViewById<RadioGroup>(R.id.payment_option).checkedRadioButtonId
-                var payment:String =""
+            if(total>1000) {
+
+                val paymentOptionRatio =
+                    findViewById<RadioGroup>(R.id.payment_option).checkedRadioButtonId
+                var payment: String = ""
 //                = findViewById<View>(paymentOptionRatio) as RadioButton
-                if(paymentOptionRatio==R.id.paid_by_cash){
+                if (paymentOptionRatio == R.id.paid_by_cash) {
                     Log.i("TAG", "onCreate: paid_by_cash")
-                    payment="Cash"
-                }else if(paymentOptionRatio==R.id.paid_by_esewa){
+                    payment = "Cash"
+                } else if (paymentOptionRatio == R.id.paid_by_esewa) {
                     Log.i("TAG", "onCreate: paid_by_esewa")
-                    payment="Esewa"
+                    payment = "Esewa"
                 }
-                if(paymentOptionRatio!=null){
+
+                if (binding.paidByCash.isChecked || binding.paidByEsewa.isChecked) {
                     val intent = Intent(this@CheckoutDetailsView, ConfirmOrderActivity::class.java)
-                      intent.putExtra("payment_option", payment)
-                      intent.putExtra("selected_shipping", selectedAddressId)
-                      intent.putExtra("payment_option", payment)
-                      startActivity(intent)
-                }else{
-                    binding.checkoutView.errorSnack("Please select payment option")
-
+                        intent.putExtra("payment_option", payment)
+                        intent.putExtra("selected_shipping", selectedAddressId)
+                        intent.putExtra("payment_option", payment)
+                        startActivity(intent)
+                } else {
+                    binding.checkoutView.errorSnack(
+                        "Please select payment option",
+                        Snackbar.LENGTH_LONG
+                    )
                 }
-
             }else{
                 binding.checkoutView.errorSnack("Price needs to be above thousand Rupees for us to delivery...")
             }
@@ -111,18 +111,14 @@ class CheckoutDetailsView : AppCompatActivity() {
     private fun getCheckOutDetails() {
 
         tokenManager?.let { it1 -> viewModel.getCheckOutResponse(it1) }
-        viewModel.checkoutResponse.observe(this, { response ->
+        viewModel.checkoutResponse.observe(this) { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
-
                     response.data?.let { picsResponse ->
-
                         addViewShippingAddress(picsResponse.order_details.shippingAddress)
-                         total= addCartDetails(picsResponse.order_details.cartItem)
+                        total = addCartDetails(picsResponse.order_details.cartItem)
                         addTotalPrice(picsResponse.order_details.dataTotal)
-
-
                     }
                 }
 
@@ -138,7 +134,7 @@ class CheckoutDetailsView : AppCompatActivity() {
                     showProgressBar()
                 }
             }
-        })
+        }
     }
 
     private fun addTotalPrice(dataTotal: List<DataTotal>) {
@@ -195,10 +191,11 @@ class CheckoutDetailsView : AppCompatActivity() {
                 updateCart(cartItem[i].id.toString(),quantity.toString())
             }
             decreaseQuantity.setOnClickListener {
-                if(quantity>1){
+                if( cartItem[i].qty>1){
                     quantity= cartItem[i].qty
                     quantity -= 1
                     quantityView.text = quantity.toString()
+                    showProgressBar()
                     updateCart(cartItem[i].id.toString(),quantity.toString())
                 }
             }
@@ -304,24 +301,36 @@ class CheckoutDetailsView : AppCompatActivity() {
 
     private fun getAddressList() {
         tokenManager?.let { it1 -> viewModel.getUserAddressList(it1) }
-        viewModel.userAddressList.observe(this,  { response ->
+        viewModel.userAddressList.observe(this) { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
-                        if (picsResponse.address_list.isNotEmpty()) {
-                            selectedAddressId = picsResponse.address_list.get(0).id.toString()
-                            selectedAddressName = picsResponse.address_list[0].address1 + ", " + picsResponse.address_list[0].address2 + ", " +  picsResponse.address_list[0].phone
-                            binding.changeAddress.setOnClickListener {
-                                showAddressList(picsResponse.address_list)
+                        if(picsResponse.address_list.isNotEmpty()){
+                            if (picsResponse.address_list[0].address1 != "") {
+                                selectedAddressId = picsResponse.address_list[0].id.toString()
+                                selectedAddressName =
+                                    picsResponse.address_list[0].address1 + ", " + picsResponse.address_list[0].address2 + ", " + picsResponse.address_list[0].phone
+                                binding.changeAddress.setOnClickListener {
+                                    showAddressList(picsResponse.address_list)
+                                }
+                            } else {
+                                binding.mainOrderView.visibility=View.GONE
+                                binding.checkoutView.addAddressSnack(
+                                    this@CheckoutDetailsView,
+                                    "Address List Empty,Please add your address",
+                                    Snackbar.LENGTH_LONG
+                                )
                             }
-                        } else {
+                        }else{
+                            binding.mainOrderView.visibility=View.GONE
                             binding.checkoutView.addAddressSnack(
                                 this@CheckoutDetailsView,
                                 "Address List Empty,Please add your address",
                                 Snackbar.LENGTH_LONG
                             )
                         }
+
                     }
                 }
 
@@ -336,7 +345,7 @@ class CheckoutDetailsView : AppCompatActivity() {
                     showProgressBar()
                 }
             }
-        })
+        }
     }
     private fun showAddressList(addressList: List<Address_list>) {
 

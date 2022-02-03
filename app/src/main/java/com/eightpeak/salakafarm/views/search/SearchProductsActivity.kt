@@ -21,7 +21,6 @@ import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.home.HomeActivity
 import com.google.android.material.snackbar.Snackbar
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
-import kotlinx.android.synthetic.main.fragment_product_view_by_id.*
 
 class SearchProductsActivity :AppCompatActivity(){
 
@@ -110,11 +109,11 @@ class SearchProductsActivity :AppCompatActivity(){
         })
     }
     private fun hideProgressBar() {
-        progress.visibility = View.GONE
+        binding.progress.visibility = View.GONE
     }
 
     private fun showProgressBar() {
-        progress.visibility = View.VISIBLE
+        binding.progress.visibility = View.VISIBLE
     }
 
 

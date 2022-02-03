@@ -27,6 +27,11 @@ data class UpdatePasswordResponse(
     @SerializedName("error") val error : Int,
     @SerializedName("message") val message : String,
 )
+data class ForgotPasswordResponse(
+    @SerializedName("error") val error : Int,
+    @SerializedName("msg") val errorMessage : String,
+    @SerializedName("message") val successMessage : String,
+)
 
 data class UserProfileResponse(
     @SerializedName("error") val error : Int,
@@ -49,5 +54,7 @@ data class Success (
 )
 
 data class OrderResponse (
+    @SerializedName("error") val error : Int,
+    @SerializedName("message") val message : String,
     @SerializedName("orderID") val orderID : String
 )

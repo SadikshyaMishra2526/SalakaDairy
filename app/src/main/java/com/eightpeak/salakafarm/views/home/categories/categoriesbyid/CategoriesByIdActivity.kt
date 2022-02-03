@@ -12,14 +12,13 @@ import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.viewmodel.CategoriesByIdViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.google.android.material.snackbar.Snackbar
-import com.eightpeak.salakafarm.utils.subutils.errorSnack
-import kotlinx.android.synthetic.main.fragment_categories_by_id.*
 
 import androidx.appcompat.app.AppCompatActivity
 import coil.api.load
 import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
+import com.eightpeak.salakafarm.utils.subutils.errorSnack
 
 
 class CategoriesByIdActivity  : AppCompatActivity() {
@@ -114,7 +113,7 @@ class CategoriesByIdActivity  : AppCompatActivity() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        categoriesByIdRecyclerView.errorSnack(message, Snackbar.LENGTH_LONG)
+                        binding.categoriesByIdRecyclerView.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 
                 }
@@ -127,11 +126,11 @@ class CategoriesByIdActivity  : AppCompatActivity() {
     }
 
     private fun hideProgressBar() {
-        progress.visibility = View.GONE
+        binding.progress.visibility = View.GONE
     }
 
     private fun showProgressBar() {
-        progress.visibility = View.VISIBLE
+        binding.progress.visibility = View.VISIBLE
     }
 
 

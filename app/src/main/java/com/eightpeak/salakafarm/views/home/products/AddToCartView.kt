@@ -1,5 +1,7 @@
 package com.eightpeak.salakafarm.views.home.products
 
+import android.content.Intent
+import android.graphics.Paint
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -22,8 +24,10 @@ import com.eightpeak.salakafarm.databinding.FragmentAddToCartViewBinding
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
+import com.eightpeak.salakafarm.utils.GeneralUtils
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.utils.subutils.successAddToCartSnack
+import com.eightpeak.salakafarm.views.home.categories.categoriesbyid.CategoriesByIdActivity
 import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdModel
 
 class AddToCartView : BottomSheetDialogFragment() {
@@ -74,10 +78,8 @@ class AddToCartView : BottomSheetDialogFragment() {
                     response.data?.let { picsResponse ->
                         binding.productThumbnail.load(BASE_URL + picsResponse.image)
                         if (userPrefManager?.language == "ne") {
-                            binding.categoriesName.text= picsResponse?.categories_description[0].descriptions[1].name
                             binding.productName.text = picsResponse?.descriptions[1].main_name
                         } else {
-                            binding.categoriesName.text= picsResponse?.categories_description[0].descriptions[0].name
                             binding.productName.text = picsResponse.descriptions[0].main_name
                         }
                         getData(picsResponse)
@@ -99,8 +101,34 @@ class AddToCartView : BottomSheetDialogFragment() {
         })
     }
 
-    private fun getData(picsResponse: ProductByIdModel) {
-        binding.setSKU.text = picsResponse.sku
+    private fun getData(productDetailsByIdResponse: ProductByIdModel) {
+        if (productDetailsByIdResponse.promotion_price!=null) {
+            if (userPrefManager?.language.equals("ne")) {
+                binding.productPriceDiscount.text =
+                    GeneralUtils.getUnicodeNumber(productDetailsByIdResponse.price.toString())
+                binding.productPriceDiscount.paintFlags =
+                    binding.productPriceDiscount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                binding.productPrice.text =
+                    getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(productDetailsByIdResponse.promotion_price.price_promotion.toString())
+            } else {
+                binding.productPriceDiscount.text = productDetailsByIdResponse.price.toString()
+                binding.productPriceDiscount.paintFlags =
+                    binding.productPriceDiscount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                binding.productPrice.text =
+                    getString(R.string.rs) + " " + productDetailsByIdResponse.promotion_price.price_promotion.toString()
+
+            }
+        } else {
+            if (userPrefManager?.language.equals("ne")) {
+                binding.productPrice.text =
+                    getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(productDetailsByIdResponse.price.toString())
+            } else {
+                binding.productPrice.text =
+                    getString(R.string.rs) + " " + productDetailsByIdResponse.price.toString()
+            }
+        }
+
+        binding.setSKU.text = productDetailsByIdResponse.sku
         binding.productQuantity.text = quantity.toString()
         binding.increaseQuantity.setOnClickListener {
             quantity += 1
@@ -112,20 +140,25 @@ class AddToCartView : BottomSheetDialogFragment() {
                 binding.productQuantity.text = quantity.toString()
             }
         }
-        if (picsResponse.attributes!!?.isNotEmpty() == true) {
-            var attribute = ""
-            for (i in picsResponse.attributes.indices) {
-//                attribute = attribute + " " + picsResponse.attributes[i] + " , "
+        if(productDetailsByIdResponse.categories_description.isNotEmpty()){
+            binding.categoryThumbnail.load(BASE_URL+productDetailsByIdResponse.categories_description[0].image)
+            if(userPrefManager?.language?.equals({"ne"}) == true){
+                binding.categoryName.text=productDetailsByIdResponse.categories_description[0].descriptions[1].title
+            }else{
+                binding.categoryName.text=productDetailsByIdResponse.categories_description[0].descriptions[0].title
 
             }
-            binding.attribute.text = "Attributes :-" + attribute
+            binding.categoryName.setOnClickListener {
+                val intent = Intent(requireContext(), CategoriesByIdActivity::class.java)
+                intent.putExtra(Constants.CATEGORIES_ID, productDetailsByIdResponse.categories_description[0].id.toString())
+                startActivity(intent)
+            }
         }
-
         binding.btAddToCart.setOnClickListener {
             tokenManager?.let { it1 ->
                 viewModel.addToCart(
                     it1,
-                    picsResponse.id.toString(),
+                    productDetailsByIdResponse.id.toString(),
                     quantity.toString(),
                     ""
                 )
@@ -142,12 +175,6 @@ class AddToCartView : BottomSheetDialogFragment() {
                         val handler = Handler()
                         handler.postDelayed({
                             dismiss() }, 1000)
-//                        Toast.makeText(
-//                            requireContext(),
-//                            "Successfully added to cart!!!",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                        dismiss()
                     }
                 }
                 is Resource.Error -> {

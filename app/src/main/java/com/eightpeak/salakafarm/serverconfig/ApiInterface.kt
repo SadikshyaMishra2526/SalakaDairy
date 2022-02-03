@@ -295,12 +295,12 @@ interface ApiInterface {
 
     @FormUrlEncoded
     @POST(EndPoints.FORGOT_PASSWORD)
-    suspend fun forgotPassword(@Field("email") email: String): Response<ServerResponse>
+    suspend fun forgotPassword(@Field("email") email: String): Response<ForgotPasswordResponse>
 
     //    @POST(EndPoints.GOOGLE_LOGIN)
 //    suspend fun googleLogin(@Body body:RequestBodies.GoogleLogin): Response<GoogleLoginResponse>
     @FormUrlEncoded
-    @POST(EndPoints.GOOGLE_LOGIN)
+    @POST(EndPoints.SOCIAL_LOGIN)
     suspend fun googleLogin(
         @Field("first_name") first_name: String,
         @Field("last_name") last_name: String,
@@ -308,6 +308,7 @@ interface ApiInterface {
         @Field("fcm_token") fcm_token: String,
         @Field("provider_id") provider_id: String,
         @Field("avatar") avatar: String,
+        @Field("provider") provider: String,
         @Field("phone") phone: String): Response<GoogleLoginResponse>
 
 }

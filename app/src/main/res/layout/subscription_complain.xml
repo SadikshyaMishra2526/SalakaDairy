@@ -20,22 +20,23 @@
             android:background="@color/white"
             android:orientation="vertical">
 
-            <ProgressBar
-                android:id="@+id/progress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <ImageView
                 android:layout_width="150dp"
                 android:layout_height="80dp"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/_10sdp"
                 android:src="@drawable/logo" />
+
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -79,8 +80,6 @@
                         android:textSize="@dimen/_9sdp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
@@ -125,8 +124,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_80sdp"
                     android:background="@drawable/background_edit_text_bottom"
-                    android:gravity="left|center"
+                    android:gravity="left|top"
                     android:hint="@string/contact"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingTop="@dimen/_10sdp"
                     android:inputType="textMultiLine"
                     android:textSize="@dimen/_12sdp" />
 

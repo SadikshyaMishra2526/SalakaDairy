@@ -26,16 +26,16 @@
             android:textSize="@dimen/_20sdp"
             android:layout_width="wrap_content"
             android:textStyle="bold"
-            android:textColor="@color/white"
+            android:textColor="@color/teal_700"
             android:gravity="center"
             android:text="@string/no_internet_connection_nplease_check_your_internet_connection"
             android:layout_height="wrap_content"/>
         <Button
             android:id="@+id/refresh"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/_120sdp"
             android:text="@string/refresh"
             android:layout_gravity="center"
-            android:layout_height="wrap_content"/>
+            android:layout_height="@dimen/_50sdp"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -70,7 +70,7 @@ class SplashActivity :AppCompatActivity() {
         val appUpdateInfoTask: Task<AppUpdateInfo>
         appUpdateInfoTask = appUpdateManager!!.appUpdateInfo
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
-            if (appUpdateInfo.updateAvailability() === UpdateAvailability.UPDATE_AVAILABLE
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
                 && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
             ) {
                 startUpdateFlow(appUpdateInfo)

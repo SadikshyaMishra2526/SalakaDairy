@@ -26,7 +26,6 @@ import java.net.URI
 import com.google.gson.GsonBuilder
 
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.product_item.view.*
 import okhttp3.OkHttpClient
 
 import okhttp3.Interceptor
@@ -35,7 +34,6 @@ import android.content.Intent
 import android.net.Uri
 import androidx.cardview.widget.CardView
 import com.eightpeak.salakafarm.R
-import kotlinx.android.synthetic.main.activity_login.*
 
 
 class VideoViewActivity : AppCompatActivity() {
@@ -146,10 +144,10 @@ class VideoViewActivity : AppCompatActivity() {
     }
 
     private fun hideProgressBar() {
-        progress.visibility = View.GONE
+       binding.progress.visibility = View.GONE
     }
 
     private fun showProgressBar() {
-        progress.visibility = View.VISIBLE
+        binding.progress.visibility = View.VISIBLE
     }
 }

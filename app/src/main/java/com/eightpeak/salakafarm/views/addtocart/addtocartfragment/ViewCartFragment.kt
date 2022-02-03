@@ -21,7 +21,6 @@ import com.eightpeak.salakafarm.views.home.products.Data
 import com.eightpeak.salakafarm.views.home.products.ProductAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
-import kotlinx.android.synthetic.main.fragment_add_to_cart.*
 
 import android.view.*
 import android.widget.*
@@ -61,7 +60,7 @@ class ViewCartFragment : Fragment() {
         binding.continueShoppingEmpty.setOnClickListener {
             startActivity(Intent(requireContext(), HomeActivity::class.java))
              }
-        return binding.buttomAddToCart
+        return binding.root
     }
     private fun init() {
         productAdapter = ProductAdapter()
@@ -82,6 +81,7 @@ class ViewCartFragment : Fragment() {
     }
 
     private fun getPictures() {
+
         tokenManager?.let { it1 -> viewModel.getCartResponse(it1) }
 
         viewModel.cartResponse.observe(requireActivity(), Observer { response ->
@@ -96,8 +96,7 @@ class ViewCartFragment : Fragment() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-//                        Toast.makeText(requireContext(),message,Toast.LENGTH_SHORT)
-                      binding.buttomAddToCart.errorSnack(message, Snackbar.LENGTH_LONG)
+                        binding.errorMessage.text=message
                     }
 
                 }
@@ -128,12 +127,22 @@ class ViewCartFragment : Fragment() {
                 val itemSelected = itemView.findViewById<ImageView>(R.id.item_selected)
                 quantity=cartResponse[i].qty
 
-                increaseQuantity.setOnClickListener { quantity=1
-                    quantityView.text=quantity.toString()}
-                decreaseQuantity.setOnClickListener { if(quantity>1){
-                    quantity -= 1
-                    quantityView.text=quantity.toString()
+                increaseQuantity.setOnClickListener {
+
+                    quantity= cartResponse[i].qty
+                    quantity += 1
+                    quantityView.text = quantity.toString()
+                    showProgressBar()
+                    updateCart(cartResponse[i].id.toString(),quantity.toString())
                 }
+                decreaseQuantity.setOnClickListener {
+                    if( cartResponse[i].qty>1){
+                        quantity= cartResponse[i].qty
+                        quantity -= 1
+                        quantityView.text = quantity.toString()
+                        showProgressBar()
+                        updateCart(cartResponse[i].id.toString(),quantity.toString())
+                    }
                 }
                 itemSelected.setOnClickListener {
                     tokenManager?.let { it1 -> viewModel.deleteCartItemById(it1,cartResponse[i].id.toString()) }
@@ -152,6 +161,36 @@ class ViewCartFragment : Fragment() {
         }
 
     }
+    private fun updateCart(id:String,qty:String) {
+        tokenManager?.let { it1 -> viewModel.updateCartResponseView(it1,id,qty) }
+
+        viewModel.updateCartResponse.observe(requireActivity(), Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let { picsResponse ->
+//                        finish()
+//                        startActivity(intent)
+                        getPictures()
+                    }
+                }
+
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let { message ->
+//                        Toast.makeText(requireContext(),message,Toast.LENGTH_SHORT).show()
+                        binding.errorMessage.text=message
+
+                    }
+
+                }
+
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+            }
+        })
+    }
 
     private fun observeData() {
         viewModel.deleteCartItem.observe(requireActivity(), Observer { response ->
@@ -168,7 +207,8 @@ class ViewCartFragment : Fragment() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        binding.buttomAddToCart.errorSnack(message, Snackbar.LENGTH_LONG)
+                        binding.errorMessage.text=message
+
                     }
                 }
 
@@ -194,7 +234,7 @@ class ViewCartFragment : Fragment() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        binding.buttomAddToCart.errorSnack(message, Snackbar.LENGTH_LONG)
+                        binding.errorMessage.text=message
                     }
 
                 }
@@ -208,10 +248,6 @@ class ViewCartFragment : Fragment() {
     }
 
     private fun getRandomProductsDetails(data: List<Data>) {
-        val params = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
         productAdapter.differ.submitList(data)
         binding.productRecyclerView.adapter = productAdapter
      }

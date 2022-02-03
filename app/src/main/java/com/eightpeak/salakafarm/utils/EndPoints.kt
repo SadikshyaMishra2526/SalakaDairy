@@ -10,14 +10,14 @@ class EndPoints {
         const val CUSTOMER_INFORMATION = "api/auth/user"
         const val LOGOUT = "api/logout_user"
         const val FORGOT_PASSWORD = "api/auth/forgot_password_reset_link"
-        const val GOOGLE_LOGIN = "api/auth/login_customer_through_google"
+        const val SOCIAL_LOGIN = "api/auth/social_login"
         const val SLIDER = "api/banners"
 
         //customer token
         const val REFRESH_TOKEN = "/oauth/token"
         const val USER_DETAILS = "api/auth/user"
 
-        //categories
+        //categoriessocial_login
         const val CATEGORIES_LIST = "api/categories"
         const val CATEGORIES_VIA_ID = "api/categories/{id}"
 

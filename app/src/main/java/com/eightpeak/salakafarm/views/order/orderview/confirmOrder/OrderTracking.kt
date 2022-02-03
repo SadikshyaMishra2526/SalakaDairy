@@ -18,8 +18,6 @@ import coil.api.load
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.databinding.ActivityOrderTrackingBinding
-import com.eightpeak.salakafarm.databinding.LayoutTrackEmpPositionBinding
-import com.eightpeak.salakafarm.mapfunctions.MapsFragment
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.RequestBodies
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
@@ -45,7 +43,6 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_order_history.view.*
 
 class OrderTracking : BottomSheetDialogFragment()
     , OnMapReadyCallback,

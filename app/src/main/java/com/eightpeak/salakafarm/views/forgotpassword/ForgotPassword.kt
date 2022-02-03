@@ -3,6 +3,7 @@ package com.eightpeak.salakafarm.views.forgotpassword
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +11,6 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.eightpeak.salakafarm.databinding.ActivityLoginBinding
 import com.eightpeak.salakafarm.databinding.FragmentForgotPasswordBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.utils.GeneralUtils
@@ -61,20 +61,26 @@ class ForgotPassword : AppCompatActivity() {
         if (email != null) {
             Encrypt.getEncrptedValue(email)?.let { viewModel.forgotPassword(it) }
         }
-        viewModel.forgotPassword.observe(this, { response ->
+        viewModel.forgotPassword.observe(this) { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { _ ->
-                        if(response.data.error==1){
-
-                        binding.forgotLayout.errorSnack(response.data.message, Snackbar.LENGTH_LONG)
-                        }else{
-                            binding.forgotLayout.showSnack("Password changing link sent to your email. Please check...", Snackbar.LENGTH_LONG)
+                        if (response.data.error == 1) {
+                            Log.i("TAG", "forgotPassword: "+response.data.errorMessage)
+//                            binding.forgotLayout.errorSnack(
+//                                response.data.message,
+//                                Snackbar.LENGTH_LONG
+//                            )
+                        } else {
+                            binding.forgotLayout.showSnack(
+                                "Password changing link sent to your email. Please check...",
+                                Snackbar.LENGTH_LONG
+                            )
 
                             val handler = Handler()
                             handler.postDelayed({
-                                    finish()
+                                finish()
                             }, 1000)
 
                         }
@@ -93,7 +99,7 @@ class ForgotPassword : AppCompatActivity() {
                     showProgressBar()
                 }
             }
-        })
+        }
     }
     private fun hideProgressBar() {
        binding.progress.visibility = View.GONE

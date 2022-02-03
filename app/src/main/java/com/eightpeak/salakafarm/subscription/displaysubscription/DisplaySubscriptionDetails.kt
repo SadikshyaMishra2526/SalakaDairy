@@ -14,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
-import com.eightpeak.salakafarm.databinding.ActivityDisplaySubscriptionDetailsBinding
 import com.eightpeak.salakafarm.date.AD
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
@@ -28,8 +27,16 @@ import com.eightpeak.salakafarm.views.home.HomeActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.messaging.FirebaseMessaging
 import android.app.ProgressDialog
+import android.graphics.Color
+import coil.api.load
+import com.eightpeak.salakafarm.databinding.ActivityDisplaySubscriptionDetailsBinding
 import com.eightpeak.salakafarm.subscription.displaysubscription.models.DeliveryHistoryDisplay
 import com.eightpeak.salakafarm.subscription.displaysubscription.models.DisplaySubscriptionModel
+import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig
+import uk.co.deanwild.materialshowcaseview.shape.RectangleShape
+import uk.co.deanwild.materialshowcaseview.shape.Shape
 
 
 class DisplaySubscriptionDetails : AppCompatActivity() {
@@ -62,6 +69,7 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
         // TODO Auto-generated method stub
         val todayNepaliDate=ad.convertDate(GeneralUtils.getTodayDate())
         binding.todayDate.text = todayNepaliDate
+        showCase()
     }
 
     private fun setupViewModel() {
@@ -78,7 +86,7 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
                 category
             )
         })
-        layoutManager = GridLayoutManager(this, 4)
+        layoutManager = GridLayoutManager(this, 5)
         binding.displaySubscriptionDates.layoutManager = layoutManager
         binding.displaySubscriptionDates.setHasFixedSize(true)
         binding.displaySubscriptionDates.isFocusable = false
@@ -108,7 +116,7 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
 
     private fun getCustomerSubscription() {
         val pd = ProgressDialog(this@DisplaySubscriptionDetails)
-        pd.setMessage("PLease wait..fetching your subscription details")
+        pd.setMessage("Please wait..\n Fetching your subscription details")
         pd.show()
         tokenManager?.let { it1 -> viewModel.fetchCustomerSubscription(it1) }
         viewModel.getCustomerSubscription.observe(this, Observer { response ->
@@ -164,27 +172,60 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
             subscription.remaining_quantity.toString() + "/" + subscription.total_quantity.toString()
         binding.paymentVia.text = subscription.mode
         binding.remainingDays.text = subscription.remaining_quantity.toString()
-        binding.unitPerDay.text = subscription.unit_per_day.toString()+" litre"
-         binding.subscriberBranch.text = subscription.branch.name
+        binding.unitPerDay.text = subscription.unit_per_day.toString()+getString(R.string.litre)
+        binding.subscriberBranch.text = subscription.branch.name
+
+        binding.bankName.text=subscription.branch.bank
+        binding.bankAcc.text=subscription.branch.account_number
+        binding.bankHolder.text=subscription.branch.account_holder
+        binding.bankQr.load(BASE_URL+subscription.branch.qrcode)
+
         binding.subscriptionAddress.text = subscription.address.address1
 //for notification topic
         pushNotificationService(subscription.branch_id)
 
-        if (subscription.approved_at!=null) {
-            binding.paymentStatus.text = getString(R.string.paid)
-            binding.unpaid1.visibility=View.VISIBLE
-            binding.unpaid2.visibility=View.VISIBLE
-            binding.unpaid3.visibility=View.VISIBLE
+
+        if(subscription.payment_at!=null){
             binding.unpaid4.visibility=View.GONE
-            binding.warningCard.visibility=View.GONE
-        } else {
+            binding.unpaid5.visibility=View.GONE
+            binding.unpaid6.visibility=View.GONE
+            binding.unpaid7.visibility=View.GONE
+            binding.unpaid8.visibility=View.GONE
+            binding.warningMessage.text =getString(R.string.paid_warning)
+            binding.warningMessage.setTextColor(Color.BLUE)
+            binding.paymentStatus.text = getString(R.string.pending)
+            binding.paymentStatus.setTextColor(Color.BLUE)
+
+            if (subscription.approved_at!=null) {
+                binding.paymentStatus.text = getString(R.string.paid)
+                binding.paymentStatus.setTextColor(Color.GREEN)
+                binding.unpaid1.visibility=View.VISIBLE
+                binding.unpaid2.visibility=View.VISIBLE
+                binding.unpaid4.visibility=View.GONE
+                binding.warningCard.visibility=View.GONE
+                binding.functionView.visibility=View.VISIBLE
+                showAfterPaymentCase()
+            }
+
+        }else{
+
             binding.warningCard.visibility=View.VISIBLE
             binding.unpaid1.visibility=View.GONE
             binding.unpaid2.visibility=View.GONE
-            binding.unpaid3.visibility=View.GONE
             binding.unpaid4.visibility=View.VISIBLE
             binding.paymentStatus.text = getString(R.string.unpaid)
+            binding.paymentStatus.setTextColor(Color.RED)
+            binding.functionView.visibility=View.GONE
+
+            binding.unpaid4.visibility=View.VISIBLE
+            binding.unpaid5.visibility=View.VISIBLE
+            binding.unpaid6.visibility=View.VISIBLE
+            binding.unpaid7.visibility=View.VISIBLE
+            binding.unpaid8.visibility=View.VISIBLE
         }
+
+
+
 
         if(subscription.delivery_peroid==0){
             userPrefManager.packageSelected=0
@@ -197,19 +238,16 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
         }else if(subscription.delivery_peroid==2){
             userPrefManager.packageSelected=2
             binding.deliveryTime.text = getString(R.string.both_shift)
-
         }
 
         if (subscription.mode == "bank" || subscription.mode == "qr") {
-
             binding.warningMessage.visibility = View.VISIBLE
         } else if (subscription.mode == "esewa") {
 
         } else if (subscription.mode == "Cash on Delivery") {
             binding.warningMessage.text =
-                "Subscription needs to be validated to start. You can pay our employee when he/she delivers your first subscription..."
+                getString(R.string.wait_for_payment)
         }
-
 
         binding.addComplainToSubscription.setOnClickListener {
             val args = Bundle()
@@ -239,6 +277,7 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
 
             val builder = AlertDialog.Builder(this)
             builder.setTitle(getString(R.string.unsubscribe_cancel_title))
+            builder.setIcon(R.drawable.cancel)
             builder.setMessage(getString(R.string.cancel_sub_content))
             builder.setPositiveButton(getString(R.string.unsubscribe),
                 DialogInterface.OnClickListener { _, _ ->
@@ -257,7 +296,7 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
 
         }
         binding.viewSubscriptionHistory.setOnClickListener {
-           val intent= Intent(this@DisplaySubscriptionDetails, ViewSubscriptionOrderHistory::class.java)
+            val intent= Intent(this@DisplaySubscriptionDetails, ViewSubscriptionOrderHistory::class.java)
             intent.putExtra("start", subscriptionDetailsModel!!.subscription.starting_date)
             intent.putExtra("end", subscriptionDetailsModel!!.subscription.expiration_time)
             startActivity(intent)
@@ -338,5 +377,49 @@ class DisplaySubscriptionDetails : AppCompatActivity() {
         FirebaseMessaging.getInstance().subscribeToTopic(topic)
             .addOnSuccessListener {
             }
+    }
+
+
+    private fun showCase() {
+        val DEFAULT_SHAPE: Shape = RectangleShape(20, 20)
+        val config = ShowcaseConfig()
+        config.shape = DEFAULT_SHAPE
+        config.delay = 500
+        val sequence = MaterialShowcaseSequence(this, "103")
+        sequence.setConfig(config)
+        sequence.addSequenceItem(
+            binding.displaySubscriptionDates,
+            "On long press add/cancel additional quantity to subscription here!!! ",  getString(R.string.got_it)
+        )
+        sequence.start()
+    }
+    private fun showAfterPaymentCase() {
+        val DEFAULT_SHAPE: Shape = RectangleShape(20, 20)
+        val config = ShowcaseConfig()
+        config.shape = DEFAULT_SHAPE
+        config.delay = 500
+        val sequence = MaterialShowcaseSequence(this, "104")
+        sequence.setConfig(config)
+        sequence.addSequenceItem(
+            binding.displaySubscriptionDates,
+            "On long press add/cancel additional quantity or cancel that day's subscription here!!! ",  getString(R.string.got_it)
+        )
+        sequence.addSequenceItem(
+                binding.addComplainToSubscription,
+        "Add Complain if you are not satisfied with out services", getString(R.string.got_it)
+        )
+        sequence.addSequenceItem(
+            binding.trackYourOrder,
+            "Track your subscription location and contact the Employee here!!!",  getString(R.string.got_it)
+        )
+        sequence.addSequenceItem(
+            binding.viewSubscriptionHistory,
+            "Track your subscription history here !!!",  getString(R.string.got_it)
+        )
+        sequence.addSequenceItem(
+            binding.cancelYourSubscription,
+            "Unsubscribe our service if you are not satisfied !!!",  getString(R.string.got_it)
+        )
+        sequence.start()
     }
 }

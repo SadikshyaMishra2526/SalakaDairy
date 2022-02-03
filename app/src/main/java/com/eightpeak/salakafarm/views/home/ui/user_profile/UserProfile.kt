@@ -47,8 +47,10 @@ import android.widget.Toast
 
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import androidx.fragment.app.FragmentActivity
 import coil.api.load
 import com.eightpeak.salakafarm.databinding.ActivityUserProfileBinding
+import com.eightpeak.salakafarm.subscription.displaysubscription.TrackSubscriptionView
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
 import com.eightpeak.salakafarm.views.home.address.AddressModification
 import com.eightpeak.salakafarm.utils.GeneralUtils
@@ -57,6 +59,11 @@ import com.eightpeak.salakafarm.utils.subutils.addAddressSnack
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.utils.subutils.showSnack
 import com.eightpeak.salakafarm.views.home.address.EditAddress
+import com.eightpeak.salakafarm.views.home.ui.EditProfile
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.play.core.tasks.OnCompleteListener
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -103,7 +110,8 @@ class UserProfile : AppCompatActivity() {
         binding.userName.text = userPrefManager.firstName + " " + userPrefManager.lastName
         binding.userEmail.text = userPrefManager.email
         binding.userPhone.text = userPrefManager.contactNo
-        if(userPrefManager.avatar.length>5){
+        Log.i("TAG", "onCreate: "+userPrefManager.avatar)
+        if(!userPrefManager.avatar.equals("not_found")){
             if(userPrefManager.avatar.contains("https://")){
                 binding.customerAvatar.load(userPrefManager.avatar)
             }else{
@@ -111,7 +119,7 @@ class UserProfile : AppCompatActivity() {
             }
 
         }else{
-            binding.customerAvatar.load("https://salakafarm.com/public/data/logo/Untitled.png")
+            binding.customerAvatar.load(R.drawable.logo)
 
         }
         dialog = Dialog(this)
@@ -141,18 +149,19 @@ class UserProfile : AppCompatActivity() {
 
 
 ////            for google signout
-//            mGoogleSignInClient.signOut()
-//                .addOnCompleteListener(this, object : OnCompleteListener<Void?>() {
-//                    fun onComplete(task: Task<Void?>) {
-//                        // ...
-//                    }
-//                })
 
 
         }
 
         binding.editProfileLayout.setOnClickListener {
-            editProfile()
+            Toast.makeText(this@UserProfile,"Work on progress",Toast.LENGTH_LONG).show()
+            val args = Bundle()
+            val bottomSheet = EditProfile()
+            bottomSheet.arguments = args
+            bottomSheet.show(
+                (this@UserProfile as FragmentActivity).supportFragmentManager,
+                bottomSheet.tag
+            )
         }
 
         binding.layoutUserPassword.setOnClickListener {
@@ -429,213 +438,10 @@ class UserProfile : AppCompatActivity() {
         })
     }
 
-    private fun editProfile() {
-        val dialog = Dialog(this)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(true)
-        dialog.setContentView(R.layout.layout_edit_profile)
-        val firstName = dialog.findViewById<EditText>(R.id.customer_first_name)
-        val lastName = dialog.findViewById<EditText>(R.id.customer_last_name)
-        val userDoB = dialog.findViewById<TextView>(R.id.customer_DOB)
-        val btnSummit = dialog.findViewById<Button>(R.id.continuebtn)
-        val btnCancel = dialog.findViewById<Button>(R.id.cancel)
-        val customerAvatar = dialog.findViewById<ImageView>(R.id.customer_avatar)
-        customerAvatar.setOnClickListener {
-            val photoPickerIntent = Intent(Intent.ACTION_PICK)
-            photoPickerIntent.type = "image/*"
-            startActivityForResult(
-                photoPickerIntent,
-                RESULT_LOAD_IMG
-            )
-        }
-        btnCancel.setOnClickListener { dialog.dismiss() }
-        userDoB.setOnClickListener {
-            val newCalendar = dateSelected
-            val dateFormat: java.text.DateFormat? = DateFormat.getDateFormat(applicationContext)
-            datePickerDialog = DatePickerDialog(
-                this,
-                { view, year, monthOfYear, dayOfMonth ->
-                    dateSelected[year, monthOfYear, dayOfMonth, 0] = 0
-                    userDoB.text = dateFormat?.format(dateSelected.time)
-                },
-                newCalendar[Calendar.YEAR],
-                newCalendar[Calendar.MONTH],
-                newCalendar[Calendar.DAY_OF_MONTH]
-            )
-            datePickerDialog!!.show()
-            Log.i("TAG", "onCreate: " + dateSelected.time)
-
-        }
-        firstName.setText(userPrefManager.firstName)
-        lastName.setText(userPrefManager.lastName)
 
 
-        btnSummit.setOnClickListener {
-            val userGender =
-                dialog.findViewById<RadioGroup>(R.id.customer_gender).checkedRadioButtonId
-            val gender = dialog.findViewById<View>(userGender) as RadioButton
-
-            val name = firstName.text.toString()
-            val email = lastName.text.toString()
-            val dob = userDoB.text.toString()
-            val genderString = gender.text.toString()
-            if (dob.isNotEmpty()) {
-                if (userGender != null) {
-                    changeUserProfile(name, email, dob, genderString, profilePicture, dialog)
-                } else {
-                    changeUserProfile(name, email, dob, "", profilePicture, dialog)
-                }
-            } else {
-
-                if (genderString.isNotEmpty()) {
-                    changeUserProfile(name, email, "", genderString, profilePicture, dialog)
-                } else {
-                    changeUserProfile(name, email, "", "", profilePicture, dialog)
-                }
-            }
-            GeneralUtils.hideKeyboard(this)
-        }
-        dialog.setCanceledOnTouchOutside(true)
-        dialog.show()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == AppCompatActivity.RESULT_OK) {
-            try {
-                val imageUri = data?.data
-                val imageStream = contentResolver?.openInputStream(imageUri!!)
-                val selectedImage = BitmapFactory.decodeStream(imageStream)
-                val customerAvatar = dialog?.findViewById<ImageView>(R.id.customer_avatar)
-                customerAvatar?.setImageBitmap(selectedImage)
-                val file = File(imageUri?.let { getRealPathFromURI(it) })
-//
-                val requestFile: RequestBody = file.let {
-                    RequestBody.create(
-                        "multipart/form-data".toMediaTypeOrNull(),
-                        it
-                    )
-                }!!
-
-                profilePicture = MultipartBody.Part
-                    .createFormData("avatar", file.name, requestFile)
 
 
-            } catch (e: FileNotFoundException) {
-                e.printStackTrace()
-                Toast.makeText(this@UserProfile, "Something went wrong", Toast.LENGTH_LONG).show()
-            }
-        } else {
-            Toast.makeText(this@UserProfile, "Please Choose your image", Toast.LENGTH_LONG).show()
-        }
-    }
-
-    private fun getRealPathFromURI(contentURI: Uri): String? {
-        val result: String
-        val cursor: Cursor? = contentResolver.query(contentURI, null, null, null, null)
-        if (cursor == null) {
-            result = contentURI.path.toString()
-        } else {
-            cursor.moveToFirst()
-            val idx: Int = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
-            result = cursor.getString(idx)
-            cursor.close()
-        }
-        return result
-    }
-
-    private fun changeUserProfile(
-        name: String,
-        email: String,
-        dob: String,
-        gender: String,
-        profilePicture: MultipartBody.Part,
-        dialog: Dialog
-    ) {
-        val customerName: RequestBody = RequestBody.create(
-            MultipartBody.FORM, name
-        )
-        val customerEmail: RequestBody = RequestBody.create(
-            MultipartBody.FORM, email
-        )
-        val customerDOB: RequestBody = RequestBody.create(
-            MultipartBody.FORM, dob
-        )
-        val customerGender: RequestBody = gender?.let {
-            RequestBody.create(
-                MultipartBody.FORM, it
-            )
-        }
-
-        tokenManager?.let { it1 ->
-
-            viewModel.getUserProfileDetails(it1, customerName,customerEmail,customerDOB,customerGender,profilePicture)
-
-        }
-
-        viewModel.userProfileDetails.observe(this, Observer { response ->
-            when (response) {
-                is Resource.Success -> {
-                    hideProgressBar()
-                    response.data?.let {
-                        dialog.dismiss()
-                        getUserDetails()
-                        Log.i("TAG", "changeUserProfile: " + response.data)
-                    }
-                }
-
-                is Resource.Error -> {
-                    hideProgressBar()
-                    response.message?.let { message ->
-                        dialog.dismiss()
-                        binding.userProfileView.errorSnack(message, Snackbar.LENGTH_LONG)
-                    }
-
-                }
-
-                is Resource.Loading -> {
-                    showProgressBar()
-                }
-            }
-        })
-    }
-
-    private fun getUserDetails() {
-        tokenManager?.let { viewModel.userDetailsUser(it) }
-        viewModel.userDetailsResponse.observe(this, Observer { event ->
-            event.getContentIfNotHandled()?.let { response ->
-                when (response) {
-                    is Resource.Success -> {
-                        hideProgressBar()
-                        response.data?.let { loginResponse ->
-                            Log.i("TAG", "loginResponse i m here: $loginResponse")
-                            userPrefManager.firstName = loginResponse.first_name
-                            userPrefManager.lastName = loginResponse.last_name
-                            userPrefManager.contactNo = loginResponse.phone.toString()
-                            userPrefManager.email = loginResponse.email
-                            binding.userName.text =
-                                loginResponse.first_name + " " + loginResponse.last_name
-                            binding.userEmail.text = loginResponse.email
-                            binding.userPhone.text = loginResponse.phone
-
-                        }
-                    }
-
-                    is Resource.Error -> {
-                        hideProgressBar()
-                        response.message?.let { message ->
-                            binding.progress.errorSnack(message, Snackbar.LENGTH_LONG)
-                        }
-                    }
-
-                    is Resource.Loading -> {
-                        showProgressBar()
-                    }
-                }
-            }
-        })
-
-    }
 
     private fun hideProgressBar() {
         binding.progress.visibility = View.GONE

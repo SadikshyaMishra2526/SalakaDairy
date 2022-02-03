@@ -24,7 +24,6 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.Marker
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_login.*
 
 class EditAddress : AppCompatActivity()  {
     private lateinit var binding: EditAddressBinding
@@ -163,10 +162,10 @@ class EditAddress : AppCompatActivity()  {
     }
 
     private fun hideProgressBar() {
-        progress.visibility = View.GONE
+        binding.progress.visibility = View.GONE
     }
 
     private fun showProgressBar() {
-        progress.visibility = View.VISIBLE
+        binding.progress.visibility = View.VISIBLE
     }
 }

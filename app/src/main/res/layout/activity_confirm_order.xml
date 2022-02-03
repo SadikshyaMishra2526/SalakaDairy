@@ -206,7 +206,6 @@
         android:id="@+id/place_order"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="285dp"
         android:text="@string/place_order"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

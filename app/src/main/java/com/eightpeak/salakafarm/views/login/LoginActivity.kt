@@ -150,7 +150,7 @@ class LoginActivity : AppCompatActivity() {
         val signInButton = findViewById<ImageView>(R.id.sign_in_button)
 //        signInButton.setSize(SignInButton.SIZE_STANDARD)
         val account = GoogleSignIn.getLastSignedInAccount(this)
-
+        Log.i("TAG", "googleLogin: "+account)
         signInButton.setOnClickListener {
             signIn()
         }
@@ -180,7 +180,7 @@ class LoginActivity : AppCompatActivity() {
             val account = completedTask.getResult(ApiException::class.java)
             val acct = GoogleSignIn.getLastSignedInAccount(this)
             if (acct != null) {
-                val personName = Encrypt.getEncrptedValue(acct.displayName)
+                val personName = acct.displayName
                 val personGivenName = acct.givenName
                 val personFamilyName = acct.familyName
                 val personEmail = Encrypt.getEncrptedValue(acct.email)
@@ -189,22 +189,24 @@ class LoginActivity : AppCompatActivity() {
                 val name: Array<String>? = personName?.split(" ".toRegex())?.toTypedArray()
 
                     if (personId != null) {
-                        name?.get(0)?.let {
+
                             if (personEmail != null) {
-                                Encrypt.getEncrptedValue( personName)?.let { it1 ->
+                                Encrypt.getEncrptedValue(name?.get(0))?.let { it1 ->
                                     Encrypt.getEncrptedValue(personFamilyName)?.let { it2 ->
                                         Encrypt.getEncrptedValue("")?.let { it3 ->
-                                            loginViewModel.socialGoogle(
-                                                it1,
-                                                it2,personEmail,userPrefManager.fcmToken,personId,personPhoto.toString(),
-                                                it3
-                                            )
+                                            Encrypt.getEncrptedValue("google")?.let { it4 ->
+                                                loginViewModel.socialGoogle(
+                                                    it1,
+                                                    it2,personEmail,userPrefManager.fcmToken,personId,personPhoto.toString(),
+                                                    it4, it3
+                                                )
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
-                    getGoogleLoginResponse()
+
+                        getGoogleLoginResponse()
                 }
             }
         } catch (e: ApiException) {
@@ -267,11 +269,6 @@ class LoginActivity : AppCompatActivity() {
                 loginPrefsEditor?.clear()
                 loginPrefsEditor?.apply()
             }
-
-
-
-
-
 
 
             val body = Encrypt.getEncrptedValue(email)?.let {

@@ -27,15 +27,11 @@ import com.eightpeak.salakafarm.views.home.categories.categoriesbyid.CategoriesB
 import com.eightpeak.salakafarm.views.home.categories.categoriesbyid.Products_with_description
 import com.google.android.material.snackbar.Snackbar
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
-import com.eightpeak.salakafarm.views.login.LoginActivity
 import com.eightpeak.salakafarm.views.search.SearchProductsActivity
-import kotlinx.android.synthetic.main.fragment_categories.*
-import kotlinx.android.synthetic.main.fragment_categories_by_id.*
 
 class CategoriesSeeAllActivity : AppCompatActivity() {
 
     private var _binding: ActivityCategoriesSeeAllBinding? = null
-
     private lateinit var binding: ActivityCategoriesSeeAllBinding
 
     private lateinit var viewModel: CategoriesViewModel
@@ -90,7 +86,6 @@ class CategoriesSeeAllActivity : AppCompatActivity() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
-                        Log.i("TAG", "getPictures: " + picsResponse.data.size)
                         getSelectedCategoryProducts(picsResponse)
                         categoriesModel=picsResponse
                     }
@@ -99,7 +94,7 @@ class CategoriesSeeAllActivity : AppCompatActivity() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        categoriesRecyclerView.errorSnack(message, Snackbar.LENGTH_LONG)
+                       binding.categoriesByIdRecyclerView.errorSnack(message, Snackbar.LENGTH_LONG)
                     }
 
                 }
@@ -110,8 +105,7 @@ class CategoriesSeeAllActivity : AppCompatActivity() {
             }
         })
 
-
-        return  categoriesModel?.data?.get(0)?.id.toString()
+        return  categoriesModel?.data?.get(0)?.id.toString( )
     }
 
     private fun getSelectedCategoryProducts(picsResponse: CategoriesModel) {
@@ -125,12 +119,29 @@ class CategoriesSeeAllActivity : AppCompatActivity() {
             categoryName.text = picsResponse.data[i].descriptions[0].title
 
             val categoriesCard = itemView.findViewById<CardView>(R.id.categoriesCard)
-            categoriesCard.setOnClickListener { getPictures(picsResponse.data[i].id.toString())
+
+
+            binding. categoryThumbnail.load((BASE_URL+ categoriesModel?.data?.get(0)?.image))
+            if(userPrefManager?.language.equals("ne")){
+                binding.selectedCategory.text= categoriesModel?.data?.get(i)?.descriptions?.get(1)?.title ?: "Not Found"
+            }else{
+                binding.selectedCategory.text= categoriesModel?.data?.get(i)?.descriptions?.get(0)?.title ?: "Not Found"
+            }
+
+
+            categoriesCard.setOnClickListener {
+               binding. categoryThumbnail.load((BASE_URL+ categoriesModel?.data?.get(i)?.image))
+                if(userPrefManager?.language.equals("ne")){
+                    binding.selectedCategory.text= categoriesModel?.data?.get(i)?.descriptions?.get(1)?.title ?: "Not Found"
+                }else{
+                    binding.selectedCategory.text= categoriesModel?.data?.get(i)?.descriptions?.get(0)?.title ?: "Not Found"
+
+                }
+
+                getPictures(picsResponse.data[i].id.toString())
                 getOnClickProduct=false
             }
-//            if(getOnClickProduct!!){
-//                getPictures("0")
-//            }
+
 
             val categoryThumbnail = itemView.findViewById<ImageView>(R.id.category_thumbnail)
             categoryThumbnail.load(BASE_URL + picsResponse.data[i].image)
@@ -142,7 +153,6 @@ class CategoriesSeeAllActivity : AppCompatActivity() {
         val repository = AppRepository()
         val factory = ViewModelProviderFactory(application, repository)
         viewModelById = ViewModelProvider(this, factory).get(CategoriesByIdViewModel::class.java)
-//        getPictures("0")
     }
 
     private fun getPictures(categories_id: String) {
@@ -186,11 +196,11 @@ class CategoriesSeeAllActivity : AppCompatActivity() {
     }
 
     private fun hideProgressBar() {
-        progress.visibility = View.GONE
+        binding.progress.visibility = View.GONE
     }
 
     private fun showProgressBar() {
-        progress.visibility = View.VISIBLE
+        binding.progress.visibility = View.VISIBLE
     }
 
 

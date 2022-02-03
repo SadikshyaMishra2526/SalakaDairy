@@ -61,9 +61,14 @@ data class Subscription(
 
 
 data class Branch(
+//        "branch":{"id":12,"name":"sGothatar Branch","account_number":"323467574959934933","qrcode":"\/data\/content\/viber_image_2022-01-02_11-53-53-901.jpg","account_holder":"Sadi Mishra","bank":"Himalayan Bank"}
 
     @SerializedName("id") val id: Int,
-    @SerializedName("name") val name: String
+    @SerializedName("name") val name: String,
+    @SerializedName("account_number") val account_number: String,
+    @SerializedName("qrcode") val qrcode: String,
+    @SerializedName("account_holder") val account_holder: String,
+    @SerializedName("bank") val bank: String
 )
 
 data class Sub_package(

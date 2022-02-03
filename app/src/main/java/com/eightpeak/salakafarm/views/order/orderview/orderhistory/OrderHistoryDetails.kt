@@ -28,7 +28,6 @@ import com.eightpeak.salakafarm.viewmodel.OrderViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.home.products.ServerResponse
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.product_item.view.*
 
 class OrderHistoryDetails : Fragment() {
 
@@ -133,17 +132,23 @@ class OrderHistoryDetails : Fragment() {
     }
 
     private fun viewCustomerDetails(orderDetails: Order_details) {
-        binding.customerName.text=orderDetails.first_name+" "+orderDetails.last_name
+        binding.customerName.text=userPrefManager.firstName+" "+userPrefManager.lastName
        binding.customerEmail.text=orderDetails.email
-       binding.customerPhone.text=orderDetails.phone
        binding.customerAddress.text=orderDetails.address1+" "+orderDetails.address2
 
-//        binding.paymentStatus.text=getString(R.string.payment_status)+"\n"+orderDetails.payment_status.name
+        binding.paymentStatus.text=getString(R.string.payment_status)+"\n"+orderDetails.payment_status.name
         binding.orderStatus.text=getString(R.string.order_status)+" \n"+orderDetails.order_status.name
         binding.paymentType.text=getString(R.string.shipping_status)+" \n"+orderDetails.shipping_method
-        binding.orderDate.text=getString(R.string.order_at)+" \n"+orderDetails.created_at
 
+       if(userPrefManager.language.equals("ne")){
+           binding.orderDate.text=getString(R.string.order_at)+" \n"+GeneralUtils.getUnicodeNumber(GeneralUtils.getFormattedDate(orderDetails.created_at))
+           binding.customerPhone.text=GeneralUtils.getUnicodeNumber(orderDetails.phone)
 
+       }else{
+           binding.orderDate.text=getString(R.string.order_at)+" \n"+GeneralUtils.getFormattedDate(orderDetails.created_at)
+           binding.customerPhone.text=orderDetails.phone
+
+       }
 
 
     }

@@ -18,7 +18,6 @@ import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.home.ui.user_profile.Encrypt
 import com.eightpeak.salakafarm.views.login.LoginActivity
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_add_to_cart.*
 
 class OTPActivity : AppCompatActivity() {
     private lateinit var binding: ActivityOtpActivityBinding
@@ -169,7 +168,7 @@ class OTPActivity : AppCompatActivity() {
                         is Resource.Error -> {
                             hideProgressBar()
                             response.message?.let { message ->
-                                progress.errorSnack(message, Snackbar.LENGTH_LONG)
+                                binding.progress.errorSnack(message, Snackbar.LENGTH_LONG)
                             }
                         }
 

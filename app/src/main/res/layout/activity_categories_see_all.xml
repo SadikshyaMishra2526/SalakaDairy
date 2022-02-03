@@ -68,6 +68,27 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/_5ssp"
     android:background="@color/sub_color"/>
+    <LinearLayout
+        android:padding="@dimen/_5sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+         android:id="@+id/category_thumbnail"
+            android:textColor="@color/sub_color"
+            android:textStyle="bold"
+            android:textSize="@dimen/_10sdp"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"/>
+        <TextView
+            android:id="@+id/selected_category"
+            android:layout_width="wrap_content"
+            android:textColor="@color/sub_color"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textSize="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/categories_list_by_id_recycler_view"
             android:layout_width="wrap_content"
@@ -77,9 +98,10 @@
             android:id="@+id/categories_not_found"
             android:layout_width="@dimen/_100sdp"
             android:layout_height="@dimen/_100sdp"
-            android:visibility="gone"
             android:background="@drawable/categories_not_found"
             android:layout_marginTop="@dimen/_100sdp"
+            android:layout_gravity="center"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -207,7 +207,7 @@ class CartActivity : AppCompatActivity() {
                     updateCart(cartResponse[i].id.toString(),quantity.toString())
                 }
                 decreaseQuantity.setOnClickListener {
-                    if(quantity>1){
+                    if( cartResponse[i].qty>1){
                         quantity= cartResponse[i].qty
                         quantity -= 1
                         quantityView.text = quantity.toString()
@@ -301,8 +301,9 @@ class CartActivity : AppCompatActivity() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
-                        finish()
-                        startActivity(intent)
+//                        finish()
+//                        startActivity(intent)
+                        getPictures()
                     }
                 }
 

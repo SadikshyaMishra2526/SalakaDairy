@@ -1,36 +1,27 @@
 package com.eightpeak.salakafarm.database.notifications
+
+
 import android.app.Notification
 import android.app.NotificationChannel
-import com.google.firebase.messaging.FirebaseMessagingService
-import com.google.firebase.messaging.RemoteMessage
 import android.app.NotificationManager
-
-
 import android.app.PendingIntent
 import android.content.Context
-
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.media.RingtoneManager
 import android.net.Uri
-import android.util.Log
-import android.widget.RemoteViews
-import androidx.core.app.NotificationCompat
-
-import org.json.JSONException
-
-import org.json.JSONObject
-
 import android.os.Build
-import androidx.lifecycle.ViewModelProvider
-import com.eightpeak.salakafarm.App
+import android.util.Log
+import androidx.core.app.NotificationCompat
 import com.eightpeak.salakafarm.R
-import com.eightpeak.salakafarm.database.NotificationDetails
-import com.eightpeak.salakafarm.repository.NotificationRepository
 import com.eightpeak.salakafarm.subscription.displaysubscription.DisplaySubscriptionDetails
 import com.eightpeak.salakafarm.views.home.HomeActivity
 import com.eightpeak.salakafarm.views.order.orderview.orderhistory.OrderHistory
+import com.google.firebase.messaging.FirebaseMessagingService
+import com.google.firebase.messaging.RemoteMessage
+import org.json.JSONException
+import org.json.JSONObject
 
 
 const val channel_id="notification_channel"
@@ -61,10 +52,12 @@ open class PushNotificationService : FirebaseMessagingService() {
         val title = remoteMessage.data["title"] //get title
         val message = remoteMessage.data["body"] //get message
         val click_action = remoteMessage.data["type"]//get click_action
+        val icon = remoteMessage.data["icon"]//get click_action
         val image =remoteMessage!!.notification?.imageUrl
         Log.d(TAG, "Message Notification Title: $title")
         Log.d(TAG, "Message Notification Body: $message")
         Log.i(TAG, "onMessageReceived: "+click_action)
+        Log.i(TAG, "icon: "+icon)
 
 
         val loginPreferences:SharedPreferences? = getSharedPreferences("notificationPrefs", MODE_PRIVATE)
@@ -72,7 +65,7 @@ open class PushNotificationService : FirebaseMessagingService() {
         loginPrefsEditor = loginPreferences?.edit()
         loginPrefsEditor?.putString("title",   title)
         loginPrefsEditor?.putString("message",  message)
-        loginPrefsEditor?.putString("image",  image.toString())
+        loginPrefsEditor?.putString("image",  icon)
         loginPrefsEditor?.apply()
 
 
@@ -97,7 +90,7 @@ open class PushNotificationService : FirebaseMessagingService() {
         val builder: NotificationCompat.Builder
 
         if (notifyManager == null) {
-            notifyManager = this!!.getSystemService(Context.NOTIFICATION_SERVICE)
+            notifyManager = this.getSystemService(Context.NOTIFICATION_SERVICE)
                     as NotificationManager
         }
 
@@ -138,8 +131,13 @@ open class PushNotificationService : FirebaseMessagingService() {
         intent.putExtra("image", image)
 
         val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
-        val defaultSoundUri: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-
+        var alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+        if (alarmSound == null) {
+            alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
+            if (alarmSound == null) {
+                alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+            }
+        }
         builder.setContentTitle(title)  // required
             .setSmallIcon(R.drawable.small_logo) // required
             .setContentText(message)  // required
@@ -147,7 +145,7 @@ open class PushNotificationService : FirebaseMessagingService() {
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
             .setTicker("Notification")
-            .setSound(defaultSoundUri)
+            .setSound(alarmSound)
             .setVibrate(longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400))
 
         val dismissIntent = Intent(this, DisplaySubscriptionDetails::class.java)

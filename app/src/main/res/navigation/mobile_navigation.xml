@@ -79,7 +79,7 @@
     </fragment>
     <fragment
         android:id="@+id/mapsFragment"
-        android:name="com.eightpeak.salakafarm.mapfunctions.MapsFragment"
+        android:name="com.eightpeak.salakafarm.mapfunctions.BranchActivity"
         android:label="MapsFragment" >
         <action
             android:id="@+id/action_mapsFragment_to_navigation_setting"

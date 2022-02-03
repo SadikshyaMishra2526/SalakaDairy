@@ -3,7 +3,6 @@ package com.eightpeak.salakafarm.views.home.ui.home
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.drawable.shapes.Shape
 import android.location.Geocoder
 import android.os.Bundle
 import android.os.Handler
@@ -37,6 +36,10 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig
+import uk.co.deanwild.materialshowcaseview.shape.RectangleShape
+import uk.co.deanwild.materialshowcaseview.shape.Shape
 import java.util.*
 
 class HomeFragment : Fragment(), OnMapReadyCallback,
@@ -71,7 +74,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
         ))
         binding.customerProfile.setOnClickListener {
             tokenManager?.let {
-                if (it.token!= NO_LOGIN) {
+                if (it.token!= NO_LOGIN&&userPrefManager.firstName!="not_found") {
                     val mainActivity = Intent(context, UserProfile::class.java)
                     startActivity(mainActivity)
                 } else {
@@ -90,7 +93,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
 
         binding.subscriptionLayout.setOnClickListener {
             tokenManager?.let {
-                if (it.token!= NO_LOGIN) {
+                if (it.token!= NO_LOGIN&&userPrefManager.firstName!="not_found") {
                     if(userPrefManager.subscriptionStatus){
                         val mainActivity = Intent(context, DisplaySubscriptionDetails::class.java)
                         startActivity(mainActivity)
@@ -112,40 +115,44 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
             .build()
 
 
+
+
         setUpSliderFragment()
         setUpCategoriesFragment()
         setUpProductFragment()
+        showCase()
         return root
     }
-//    private fun showCase() {
-//        val DEFAULT_SHAPE: Shape = RectangleShape(20, 20)
-//        val config = ShowcaseConfig()
-//        config.setShape(DEFAULT_SHAPE)
-//        config.setDelay(400)
-//        val sequence = MaterialShowcaseSequence(this, "101")
-//        sequence.setConfig(config)
-//        sequence.addSequenceItem(
-//            mTotalShow,
-//            "Shows number of data entered in the device", "GOT IT"
-//        )
-//        sequence.addSequenceItem(
-//            mDownloadView,
-//            "Please Click Download for initial setup", "GOT IT"
-//        )
-//        sequence.addSequenceItem(
-//            mRegistrationView,
-//            "Please Click Household Registration for collecting data", "GOT IT"
-//        )
-//        sequence.addSequenceItem(
-//            mEditView,
-//            "Edit is used for modification of collected data", "GOT IT"
-//        )
-//        sequence.addSequenceItem(
-//            mUploadView,
-//            "Upload is used for pushing data to server", "GOT IT"
-//        )
-//        sequence.start()
-//    }
+    private fun showCase() {
+        val DEFAULT_SHAPE: Shape = RectangleShape(20, 20)
+        val config = ShowcaseConfig()
+        config.shape = DEFAULT_SHAPE
+        config.delay = 400
+        val sequence = MaterialShowcaseSequence(requireActivity(), "101")
+        sequence.setConfig(config)
+
+        sequence.addSequenceItem(
+            binding.addSubscription,
+            "Add your milk subscription here...\nGot home delivered and track your delivery location!!! ", "GOT IT"
+        )
+        sequence.addSequenceItem(
+            binding.tvSearchInput,
+            "Search here for your favorite product !!!", "GOT IT"
+        )
+        sequence.addSequenceItem(
+            binding.customerProfile,
+            "Register/Login to use our services !!!", "GOT IT"
+        )
+        sequence.addSequenceItem(
+            binding.containerCategories,
+            "Checkout our categories of products !!!", "GOT IT"
+        )
+        sequence.addSequenceItem(
+            binding.containerProducts,
+            "Order products here.\nAnd get your fresh dairy products at your doorstep!!!", "GOT IT"
+        )
+        sequence.start()
+    }
     private fun setUpSliderFragment() {
         val managerSlider = childFragmentManager
         val fragmentSlider: Fragment = SliderFragment()
@@ -239,4 +246,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback,
             }
         }
     }
+
+
 }

@@ -11,6 +11,7 @@ import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.io.IOException
+import java.util.concurrent.TimeUnit
 
 class RetrofitInstance {
     companion object {
@@ -20,6 +21,9 @@ class RetrofitInstance {
 
         private fun buildClient(): OkHttpClient {
             val builder:  OkHttpClient.Builder = OkHttpClient.Builder()
+                .connectTimeout(EndPoints.CONNECTION_TIME_OUT, TimeUnit.MINUTES)
+                .readTimeout(EndPoints.CONNECTION_TIME_OUT, TimeUnit.MINUTES)
+                .writeTimeout(EndPoints.CONNECTION_TIME_OUT, TimeUnit.MINUTES)
                 .addNetworkInterceptor(StethoInterceptor())
                 .addInterceptor(object : Interceptor {
                     @Throws(IOException::class)

@@ -161,7 +161,7 @@ class AddAlterationDisplay : BottomSheetDialogFragment() {
 //                        val handler = Handler()
 //                        handler.postDelayed({
 //                            dismiss()
-//                            startActivity(Intent(requireContext(),DisplaySubscriptionDetails::class.java))
+                            startActivity(Intent(requireContext(),DisplaySubscriptionDetails::class.java))
 //                                 }, 1500)
                     }
                 }

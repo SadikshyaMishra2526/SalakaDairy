@@ -44,7 +44,12 @@ class LoginViewModel(
                         Event(Resource.Error(
                             getApplication<Application>().getString(R.string.unauthorized),
                         )))
-                }else{
+                }else if(response.code()==404){
+                    _loginResponse.postValue(
+                        Event(Resource.Error(
+                            "Phone not registered",
+                        )))
+                } else{
                     _loginResponse.postValue(handlePicsResponse(response))
 
                 }
@@ -199,8 +204,9 @@ class LoginViewModel(
                      fcm_token: String,
                      provider_id: String,
                      avatar: String,
+                     provider: String,
                      phone: String) = viewModelScope.launch {
-        googleLogin(first_name,last_name,email,fcm_token,provider_id,avatar,phone)
+        googleLogin(first_name,last_name,email,fcm_token,provider_id,avatar,provider,phone)
     }
 
 
@@ -210,11 +216,12 @@ class LoginViewModel(
                                     fcm_token: String,
                                     provider_id: String,
                                     avatar: String,
+                                    provider: String,
                                     phone: String) {
         socialGoogle.postValue(Resource.Loading())
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
-                val response = appRepository.googleLogin(first_name,last_name,email,fcm_token,provider_id,avatar,phone)
+                val response = appRepository.googleLogin(first_name,last_name,email,fcm_token,provider_id,avatar,provider,phone)
                 Log.i("TAG", "fetchUserAddress: $response")
                 socialGoogle.postValue(handleGoogleResponse(response))
             } else {

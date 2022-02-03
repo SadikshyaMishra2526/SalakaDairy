@@ -22,6 +22,7 @@ import com.eightpeak.salakafarm.utils.EndPoints
 import com.eightpeak.salakafarm.utils.GeneralUtils
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
+import com.eightpeak.salakafarm.utils.subutils.showSnack
 import com.eightpeak.salakafarm.viewmodel.CheckOutViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.order.orderview.orderhistory.OrderHistory
@@ -95,10 +96,10 @@ class ConfirmOrderActivity : AppCompatActivity() {
                         addCartDetails(picsResponse.order_details.cartItem)
                         addTotalPrice(picsResponse.order_details.dataTotal)
 //                        shippingId=picsResponse.order_details.shippingAddress
-
+                        var totalPrice=""
                         val selectedPaymentMethod = intent.getStringExtra("payment_option").toString()
                         if(selectedPaymentMethod=="Cash"){
-                            var totalPrice=""
+
                             binding.placeOrderEsewa.visibility=View.GONE
                             binding.paymentStatus.load(R.drawable.cod)
                             binding.placeOrder.setOnClickListener {
@@ -108,16 +109,23 @@ class ConfirmOrderActivity : AppCompatActivity() {
                                       totalPrice=i.text
                                   }
                               }
-                                val body = RequestBodies.AddOrder("null", "null", "137", "137")
+                                val body = RequestBodies.AddOrder("null", "null", picsResponse.order_details.shippingAddress.id.toString(), picsResponse.order_details.shippingAddress.id.toString())
+//                                val body = RequestBodies.AddOrder("null", "null", picsResponse.order_details.shippingAddress.id.toString(), picsResponse.order_details.shippingAddress.id.toString())
                                 tokenManager?.let { it1 -> viewModel.addOrder(it1,body) }
                                 getOrderResponse()
                             }
                         }else if(selectedPaymentMethod=="Esewa"){
+                            for(i in picsResponse.order_details.dataTotal) {
+
+                                if(i.title=="total"){
+                                    totalPrice=i.text
+                                }
+                            }
                             binding.placeOrder.visibility=View.GONE
                             binding.placeOrderEsewa.visibility=View.VISIBLE
                             binding.paymentStatus.load(R.drawable.esewa)
                             binding.placeOrderEsewa.setOnClickListener {
-                                makePayment("232")
+                                makePayment(totalPrice)
 
                             }
                         }
@@ -145,10 +153,17 @@ class ConfirmOrderActivity : AppCompatActivity() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { picsResponse ->
-                        Log.i("TAG", "getOrderResponse: "+picsResponse)
-//                        Toast.makeText(this@ConfirmOrderActivity," Order has successfully placed!!! ",Toast.LENGTH_SHORT).show()
-//                        startActivity(Intent(this@ConfirmOrderActivity,OrderHistory::class.java))
-//                        finish()
+                        Log.i("TAG", "getOrderResponse: $picsResponse")
+                        if(response.data.error>0){
+                            binding.checkoutView.errorSnack(response.data.message, Snackbar.LENGTH_LONG)
+                        }else{
+                            val intent =Intent(this@ConfirmOrderActivity,OrderHistory::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            startActivity(intent)
+                            finish()
+                            binding.checkoutView.showSnack("Order Successfully added !!!", Snackbar.LENGTH_LONG)
+                        }
+
                     }
                 }
 
@@ -281,7 +296,7 @@ class ConfirmOrderActivity : AppCompatActivity() {
 
                 getCheckOutDetails()
             } else if (resultCode == RESULT_CANCELED) {
-                Toast.makeText(this, "Canceled By User", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Cancelled By User", Toast.LENGTH_SHORT).show()
             } else if (resultCode == ESewaPayment.RESULT_EXTRAS_INVALID) {
                 val s = data?.getStringExtra(ESewaPayment.EXTRA_RESULT_MESSAGE)
                 Log.i("Proof of Payment", s!!)

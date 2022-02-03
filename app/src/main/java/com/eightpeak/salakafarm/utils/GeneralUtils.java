@@ -2,17 +2,24 @@ package com.eightpeak.salakafarm.utils;
 
 import android.app.Activity;
 import android.location.Location;
+import android.os.Build;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 
+import androidx.annotation.RequiresApi;
+
 import com.eightpeak.salakafarm.R;
 import com.eightpeak.salakafarm.views.home.ui.user_profile.Encrypt;
 
 import java.nio.charset.StandardCharsets;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,6 +62,8 @@ public class GeneralUtils {
                 valueOfchar = "९";
             } else if (valueOfchar.equals("0")) {
                 valueOfchar = "०";
+            }else if (valueOfchar.equals("-")) {
+                valueOfchar = "-";
             }
 
             unicodeChar = unicodeChar + valueOfchar;
@@ -106,9 +115,13 @@ public class GeneralUtils {
 
 
     public static byte[] decoderfun(String enval) {
-        Log.i("TAG", "decoderfun: "+enval);
         return Base64.decode(enval.getBytes(), Base64.DEFAULT);
     }
 
+    public static String getFormattedDate(String time) {
+         String dateStr =  time.substring(0, 19);
 
+        String[] dateList = dateStr.split("T");
+        return dateList[0]+" "+dateList[1];
+    }
 }

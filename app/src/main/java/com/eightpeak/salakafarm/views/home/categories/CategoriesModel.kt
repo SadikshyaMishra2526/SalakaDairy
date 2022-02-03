@@ -33,6 +33,7 @@ data class CategoriesModel (
         @SerializedName("category_id") val category_id : Int,
         @SerializedName("lang") val lang : String,
         @SerializedName("title") val title : String,
+        @SerializedName("name") val name : String,
         @SerializedName("keyword") val keywordword : String,
         @SerializedName("description") val description : String
     )

@@ -6,7 +6,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -20,7 +23,6 @@ import com.eightpeak.salakafarm.utils.EndPoints
 import com.eightpeak.salakafarm.utils.GeneralUtils
 import com.eightpeak.salakafarm.views.home.products.AddToCartView
 import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdActivity
-import kotlinx.android.synthetic.main.product_item.view.*
 import kotlin.math.roundToInt
 
 class CategoriesByIdAdapter : RecyclerView.Adapter<CategoriesByIdAdapter.CategoriesByIdViewHolder>() {
@@ -57,30 +59,48 @@ class CategoriesByIdAdapter : RecyclerView.Adapter<CategoriesByIdAdapter.Categor
         userPrefManager= UserPrefManager(App.getContext())
 
         holder.itemView.apply {
-            product_thumbnail.load(EndPoints.BASE_URL +categoriesItem.image)
+
+
+            val rating1 = findViewById<ImageView>(R.id.rating_1)
+            val rating2 = findViewById<ImageView>(R.id.rating_2)
+            val rating3 = findViewById<ImageView>(R.id.rating_3)
+            val rating4 = findViewById<ImageView>(R.id.rating_4)
+            val rating5 = findViewById<ImageView>(R.id.rating_5)
+
+            val productFeature = findViewById<TextView>(R.id.product_feature)
+            val productThumbnail = findViewById<ImageView>(R.id.product_thumbnail)
+            val ratedBy = findViewById<TextView>(R.id.rated_by)
+            val productPriceDiscount = findViewById<TextView>(R.id.product_price_discount)
+            val productPrice = findViewById<TextView>(R.id.product_price)
+            val productName = findViewById<TextView>(R.id.product_name)
+            val productViewItem = findViewById<CardView>(R.id.productViewItem)
+            val btAddToCart = findViewById<TextView>(R.id.bt_add_to_cart)
+
+            productFeature.text=categoriesItem.sku
+            productThumbnail.load(EndPoints.BASE_URL +categoriesItem.image)
 
             val rating: Int? = categoriesItem.average_rating?.roundToInt()
-            rated_by.text = "("+categoriesItem.no_of_rating+") "
+            ratedBy.text = "("+categoriesItem.no_of_rating+") "
             if(rating==1){
-                rating_1.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
+                rating1.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
             }else if(rating==2){
-                rating_1.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
-                rating_2.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
+                rating1.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
+                rating2.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
             }else if(rating==3){
-                rating_1.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
-                rating_2.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
-                rating_3.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
+                rating1.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
+                rating2.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
+                rating3.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
             }else if(rating==4){
-                rating_1.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
-                rating_2.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
-                rating_3.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
-                rating_4.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
+                rating1.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
+                rating2.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
+                rating3.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
+                rating4.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
             }else if(rating==5){
-                rating_1.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
-                rating_2.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
-                rating_3.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
-                rating_4.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
-                rating_5.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
+                rating1.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
+                rating2.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
+                rating3.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
+                rating4.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
+                rating5.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_star_rate_24))
             }
 
 
@@ -89,34 +109,34 @@ class CategoriesByIdAdapter : RecyclerView.Adapter<CategoriesByIdAdapter.Categor
 
             if (categoriesItem.descriptions?.isNotEmpty() == true) {
                 if (userPrefManager.language.equals("ne")) {
-                    product_name.text = categoriesItem.descriptions[1].name
+                    productName.text = categoriesItem.descriptions[1].name
 
-                    if(categoriesItem.promotion_price.price_promotion != null){
-                        product_price_discount.text= GeneralUtils.getUnicodeNumber(categoriesItem.price.toString())
-                        product_price_discount.paintFlags = product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                        product_price.text =
+                    if(categoriesItem.promotion_price != null){
+                        productPriceDiscount.text= GeneralUtils.getUnicodeNumber(categoriesItem.price.toString())
+                        productPriceDiscount.paintFlags = productPriceDiscount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                        productPrice.text =
                             context.getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(categoriesItem.promotion_price.price_promotion.toString())
                     }else{
-                        product_price.text =
+                        productPrice.text =
                             context.getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(categoriesItem.price.toString())
                     }
 
                 } else {
-                    product_name.text = categoriesItem.descriptions[0].name
+                    productName.text = categoriesItem.descriptions[0].name
 
                     if(categoriesItem.promotion_price!=null){
-                        product_price_discount.text=categoriesItem.price.toString()
-                        product_price_discount.paintFlags = product_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                        product_price.text =
+                        productPriceDiscount.text=categoriesItem.price.toString()
+                        productPriceDiscount.paintFlags = productPriceDiscount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                        productPrice.text =
                             context.getString(R.string.rs) + categoriesItem.promotion_price.price_promotion.toString()
                     }else{
-                        product_price.text =
+                        productPrice.text =
                             context.getString(R.string.rs) + categoriesItem.price.toString()
                     }
                 }
             }
 
-            bt_add_to_cart.setOnClickListener {
+            btAddToCart.setOnClickListener {
                 val args = Bundle()
                 args.putString(Constants.PRODUCT_ID, categoriesItem.id.toString())
                 val bottomSheet = AddToCartView()

@@ -1,27 +1,24 @@
 package com.eightpeak.salakafarm.database.notifications
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.Nullable
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import coil.api.load
-import com.eightpeak.salakafarm.App
 import com.eightpeak.salakafarm.R
-import com.eightpeak.salakafarm.database.NotificationDetails
 import com.eightpeak.salakafarm.databinding.FragmentNotificationsBinding
 import com.eightpeak.salakafarm.views.home.HomeActivity
-import com.google.firebase.messaging.FirebaseMessagingService
-import com.google.firebase.messaging.RemoteMessage
 
 class NotificationsFragment : Fragment() {
 
@@ -42,6 +39,7 @@ class NotificationsFragment : Fragment() {
 
         notificationsViewModel.fetchRegisterLogger.observe(viewLifecycleOwner, Observer { user ->
             if(user.isNotEmpty()){
+                binding.noMessage.visibility=View.GONE
                 binding.notificationList.removeAllViews()
                 Log.i(TAG, "onCreateView: "+user.size)
                 for (i in user.indices) {
@@ -54,21 +52,35 @@ class NotificationsFragment : Fragment() {
                     val notiDate = itemView.findViewById<TextView>(R.id.notification_date)
                     val notiLayout = itemView.findViewById<CardView>(R.id.notification_layout)
 
-                    notiTitle.setText(user[i].notification_title)
-                    notiMessage.setText(user[i].notification_description)
-//                    notiImage.load(user[i].notification_image)
+                    notiTitle.text = user[i].notification_title
+                    notiMessage.text = user[i].notification_description
                     notiDate.setText(user[i].notification_date)
 
+                    if(user[i].notification_image.contains("http")||user[i].notification_image.contains("https")){
+                        notiImage.load(user[i].notification_image)
+                    }else{
+                        notiImage.load(R.drawable.logo)
+                    }
+
                     notiLayout.setOnClickListener {
-                        Log.i(TAG, "onCreateView: "+user[i].id)
-                        notificationsViewModel.deleteNotificationDetails(user[i].id.toString())
+                        val builder = AlertDialog.Builder(requireContext())
+                        builder.setTitle("Delete Notification")
+                        builder.setMessage("Are you sure you want to delete?")
+                        builder.setPositiveButton(R.string.delete,
+                            DialogInterface.OnClickListener { _, _ ->
+                                notificationsViewModel.deleteNotificationDetails(user[i].id.toString())
+                            })
+                        builder.setNegativeButton(R.string.cancel, null)
+
+                        val dialog = builder.create()
+                        dialog.show()
 
                     }
 
                     binding.notificationList.addView(itemView)
                 }
                 }else{
-
+              binding.noMessage.visibility=View.VISIBLE
             }
         })
 

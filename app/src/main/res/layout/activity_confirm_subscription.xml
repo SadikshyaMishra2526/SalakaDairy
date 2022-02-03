@@ -502,15 +502,26 @@
     </androidx.core.widget.NestedScrollView>
 
 
+<!--    <Button-->
+<!--        android:id="@+id/proceed_with_payment"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="@dimen/_50sdp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintVertical_bias="1.0" />-->
     <Button
         android:id="@+id/proceed_with_payment"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_50sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:orientation="horizontal"
         android:text="@string/proceed_with_payment"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"/>
+
     <Button
         android:id="@+id/pay_by_esewa"
         android:layout_width="match_parent"

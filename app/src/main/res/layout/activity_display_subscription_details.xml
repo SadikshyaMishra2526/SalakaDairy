@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/subscription_details"
     android:layout_width="match_parent"
-    android:visibility="gone"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:visibility="gone">
 
     <LinearLayout
         android:id="@+id/subscriptionView"
@@ -51,46 +51,51 @@
                 android:layout_height="0dp"
                 android:layout_weight="1.5" />
         </LinearLayout>
+
         <ProgressBar
             android:id="@+id/progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:layout_gravity="center"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.cardview.widget.CardView
             android:id="@+id/warning_card"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:layout_marginRight="@dimen/_10sdp"
-            app:cardCornerRadius="@dimen/_10sdp"
-            android:backgroundTint="@color/sub_color_lighter"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:backgroundTint="@color/sub_color_lighter"
+            app:cardCornerRadius="@dimen/_10sdp">
+
             <LinearLayout
-                android:padding="@dimen/_5sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
                 android:background="@color/white"
                 android:orientation="vertical"
-                android:layout_margin="@dimen/_5sdp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:padding="@dimen/_5sdp">
+
                 <TextView
-                    android:text="@string/note"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:textColor="@color/sub_color"
-                    android:layout_height="wrap_content"/>
+                    android:text="@string/note"
+                    android:textColor="@color/sub_color" />
+
                 <TextView
 
-                    android:textSize="@dimen/_9sdp"
-                    android:text="@string/subscription_needs_to_be_validated_to_start_if_you_want_to_pay_via_qr_or_online_banking_please_upload_your_payment_statement_in_the_end_of_this_page_and_wait_for_approval"
                     android:id="@+id/warning_message"
-                    android:textColor="@color/red"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="@string/subscription_needs_to_be_validated_to_start_if_you_want_to_pay_via_qr_or_online_banking_please_upload_your_payment_statement_in_the_end_of_this_page_and_wait_for_approval"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/_9sdp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -101,65 +106,6 @@
             android:orientation="vertical"
             android:padding="@dimen/_5sdp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_5sdp"
-                android:background="@color/sub_color_lighter"
-                android:padding="@dimen/_10sdp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="@string/subscription_started"
-                        android:textColor="@color/sub_color"
-                        android:textSize="@dimen/_10sdp" />
-
-                    <TextView
-                        android:id="@+id/subscription_started"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start"
-                        android:textSize="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="@string/subscription_expires_at"
-                        android:textColor="@color/sub_color"
-                        android:textSize="@dimen/_10sdp" />
-
-                    <TextView
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:id="@+id/subscription_expire"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:text="2022/01/01"
-                        android:textColor="@color/error_red"
-                        android:textStyle="bold" />
-                </LinearLayout>
-            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/unpaid_1"
@@ -168,14 +114,15 @@
                 android:layout_marginStart="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:background="@color/sub_color_lighter"
-                android:padding="@dimen/_5sdp">
+                android:padding="@dimen/_5sdp"
+                android:visibility="gone">
 
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/calender"
                     android:layout_gravity="center"
+                    android:text="@string/calender"
                     android:textColor="@color/main_color"
                     android:textSize="@dimen/_13sdp"
                     android:textStyle="bold" />
@@ -184,6 +131,7 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_weight="1" />
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -194,17 +142,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:textSize="@dimen/_17sdp"
                         android:textColor="@color/green1"
+                        android:textSize="@dimen/_17sdp"
                         android:textStyle="bold" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Remaining Litre"
+                        android:text="@string/remaining_litre"
                         android:textColor="@color/sub_color"
                         android:textSize="@dimen/_8sdp" />
                 </LinearLayout>
+
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -214,7 +164,7 @@
                     android:id="@+id/today_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                   android:layout_gravity="center"
+                    android:layout_gravity="center"
                     android:textColor="@color/teal_200"
                     android:textSize="@dimen/_13sdp"
                     android:textStyle="bold" />
@@ -227,6 +177,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/_5sdp"
                 android:elevation="@dimen/_5sdp"
+                android:visibility="gone"
                 app:cardCornerRadius="@dimen/_5sdp">
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -238,62 +189,175 @@
                     app:layout_constraintVertical_bias="0.0" />
             </androidx.cardview.widget.CardView>
 
-            <LinearLayout
-                android:id="@+id/unpaid_3"
-                android:layout_width="wrap_content"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/function_view"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:backgroundTint="@color/tab_indicator_gray"
+                android:elevation="@dimen/_10sdp"
+                android:visibility="gone"
+                app:cardCornerRadius="@dimen/_10sdp">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:orientation="vertical">
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_2sdp"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_2sdp">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/m_morning"
-                        android:textSize="@dimen/_10sdp" />
+                        android:layout_margin="@dimen/_5sdp"
+                        android:background="@color/sub_color_lighter"
+                        android:gravity="center"
+                        android:padding="@dimen/_5sdp"
+                        android:text="Function"
+                        android:textColor="@color/teal_200"
+                        android:textSize="@dimen/_13sdp"
+                        android:textStyle="bold" />
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/e_evening"
-                        android:textSize="@dimen/_10sdp" />
+                        android:layout_gravity="center"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="@dimen/_130sdp"
+                                android:layout_height="@dimen/_50sdp"
+                                android:layout_margin="@dimen/_2sdp"
+                                android:backgroundTint="@color/teal_200"
+                                android:elevation="@dimen/_5sdp"
+                                app:cardCornerRadius="@dimen/_3sdp">
+
+                                <LinearLayout
+                                    android:id="@+id/track_your_order"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:background="@color/white"
+                                    android:orientation="vertical"
+                                    android:padding="@dimen/_15sdp">
+
+                                    <TextView
+                                        android:layout_width="@dimen/_85sdp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:gravity="center"
+                                        android:text="@string/track_your_order"
+                                        android:textColor="@color/teal_200"
+                                        android:textSize="@dimen/_12sdp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="@dimen/_130sdp"
+                                android:layout_height="@dimen/_50sdp"
+                                android:layout_margin="@dimen/_2sdp"
+                                android:backgroundTint="@color/blue"
+                                android:elevation="@dimen/_5sdp"
+                                android:textSize="@dimen/_10sdp"
+                                app:cardCornerRadius="@dimen/_3sdp">
+
+                                <LinearLayout
+                                    android:id="@+id/view_subscription_history"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:background="@color/white"
+                                    android:orientation="vertical"
+                                    android:padding="@dimen/_15sdp">
+
+                                    <TextView
+                                        android:layout_width="@dimen/_85sdp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:gravity="center"
+                                        android:text="@string/view_history"
+                                        android:textColor="@color/blue"
+                                        android:textSize="@dimen/_12sdp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+                            </androidx.cardview.widget.CardView>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="@dimen/_130sdp"
+                                android:layout_height="@dimen/_50sdp"
+                                android:layout_margin="@dimen/_2sdp"
+                                android:backgroundTint="@color/red"
+                                android:elevation="@dimen/_5sdp"
+                                app:cardCornerRadius="@dimen/_3sdp">
+
+                                <LinearLayout
+                                    android:id="@+id/cancel_your_subscription"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:background="@color/white"
+                                    android:orientation="vertical"
+                                    android:padding="@dimen/_16sdp">
+
+                                    <TextView
+                                        android:layout_width="@dimen/_85sdp"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:text="@string/delete_subscription"
+                                        android:textColor="@color/red"
+                                        android:textSize="@dimen/_12sdp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="@dimen/_130sdp"
+                                android:layout_height="@dimen/_50sdp"
+                                android:layout_margin="@dimen/_2sdp"
+                                android:backgroundTint="@color/yellow"
+                                android:elevation="@dimen/_5sdp"
+                                android:textSize="@dimen/_10sdp"
+                                app:cardCornerRadius="@dimen/_3sdp">
+
+                                <LinearLayout
+                                    android:id="@+id/add_complain_to_subscription"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:background="@color/white"
+                                    android:orientation="vertical"
+                                    android:padding="@dimen/_15sdp">
+
+                                    <TextView
+                                        android:layout_width="@dimen/_85sdp"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:text="@string/complain_box"
+                                        android:textColor="@color/yellow"
+                                        android:textSize="@dimen/_12sdp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+                            </androidx.cardview.widget.CardView>
+                        </LinearLayout>
+                    </LinearLayout>
+
                 </LinearLayout>
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/red_cancelled"
-                        android:textSize="@dimen/_10sdp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/green_delivered"
-                        android:textSize="@dimen/_10sdp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/yellow_in_progress"
-                        android:textSize="@dimen/_10sdp" />
-
-                </LinearLayout>
-            </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/customer_details"
@@ -351,7 +415,8 @@
                             android:background="@drawable/background_edit_text_bottom"
                             android:padding="@dimen/_5sdp"
                             android:selectAllOnFocus="true"
-                            android:textSize="@dimen/_12sdp" />
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -378,7 +443,8 @@
                             android:background="@drawable/background_edit_text_bottom"
                             android:padding="@dimen/_5sdp"
                             android:selectAllOnFocus="true"
-                            android:textSize="@dimen/_12sdp" />
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -405,7 +471,8 @@
                             android:background="@drawable/background_edit_text_bottom"
                             android:padding="@dimen/_5sdp"
                             android:selectAllOnFocus="true"
-                            android:textSize="@dimen/_12sdp" />
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -432,7 +499,8 @@
                             android:background="@drawable/background_edit_text_bottom"
                             android:padding="@dimen/_5sdp"
                             android:selectAllOnFocus="true"
-                            android:textSize="@dimen/_12sdp" />
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -459,7 +527,8 @@
                             android:background="@drawable/background_edit_text_bottom"
                             android:padding="@dimen/_5sdp"
                             android:selectAllOnFocus="true"
-                            android:textSize="@dimen/_12sdp" />
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -486,7 +555,8 @@
                             android:background="@drawable/background_edit_text_bottom"
                             android:padding="@dimen/_5sdp"
                             android:selectAllOnFocus="true"
-                            android:textSize="@dimen/_12sdp" />
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -513,7 +583,8 @@
                             android:background="@drawable/background_edit_text_bottom"
                             android:padding="@dimen/_5sdp"
                             android:selectAllOnFocus="true"
-                            android:textSize="@dimen/_12sdp" />
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -540,7 +611,8 @@
                             android:background="@drawable/background_edit_text_bottom"
                             android:padding="@dimen/_5sdp"
                             android:selectAllOnFocus="true"
-                            android:textSize="@dimen/_12sdp" />
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -558,7 +630,6 @@
                             android:textSize="@dimen/_10sdp"
                             android:textStyle="bold" />
 
-
                         <TextView
                             android:id="@+id/payment_status"
                             android:layout_width="0dp"
@@ -567,7 +638,122 @@
                             android:background="@drawable/background_edit_text_bottom"
                             android:padding="@dimen/_5sdp"
                             android:selectAllOnFocus="true"
-                            android:textSize="@dimen/_12sdp" />
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/unpaid_5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="@string/bank_name"
+                            android:textColor="@color/sub_color"
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/bank_name"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:background="@drawable/background_edit_text_bottom"
+                            android:padding="@dimen/_5sdp"
+                            android:selectAllOnFocus="true"
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/unpaid_6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="@string/bank_account"
+                            android:textColor="@color/sub_color"
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/bank_acc"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:background="@drawable/background_edit_text_bottom"
+                            android:padding="@dimen/_5sdp"
+                            android:selectAllOnFocus="true"
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/unpaid_7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="Acc Holder"
+                            android:textColor="@color/sub_color"
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/bank_holder"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:background="@drawable/background_edit_text_bottom"
+                            android:padding="@dimen/_5sdp"
+                            android:selectAllOnFocus="true"
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/unpaid_8"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="@string/bank_qr"
+                            android:textColor="@color/sub_color"
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/bank_qr"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/_200sdp"
+                            android:layout_gravity="start"
+                            android:layout_weight="2"
+                            android:background="@drawable/background_edit_text_bottom"
+                            android:padding="@dimen/_5sdp"
+                            android:scaleType="fitXY"
+                            android:selectAllOnFocus="true"
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
                     </LinearLayout>
                     <LinearLayout
                         android:id="@+id/unpaid_4"
@@ -588,52 +774,78 @@
                             android:id="@+id/add_evidence"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="@string/add_evidence"
-                            android:layout_weight="2" />
+                            android:layout_weight="2"
+                            android:text="@string/add_evidence" />
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:id="@+id/track_your_order"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_50sdp"
-                    android:text="@string/track_your_order" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical">
-
-                <Button
-                    android:text="@string/view_history"
-                    android:id="@+id/view_subscription_history"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_50sdp"
-                    android:textSize="@dimen/_10sdp" />
-
-                <Button
-                    android:id="@+id/cancel_your_subscription"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_50sdp"
-                    android:text="@string/delete_subscription"
-                    android:textSize="@dimen/_10sdp" />
-                <Button
-                    android:id="@+id/add_complain_to_subscription"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_50sdp"
-                    android:text="@string/complain_box"
-                    android:textSize="@dimen/_10sdp" />
-            </LinearLayout>
 
 
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5sdp"
+            android:background="@color/sub_color_lighter"
+            android:padding="@dimen/_10sdp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/subscription_started"
+                    android:textColor="@color/sub_color"
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/subscription_started"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/subscription_expires_at"
+                    android:textColor="@color/sub_color"
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/subscription_expire"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="2022/01/01"
+                    android:textColor="@color/error_red"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

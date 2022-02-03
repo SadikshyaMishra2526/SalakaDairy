@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/register_layout"
     android:background="@drawable/background"
     tools:context=".views.login.LoginActivity"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -105,6 +106,7 @@
                         android:gravity="center"
                         android:inputType="textPassword"
                         android:maxLines="1"
+                        android:paddingStart="@dimen/_10sdp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         tools:layout_editor_absoluteY="269dp"
@@ -224,7 +226,7 @@
                     app:srcCompat="@drawable/ic_facebook" />
 
                 <ImageView
-                    android:id="@+id/google"
+                    android:id="@+id/sign_in_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"

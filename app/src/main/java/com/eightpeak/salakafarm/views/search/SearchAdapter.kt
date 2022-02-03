@@ -6,6 +6,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -19,7 +22,6 @@ import com.eightpeak.salakafarm.utils.EndPoints
 import com.eightpeak.salakafarm.utils.GeneralUtils
 import com.eightpeak.salakafarm.views.home.products.AddToCartView
 import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdActivity
-import kotlinx.android.synthetic.main.product_item.view.*
 
 class SearchAdapter  : RecyclerView.Adapter<SearchAdapter.ProductListViewHolder>() {
 
@@ -52,27 +54,32 @@ class SearchAdapter  : RecyclerView.Adapter<SearchAdapter.ProductListViewHolder>
 
     override fun onBindViewHolder(holder: ProductListViewHolder, position: Int) {
         val productItems = differ.currentList[position]
-        Log.i("TAG", "onBindViewHolder:Categories " + productItems.image)
-        holder.itemView.apply {
-            product_thumbnail.load(EndPoints.BASE_URL + productItems.image)
 
+
+        holder.itemView.apply {
+            val productThumbnail = findViewById<ImageView>(R.id.product_thumbnail)
+            val btAddToCart = findViewById<TextView>(R.id.bt_add_to_cart)
+            val productViewItem = findViewById<CardView>(R.id.productViewItem)
+            val productName = findViewById<TextView>(R.id.product_name)
+            productThumbnail.load(EndPoints.BASE_URL + productItems.image)
+
+            val productPrice = findViewById<TextView>(R.id.product_price)
             var userPrefManager = UserPrefManager(App.getContext())
 
             if (productItems.descriptions.isNotEmpty()) {
                 if (userPrefManager.language.equals("ne")) {
-                    product_name.text = productItems.descriptions[1].name
-                    product_price.text =
+                    productName.text = productItems.descriptions[1].name
+                    productPrice.text =
                         context.getString(R.string.rs) + " " + GeneralUtils.getUnicodeNumber(productItems.price.toString())
 
                 } else {
-                    product_name.text = productItems.descriptions[0].name
-                    product_price.text =
+                    productName.text = productItems.descriptions[0].name
+                    productPrice.text =
                         context.getString(R.string.rs) + productItems.price.toString()
-
                 }
             }
 
-            bt_add_to_cart.setOnClickListener {
+            btAddToCart.setOnClickListener {
                 val args = Bundle()
                 args.putString(Constants.PRODUCT_ID, productItems.id.toString())
                 val bottomSheet = AddToCartView()

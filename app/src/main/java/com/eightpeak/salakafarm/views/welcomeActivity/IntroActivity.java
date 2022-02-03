@@ -3,6 +3,7 @@ package com.eightpeak.salakafarm.views.welcomeActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -39,7 +40,6 @@ public class IntroActivity extends AppCompatActivity {
          requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
 
         if (restorePrefData()) {
 
@@ -139,9 +139,6 @@ public class IntroActivity extends AppCompatActivity {
                 //open main activity
                 Intent mainActivity = new Intent(getApplicationContext(), HomeActivity.class);
                 startActivity(mainActivity);
-                // also we need to save a boolean value to storage so next time when the user run the app
-                // we could know that he is already checked the intro screen activity
-                // i'm going to use shared preferences to that process
                 savePrefsData();
                 finish();
 
@@ -155,12 +152,12 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     private boolean restorePrefData() {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("myPrefs",MODE_PRIVATE);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("introPref",MODE_PRIVATE);
         return pref.getBoolean("isIntroOpnend",false);
     }
 
     private void savePrefsData() {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("myPrefs",MODE_PRIVATE);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("introPref",MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putBoolean("isIntroOpnend",true);
         editor.apply();

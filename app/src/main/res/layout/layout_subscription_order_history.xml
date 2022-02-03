@@ -37,6 +37,12 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="1" />
+            <ImageView
+                android:layout_width="@dimen/_40sdp"
+                android:src="@drawable/ic_baseline_search_24"
+                android:id="@+id/search_history"
+                android:padding="@dimen/_2sdp"
+                android:layout_height="@dimen/_40sdp"/>
         </LinearLayout>
 
     <ProgressBar
@@ -49,11 +55,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/sub_order_history_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/sub_order_history_recycler"
-                android:layout_width="match_parent"
-
-                android:layout_height="wrap_content" />
+</androidx.core.widget.NestedScrollView>
 
 </LinearLayout>

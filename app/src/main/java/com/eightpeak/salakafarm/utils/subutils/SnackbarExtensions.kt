@@ -105,12 +105,12 @@ fun View.successAddToCartSnack(
 ) {
     val snackbar = Snackbar
         .make(this, message, length)
-//        .setAction(context.getString(R.string.view_cart)) {
-//            val intent = Intent(context, CartActivity::class.java)
-//            context.startActivity(intent)
-//            intent
-//
-//        }
+        .setAction(context.getString(R.string.view_cart)) {
+            val intent = Intent(context, CartActivity::class.java)
+            context.startActivity(intent)
+            intent
+
+        }
     snackbar.setActionTextColor(Color.parseColor("#FFFFFF"))
     snackbar.view.setBackgroundColor(ContextCompat.getColor(context, R.color.main_color))
     snackbar.show()
@@ -126,7 +126,6 @@ fun View.successAddToCartSnack(
         .setAction(context.getString(R.string.add_address)) {
             val intent = Intent(context, AddressModification::class.java)
             context.startActivity(intent)
-
         }
     snackbar.setActionTextColor(Color.parseColor("#FFFFFF"))
     snackbar.view.setBackgroundColor(Color.parseColor("#C62828"))

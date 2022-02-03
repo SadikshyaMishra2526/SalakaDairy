@@ -18,6 +18,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import coil.api.load
+import com.eightpeak.salakafarm.App
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.R.drawable.*
 import com.eightpeak.salakafarm.database.UserPrefManager
@@ -29,14 +30,12 @@ import com.eightpeak.salakafarm.utils.Constants.Companion.PRODUCT_ID
 import com.eightpeak.salakafarm.utils.EndPoints
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
 import com.eightpeak.salakafarm.utils.GeneralUtils
-import com.eightpeak.salakafarm.utils.subutils.Resource
+import com.eightpeak.salakafarm.utils.subutils.*
 import com.eightpeak.salakafarm.viewmodel.ProductByIdViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.google.android.material.snackbar.Snackbar
-import com.eightpeak.salakafarm.utils.subutils.errorSnack
-import com.eightpeak.salakafarm.utils.subutils.successAddToCartSnack
-import com.eightpeak.salakafarm.utils.subutils.successWishListSnack
 import com.eightpeak.salakafarm.views.addtocart.CartActivity
+import com.eightpeak.salakafarm.views.home.categories.categoriesbyid.CategoriesByIdActivity
 import com.smarteist.autoimageslider.SliderView
 import com.smarteist.autoimageslider.SliderAnimations
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
@@ -219,6 +218,10 @@ class ProductByIdActivity : AppCompatActivity() {
             binding.outOfStock.visibility = View.VISIBLE
         }
 
+        binding.productAddToCompareList.setOnClickListener {
+            App.addItem(productDetailsByIdResponse.id.toString())
+            binding.productViewIdLayout.successCompareSnack(this@ProductByIdActivity,getString(R.string.add_to_compare),Snackbar.LENGTH_LONG)
+        }
         if (productDetailsByIdResponse.descriptions?.isNotEmpty()) {
             if (userPrefManager?.language.equals("ne")) {
 
@@ -249,6 +252,11 @@ class ProductByIdActivity : AppCompatActivity() {
              }else{
                  binding.categoryName.text=productDetailsByIdResponse.categories_description[0].descriptions[0].title
 
+             }
+             binding.categoryName.setOnClickListener {
+                 val intent = Intent(this@ProductByIdActivity, CategoriesByIdActivity::class.java)
+                 intent.putExtra(Constants.CATEGORIES_ID, productDetailsByIdResponse.categories_description[0].id.toString())
+                 startActivity(intent)
              }
          }
         if (productDetailsByIdResponse.promotion_price!=null) {
@@ -295,43 +303,65 @@ class ProductByIdActivity : AppCompatActivity() {
 
 
         binding.productAddToWishlist.setOnClickListener {
-            val productId = productDetailsByIdResponse.id.toString()
-            tokenManager?.let { it1 -> viewModel.addTowishlist(it1, productId) }
-            viewModel.wishlist.observe(this, Observer { response ->
-                when (response) {
-                    is Resource.Success -> {
-                        hideProgressBar()
-                        response.data?.let {
-                            binding.productViewIdLayout.successWishListSnack(
-                                this,
-                                getString(R.string.add_to_wishlist),
-                                Snackbar.LENGTH_LONG
-                            )
-                        }
-                    }
+            tokenManager?.let {
+                if (it.token != Constants.NO_LOGIN && userPrefManager?.firstName != "not_found") {
 
-                    is Resource.Error -> {
-                        hideProgressBar()
-                        response.message?.let { message ->
-                             binding.productViewIdLayout.errorSnack(message, Snackbar.LENGTH_LONG)
-                        }
-                    }
+                    val productId = productDetailsByIdResponse.id.toString()
+                    tokenManager?.let { it1 -> viewModel.addTowishlist(it1, productId) }
+                    viewModel.wishlist.observe(this, Observer { response ->
+                        when (response) {
+                            is Resource.Success -> {
+                                hideProgressBar()
+                                response.data?.let {
+                                    binding.productViewIdLayout.successWishListSnack(
+                                        this,
+                                        getString(R.string.add_to_wishlist),
+                                        Snackbar.LENGTH_LONG
+                                    )
+                                }
+                            }
 
-                    is Resource.Loading -> {
-                        showProgressBar()
-                    }
+                            is Resource.Error -> {
+                                hideProgressBar()
+                                response.message?.let { message ->
+                                    binding.productViewIdLayout.errorSnack(
+                                        message,
+                                        Snackbar.LENGTH_LONG
+                                    )
+                                }
+                            }
+
+                            is Resource.Loading -> {
+                                showProgressBar()
+                            }
+                        }
+                    })
+                } else {
+                    binding.productViewIdLayout.notLoginWarningSnack(this@ProductByIdActivity,
+                        Snackbar.LENGTH_LONG
+                    )
+
                 }
-            })
+            }
         }
 
 
         binding.btAddToCart.setOnClickListener {
+            tokenManager?.let {
+                if (it.token != Constants.NO_LOGIN && userPrefManager?.firstName != "not_found") {
 
 
-            val product_id = intent.getStringExtra(PRODUCT_ID)
-            if (product_id != null) {
-                tokenManager?.let { it1 -> viewModel.addToCart(it1, product_id, "1", "") }
-            }
+                    val product_id = intent.getStringExtra(PRODUCT_ID)
+                    if (product_id != null) {
+                        tokenManager?.let { it1 -> viewModel.addToCart(it1, product_id, "1", "") }
+                    }
+                }else {
+                    binding.productViewIdLayout.notLoginWarningSnack(
+                        this@ProductByIdActivity,
+                        Snackbar.LENGTH_LONG
+                    )
+                }
+                }
             viewModel.addToCart.observe(this, Observer { response ->
                 when (response) {
                     is Resource.Success -> {

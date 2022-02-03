@@ -13,7 +13,7 @@
     <string name="privacy_policy">मैले <font color='#23a1d1' size="13">गोपनीयता नीति \u0020 </font>पढेको छु र सहमत छु</string>
 
     <string name="use_other_methods">अन्य विधिहरू प्रयोग </string>
-    <string name="forgot_password">पासवर्ड भुल्नु भयो</string>
+    <string name="forgot_password">पासवर्ड भुल्नु भयो ?</string>
     <string name="remember_me">मलाई सम्झनुहोस्</string>
     <string name="new_user_register_now">नयाँ प्रयोगकर्ता? अहिले नै दर्ता गर्नुहोस</string>
     <string name="enter_your_mobile_number">आफ्नो मोबाइल नम्बर प्रविष्ट गर्नु</string>
@@ -87,7 +87,7 @@
 
     <string name="contact_no">संपर्क नम्बर.:</string>
     <string name="gender">लिङ्ग:</string>
-    <string name="payment_status">भुक्तानी स्थिति</string>
+    <string name="payment_status">भुक्तानी स्थिति:</string>
     <string name="order_status">अर्डर स्थिति</string>
     <string name="shipping_status">ढुवानी स्थिति </string>
     <string name="order_at">अर्डर गर्नुहोस् </string>
@@ -180,7 +180,7 @@
     <string name="deduct_subscription">सदस्यता कटौती गर्नुहोस्</string>
 
     <string name="cancel_sub_content">के तपाईं आफ्नो सदस्यता रद्द गर्न चाहनुहुन्छ?</string>
-    <string name="unsubscribe_cancel_title">सदस्यता रद्द गर्नुहोस्...</string>
+    <string name="unsubscribe_cancel_title">सदस्यता रद्द गर्नुहोस्</string>
     <string name="paid">भुक्तान गरियो</string>
     <string name="unpaid">भुक्तान नगरिएको</string>
     <string name="our_videoes">हाम्रा भिडियोहरू</string>
@@ -298,5 +298,27 @@
     <string name="easy_payment">Easy Payment</string>
     <string name="intro3">The greatest journey of online shop. \n Life is hard enough already. Let us make it a little easier.</string>
     <string name="calender">पात्रो</string>
-
+    <string name="subscription_cancelled">Subscription Cancelled</string>
+    <string name="milk_added">Milk added</string>
+    <string name="branch_details">Branch Details</string>
+    <string name="branch_name">Branch Name:-</string>
+    <string name="branch_contact">Branch Contact :-</string>
+    <string name="branch_address">Branch Address:-</string>
+    <string name="account_holder">Account Holder:-</string>
+    <string name="account_num">Account Num:-</string>
+    <string name="sub_available">Sub. Available:-</string>
+    <string name="bank_qr">Bank QR:-</string>
+    <string name="sc_subdate">यहाँ आफ्नो सदस्यता सुरु मिति थप्नुहोस् !!!</string>
+    <string name="got_it"><font color='#23a1d1' size="16">बुझे</font></string>
+    <string name="sc_package">यहाँ आफ्नो सदस्यता प्याकेज छनौट गर्नुहोस् !!!</string>
+    <string name="sc_period">यहाँ आफ्नो डेलिभरी अवधि छान्नुहोस् !!!</string>
+    <string name="sc_payment">यहाँ आफ्नो भुक्तानी विधि छनौट गर्नुहोस् !!!</string>
+    <string name="sc_unitPerDay">यहाँ आफ्नो प्रति दिन सदस्यता दूध मात्रा थप्नुहोस् !!!</string>
+    <string name="sc_proceed">यहाँ आफ्नो भुक्तानी संग अगाडि बढ्नुहोस् !!!</string>
+    <string name="remaining_litre">Remaining Litre</string>
+    <string name="wait_for_payment">Subscription needs to be validated to start. You can pay our employee when he/she delivers your first subscription...</string>
+    <string name="no_notification_received">No Notification Received</string>
+    <string name="bank_account">Bank Account</string>
+    <string name="address_error">Please add Addresses first</string>
+    <string name="paid_warning">We have received your payment..Please wait for the verification!!!</string>
 </resources>

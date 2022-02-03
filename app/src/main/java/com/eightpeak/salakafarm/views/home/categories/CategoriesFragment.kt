@@ -17,7 +17,6 @@ import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.google.android.material.snackbar.Snackbar
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
 
-import kotlinx.android.synthetic.main.fragment_categories.*
 import android.view.Gravity
 
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
