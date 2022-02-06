@@ -10,8 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.FragmentActivity
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -19,10 +21,13 @@ import coil.api.load
 import com.eightpeak.salakafarm.App
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
+import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.EndPoints
 import com.eightpeak.salakafarm.utils.GeneralUtils
+import com.eightpeak.salakafarm.utils.subutils.notLoginWarningSnack
 import com.eightpeak.salakafarm.views.home.products.AddToCartView
+import com.google.android.material.snackbar.Snackbar
 import kotlin.math.roundToInt
 
 class RelatedProductAdapter : RecyclerView.Adapter<RelatedProductAdapter.ProductListViewHolder>() {
@@ -56,7 +61,11 @@ class RelatedProductAdapter : RecyclerView.Adapter<RelatedProductAdapter.Product
     override fun onBindViewHolder(holder: ProductListViewHolder, position: Int) {
         val categoriesItem = differ.currentList[position]
         holder.itemView.apply {
-
+            var wishlistClick=true
+            val tokenManager = TokenManager.getInstance(context.getSharedPreferences(
+                Constants.TOKEN_PREF,
+                AppCompatActivity.MODE_PRIVATE
+            ))
             val rating1 = findViewById<ImageView>(R.id.rating_1)
             val rating2 = findViewById<ImageView>(R.id.rating_2)
             val rating3 = findViewById<ImageView>(R.id.rating_3)
@@ -73,6 +82,9 @@ class RelatedProductAdapter : RecyclerView.Adapter<RelatedProductAdapter.Product
 
             val productViewItem = findViewById<CardView>(R.id.productViewItem)
             val btAddToCart = findViewById<TextView>(R.id.bt_add_to_cart)
+
+            val btProductAddToWishlist = findViewById<ImageView>(R.id.product_add_to_wishlist)
+            val btProductCompareList = findViewById<ImageView>(R.id.product_add_to_compare_list)
 
 
 
@@ -141,19 +153,57 @@ class RelatedProductAdapter : RecyclerView.Adapter<RelatedProductAdapter.Product
 
             productFeature.text = categoriesItem.sku
             btAddToCart.setOnClickListener {
-                val args = Bundle()
-                args.putString(Constants.PRODUCT_ID, categoriesItem.id.toString())
-                val bottomSheet = AddToCartView()
-                bottomSheet.arguments = args
-                bottomSheet.show(
-                    (context as FragmentActivity).supportFragmentManager,
-                    bottomSheet.tag
-                )
+                if(tokenManager.token!= Constants.NO_LOGIN) {
+
+                    val args = Bundle()
+                    args.putString(Constants.PRODUCT_ID, categoriesItem.id.toString())
+                    val bottomSheet = AddToCartView()
+                    bottomSheet.arguments = args
+                    bottomSheet.show(
+                        (context as FragmentActivity).supportFragmentManager,
+                        bottomSheet.tag
+                    )
+                }else{
+                    productFeature.notLoginWarningSnack(context, Snackbar.LENGTH_LONG)
+                }
             }
             productViewItem.setOnClickListener {
                 val intent = Intent(context, ProductByIdActivity::class.java)
                 intent.putExtra(Constants.PRODUCT_ID, categoriesItem.id.toString())
                 context.startActivity(intent)
+            }
+
+            btProductAddToWishlist.setOnClickListener {
+                if(tokenManager.token!= Constants.NO_LOGIN) {
+                    if(wishlistClick){
+                        wishlistClick=false
+                        btProductAddToWishlist.load(R.drawable.favourite)
+                        val intent = Intent("related-products")
+                        intent.putExtra("wishlist", true)
+                        intent.putExtra("product_id", categoriesItem.id.toString())
+                        LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
+                    }else{
+                        val intent = Intent("related-products")
+                        intent.putExtra("wishlist", true)
+                        intent.putExtra("remove", true)
+                        intent.putExtra("product_id", categoriesItem.id.toString())
+                        LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
+
+                        wishlistClick=true
+                        btProductAddToWishlist.load(R.drawable.ic_baseline_favorite_24)
+                    }
+                }else{
+                    productFeature.notLoginWarningSnack(context, Snackbar.LENGTH_LONG)
+                }
+            }
+
+
+            btProductCompareList.setOnClickListener {
+                val intent = Intent("related-products")
+                intent.putExtra("compare_list", true)
+                intent.putExtra("product_id", categoriesItem.id.toString())
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
+
             }
         }
 

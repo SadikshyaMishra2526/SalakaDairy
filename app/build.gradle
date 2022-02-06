@@ -13,8 +13,8 @@ android {
         applicationId "com.eightpeak.salakafarm"
         minSdk 24
         targetSdk 31
-        versionCode 14
-        versionName "0.01"
+        versionCode 15
+        versionName "0.02"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

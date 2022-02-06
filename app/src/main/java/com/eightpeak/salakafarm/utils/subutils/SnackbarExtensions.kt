@@ -93,8 +93,18 @@ fun View.successWishListSnack(
             context.startActivity(intent)
 
         }
+    val snackbarLayout = snackbar.view
+    val lp = LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams.MATCH_PARENT,
+        LinearLayout.LayoutParams.WRAP_CONTENT
+    )
+
+    lp.setMargins(10, 150, 10, 10)
+
+    snackbarLayout.layoutParams = lp
+
     snackbar.setActionTextColor(Color.parseColor("#FFFFFF"))
-    snackbar.view.setBackgroundColor(ContextCompat.getColor(context, R.color.main_color))
+    snackbar.view.setBackgroundColor(ContextCompat.getColor(context, R.color.sub_color))
     snackbar.show()
 }
 
@@ -111,8 +121,18 @@ fun View.successAddToCartSnack(
             intent
 
         }
+    val snackbarLayout = snackbar.view
+    val lp = LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams.MATCH_PARENT,
+        LinearLayout.LayoutParams.WRAP_CONTENT
+    )
+
+    lp.setMargins(10, 150, 10, 10)
+
+    snackbarLayout.layoutParams = lp
+
     snackbar.setActionTextColor(Color.parseColor("#FFFFFF"))
-    snackbar.view.setBackgroundColor(ContextCompat.getColor(context, R.color.main_color))
+    snackbar.view.setBackgroundColor(ContextCompat.getColor(context, R.color.sub_color))
     snackbar.show()
 
 

@@ -74,7 +74,8 @@ data class Promotion_price(
 data class Descriptions(
     @SerializedName("product_id") val product_id: Int?=null,
     @SerializedName("lang") val lang: String?=null,
-    @SerializedName("title") val name: String?=null,
+    @SerializedName("title") val title: String?=null,
+    @SerializedName("name") val name: String?=null,
     @SerializedName("keyword") val keywordword: String?=null,
     @SerializedName("description") val description: String?=null,
     @SerializedName("content") val content: String

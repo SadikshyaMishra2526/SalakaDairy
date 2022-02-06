@@ -204,9 +204,8 @@ class LoginViewModel(
                      fcm_token: String,
                      provider_id: String,
                      avatar: String,
-                     provider: String,
-                     phone: String) = viewModelScope.launch {
-        googleLogin(first_name,last_name,email,fcm_token,provider_id,avatar,provider,phone)
+                     provider: String) = viewModelScope.launch {
+        googleLogin(first_name,last_name,email,fcm_token,provider_id,avatar,provider)
     }
 
 
@@ -216,12 +215,11 @@ class LoginViewModel(
                                     fcm_token: String,
                                     provider_id: String,
                                     avatar: String,
-                                    provider: String,
-                                    phone: String) {
+                                    provider: String) {
         socialGoogle.postValue(Resource.Loading())
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
-                val response = appRepository.googleLogin(first_name,last_name,email,fcm_token,provider_id,avatar,provider,phone)
+                val response = appRepository.googleLogin(first_name,last_name,email,fcm_token,provider_id,avatar,provider)
                 Log.i("TAG", "fetchUserAddress: $response")
                 socialGoogle.postValue(handleGoogleResponse(response))
             } else {

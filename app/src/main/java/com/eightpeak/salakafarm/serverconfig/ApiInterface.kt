@@ -308,7 +308,6 @@ interface ApiInterface {
         @Field("fcm_token") fcm_token: String,
         @Field("provider_id") provider_id: String,
         @Field("avatar") avatar: String,
-        @Field("provider") provider: String,
-        @Field("phone") phone: String): Response<GoogleLoginResponse>
+        @Field("provider") provider: String): Response<GoogleLoginResponse>
 
 }

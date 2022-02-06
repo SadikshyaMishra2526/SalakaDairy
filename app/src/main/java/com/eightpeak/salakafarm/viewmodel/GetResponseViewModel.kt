@@ -77,6 +77,7 @@ class GetResponseViewModel (
 
 
     val wishListResponse: MutableLiveData<Resource<WishListResponse>> = MutableLiveData()
+
     fun getWishListResponse(tokenManager: TokenManager) = viewModelScope.launch {
         wishlistResponseFetch(tokenManager)
     }
@@ -764,6 +765,57 @@ val getGalleryDetails: MutableLiveData<Resource<GalleryListModel>> = MutableLive
         }
         return Resource.Error(response.message())
     }
+
+
+//    add to wishlist
+
+    val wishlist: MutableLiveData<Resource<ServerResponse>> = MutableLiveData()
+    fun addtowishlist(tokenManager: TokenManager, productId:String) = viewModelScope.launch {
+        wishlistByView(tokenManager,productId)
+    }
+    private suspend fun wishlistByView(tokenManager: TokenManager, productId:String) {
+        wishlist.postValue(Resource.Loading())
+        try {
+            if (Utils.hasInternetConnection(getApplication<Application>())) {
+                val response = appRepository.addToWishList(tokenManager,productId)
+                Log.i("TAG", "fetchPics: $response")
+                wishlist.postValue(handleAddToWishListResponse(response))
+            } else {
+                wishlist.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_internet_connection)))
+            }
+        } catch (t: Throwable) {
+
+            when (t) {
+                is IOException -> wishlist.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.network_failure
+                        )
+                    )
+                )
+                else -> wishlist.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.conversion_error
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun handleAddToWishListResponse(response: Response<ServerResponse>): Resource<ServerResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }else{
+            Log.i("TAG", "handleWishListResponse:$response ")
+        }
+        return Resource.Error(response.message())
+    }
+
+
 
 
 }

@@ -5,72 +5,55 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
-import android.database.Cursor
-import android.graphics.BitmapFactory
-import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.provider.MediaStore
-import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import com.eightpeak.salakafarm.R
-import com.eightpeak.salakafarm.database.UserPrefManager
 import android.view.Window
-
-import androidx.core.content.ContextCompat
-
 import android.view.WindowManager
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import coil.api.load
 import com.eightpeak.salakafarm.App
+import com.eightpeak.salakafarm.R
+import com.eightpeak.salakafarm.database.UserPrefManager
+import com.eightpeak.salakafarm.databinding.ActivityUserProfileBinding
 import com.eightpeak.salakafarm.repository.AppRepository
 import com.eightpeak.salakafarm.serverconfig.RequestBodies
 import com.eightpeak.salakafarm.serverconfig.network.TokenManager
-import com.eightpeak.salakafarm.utils.Constants
-import com.eightpeak.salakafarm.viewmodel.UserProfileViewModel
-import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
-import com.eightpeak.salakafarm.views.addtocart.CartActivity
-import com.eightpeak.salakafarm.views.comparelist.CompareListActivity
-import com.eightpeak.salakafarm.views.home.HomeActivity
-import com.eightpeak.salakafarm.views.order.orderview.orderhistory.OrderHistory
-import com.eightpeak.salakafarm.views.wishlist.WishlistActivity
-import com.google.android.material.snackbar.Snackbar
-import java.util.*
-
-import com.eightpeak.salakafarm.views.addresslist.AddressListModel
-
-import android.widget.Toast
-
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import androidx.fragment.app.FragmentActivity
-import coil.api.load
-import com.eightpeak.salakafarm.databinding.ActivityUserProfileBinding
 import com.eightpeak.salakafarm.subscription.displaysubscription.TrackSubscriptionView
+import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.EndPoints.Companion.BASE_URL
-import com.eightpeak.salakafarm.views.home.address.AddressModification
 import com.eightpeak.salakafarm.utils.GeneralUtils
 import com.eightpeak.salakafarm.utils.subutils.Resource
 import com.eightpeak.salakafarm.utils.subutils.addAddressSnack
 import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.utils.subutils.showSnack
-import com.eightpeak.salakafarm.views.home.address.EditAddress
+import com.eightpeak.salakafarm.viewmodel.UserProfileViewModel
+import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
+import com.eightpeak.salakafarm.views.addresslist.AddressListModel
+import com.eightpeak.salakafarm.views.addtocart.CartActivity
+import com.eightpeak.salakafarm.views.comparelist.CompareListActivity
+import com.eightpeak.salakafarm.views.home.HomeActivity
+import com.eightpeak.salakafarm.views.home.address.AddressModification
 import com.eightpeak.salakafarm.views.home.ui.EditProfile
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.eightpeak.salakafarm.views.order.orderview.orderhistory.OrderHistory
+import com.eightpeak.salakafarm.views.wishlist.WishlistActivity
+import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.play.core.tasks.OnCompleteListener
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.material.snackbar.Snackbar
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import java.io.File
-import java.io.FileNotFoundException
+import java.util.*
 
-class UserProfile : AppCompatActivity() {
+
+class UserProfile : AppCompatActivity(),GoogleApiClient.OnConnectionFailedListener  {
 
     private lateinit var userPrefManager: UserPrefManager
     private var _binding: ActivityUserProfileBinding? = null
@@ -84,6 +67,11 @@ class UserProfile : AppCompatActivity() {
     var value1: ByteArray = GeneralUtils.decoderfun(Constants.SECRET_KEY)
     private var dialog: Dialog? = null
     private var datePickerDialog: DatePickerDialog? = null
+
+    private var googleApiClient: GoogleApiClient? = null
+
+    private var gso: GoogleSignInOptions? = null
+
     private fun init() {
         val repository = AppRepository()
         val factory = ViewModelProviderFactory(application, repository)
@@ -109,9 +97,13 @@ class UserProfile : AppCompatActivity() {
         userPrefManager = UserPrefManager(this)
         binding.userName.text = userPrefManager.firstName + " " + userPrefManager.lastName
         binding.userEmail.text = userPrefManager.email
-        binding.userPhone.text = userPrefManager.contactNo
+        if(!userPrefManager.contactNo.equals("not_found")){
+            binding.userPhone.text = userPrefManager.contactNo
+        }else{
+            binding.userPhone.visibility=View.GONE
+        }
         Log.i("TAG", "onCreate: "+userPrefManager.avatar)
-        if(!userPrefManager.avatar.equals("not_found")){
+        if(!userPrefManager.avatar.equals("not_found")&&!userPrefManager.avatar.equals("null")){
             if(userPrefManager.avatar.contains("https://")){
                 binding.customerAvatar.load(userPrefManager.avatar)
             }else{
@@ -124,6 +116,16 @@ class UserProfile : AppCompatActivity() {
         }
         dialog = Dialog(this)
 
+        gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .build()
+
+        googleApiClient = GoogleApiClient.Builder(this)
+            .enableAutoManage(this, this)
+            .addApi(Auth.GOOGLE_SIGN_IN_API, gso!!)
+            .build()
+
+
         binding.userLogout.setOnClickListener {
             val builder = AlertDialog.Builder(this)
             builder.setTitle(R.string.logout)
@@ -132,7 +134,7 @@ class UserProfile : AppCompatActivity() {
                 DialogInterface.OnClickListener { _, _ ->
                     viewModel.requestLogout(tokenManager!!)
                      getLogoutResponse()
-
+                    logoutGoogle()
                     val handler = Handler()
                     handler.postDelayed({
                         userPrefManager.clearData()
@@ -154,14 +156,23 @@ class UserProfile : AppCompatActivity() {
         }
 
         binding.editProfileLayout.setOnClickListener {
-            Toast.makeText(this@UserProfile,"Work on progress",Toast.LENGTH_LONG).show()
-            val args = Bundle()
-            val bottomSheet = EditProfile()
-            bottomSheet.arguments = args
-            bottomSheet.show(
-                (this@UserProfile as FragmentActivity).supportFragmentManager,
-                bottomSheet.tag
-            )
+//            Toast.makeText(this@UserProfile,"Work on progress",Toast.LENGTH_LONG).show()
+//            val args = Bundle()
+//            val bottomSheet = EditProfile()
+//            bottomSheet.arguments = args
+//            bottomSheet.show(
+//                (this@UserProfile as FragmentActivity).supportFragmentManager,
+//                bottomSheet.tag
+//            )
+
+            EditProfile(
+                onClickItem = { firstName, lastName, dob,photo->
+                    initObservers(
+                        firstName,
+                        lastName,
+                        dob,photo
+                    )
+                }).show(this.supportFragmentManager, "UserProfile")
         }
 
         binding.layoutUserPassword.setOnClickListener {
@@ -197,10 +208,18 @@ class UserProfile : AppCompatActivity() {
 
         }
         binding.addAddresses.setOnClickListener {
-            val intent = Intent(this@UserProfile, AddressModification::class.java)
-//              intent.putExtra(Constants.ORDER_STATUS, orderHistory.orderlist[i].status.toString())
-            startActivity(intent)
-
+            val args = Bundle()
+            args.putString("address1", null)
+            args.putString("address2",null)
+            args.putString("address3",null)
+            args.putString("contact", null)
+            args.putString("addressId", null)
+            val bottomSheet = AddressModification()
+            bottomSheet.arguments=args
+            bottomSheet.show(
+                (this@UserProfile as FragmentActivity).supportFragmentManager,
+                bottomSheet.tag
+            )
         }
         binding.editAddress.setOnClickListener {
             dialog!!.show()
@@ -209,6 +228,37 @@ class UserProfile : AppCompatActivity() {
         init()
         getAddressList()
 
+    }
+
+    private fun logoutGoogle() {
+        googleApiClient?.let {
+            Auth.GoogleSignInApi.signOut(it).setResultCallback { status ->
+                if (status.isSuccess()) {
+                    Toast.makeText(applicationContext, "Successfully", Toast.LENGTH_LONG)
+                        .show()
+                } else {
+                    Toast.makeText(applicationContext, "Session not close", Toast.LENGTH_LONG)
+                        .show()
+                }
+            }
+        }
+    }
+
+    private fun initObservers(firstName: String, lastName: String, dob: String, photo: String) {
+        binding.userName.text = "$firstName $lastName"
+        binding.userEmail.text = userPrefManager.email
+        binding.userPhone.text = userPrefManager.contactNo
+        if(!photo.equals("not_found")){
+            if(photo.contains("https://")){
+                binding.customerAvatar.load(BASE_URL+photo)
+            }else{
+                binding.customerAvatar.load(BASE_URL+photo)
+            }
+
+        }else{
+            binding.customerAvatar.load(R.drawable.logo)
+
+        }
     }
 
     private fun getLogoutResponse() {
@@ -287,28 +337,23 @@ class UserProfile : AppCompatActivity() {
 
                 val addressListItem = itemView.findViewById<TextView>(R.id.addressListItem)
                 val addressListItemEdit = itemView.findViewById<ImageView>(R.id.edit_address)
-                val addressListItemDelete = itemView.findViewById<ImageView>(R.id.delete_address)
                 addressListItem.text = i.address1 + ", " + i.address2 + ", Nepal"
                 addressListItemEdit.setOnClickListener {
-                    val intentEditAddress = Intent(this@UserProfile, EditAddress::class.java)
-                    intentEditAddress.putExtra("address1", i.address1)
-                    intentEditAddress.putExtra("address2", i.address2)
-                    intentEditAddress.putExtra("address3", i.address3)
-                    intentEditAddress.putExtra("contact", i.phone)
-                    intentEditAddress.putExtra("addressId", i.id.toString())
-                    Log.i("TAG", "viewAddressList: " + i.id.toString())
+                    val args = Bundle()
+                   args.putString("address1", i.address1)
+                   args.putString("address2", i.address2)
+                   args.putString("address3", i.address3)
+                   args.putString("contact", i.phone)
+                   args.putString("addressId", i.id.toString())
+                    val bottomSheet = AddressModification()
                     dialog?.dismiss()
-                    startActivity(intentEditAddress)
+                    bottomSheet.arguments = args
+                    bottomSheet.show(
+                        (this@UserProfile as FragmentActivity).supportFragmentManager,
+                        bottomSheet.tag
+                    )
                 }
-//                addressListItemDelete.setOnClickListener {
-//                    tokenManager?.let { it1 ->
-//                        viewModel.deleteAddressDetails(
-//                            it1,
-//                            i.id.toString()
-//                        )
-//                    }
-//                    getDeleteResponse()
-//                }
+
                 fetchAddressList?.addView(itemView)
             }
             dialog?.setCanceledOnTouchOutside(true)
@@ -369,7 +414,7 @@ class UserProfile : AppCompatActivity() {
 
         val btnSummit = dialog.findViewById<Button>(R.id.continuebtn)
         val btnCancel = dialog.findViewById<Button>(R.id.cancel)
-        btnCancel.setOnClickListener { dialog.show() }
+        btnCancel.setOnClickListener { dialog.dismiss() }
         btnSummit.setOnClickListener {
             val oldPasswordString = oldPassword.text.toString()
             val newPasswordString = newPassword.text.toString()
@@ -459,5 +504,9 @@ class UserProfile : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    override fun onConnectionFailed(p0: ConnectionResult) {
+
     }
 }

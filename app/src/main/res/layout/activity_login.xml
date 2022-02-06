@@ -80,7 +80,7 @@
                 style="@style/modifiedEditText"
                 android:layout_alignStart="@+id/address_second_img"
                 android:gravity="center"
-                android:paddingStart="@dimen/_20sdp"
+                android:paddingStart="@dimen/_40sdp"
                 android:layout_gravity="left"
                 android:hint="@string/password"
                 android:inputType="textPassword"

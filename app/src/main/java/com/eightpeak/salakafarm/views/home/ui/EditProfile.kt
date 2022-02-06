@@ -43,18 +43,14 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.util.*
 
-class EditProfile : BottomSheetDialogFragment() {
+class EditProfile(private val onClickItem: (firstName: String, lastName: String, Phone: String, Photo: String) -> Unit) :
+    BottomSheetDialogFragment() {
 
     private var _binding: LayoutEditProfileBinding? = null
     private val binding get() = _binding!!
     private var userPrefManager: UserPrefManager? = null
     private lateinit var viewModel: UserProfileViewModel
     private var tokenManager: TokenManager? = null
-    private var subscriptionId: String? = null
-    private var alterQuantity: String? = null
-    private var alterationDate: String? = null
-    private var selectPeriod: String?=null
-
     private val RESULT_LOAD_IMG = 101
 
     private lateinit var profilePicture: MultipartBody.Part
@@ -62,9 +58,8 @@ class EditProfile : BottomSheetDialogFragment() {
 
     var value1: ByteArray = GeneralUtils.decoderfun(Constants.SECRET_KEY)
     private var datePickerDialog: DatePickerDialog? = null
-    private lateinit var deliveryPeriodRadio: RadioButton
 
-    private lateinit var gender:RadioButton
+    private lateinit var gender: RadioButton
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -79,10 +74,6 @@ class EditProfile : BottomSheetDialogFragment() {
                 AppCompatActivity.MODE_PRIVATE
             )
         )
-        val  userGender=binding.customerGender.checkedRadioButtonId
-         gender =  root.findViewById<View>(userGender) as RadioButton
-
-
         setupViewModel()
         editProfile()
         return root.rootView
@@ -111,7 +102,7 @@ class EditProfile : BottomSheetDialogFragment() {
                 requireContext(),
                 { view, year, monthOfYear, dayOfMonth ->
                     dateSelected[year, monthOfYear, dayOfMonth, 0] = 0
-                   binding.customerDOB.text = dateFormat?.format(dateSelected.time)
+                    binding.customerDOB.text = dateFormat?.format(dateSelected.time)
                 },
                 newCalendar[Calendar.YEAR],
                 newCalendar[Calendar.MONTH],
@@ -124,14 +115,14 @@ class EditProfile : BottomSheetDialogFragment() {
         binding.customerLastName.setText(userPrefManager?.lastName)
 
 
-       binding.continuebtn.setOnClickListener {
+        binding.continuebtn.setOnClickListener {
 //            val userGender = findViewById<RadioGroup>(R.id.customer_gender).checkedRadioButtonId
 
 
-            val name =  binding.customerFirstName.text.toString()
+            val name = binding.customerFirstName.text.toString()
             val email = binding.customerLastName.text.toString()
             val dob = binding.customerDOB.text.toString()
-            val genderString =gender.text.toString()
+            val genderString = "male"
             if (dob.isNotEmpty()) {
                 if (genderString != null) {
                     changeUserProfile(name, email, dob, genderString, profilePicture)
@@ -148,8 +139,9 @@ class EditProfile : BottomSheetDialogFragment() {
             }
             GeneralUtils.hideKeyboard(requireActivity())
         }
-
+        binding.cancel.setOnClickListener { dismissAllowingStateLoss()}
     }
+
     private fun changeUserProfile(
         name: String,
         email: String,
@@ -174,7 +166,14 @@ class EditProfile : BottomSheetDialogFragment() {
 
         tokenManager?.let { it1 ->
 
-            viewModel.getUserProfileDetails(it1, customerName,customerEmail,customerDOB,customerGender,profilePicture)
+            viewModel.getUserProfileDetails(
+                it1,
+                customerName,
+                customerEmail,
+                customerDOB,
+                customerGender,
+                profilePicture
+            )
 
         }
 
@@ -183,7 +182,17 @@ class EditProfile : BottomSheetDialogFragment() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let {
-                        getUserDetails()
+                        userPrefManager?.firstName = response.data.customer.first_name
+                        userPrefManager?.lastName = response.data.customer.last_name
+                        userPrefManager?.contactNo = response.data.customer.phone
+                        userPrefManager?.email = response.data.customer.email
+                        onClickItem(
+                            response.data.customer.first_name,
+                            response.data.customer.last_name,
+                            response.data.customer.phone,
+                            response.data.customer.email
+                        )
+                        dismissAllowingStateLoss()
                         Log.i("TAG", "changeUserProfile: " + response.data)
                     }
                 }
@@ -202,45 +211,12 @@ class EditProfile : BottomSheetDialogFragment() {
             }
         })
     }
-    private fun getUserDetails() {
-        tokenManager?.let { viewModel.userDetailsUser(it) }
-        viewModel.userDetailsResponse.observe(this, Observer { event ->
-            event.getContentIfNotHandled()?.let { response ->
-                when (response) {
-                    is Resource.Success -> {
-                        hideProgressBar()
-                        response.data?.let { loginResponse ->
-                            Log.i("TAG", "loginResponse i m here: $loginResponse")
-                            userPrefManager?.firstName = loginResponse.first_name
-                            userPrefManager?.lastName = loginResponse.last_name
-                            userPrefManager?.contactNo = loginResponse.phone.toString()
-                            userPrefManager?.email = loginResponse.email
-
-                        }
-                    }
-
-                    is Resource.Error -> {
-                        hideProgressBar()
-                        response.message?.let { message ->
-                            binding.progress.errorSnack(message, Snackbar.LENGTH_LONG)
-                        }
-                    }
-
-                    is Resource.Loading -> {
-                        showProgressBar()
-                    }
-                }
-            }
-        })
-
-    }
-
-
 
 
     private fun getRealPathFromURI(contentURI: Uri): String? {
         val result: String
-        val cursor: Cursor? = requireActivity().contentResolver.query(contentURI, null, null, null, null)
+        val cursor: Cursor? =
+            requireActivity().contentResolver.query(contentURI, null, null, null, null)
         if (cursor == null) {
             result = contentURI.path.toString()
         } else {

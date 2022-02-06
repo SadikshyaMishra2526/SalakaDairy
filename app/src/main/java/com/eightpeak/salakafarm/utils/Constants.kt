@@ -31,6 +31,9 @@ class Constants {
         const val QUANTITY = "quantity"
         const val ALTER_DAY = "alter_day"
 
+        const val REMAINING_LITRE = "remaining_litre"
+        const val ALTERATION_STATUS = "alteration_status"
+
 
         val NO_LOGIN = null
     }

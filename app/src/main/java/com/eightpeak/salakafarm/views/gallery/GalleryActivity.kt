@@ -44,6 +44,7 @@ class GalleryActivity :AppCompatActivity() {
         setContentView(binding.root)
 
         binding.header.text=getString(R.string.our_gallery)
+        binding.returnHome.setOnClickListener { finish() }
         tokenManager = TokenManager.getInstance(
             getSharedPreferences(
                 Constants.TOKEN_PREF,

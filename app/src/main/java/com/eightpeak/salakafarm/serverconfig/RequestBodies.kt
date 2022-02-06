@@ -123,7 +123,9 @@ object RequestBodies {
         val address2: String,
         val address3: String,
         val phone: String,
-        val id: String
+        val id: String,
+        val lat: String,
+        val lng: String
     )
 
     data class SubHistoryList(

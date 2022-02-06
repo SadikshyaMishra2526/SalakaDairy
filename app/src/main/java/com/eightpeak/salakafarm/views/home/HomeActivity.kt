@@ -115,10 +115,8 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback,
         )
 //        setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
         val layoutParams = navView.layoutParams as CoordinatorLayout.LayoutParams
         layoutParams.behavior = BottomNavigationBehavior()
-
         checkPermissionsState()
         setupViewModel()
 
@@ -131,7 +129,6 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback,
         val factory = ViewModelProviderFactory(application, repository)
         viewModel = ViewModelProvider(this, factory).get(GetResponseViewModel::class.java)
         viewModelNotification = ViewModelProvider(this).get(NotificationViewModel::class.java)
-
         getPopUp()
     }
 
@@ -162,10 +159,6 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback,
         }
     }
 
-//    override fun onBackPressed() {
-//        super.onBackPressed()
-//        exitProcess(-1)
-//    }
 
     override fun onMapReady(p0: GoogleMap) {
 
@@ -176,11 +169,11 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback,
     }
 
     override fun onConnectionSuspended(p0: Int) {
-        TODO("Not yet implemented")
+//
     }
 
     override fun onConnectionFailed(p0: ConnectionResult) {
-        TODO("Not yet implemented")
+//
     }
 
     override fun onStart() {
@@ -334,12 +327,9 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback,
                 myCity += selectedCountry
                 val addressLine: String =
                     addresses[0].getAddressLine(0).replace("Unnamed Road,", "")
-//                currentlocation.setText("Your Current Location :-$addressLine")
                 userPrefManager.currentPosition = addressLine
                 Log.i("TAG", "getMyPosition: $addressLine")
             } catch (e: Exception) {
-//                Toast.makeText(this@HomeActivity, "Could not get Address!!", Toast.LENGTH_SHORT)
-//                    .show()
                 e.printStackTrace()
             }
         })
@@ -347,15 +337,16 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback,
 
     override fun onBackPressed() {
         val fm: android.app.FragmentManager? = fragmentManager
+        Log.i("TAG", "onBackPressed: "+fm?.getBackStackEntryCount())
         if (fm != null) {
-            if (fm.getBackStackEntryCount() > 0) {
-                Log.i("MainActivity", "popping backstack")
-                fm.popBackStack()
-            } else {
-                Log.i("MainActivity", "nothing on backstack, calling super")
-                finish()
-                super.onBackPressed()
-            }
+//            if (fm.getBackStackEntryCount() > 0) {
+//                Log.i("MainActivity", "popping backstack")
+//                fm.popBackStack()
+//            } else {
+//                Log.i("MainActivity", "nothing on backstack, calling super")
+//                finish()
+//                super.onBackPressed()
+//            }
         }
 
     }

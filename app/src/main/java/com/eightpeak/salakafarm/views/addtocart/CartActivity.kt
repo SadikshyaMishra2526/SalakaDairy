@@ -1,9 +1,9 @@
 package com.eightpeak.salakafarm.views.addtocart
 
 import android.app.AlertDialog
-import android.content.DialogInterface
-import android.content.Intent
+import android.content.*
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageButton
@@ -13,8 +13,10 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.GridLayoutManager
 import coil.api.load
+import com.eightpeak.salakafarm.App
 import com.eightpeak.salakafarm.R
 import com.eightpeak.salakafarm.database.UserPrefManager
 import com.eightpeak.salakafarm.databinding.ActivityCartBinding
@@ -23,15 +25,15 @@ import com.eightpeak.salakafarm.serverconfig.network.TokenManager
 import com.eightpeak.salakafarm.utils.Constants
 import com.eightpeak.salakafarm.utils.EndPoints
 import com.eightpeak.salakafarm.utils.GeneralUtils
-import com.eightpeak.salakafarm.utils.subutils.Resource
+import com.eightpeak.salakafarm.utils.subutils.*
 import com.eightpeak.salakafarm.viewmodel.GetResponseViewModel
 import com.eightpeak.salakafarm.viewmodel.ViewModelProviderFactory
 import com.eightpeak.salakafarm.views.home.products.Data
 import com.eightpeak.salakafarm.views.home.products.ProductAdapter
 import com.eightpeak.salakafarm.views.order.orderview.viewordercheckoutdetails.CheckoutDetailsView
-import com.eightpeak.salakafarm.utils.subutils.errorSnack
 import com.eightpeak.salakafarm.views.addtocart.addtocartfragment.Cart
 import com.eightpeak.salakafarm.views.home.HomeActivity
+import com.eightpeak.salakafarm.views.home.products.ServerResponse
 import com.eightpeak.salakafarm.views.home.products.productbyid.ProductByIdActivity
 
 class CartActivity : AppCompatActivity() {
@@ -46,6 +48,95 @@ class CartActivity : AppCompatActivity() {
     private var layoutManager: GridLayoutManager? = null
 
     private lateinit var userPrefManager: UserPrefManager
+
+    var mMessageReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent) {
+            val wishlist = intent.getBooleanExtra("wishlist",false)
+            val compareList = intent.getBooleanExtra("compare_list",false)
+            val productId = intent.getStringExtra("product_id")
+            val removeFromCart= intent.getBooleanExtra("remove",false)
+            if(wishlist){
+                if(!removeFromCart){
+                    if (productId != null) {
+                        tokenManager?.let { viewModel.addtowishlist(it,productId)}
+                        addToWishListResponse()
+                    }
+                }else{
+                    if (productId != null) {
+                        tokenManager?.let { viewModel.deleteWishlistById(it,productId)}
+                        removeWishListResponse()
+                    }
+                }
+
+            }else if(compareList){
+                App.addItem(productId)
+                binding.addToCart.successCompareSnack(this@CartActivity,"Add to Compare List",Snackbar.LENGTH_LONG)
+
+            }
+
+        }
+    }
+    private fun addToWishListResponse() {
+        viewModel.wishlist.observe(this@CartActivity, Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let { picsResponse ->
+                        val serverResponse: ServerResponse = picsResponse
+                        Log.i("TAG", "getPictures: $serverResponse")
+                        binding.addToCart.successWishListSnack(this@CartActivity,getString(R.string.add_to_wishlist),Snackbar.LENGTH_LONG)
+
+                    }
+                }
+
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let { message ->
+                        binding.productRecyclerView.errorSnack(message, Snackbar.LENGTH_LONG)
+                    }
+                }
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+            }
+        })
+    }
+    private fun removeWishListResponse() {
+        viewModel.deleteWishlistById.observe(this@CartActivity, Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let { picsResponse ->
+                        val serverResponse: ServerResponse = picsResponse
+
+                        binding.addToCart.showSnack("Removed from Wishlist!!!",Snackbar.LENGTH_LONG)
+
+                    }
+                }
+
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let { message ->
+                        binding.productRecyclerView.errorSnack(message, Snackbar.LENGTH_LONG)
+                    }
+                }
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+            }
+        })
+    }
+
+
+    private fun initializeWishCompare() {
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
+            IntentFilter("related-products")
+        )
+    }
+
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -82,6 +173,7 @@ class CartActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, factory).get(GetResponseViewModel::class.java)
         getPictures()
         getRandomProducts()
+        initializeWishCompare()
     }
     private fun init() {
         productAdapter = ProductAdapter()

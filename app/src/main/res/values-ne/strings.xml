@@ -164,7 +164,7 @@
     <string name="subscription_started">सदस्यता सुरु भयो</string>
     <string name="subscription_expires_at">सदस्यताको म्याद समाप्त हुन्छ</string>
     <string name="view_history">इतिहास हेर्नुहोस्</string>
-    <string name="delete_subscription">सदस्यता मेटाउनुहोस्</string>
+    <string name="delete_subscription">सदस्यता रद्द</string>
     <string name="customer_name">ग्राहकको नाम:-</string>
     <string name="package_name">प्याकेजको नाम :</string>
     <string name="total_subscribed">कुल सदस्यता :</string>
@@ -321,4 +321,6 @@
     <string name="bank_account">Bank Account</string>
     <string name="address_error">Please add Addresses first</string>
     <string name="paid_warning">We have received your payment..Please wait for the verification!!!</string>
+    <string name="quantity_validation">Quantity needs to be greater than 0 litre</string>
+    <string name="less_than_remaining">Subscription Quantity needs to be less than remaining quantity</string>
 </resources>

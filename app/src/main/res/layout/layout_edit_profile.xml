@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="330dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:id="@+id/edit_profile"
     android:layout_gravity="center"
@@ -40,6 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_5sdp"
+            android:layout_gravity="center"
             android:orientation="vertical">
             <ProgressBar
                 android:id="@+id/progress"
@@ -67,8 +68,8 @@
                     android:layout_marginStart="@dimen/_5sdp"
                     android:layout_width="@dimen/_60sdp"
                     android:padding="@dimen/_5sdp"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/ic_baseline_person_24"
-                    android:inputType="textCapSentences"
                     android:background="@drawable/edit_view"
                     android:layout_height="@dimen/_60sdp" />
 
@@ -175,22 +176,27 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_margin="@dimen/_10sdp">
 
-                    <Button
+                    <TextView
                         android:id="@+id/cancel"
                         style="@style/loginButton"
                         android:layout_width="120dp"
                         android:layout_height="50dp"
+                        android:gravity="center"
                         android:layout_gravity="center"
+                        android:backgroundTint="@color/main_color"
                         android:text="@string/cancel" />
 
-                    <Button
+                    <TextView
                         android:id="@+id/continuebtn"
                         style="@style/loginButton"
                         android:layout_width="120dp"
                         android:layout_height="50dp"
+                        android:gravity="center"
                         android:layout_gravity="center"
+                        android:backgroundTint="@color/main_color"
                         android:layout_marginLeft="@dimen/_20sdp"
                         android:text="@string/update" />
                 </LinearLayout>

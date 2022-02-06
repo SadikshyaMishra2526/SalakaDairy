@@ -1,13 +1,13 @@
 <resources>
     <string name="facebook_app_id">1376274882826132</string>
     <string name="fb_login_protocol_scheme">fb1376274882826132</string>
-<string name="default_notification_channel_id">notification_channel</string>
+    <string name="default_notification_channel_id">notification_channel</string>
 
     <string name="app_name">Salaka Farm</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="sign_in">Sign In</string>
     <string name="email">Email</string>
-    <string name="password">\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020Password</string>
+    <string name="password">\u0020\u0020\u0020\u0020\u0020\u0020Password</string>
     <string name="address">Address</string>
     <string name="register">Registration</string>
     <string name="terms_conditions">I have read and agree to the <font color='#23a1d1' size="13">Terms &amp; Conditions</font></string>
@@ -183,9 +183,9 @@
     <string name="unpaid">Unpaid</string>
     <string name="our_videoes">Our Videos</string>
     <string name="our_gallery">Our Gallery</string>
-    <string name="old_password"><font color='#5FA95F' size="13">Old password</font></string>
-    <string name="confirm_password"><font color='#5FA95F' size="13">Confirm Password</font></string>
-    <string name="new_password"><font color='#5FA95F' size="13">New Password</font></string>
+    <string name="old_password"><font color='#5FA95F' size="10">Old password</font></string>
+    <string name="confirm_password"><font color='#5FA95F' size="10">Confirm Password</font></string>
+    <string name="new_password"><font color='#5FA95F' size="10">New Password</font></string>
     <string name="add_to_compare">Add to Compare List</string>
     <string name="your_wishlist">Your WishList</string>
     <string name="your_order_details">Your Order Details</string>
@@ -315,6 +315,8 @@
     <string name="bank_account">Bank Account</string>
     <string name="address_error">Please add Addresses first</string>
     <string name="paid_warning">We have received your payment..Please wait for the verification!!!</string>
+    <string name="quantity_validation">Quantity needs to be greater than 0 litre</string>
+    <string name="less_than_remaining">Subscription Quantity needs to be less than remaining quantity</string>
 
     <string-array name="nepdays">
         <item>01</item>

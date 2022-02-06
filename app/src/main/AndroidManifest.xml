@@ -124,7 +124,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".views.pages.PageDetailsView"
             android:theme="@style/Theme.SalakaFarm" />
@@ -132,12 +131,7 @@
             android:name=".views.order.orderview.confirmOrder.ConfirmOrderActivity"
             android:theme="@style/Theme.SalakaFarm"
             android:noHistory="true"/>
-        <activity
-            android:name=".views.home.address.AddressModification"
-            android:theme="@style/Theme.SalakaFarm" />
-        <activity
-            android:name=".views.home.address.EditAddress"
-            android:theme="@style/Theme.SalakaFarm" />
+
         <activity
             android:name=".mapfunctions.BranchActivity"
             android:theme="@style/Theme.SalakaFarm" />

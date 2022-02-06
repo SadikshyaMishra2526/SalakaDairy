@@ -85,9 +85,9 @@ class CategoriesByIdActivity  : AppCompatActivity() {
                             binding.categoriesByIdTitle.visibility=View.VISIBLE
 
                             if(userPrefManager.language.equals("ne")){
-                                binding.categoryName.text = categoryDetails.descriptions[1].name
+                                binding.categoryName.text = categoryDetails.descriptions[1].title
                             }else{
-                                binding.categoryName.text = categoryDetails.descriptions[0].name
+                                binding.categoryName.text = categoryDetails.descriptions[0].title
                             }
                         }
 

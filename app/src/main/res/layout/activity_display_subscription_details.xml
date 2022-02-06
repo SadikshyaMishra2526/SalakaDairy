@@ -4,14 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/subscription_details"
     android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="gone">
+    android:orientation="vertical">
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/shimmer_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+            <include layout="@layout/subscription_shimmer"/>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+
 
     <LinearLayout
         android:id="@+id/subscriptionView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
+        android:visibility="gone"
         android:orientation="vertical">
 
         <LinearLayout
@@ -51,18 +79,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1.5" />
         </LinearLayout>
-
-        <ProgressBar
-            android:id="@+id/progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <androidx.cardview.widget.CardView
             android:id="@+id/warning_card"
             android:layout_width="match_parent"
@@ -777,6 +793,15 @@
                             android:layout_weight="2"
                             android:text="@string/add_evidence" />
                     </LinearLayout>
+
+                    <Button
+                        android:visibility="gone"
+                        android:id="@+id/cancelYourUnpaymetSubscription"
+                        android:layout_width="@dimen/_180sdp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+
+                        android:text="@string/unsubscribe" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -848,4 +873,6 @@
         </LinearLayout>
 
     </LinearLayout>
+
+</LinearLayout>
 </androidx.core.widget.NestedScrollView>

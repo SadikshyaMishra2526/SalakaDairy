@@ -151,9 +151,14 @@ class LoginActivity : AppCompatActivity() {
 //        signInButton.setSize(SignInButton.SIZE_STANDARD)
         val account = GoogleSignIn.getLastSignedInAccount(this)
         Log.i("TAG", "googleLogin: "+account)
-        signInButton.setOnClickListener {
-            signIn()
+        if(account!=null){
+//            account==
+        }else{
+            signInButton.setOnClickListener {
+                signIn()
+            }
         }
+
     }
     private fun signIn() {
         val signInIntent = mGoogleSignInClient!!.signInIntent
@@ -186,26 +191,26 @@ class LoginActivity : AppCompatActivity() {
                 val personEmail = Encrypt.getEncrptedValue(acct.email)
                 val personId =Encrypt.getEncrptedValue( acct.id)
                 val personPhoto: String? =  acct.photoUrl.toString()
-                val name: Array<String>? = personName?.split(" ".toRegex())?.toTypedArray()
+                Log.i("TAG", "handleSignInResult: $personName"+acct.email+" "+ acct.id )
 
+                val name: Array<String>? = personName?.split(" ".toRegex())?.toTypedArray()
                     if (personId != null) {
 
                             if (personEmail != null) {
                                 Encrypt.getEncrptedValue(name?.get(0))?.let { it1 ->
                                     Encrypt.getEncrptedValue(personFamilyName)?.let { it2 ->
-                                        Encrypt.getEncrptedValue("")?.let { it3 ->
                                             Encrypt.getEncrptedValue("google")?.let { it4 ->
                                                 loginViewModel.socialGoogle(
                                                     it1,
                                                     it2,personEmail,userPrefManager.fcmToken,personId,personPhoto.toString(),
-                                                    it4, it3
+                                                    it4
                                                 )
-                                            }
+
                                         }
                                     }
                                 }
                             }
-
+                        mGoogleSignInClient?.signOut()
                         getGoogleLoginResponse()
                 }
             }
@@ -360,13 +365,12 @@ class LoginActivity : AppCompatActivity() {
                     is Resource.Success -> {
                         hideProgressBar()
                         response.data?.let { loginResponse ->
-                            Log.i("TAG", "loginResponse i m here: "+loginResponse)
                             userPrefManager.firstName = loginResponse.first_name
                             userPrefManager.lastName = loginResponse.last_name
-                            userPrefManager.contactNo = loginResponse.phone.toString()
                             userPrefManager.email = loginResponse.email
                             userPrefManager.avatar = loginResponse.avatar
-
+                            userPrefManager.contactNo = loginResponse.phone
+//
                             val mainActivity = Intent(this@LoginActivity, HomeActivity::class.java)
                             startActivity(mainActivity)
                             finish()
@@ -392,7 +396,7 @@ class LoginActivity : AppCompatActivity() {
     private fun changeStatusBarColor() {
         val window: Window = window
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        window.statusBarColor = resources.getColor(R.color.main_color)
+        window.statusBarColor = resources.getColor(R.color.sub_color)
     }
 
     private fun hideProgressBar() {

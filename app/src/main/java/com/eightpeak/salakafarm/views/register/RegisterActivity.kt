@@ -218,14 +218,12 @@ class RegisterActivity : AppCompatActivity() {
                         if (personEmail != null) {
                             Encrypt.getEncrptedValue( personName)?.let { it1 ->
                                 Encrypt.getEncrptedValue(personFamilyName)?.let { it2 ->
-                                    Encrypt.getEncrptedValue("")?.let { it3 ->
                                         Encrypt.getEncrptedValue("google")?.let { it4 ->
                                             loginViewModel.socialGoogle(
                                                 it1,
                                                 it2,personEmail,userPrefManager.fcmToken,personId,personPhoto.toString(),
-                                                it4, it3
+                                                it4
                                             )
-                                        }
                                     }
                                 }
                             }

@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -110,7 +111,13 @@ class TrackSubscriptionView : BottomSheetDialogFragment()
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { _ ->
-                     plotPositionInMap(response.data)
+                        if(response.data.latlng!=null){
+                            plotPositionInMap(response.data)
+
+                        }else{
+Toast.makeText(requireContext(),"Employee not assigned yet...",Toast.LENGTH_SHORT).show()
+                            dismissAllowingStateLoss()
+                        }
                     }
                 }
 

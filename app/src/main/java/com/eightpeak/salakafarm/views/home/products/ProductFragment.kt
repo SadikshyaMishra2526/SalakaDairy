@@ -87,7 +87,6 @@ class ProductFragment : Fragment() {
 
             }
     }
-
     private fun addToWishListResponse() {
         viewModel.wishlist.observe(requireActivity(), Observer { response ->
             when (response) {
@@ -113,7 +112,6 @@ class ProductFragment : Fragment() {
             }
         })
     }
-
     private fun removeWishListResponse() {
         viewModel.removeFromWishlist.observe(requireActivity(), Observer { response ->
             when (response) {

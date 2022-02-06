@@ -45,6 +45,8 @@ class VideoViewActivity : AppCompatActivity() {
         binding = ActivityVideoViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.header.text=getString(R.string.our_videoes)
+        binding.returnHome.setOnClickListener { finish() }
+
         getVideoLink()
 //        retrofit.
       }
